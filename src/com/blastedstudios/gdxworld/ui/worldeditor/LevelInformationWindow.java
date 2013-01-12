@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -8,14 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
-import com.blastedstudios.gdxworld.ui.LevelEditorScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.GDXWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class LevelInformationWindow extends Window{
+public class LevelInformationWindow extends GDXWindow{
 	private final TextField coordXLabel, coordYLabel;
 	
 	public LevelInformationWindow(final GDXWorldEditor game, final WorldEditorScreen worldEditorScreen, 
@@ -38,7 +37,8 @@ public class LevelInformationWindow extends Window{
 				if(!gdxWorld.contains(gdxLevel)){
 					gdxWorld.add(gdxLevel);
 					worldEditorScreen.add(gdxLevel);
-				}
+				}else
+					worldEditorScreen.update(gdxLevel);
 				worldEditorScreen.removeLevelInformationWindow();
 			}
 		});
@@ -78,13 +78,5 @@ public class LevelInformationWindow extends Window{
 	public void setCoordinates(float x, float y){
 		coordXLabel.setText(x+"");
 		coordYLabel.setText(y+"");
-	}
-
-	/**
-	 * @param x screen coordinates
-	 * @param y screen coordinates
-	 */
-	public boolean contains(float x, float y){
-		return getX()+getWidth() > x && getX() < x && getY()+getHeight() > Gdx.graphics.getHeight()-y && getY() < Gdx.graphics.getHeight()-y;
 	}
 }

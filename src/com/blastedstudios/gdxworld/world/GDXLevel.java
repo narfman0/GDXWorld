@@ -11,7 +11,10 @@ public class GDXLevel implements Serializable{
 	private final List<GDXPolygon> polygons = new ArrayList<GDXPolygon>();
 	private String name = "";
 	private Vector2 coordinates = new Vector2();
-	private List<Integer> prerequisites = new ArrayList<Integer>();
+	/**
+	 * Contains list of level names this level depends on before being playable
+	 */
+	private List<String> prerequisites = new ArrayList<String>();
 
 	public void add(GDXPolygon polygon){
 		polygons.add(polygon);
@@ -45,30 +48,45 @@ public class GDXLevel implements Serializable{
 		this.coordinates = coords;
 	}
 
-	public List<Integer> getPrerequisites() {
+	public List<String> getPrerequisites() {
 		return prerequisites;
 	}
 
-	public void setPrerequisites(List<Integer> prerequisites) {
+	public void setPrerequisites(List<String> prerequisites) {
 		this.prerequisites = prerequisites;
 	}
 
 	public void setPrerequisitesString(String prerequisites) {
-		this.prerequisites = new ArrayList<Integer>();
+		this.prerequisites = new ArrayList<String>();
 		for(String prereq : prerequisites.split(","))
 			if(!prereq.equals(""))
-				this.prerequisites.add(Integer.parseInt(prereq));
+				this.prerequisites.add(prereq);
 	}
-	
+
 	public String getPrerequisitesString() {
 		if(prerequisites.isEmpty())
 			return "";
 		String prereqs = "";
-		for(Integer prereq : prerequisites)
+		for(String prereq : prerequisites)
 			prereqs += prereq + ",";
 		return prereqs.substring(0,prereqs.length()-1);
 	}
-	
+
+	public GDXPolygon getClosestPolygon(float x, float y) {
+		GDXPolygon closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(GDXPolygon level : polygons){
+			for(Vector2 vertex : level.getVertices()){
+				float distance = vertex.dst2(x, y);
+				if(closest == null || closestDistance > distance){
+					closest = level;
+					closestDistance = distance;
+				}
+			}
+		}
+		return closest;
+	}
+
 	@Override public String toString(){
 		return "Level name:" + name + " coords:" + coordinates;
 	}

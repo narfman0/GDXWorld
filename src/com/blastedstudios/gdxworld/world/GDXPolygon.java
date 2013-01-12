@@ -52,4 +52,17 @@ public class GDXPolygon implements Serializable{
 		body.createFixture(fd);
 		return body;
 	}
+
+	public Vector2 getClosestVertex(float x, float y) {
+		Vector2 closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(Vector2 vertex : vertices){
+			float distance = vertex.dst2(x, y);
+			if(closest == null || closestDistance > distance){
+				closest = vertex;
+				closestDistance = distance;
+			}
+		}
+		return closest;
+	}
 }
