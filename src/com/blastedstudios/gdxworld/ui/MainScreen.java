@@ -38,7 +38,7 @@ public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 				Gdx.app.exit();
 			}
 		});
-		Window window = new Window("Main", skin);
+		Window window = new Window("GDX World Editor", skin);
 		window.add(newCharacterLabel);
 		window.add(newButton);
 		window.row();

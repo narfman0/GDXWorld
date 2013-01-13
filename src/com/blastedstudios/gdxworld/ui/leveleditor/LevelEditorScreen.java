@@ -45,29 +45,29 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			camera.position.x++;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x--;
-		
-		if(Gdx.input.isTouched()){
-			int x = Gdx.input.getX(), y = Gdx.input.getY();
-			Gdx.app.debug("LevelEditorScreen.render", "isTouched: x="+x+ " y="+y);
-			Vector3 coordinates = new Vector3(x,y,0);
-			camera.unproject(coordinates);
-			if(!levelWindow.contains(x,y) && (polygonWindow == null || !polygonWindow.contains(x, y))){
-				if(levelWindow.isPolygonMode()){
-					GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
-					if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
-							dst(coordinates.x, coordinates.y) > NODE_RADIUS)
-						polygon = new GDXPolygon();
-					if(polygonWindow == null){
-						Gdx.app.log("LevelEditorScreen.render", "TODO Create polygon");
-						stage.addActor(polygonWindow = new PolygonWindow(skin, this, polygon));
-					}
-					Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
-					polygonWindow.add(vertex);
-					polygon.getVertices().add(vertex);
+		world.step(delta, 4, 4);
+	}
+	
+	@Override public boolean touchDown(int x, int y, int x1, int y1) {
+		Gdx.app.debug("LevelEditorScreen.render", "isTouched: x="+x+ " y="+y);
+		Vector3 coordinates = new Vector3(x,y,0);
+		camera.unproject(coordinates);
+		if(!levelWindow.contains(x,y) && (polygonWindow == null || !polygonWindow.contains(x, y))){
+			if(levelWindow.isPolygonMode()){
+				GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
+				if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
+						dst(coordinates.x, coordinates.y) > NODE_RADIUS)
+					polygon = new GDXPolygon();
+				if(polygonWindow == null){
+					Gdx.app.log("LevelEditorScreen.touchDown", "TODO Create polygon");
+					stage.addActor(polygonWindow = new PolygonWindow(skin, this, polygon));
 				}
+				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
+				polygonWindow.add(vertex);
+				polygon.getVertices().add(vertex);
 			}
 		}
-		world.step(delta, 4, 4);
+		return false;
 	}
 	
 	public void removePolygonWindow(){
