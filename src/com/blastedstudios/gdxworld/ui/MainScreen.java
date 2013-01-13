@@ -16,13 +16,14 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 	public MainScreen(final GDXWorldEditor game){
 		super(game);
-		final TextField newCharacterLabel = new TextField("", skin);
+		final TextField newWorldNameLabel = new TextField("", skin);
+		newWorldNameLabel.setMessageText("<new world name>");
 		final Button newButton = new TextButton("New", skin);
 		final Button loadButton = new TextButton("Load", skin);
 		final Button exitButton = new TextButton("Exit", skin);
 		newButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new WorldEditorScreen(game, new GDXWorld()));
+				game.setScreen(new WorldEditorScreen(game, new GDXWorld(newWorldNameLabel.getText())));
 			}
 		});
 		loadButton.addListener(new ClickListener() {
@@ -30,7 +31,7 @@ public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 				final JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(null);
 				GDXWorld loaded = GDXWorld.load(fc.getSelectedFile());
-				game.setScreen(new WorldEditorScreen(game, loaded == null ? new GDXWorld() : loaded));
+				game.setScreen(new WorldEditorScreen(game, loaded == null ? new GDXWorld(newWorldNameLabel.getText()) : loaded));
 			}
 		});
 		exitButton.addListener(new ClickListener() {
@@ -39,7 +40,7 @@ public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 			}
 		});
 		Window window = new Window("GDX World Editor", skin);
-		window.add(newCharacterLabel);
+		window.add(newWorldNameLabel);
 		window.add(newButton);
 		window.row();
 		window.add(loadButton).colspan(2);

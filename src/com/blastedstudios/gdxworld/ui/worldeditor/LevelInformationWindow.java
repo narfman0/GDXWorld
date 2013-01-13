@@ -24,6 +24,7 @@ public class LevelInformationWindow extends GDXWindow{
 		coordXLabel = new TextField(gdxLevel.getCoordinates().x+"", skin);
 		coordYLabel = new TextField(gdxLevel.getCoordinates().y+"", skin);
 		final TextField prereqLabel = new TextField(gdxLevel.getPrerequisitesString(), skin);
+		prereqLabel.setMessageText("<level prerequisites>");
 		levelNameLabel.setMessageText("<new level name>");
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button editButton = new TextButton("Edit", skin);

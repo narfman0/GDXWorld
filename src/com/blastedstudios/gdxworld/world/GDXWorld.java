@@ -14,8 +14,10 @@ import com.badlogic.gdx.Gdx;
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<GDXLevel> levels;
+	private String name;
 
-	public GDXWorld(){
+	public GDXWorld(String name){
+		this.name = name;
 		levels = new ArrayList<GDXLevel>();
 	}
 
@@ -87,5 +89,17 @@ public class GDXWorld implements Serializable{
 			}
 		}
 		return closest;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override public String toString(){
+		return "[GDXWorld: " + name + "]";
 	}
 }
