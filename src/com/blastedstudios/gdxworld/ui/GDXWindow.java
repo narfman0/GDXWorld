@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.util;
+package com.blastedstudios.gdxworld.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

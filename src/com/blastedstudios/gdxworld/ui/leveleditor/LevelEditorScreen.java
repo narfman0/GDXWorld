@@ -1,12 +1,17 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
@@ -19,6 +24,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private final World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
+	private final HashMap<GDXPolygon, Body> bodies = new HashMap<GDXPolygon, Body>();
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private GDXLevel gdxLevel;
@@ -45,7 +51,6 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			camera.position.x++;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x--;
-		world.step(delta, 4, 4);
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -68,6 +73,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			}
 		}
 		return false;
+	}
+	
+	public void addPolygon(GDXPolygon polygon){
+		Gdx.app.log("WorldEditorScreen.addPolygon", "Adding polygon : " + polygon);
+		bodies.put(polygon, polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody));
 	}
 	
 	public void removePolygonWindow(){

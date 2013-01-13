@@ -65,4 +65,8 @@ public class GDXPolygon implements Serializable{
 		}
 		return closest;
 	}
+	
+	@Override public String toString(){
+		return "[GDXPolygon: " + name + "]";
+	}
 }

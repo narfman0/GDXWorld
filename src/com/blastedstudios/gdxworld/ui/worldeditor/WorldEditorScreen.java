@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
-import com.blastedstudios.gdxworld.util.GDXWindow;
+import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -73,7 +73,6 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 					levelInfo.setCoordinates(coordinates.x, coordinates.y);
 			}
 		}
-		world.step(delta, 4, 4);
 	}
 	
 	void removeLevelInformationWindow(){

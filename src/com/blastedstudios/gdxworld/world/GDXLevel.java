@@ -88,6 +88,6 @@ public class GDXLevel implements Serializable{
 	}
 
 	@Override public String toString(){
-		return "Level name:" + name + " coords:" + coordinates;
+		return "[GDXLevel name:" + name + " coords:" + coordinates + "]";
 	}
 }

@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
+import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
-import com.blastedstudios.gdxworld.util.GDXWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -50,7 +50,7 @@ public class LevelInformationWindow extends GDXWindow{
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				worldEditorScreen.remove(gdxLevel);
-				game.setScreen(new LevelEditorScreen(game, gdxWorld, gdxLevel));
+				worldEditorScreen.removeLevelInformationWindow();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
@@ -70,6 +70,7 @@ public class LevelInformationWindow extends GDXWindow{
 		row();
 		add(acceptButton);
 		add(editButton);
+		add(deleteButton);
 		add(cancelButton);
 		pack();
 		setMovable(false);

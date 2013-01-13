@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.util.GDXWindow;
+import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 
 public class PolygonWindow extends GDXWindow {
@@ -24,7 +24,8 @@ public class PolygonWindow extends GDXWindow {
 		this.polygon = polygon;
 		vertexTables = new Table(skin);
 		final Button clearButton = new TextButton("Clear", skin);
-		final Button backButton = new TextButton("Back", skin);
+		final Button acceptButton = new TextButton("Accept", skin);
+		final Button cancelButton = new TextButton("Cancel", skin);
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
 		scrollPane.setSize(200, 100);
 		clearButton.addListener(new ClickListener() {
@@ -33,16 +34,23 @@ public class PolygonWindow extends GDXWindow {
 				vertexTables.clear();
 			}
 		});
-		backButton.addListener(new ClickListener() {
+		acceptButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				screen.addPolygon(polygon);
+				screen.removePolygonWindow();
+			}
+		});
+		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				screen.removePolygonWindow();
 			}
 		});
 		populateVertexTable();
-		add(scrollPane).colspan(2);
+		add(scrollPane).colspan(3);
 		row();
 		add(clearButton);
-		add(backButton);
+		add(acceptButton);
+		add(cancelButton);
 		setMovable(false);
 	}
 
