@@ -15,15 +15,21 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelInformationWindow extends GDXWindow{
-	private final TextField coordXLabel, coordYLabel;
+	private final TextField coordXLabel, coordYLabel, levelNameLabel, prereqLabel;
+	private final WorldEditorScreen worldEditorScreen;
+	private final GDXWorld gdxWorld;
+	private final GDXLevel gdxLevel;
 	
 	public LevelInformationWindow(final GDXWorldEditor game, final WorldEditorScreen worldEditorScreen, 
 			final Skin skin, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super("Level Info", skin);
-		final TextField levelNameLabel = new TextField(gdxLevel.getName(), skin);
+		this.gdxWorld = gdxWorld;
+		this.gdxLevel = gdxLevel;
+		this.worldEditorScreen = worldEditorScreen;
+		levelNameLabel = new TextField(gdxLevel.getName(), skin);
 		coordXLabel = new TextField(gdxLevel.getCoordinates().x+"", skin);
 		coordYLabel = new TextField(gdxLevel.getCoordinates().y+"", skin);
-		final TextField prereqLabel = new TextField(gdxLevel.getPrerequisitesString(), skin);
+		prereqLabel = new TextField(gdxLevel.getPrerequisitesString(), skin);
 		prereqLabel.setMessageText("<level prerequisites>");
 		levelNameLabel.setMessageText("<new level name>");
 		final Button acceptButton = new TextButton("Accept", skin);
@@ -32,19 +38,12 @@ public class LevelInformationWindow extends GDXWindow{
 		final Button cancelButton = new TextButton("Cancel", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				gdxLevel.setCoordinates(new Vector2(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText())));
-				gdxLevel.setName(levelNameLabel.getText());
-				gdxLevel.setPrerequisitesString(prereqLabel.getText());
-				if(!gdxWorld.contains(gdxLevel)){
-					gdxWorld.add(gdxLevel);
-					worldEditorScreen.add(gdxLevel);
-				}else
-					worldEditorScreen.update(gdxLevel);
-				worldEditorScreen.removeLevelInformationWindow();
+				addLevel();
 			}
 		});
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				addLevel();
 				game.setScreen(new LevelEditorScreen(game, gdxWorld, gdxLevel));
 			}
 		});
@@ -75,6 +74,21 @@ public class LevelInformationWindow extends GDXWindow{
 		add(cancelButton);
 		pack();
 		setMovable(false);
+	}
+	
+	/**
+	 * Adds level with current ui parameters
+	 */
+	private void addLevel(){
+		gdxLevel.setCoordinates(new Vector2(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText())));
+		gdxLevel.setName(levelNameLabel.getText());
+		gdxLevel.setPrerequisitesString(prereqLabel.getText());
+		if(!gdxWorld.contains(gdxLevel)){
+			gdxWorld.add(gdxLevel);
+			worldEditorScreen.add(gdxLevel);
+		}else
+			worldEditorScreen.update(gdxLevel);
+		worldEditorScreen.removeLevelInformationWindow();
 	}
 	
 	public void setCoordinates(float x, float y){
