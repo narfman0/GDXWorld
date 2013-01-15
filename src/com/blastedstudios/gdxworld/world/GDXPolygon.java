@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blastedstudios.gdxworld.math.decomposers.Clipper;
+import com.blastedstudios.gdxworld.math.decomposers.Clipper.Polygonizer;
 
 public class GDXPolygon implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -44,12 +46,15 @@ public class GDXPolygon implements Serializable{
 	}
 	
 	public Body createFixture(World world, FixtureDef fd, BodyType type){
+		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, vertices.toArray(new Vector2[vertices.size()]));
 		BodyDef bd = new BodyDef();
 		bd.type = type;
-		polygonShape.set(vertices.toArray(new Vector2[vertices.size()]));
-		fd.shape = polygonShape;
 		Body body = world.createBody(bd); 
-		body.createFixture(fd);
+		for(Vector2[] vertSet : verts){
+			polygonShape.set(vertSet);
+			fd.shape = polygonShape;
+			body.createFixture(fd);
+		}
 		return body;
 	}
 
