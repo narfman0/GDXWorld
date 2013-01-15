@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
+import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -85,13 +84,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 
 	public void add(GDXLevel gdxLevel) {
 		Gdx.app.log("WorldEditorScreen.add", "Added level " + gdxLevel);
-		Body body = world.createBody(new BodyDef());
-		CircleShape shape = new CircleShape();
-		shape.setRadius(LEVEL_RADIUS);
-		body.createFixture(shape, 1);
-		body.setTransform(gdxLevel.getCoordinates(), 0);
-		body.setActive(false);
-		bodies.put(gdxLevel, body);
+		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, LEVEL_RADIUS, gdxLevel.getCoordinates()));
 	}
 
 	public void update(GDXLevel gdxLevel) {

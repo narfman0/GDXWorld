@@ -1,6 +1,8 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
+import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
@@ -23,7 +26,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private final World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
-	private final HashMap<GDXPolygon, Body> bodies = new HashMap<GDXPolygon, Body>();
+	private final HashMap<GDXPolygon, List<Body>> bodies = new HashMap<GDXPolygon, List<Body>>();
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private GDXLevel gdxLevel;
@@ -33,6 +36,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		this.gdxLevel = gdxLevel;
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel));
 		camera.zoom += 3;
+		for(GDXPolygon polygon : gdxLevel.getPolygons())
+			addPolygon(polygon);
 	}
 	
 	@Override public void render(float delta) {
@@ -73,16 +78,24 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public void addPolygon(GDXPolygon polygon){
 		Gdx.app.log("WorldEditorScreen.addPolygon", polygon.toString());
 		if(bodies.containsKey(polygon))
-			world.destroyBody(bodies.remove(polygon));
+			for(Body body : bodies.remove(polygon))
+				world.destroyBody(body);
 		Body body = polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody);
-		gdxLevel.add(polygon);
-		if(body != null)
-			bodies.put(polygon, body);
+		if(body != null){
+			if(!gdxLevel.getPolygons().contains(polygon))
+				gdxLevel.add(polygon);
+			List<Body> newBodies = new ArrayList<Body>();
+			newBodies.add(body);
+			for(Vector2 vertex : polygon.getVertices())
+				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex));
+			bodies.put(polygon, newBodies);
+		}
 	}
 
 	public void removePolygon(GDXPolygon polygon) {
 		Gdx.app.log("WorldEditorScreen.removePolygon", polygon.toString());
-		world.destroyBody(bodies.remove(polygon));
+		for(Body body : bodies.remove(polygon))
+			world.destroyBody(body);
 		gdxLevel.remove(polygon);
 	}
 	
