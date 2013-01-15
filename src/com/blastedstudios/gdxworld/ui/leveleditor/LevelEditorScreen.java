@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -37,12 +36,10 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 	
 	@Override public void render(float delta) {
-		Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		super.render(delta);
 		camera.update();
 		camera.apply(Gdx.gl10);
 		renderer.render(world, camera.combined);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))
@@ -63,12 +60,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
 						dst(coordinates.x, coordinates.y) > NODE_RADIUS)
 					polygon = new GDXPolygon();
-				if(polygonWindow == null){
-					Gdx.app.log("LevelEditorScreen.touchDown", "TODO Create polygon");
+				if(polygonWindow == null)
 					stage.addActor(polygonWindow = new PolygonWindow(skin, this, polygon));
-				}
 				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
-				polygonWindow.add(vertex);
+				if(polygon.getVertices().isEmpty())
+					polygonWindow.add(vertex);
 			}
 		}
 		return false;
@@ -76,7 +72,10 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	
 	public void addPolygon(GDXPolygon polygon){
 		Gdx.app.log("WorldEditorScreen.addPolygon", polygon.toString());
+		if(bodies.containsKey(polygon))
+			world.destroyBody(bodies.remove(polygon));
 		Body body = polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody);
+		gdxLevel.add(polygon);
 		if(body != null)
 			bodies.put(polygon, body);
 	}
@@ -84,6 +83,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public void removePolygon(GDXPolygon polygon) {
 		Gdx.app.log("WorldEditorScreen.removePolygon", polygon.toString());
 		world.destroyBody(bodies.remove(polygon));
+		gdxLevel.remove(polygon);
 	}
 	
 	public void removePolygonWindow(){

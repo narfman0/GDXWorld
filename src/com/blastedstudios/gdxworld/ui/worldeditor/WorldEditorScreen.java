@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -39,12 +38,10 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 
 	@Override public void render(float delta) {
-		Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		super.render(delta);
 		camera.update();
 		camera.apply(Gdx.gl10);
 		renderer.render(world, camera.combined);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))
