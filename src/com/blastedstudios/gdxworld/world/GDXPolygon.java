@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -47,6 +48,10 @@ public class GDXPolygon implements Serializable{
 	
 	public Body createFixture(World world, FixtureDef fd, BodyType type){
 		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, vertices.toArray(new Vector2[vertices.size()]));
+		if(verts == null){
+			Gdx.app.log("GDXPolygon.createFixture", "Can't create fixture(s), verts null");
+			return null;
+		}
 		BodyDef bd = new BodyDef();
 		bd.type = type;
 		Body body = world.createBody(bd); 

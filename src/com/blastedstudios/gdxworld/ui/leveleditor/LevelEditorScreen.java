@@ -44,13 +44,13 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		if(Gdx.input.isKeyPressed(Keys.UP))
-			camera.position.y++;
+			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))
-			camera.position.y--;
+			camera.position.y-=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.RIGHT))
-			camera.position.x++;
+			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
-			camera.position.x--;
+			camera.position.x-=camera.zoom;
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -76,7 +76,9 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	
 	public void addPolygon(GDXPolygon polygon){
 		Gdx.app.log("WorldEditorScreen.addPolygon", polygon.toString());
-		bodies.put(polygon, polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody));
+		Body body = polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody);
+		if(body != null)
+			bodies.put(polygon, body);
 	}
 
 	public void removePolygon(GDXPolygon polygon) {
@@ -90,7 +92,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 
 	@Override public boolean scrolled(int amount) {
-		camera.zoom = Math.max(1, camera.zoom + amount + (amount/amount)*camera.zoom/8);
+		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
 		Gdx.app.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
 	}

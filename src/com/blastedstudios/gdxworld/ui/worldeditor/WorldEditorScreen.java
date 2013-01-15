@@ -46,13 +46,13 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		if(Gdx.input.isKeyPressed(Keys.UP))
-			camera.position.y++;
+			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))
-			camera.position.y--;
+			camera.position.y-=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.RIGHT))
-			camera.position.x++;
+			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
-			camera.position.x--;
+			camera.position.x-=camera.zoom;
 		
 		if(Gdx.input.isTouched()){
 			int x = Gdx.input.getX(), y = Gdx.input.getY();
