@@ -31,6 +31,10 @@ public abstract class AbstractScreen<T extends Game> implements Screen, InputPro
 		stage.draw();
 	}
 	
+	public Stage getStage(){
+		return stage;
+	}
+	
 	@Override public void resize(int width, int height) {
 		stage.setViewport(width, height, false);
 	}

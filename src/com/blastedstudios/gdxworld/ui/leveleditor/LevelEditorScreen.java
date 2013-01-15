@@ -69,15 +69,19 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				}
 				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
 				polygonWindow.add(vertex);
-				polygon.getVertices().add(vertex);
 			}
 		}
 		return false;
 	}
 	
 	public void addPolygon(GDXPolygon polygon){
-		Gdx.app.log("WorldEditorScreen.addPolygon", "Adding polygon : " + polygon);
+		Gdx.app.log("WorldEditorScreen.addPolygon", polygon.toString());
 		bodies.put(polygon, polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody));
+	}
+
+	public void removePolygon(GDXPolygon polygon) {
+		Gdx.app.log("WorldEditorScreen.removePolygon", polygon.toString());
+		world.destroyBody(bodies.remove(polygon));
 	}
 	
 	public void removePolygonWindow(){

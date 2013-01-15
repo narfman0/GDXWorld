@@ -26,8 +26,8 @@ public class PolygonWindow extends GDXWindow {
 		final Button clearButton = new TextButton("Clear", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
+		final Button deleteButton = new TextButton("Delete", skin);
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
-		scrollPane.setSize(200, 100);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				polygon.getVertices().clear();
@@ -45,27 +45,36 @@ public class PolygonWindow extends GDXWindow {
 				screen.removePolygonWindow();
 			}
 		});
+		deleteButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				screen.removePolygon(polygon);
+				screen.removePolygonWindow();
+			}
+		});
 		populateVertexTable();
-		add(scrollPane).colspan(3);
+		add(scrollPane).colspan(4);
 		row();
 		add(clearButton);
 		add(acceptButton);
 		add(cancelButton);
+		add(deleteButton);
 		setMovable(false);
+		setHeight(400);
+		setWidth(400);
 	}
 
 	public void add(Vector2 vertex) {
 		polygon.getVertices().add(vertex);
 		vertexTables.add(new VertexTable(vertex, skin, this));
 		vertexTables.row();
-		Gdx.app.debug("PolygonWindow.add", " vector: " + vertex + " size: " + polygon.getVertices().size());
+		Gdx.app.log("PolygonWindow.add", " vector: " + vertex + " size: " + polygon.getVertices().size());
 	}
 
 	public void remove(Vector2 vertex) {
 		polygon.getVertices().remove(vertex);
 		vertexTables.clear();
 		populateVertexTable();
-		Gdx.app.debug("PolygonWindow.remove", " vector: " + vertex + " size: " + polygon.getVertices().size());
+		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + polygon.getVertices().size());
 	}
 
 	private void populateVertexTable(){
