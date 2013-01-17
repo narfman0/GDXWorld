@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.math;
 
+import java.util.List;
+
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -26,5 +28,18 @@ public class PolygonUtils {
 
 	public static boolean isPolygonCCW(Vector2[] points) {
 		return getPolygonSignedArea(points) > 0;
+	}
+	
+	public static Vector2 getClosestNode(float x, float y, List<Vector2> nodes) {
+		Vector2 closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(Vector2 vertex : nodes){
+			float distance = vertex.dst2(x, y);
+			if(closest == null || closestDistance > distance){
+				closest = vertex;
+				closestDistance = distance;
+			}
+		}
+		return closest;
 	}
 }

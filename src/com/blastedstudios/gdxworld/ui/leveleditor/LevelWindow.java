@@ -60,6 +60,7 @@ public class LevelWindow extends GDXWindow{
 		add(new Label("Mode:", skin));
 		add(polygonBox);
 		add(npcBox);
+		add(pathBox);
 		pack();
 		setY(Gdx.graphics.getHeight() - getHeight());
 	}

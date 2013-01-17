@@ -20,6 +20,7 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXNPC;
+import com.blastedstudios.gdxworld.world.GDXPath;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -32,6 +33,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private NPCWindow npcWindow;
+	private PathWindow pathWindow;
 	private GDXLevel gdxLevel;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
@@ -64,7 +66,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		camera.unproject(coordinates);
 		if(!levelWindow.contains(x,y) && 
 				(polygonWindow == null || !polygonWindow.contains(x, y)) &&
-				(npcWindow == null || !npcWindow.contains(x, y))){
+				(npcWindow == null || !npcWindow.contains(x, y)) &&
+				(pathWindow == null || !pathWindow.contains(x, y))){
 			if(levelWindow.isPolygonMode()){
 				GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
 				if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
@@ -82,6 +85,16 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				if(npcWindow == null)
 					stage.addActor(npcWindow = new NPCWindow(skin, this, npc));
 				npcWindow.setCoordinates(new Vector2(coordinates.x, coordinates.y));
+			}else if(levelWindow.isPathMode()){
+				GDXPath path = gdxLevel.getClosestPath(coordinates.x, coordinates.y);
+				if(path == null || path.getClosestNode(coordinates.x, coordinates.y).
+						dst(coordinates.x, coordinates.y) > NODE_RADIUS)
+					path = new GDXPath();
+				if(pathWindow == null)
+					stage.addActor(pathWindow = new PathWindow(skin, this, path));
+				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
+				if(path.getNodes().isEmpty())
+					pathWindow.add(vertex);
 			}
 		}
 		return false;
@@ -127,6 +140,30 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			world.destroyBody(body);
 		gdxLevel.getNpcs().remove(npc);
 	}
+
+	public void addPath(GDXPath path) {
+		Gdx.app.log("WorldEditorScreen.addPath", path.toString());
+		if(bodies.containsKey(path))
+			for(Body body : bodies.remove(path))
+				world.destroyBody(body);
+		Body body = path.createFixture(world, new FixtureDef(), BodyType.StaticBody);
+		if(body != null){
+			if(!gdxLevel.getPaths().contains(path))
+				gdxLevel.getPaths().add(path);
+			List<Body> newBodies = new ArrayList<Body>();
+			newBodies.add(body);
+			for(Vector2 vertex : path.getNodes())
+				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex));
+			bodies.put(path, newBodies);
+		}
+	}
+
+	public void removePath(GDXPath path) {
+		Gdx.app.log("WorldEditorScreen.removePath", path.toString());
+		for(Body body : bodies.remove(path))
+			world.destroyBody(body);
+		gdxLevel.getPaths().remove(path);
+	}
 	
 	public void removePolygonWindow(){
 		polygonWindow.remove();
@@ -136,6 +173,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public void removeNPCWindow() {
 		npcWindow.remove();
 		npcWindow = null;
+	}
+
+	public void removePathWindow() {
+		pathWindow.remove();
+		pathWindow = null;
 	}
 
 	@Override public boolean scrolled(int amount) {
