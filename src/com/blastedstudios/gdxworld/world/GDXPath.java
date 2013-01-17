@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
-public class GDXPath {
+public class GDXPath implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String name = "";
 	private List<Vector2> nodes = new ArrayList<Vector2>();
 

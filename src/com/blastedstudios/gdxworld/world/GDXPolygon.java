@@ -15,7 +15,9 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 public class GDXPolygon implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Vector2> vertices;
-	private String name;
+	private String name = "";
+	private float density = 1f, friction = .5f, restitution = .3f;
+	private BodyType bodyType = BodyType.StaticBody;
 	
 	public GDXPolygon(){
 		vertices = new ArrayList<Vector2>();
@@ -41,8 +43,48 @@ public class GDXPolygon implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public float getDensity() {
+		return density;
+	}
+
+	public void setDensity(float density) {
+		this.density = density;
+	}
+
+	public float getFriction() {
+		return friction;
+	}
+
+	public void setFriction(float friction) {
+		this.friction = friction;
+	}
+
+	public BodyType getBodyType() {
+		return bodyType;
+	}
+
+	public void setBodyType(BodyType bodyType) {
+		this.bodyType = bodyType;
+	}
+
+	public float getRestitution() {
+		return restitution;
+	}
+
+	public void setRestitution(float restitution) {
+		this.restitution = restitution;
+	}
 	
-	public Body createFixture(World world, FixtureDef fd, BodyType type){
+	/**
+	 * @param overrideStatic use BodyType.StaticBody no matter what bodyType is set to
+	 */
+	public Body createFixture(World world, boolean overrideStatic){
+		FixtureDef fd = new FixtureDef();
+		fd.density = density;
+		fd.friction = friction;
+		fd.restitution = restitution;
+		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
 		return PhysicsHelper.createFixture(world, fd, type, vertices, PhysicsHelper.POLYGON_SHAPE);
 	}
 

@@ -28,6 +28,7 @@ public class PathWindow extends GDXWindow implements VertexRemoveListener {
 		vertexTables = new Table(skin);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<path name>");
+		nameField.setText(path.getName());
 		final Button clearButton = new TextButton("Clear vertices", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);

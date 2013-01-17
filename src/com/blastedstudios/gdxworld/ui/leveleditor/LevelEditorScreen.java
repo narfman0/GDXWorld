@@ -43,6 +43,10 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		camera.zoom += 3;
 		for(GDXPolygon polygon : gdxLevel.getPolygons())
 			addPolygon(polygon);
+		for(GDXNPC npc : gdxLevel.getNpcs())
+			addNPC(npc);
+		for(GDXPath path : gdxLevel.getPaths())
+			addPath(path);
 	}
 	
 	@Override public void render(float delta) {
@@ -105,7 +109,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		if(bodies.containsKey(polygon))
 			for(Body body : bodies.remove(polygon))
 				world.destroyBody(body);
-		Body body = polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody);
+		Body body = polygon.createFixture(world, true);
 		if(body != null){
 			if(!gdxLevel.getPolygons().contains(polygon))
 				gdxLevel.getPolygons().add(polygon);

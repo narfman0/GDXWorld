@@ -23,7 +23,7 @@
 
   <target name="jar" depends="compile" description="generate the jar" >
     <mkdir dir="${build}/lib"/>
-    <jar jarfile="${build}/lib/GDXWorld-${DSTAMP}.jar" basedir="${build}">
+    <jar jarfile="${build}/lib/gdxworld-${DSTAMP}.jar" basedir="${build}">
       <manifest> 
         <attribute name="Main-Class" value="com.blastedstudios.gdxworld.GDXWorldEditor"/>
       </manifest>

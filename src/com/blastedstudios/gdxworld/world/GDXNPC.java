@@ -8,7 +8,7 @@ public class GDXNPC implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name = "";
 	/**
-	 * A named reference to a path in the GDXLevel the being will traverse
+	 * A named reference to a path in the GDXLevel the npc will traverse
 	 */
 	private String path = "";
 	/**
