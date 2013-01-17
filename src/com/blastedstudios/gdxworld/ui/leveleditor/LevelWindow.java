@@ -15,15 +15,16 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelWindow extends GDXWindow{
-	private final CheckBox polygonModeBox, beingBox;
+	private final CheckBox polygonBox, npcBox, pathBox;
 	
 	public LevelWindow(final GDXWorldEditor game, final Skin skin, 
 			final GDXWorld world, final GDXLevel gdxLevel){
 		super("Level Editor", skin);
 		final Button clearButton = new TextButton("Clear", skin);
 		final Button backButton = new TextButton("Back", skin);
-		polygonModeBox = new CheckBox("Polygon", skin);
-		beingBox = new CheckBox("Being", skin);
+		polygonBox = new CheckBox("Polygon", skin);
+		npcBox = new CheckBox("NPC", skin);
+		pathBox = new CheckBox("Path", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				gdxLevel.clear();
@@ -34,32 +35,44 @@ public class LevelWindow extends GDXWindow{
 				game.setScreen(new WorldEditorScreen(game, world));
 			}
 		});
-		polygonModeBox.addListener(new ClickListener() {
+		polygonBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				beingBox.setChecked(false);
+				npcBox.setChecked(false);
+				pathBox.setChecked(false);
 			}
 		});
-		beingBox.addListener(new ClickListener() {
+		npcBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				polygonModeBox.setChecked(false);
+				polygonBox.setChecked(false);
+				pathBox.setChecked(false);
 			}
 		});
-		polygonModeBox.setChecked(true);
+		pathBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				npcBox.setChecked(false);
+				polygonBox.setChecked(false);
+			}
+		});
+		polygonBox.setChecked(true);
 		add(clearButton);
 		add(backButton);
 		row();
 		add(new Label("Mode:", skin));
-		add(polygonModeBox);
-		add(beingBox);
+		add(polygonBox);
+		add(npcBox);
 		pack();
 		setY(Gdx.graphics.getHeight() - getHeight());
 	}
 	
 	public boolean isPolygonMode(){
-		return polygonModeBox.isChecked();
+		return polygonBox.isChecked();
 	}
 	
-	public boolean isBeingMode(){
-		return beingBox.isChecked();
+	public boolean isNPCMode(){
+		return npcBox.isChecked();
+	}
+	
+	public boolean isPathMode(){
+		return pathBox.isChecked();
 	}
 }

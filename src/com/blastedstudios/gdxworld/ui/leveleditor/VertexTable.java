@@ -13,7 +13,12 @@ public class VertexTable extends Table {
 	private final TextField coordXLabel, coordYLabel;
 	private final Vector2 vertex;
 	
-	public VertexTable(Vector2 vertex, final Skin skin, final PolygonWindow listener){
+	/**
+	 * @param vertex current vertex to set text field data
+	 * @param listener used only in a list to delete vertex. if null, does not
+	 * add delete button
+	 */
+	public VertexTable(Vector2 vertex, final Skin skin, final VertexRemoveListener listener){
 		this.vertex = vertex;
 		final VertexTable table = this;
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -26,10 +31,20 @@ public class VertexTable extends Table {
 		});
 		add(coordXLabel);
 		add(coordYLabel);
-		add(deleteButton);
+		if(listener != null)
+			add(deleteButton);
 	}
 	
 	public Vector2 getVertex(){
 		return vertex.set(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText()));
+	}
+	
+	public void setVertex(float x, float y){
+		coordXLabel.setText(x+"");
+		coordYLabel.setText(y+"");
+	}
+	
+	interface VertexRemoveListener{
+		public void remove(Vector2 vertex);
 	}
 }

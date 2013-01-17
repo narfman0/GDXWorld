@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
+import com.blastedstudios.gdxworld.world.GDXNPC;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -26,9 +28,10 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private final World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
-	private final HashMap<GDXPolygon, List<Body>> bodies = new HashMap<GDXPolygon, List<Body>>();
+	private final HashMap<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
+	private NPCWindow npcWindow;
 	private GDXLevel gdxLevel;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
@@ -59,7 +62,9 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		Gdx.app.debug("LevelEditorScreen.render", "isTouched: x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
 		camera.unproject(coordinates);
-		if(!levelWindow.contains(x,y) && (polygonWindow == null || !polygonWindow.contains(x, y))){
+		if(!levelWindow.contains(x,y) && 
+				(polygonWindow == null || !polygonWindow.contains(x, y)) &&
+				(npcWindow == null || !npcWindow.contains(x, y))){
 			if(levelWindow.isPolygonMode()){
 				GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
 				if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
@@ -70,6 +75,13 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
 				if(polygon.getVertices().isEmpty())
 					polygonWindow.add(vertex);
+			}else if(levelWindow.isNPCMode()){
+				GDXNPC npc = gdxLevel.getClosestNPC(coordinates.x, coordinates.y);
+				if(npc == null || npc.getCoordinates().dst(coordinates.x, coordinates.y) > NODE_RADIUS)
+					npc = new GDXNPC();
+				if(npcWindow == null)
+					stage.addActor(npcWindow = new NPCWindow(skin, this, npc));
+				npcWindow.setCoordinates(new Vector2(coordinates.x, coordinates.y));
 			}
 		}
 		return false;
@@ -83,7 +95,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		Body body = polygon.createFixture(world, new FixtureDef(), BodyType.StaticBody);
 		if(body != null){
 			if(!gdxLevel.getPolygons().contains(polygon))
-				gdxLevel.add(polygon);
+				gdxLevel.getPolygons().add(polygon);
 			List<Body> newBodies = new ArrayList<Body>();
 			newBodies.add(body);
 			for(Vector2 vertex : polygon.getVertices())
@@ -96,12 +108,34 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		Gdx.app.log("WorldEditorScreen.removePolygon", polygon.toString());
 		for(Body body : bodies.remove(polygon))
 			world.destroyBody(body);
-		gdxLevel.remove(polygon);
+		gdxLevel.getPolygons().remove(polygon);
+	}
+	
+	public void addNPC(GDXNPC npc){
+		Gdx.app.log("WorldEditorScreen.addNPC", npc.toString());
+		if(bodies.containsKey(npc))
+			for(Body body : bodies.remove(npc))
+				world.destroyBody(body);
+		if(!gdxLevel.getNpcs().contains(npc))
+			gdxLevel.getNpcs().add(npc);
+		bodies.put(npc, Arrays.asList(PhysicsHelper.createCircle(world, NODE_RADIUS, npc.getCoordinates())));
+	}
+
+	public void removeNPC(GDXNPC npc) {
+		Gdx.app.log("WorldEditorScreen.removeNPC", npc.toString());
+		for(Body body : bodies.remove(npc))
+			world.destroyBody(body);
+		gdxLevel.getNpcs().remove(npc);
 	}
 	
 	public void removePolygonWindow(){
 		polygonWindow.remove();
 		polygonWindow = null;
+	}
+
+	public void removeNPCWindow() {
+		npcWindow.remove();
+		npcWindow = null;
 	}
 
 	@Override public boolean scrolled(int amount) {

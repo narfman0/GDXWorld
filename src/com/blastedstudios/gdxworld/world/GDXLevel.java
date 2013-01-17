@@ -15,14 +15,8 @@ public class GDXLevel implements Serializable{
 	 * Contains list of level names this level depends on before being playable
 	 */
 	private List<String> prerequisites = new ArrayList<String>();
-
-	public void add(GDXPolygon polygon){
-		polygons.add(polygon);
-	}
-
-	public void remove(GDXPolygon polygon){
-		polygons.remove(polygon);
-	}
+	private List<GDXNPC> npcs = new ArrayList<GDXNPC>();
+	private List<GDXPath> paths = new ArrayList<GDXPath>();
 
 	public void clear(){
 		polygons.clear();
@@ -72,6 +66,22 @@ public class GDXLevel implements Serializable{
 		return prereqs.substring(0,prereqs.length()-1);
 	}
 
+	public List<GDXNPC> getNpcs() {
+		return npcs;
+	}
+
+	public void setNpcs(List<GDXNPC> npcs) {
+		this.npcs = npcs;
+	}
+
+	public List<GDXPath> getPaths() {
+		return paths;
+	}
+
+	public void setPaths(List<GDXPath> paths) {
+		this.paths = paths;
+	}
+
 	public GDXPolygon getClosestPolygon(float x, float y) {
 		GDXPolygon closest = null;
 		float closestDistance = Float.MAX_VALUE;
@@ -80,6 +90,34 @@ public class GDXLevel implements Serializable{
 				float distance = vertex.dst2(x, y);
 				if(closest == null || closestDistance > distance){
 					closest = level;
+					closestDistance = distance;
+				}
+			}
+		}
+		return closest;
+	}
+
+	public GDXNPC getClosestNPC(float x, float y) {
+		GDXNPC closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(GDXNPC npc : getNpcs()){
+			float distance = npc.getCoordinates().dst2(x, y);
+			if(closest == null || closestDistance > distance){
+				closest = npc;
+				closestDistance = distance;
+			}
+		}
+		return closest;
+	}
+
+	public GDXPath getClosestPath(float x, float y) {
+		GDXPath closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(GDXPath path : getPaths()){
+			for(Vector2 node : path.getNodes()){
+				float distance = node.dst2(x, y);
+				if(closest == null || closestDistance > distance){
+					closest = path;
 					closestDistance = distance;
 				}
 			}

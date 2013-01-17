@@ -12,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 
-public class PolygonWindow extends GDXWindow {
+public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
 	private final GDXPolygon polygon;
