@@ -41,23 +41,57 @@ public class GDXWorld implements Serializable{
 		return levels;
 	}
 
+	/**
+	 * Serialize this into filesystem
+	 * @param selectedFile location to save world
+	 */
 	public void save(File selectedFile) {
-		if(selectedFile == null)
-			Gdx.app.error("GDXWorld.save", "Cannot write to null file");
-		else
-			try{
-				selectedFile.getParentFile().mkdirs();
-				FileOutputStream fileOut = new FileOutputStream(selectedFile);
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(this);
-				out.close();
-				fileOut.close();
-				Gdx.app.log("GDXWorld.save", "Successfully saved " + selectedFile);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+		save(selectedFile, false);
 	}
 
+	/**
+	 * Serialize this into filesystem
+	 * @param selectedFile location to save world
+	 * @param split up levels into different files
+	 */
+	public void save(File selectedFile, boolean split) {
+		if(selectedFile == null)
+			Gdx.app.error("GDXWorld.save", "Cannot write to null file");
+		else{
+			selectedFile.getParentFile().mkdirs();
+			if(split){
+				selectedFile.delete();
+				selectedFile.mkdirs();
+				for(int i=0; i<levels.size(); i++){
+					GDXLevel level = levels.get(i);
+					try{
+						FileOutputStream fileOut = new FileOutputStream(selectedFile + File.separator + i);
+						ObjectOutputStream out = new ObjectOutputStream(fileOut);
+						out.writeObject(level);
+						out.close();
+						fileOut.close();
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					Gdx.app.log("GDXWorld.save", "Successfully saved split " + selectedFile);
+				}
+			}else
+				try{
+					FileOutputStream fileOut = new FileOutputStream(selectedFile);
+					ObjectOutputStream out = new ObjectOutputStream(fileOut);
+					out.writeObject(this);
+					out.close();
+					fileOut.close();
+					Gdx.app.log("GDXWorld.save", "Successfully saved non-split " + selectedFile);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	/**
+	 * Deserialize GDXWorld, detects if split or not
+	 */
 	public static GDXWorld load(File selectedFile) {
 		if(selectedFile == null)
 			Gdx.app.error("GDXWorld.load", "Cannot read null file");
@@ -70,14 +104,31 @@ public class GDXWorld implements Serializable{
 				GDXWorld world = (GDXWorld) in.readObject();
 				in.close();
 				fin.close();
-				Gdx.app.log("GDXWorld.load", "Successfully loaded " + selectedFile);
+				Gdx.app.log("GDXWorld.load", "Successfully loaded non-split " + selectedFile);
 				return world;
 			}catch(Exception e){
-				e.printStackTrace();
+				try{
+					GDXWorld world = new GDXWorld(selectedFile.getName().replaceAll(File.pathSeparator, ""));
+					for(File file : selectedFile.listFiles()){
+						FileInputStream fin = new FileInputStream(file);
+						ObjectInputStream in = new ObjectInputStream(fin);
+						world.levels.add((GDXLevel)in.readObject());
+						in.close();
+						fin.close();
+					}
+					Gdx.app.log("GDXWorld.load", "Successfully loaded split " + selectedFile);
+					return world;
+				}catch(Exception e1){
+					Gdx.app.log("GDXWorld.load", "Failed to load " + selectedFile);
+					e.printStackTrace();
+				}
 			}
 		return null;
 	}
 
+	/**
+	 * @return closest GDXLevel to the given coordinates
+	 */
 	public GDXLevel getClosestLevel(float x, float y) {
 		GDXLevel closest = null;
 		float closestDistance = Float.MAX_VALUE;
