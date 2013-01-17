@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 public class GDXLevel implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -17,10 +18,7 @@ public class GDXLevel implements Serializable{
 	private List<String> prerequisites = new ArrayList<String>();
 	private List<GDXNPC> npcs = new ArrayList<GDXNPC>();
 	private List<GDXPath> paths = new ArrayList<GDXPath>();
-
-	public void clear(){
-		polygons.clear();
-	}
+	private List<GDXJoint> joints = new ArrayList<GDXJoint>();
 
 	public List<GDXPolygon> getPolygons() {
 		return polygons;
@@ -80,6 +78,14 @@ public class GDXLevel implements Serializable{
 
 	public void setPaths(List<GDXPath> paths) {
 		this.paths = paths;
+	}
+
+	public List<GDXJoint> getJoints() {
+		return joints;
+	}
+
+	public void setJoints(List<GDXJoint> joints) {
+		this.joints = joints;
 	}
 
 	public GDXPolygon getClosestPolygon(float x, float y) {

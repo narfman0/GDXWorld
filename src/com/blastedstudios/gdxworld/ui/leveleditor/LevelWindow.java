@@ -27,7 +27,7 @@ public class LevelWindow extends GDXWindow{
 		pathBox = new CheckBox("Path", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				gdxLevel.clear();
+				gdxLevel.getPolygons().clear();
 			}
 		});
 		backButton.addListener(new ClickListener() {

@@ -85,7 +85,9 @@ public class GDXPolygon implements Serializable{
 		fd.friction = friction;
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
-		return PhysicsHelper.createFixture(world, fd, type, vertices, PhysicsHelper.POLYGON_SHAPE);
+		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, PhysicsHelper.POLYGON_SHAPE);
+		body.setUserData(name);
+		return body;
 	}
 
 	public Vector2 getClosestVertex(float x, float y) {

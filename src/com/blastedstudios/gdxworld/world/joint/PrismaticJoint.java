@@ -1,0 +1,72 @@
+package com.blastedstudios.gdxworld.world.joint;
+
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+
+public class PrismaticJoint extends GDXJoint {
+	private static final long serialVersionUID = 1L;
+	private boolean enableLimit, enableMotor;
+	private float lowerTranslation, maxMotorForce, motorSpeed, referenceAngle;
+
+	@Override public Joint attach(World world) {
+		PrismaticJointDef def = new PrismaticJointDef();
+		def.enableLimit = enableLimit;
+		def.enableMotor = enableMotor;
+		def.motorSpeed = motorSpeed;
+		def.lowerTranslation = lowerTranslation;
+		def.maxMotorForce = maxMotorForce;
+		def.motorSpeed = motorSpeed;
+		def.referenceAngle = referenceAngle;
+		return attach(world, def);
+	}
+
+	public boolean isEnableLimit() {
+		return enableLimit;
+	}
+
+	public void setEnableLimit(boolean enableLimit) {
+		this.enableLimit = enableLimit;
+	}
+
+	public boolean isEnableMotor() {
+		return enableMotor;
+	}
+
+	public void setEnableMotor(boolean enableMotor) {
+		this.enableMotor = enableMotor;
+	}
+
+	public float getMaxMotorForce() {
+		return maxMotorForce;
+	}
+
+	public void setMaxMotorForce(float maxMotorForce) {
+		this.maxMotorForce = maxMotorForce;
+	}
+
+	public float getMotorSpeed() {
+		return motorSpeed;
+	}
+
+	public void setMotorSpeed(float motorSpeed) {
+		this.motorSpeed = motorSpeed;
+	}
+
+	public float getReferenceAngle() {
+		return referenceAngle;
+	}
+
+	public void setReferenceAngle(float referenceAngle) {
+		this.referenceAngle = referenceAngle;
+	}
+
+	public float getLowerTranslation() {
+		return lowerTranslation;
+	}
+
+	public void setLowerTranslation(float lowerTranslation) {
+		this.lowerTranslation = lowerTranslation;
+	}
+
+}
