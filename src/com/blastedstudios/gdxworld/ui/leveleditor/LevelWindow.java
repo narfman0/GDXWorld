@@ -15,7 +15,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelWindow extends GDXWindow{
-	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox;
+	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox, circleBox;
 	private final LevelEditorScreen levelEditorScreen;
 	
 	public LevelWindow(final GDXWorldEditor game, final Skin skin, 
@@ -26,6 +26,7 @@ public class LevelWindow extends GDXWindow{
 		final Button clearButton = new TextButton("Clear", skin);
 		final Button backButton = new TextButton("Back", skin);
 		polygonBox = new CheckBox("Polygon", skin);
+		circleBox = new CheckBox("Circle", skin);
 		npcBox = new CheckBox("NPC", skin);
 		pathBox = new CheckBox("Path", skin);
 		jointBox = new CheckBox("Joint", skin);
@@ -44,6 +45,12 @@ public class LevelWindow extends GDXWindow{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				polygonBox.setChecked(true);
+			}
+		});
+		circleBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				resetState();
+				circleBox.setChecked(true);
 			}
 		});
 		npcBox.addListener(new ClickListener() {
@@ -78,6 +85,7 @@ public class LevelWindow extends GDXWindow{
 		row();
 		add(new Label("Mode:", skin));
 		add(polygonBox);
+		add(circleBox);
 		add(npcBox);
 		add(pathBox);
 		add(jointBox);
@@ -88,8 +96,9 @@ public class LevelWindow extends GDXWindow{
 	
 	private void resetState(){
 		levelEditorScreen.setLive(false);
-		npcBox.setChecked(false);
 		polygonBox.setChecked(false);
+		circleBox.setChecked(false);
+		npcBox.setChecked(false);
 		pathBox.setChecked(false);
 		jointBox.setChecked(false);
 		liveBox.setChecked(false);
@@ -97,10 +106,15 @@ public class LevelWindow extends GDXWindow{
 		levelEditorScreen.removeJointWindow();
 		levelEditorScreen.removePathWindow();
 		levelEditorScreen.removePolygonWindow();
+		levelEditorScreen.removeCircleWindow();
 	}
 	
 	public boolean isPolygonMode(){
 		return polygonBox.isChecked();
+	}
+	
+	public boolean isCircleMode(){
+		return circleBox.isChecked();
 	}
 	
 	public boolean isNPCMode(){

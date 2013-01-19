@@ -12,7 +12,7 @@ public abstract class GDXShape implements Serializable{
 	protected String name = "";
 	protected float density = 1f, friction = .5f, restitution = .3f;
 	protected BodyType bodyType = BodyType.StaticBody;
-	protected Vector2 center;
+	protected Vector2 center = new Vector2();
 
 	public String getName() {
 		return name;

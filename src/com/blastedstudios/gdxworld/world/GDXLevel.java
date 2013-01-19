@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
+import com.blastedstudios.gdxworld.world.shape.GDXCircle;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXLevel implements Serializable{
@@ -95,12 +97,25 @@ public class GDXLevel implements Serializable{
 	}
 
 	public GDXShape getClosestShape(float x, float y) {
+		return getClosestShape(x,y,null);
+	}
+
+	public GDXCircle getClosestCircle(float x, float y) {
+		return (GDXCircle) getClosestShape(x,y,GDXCircle.class);
+	}
+
+	public GDXPolygon getClosestPolygon(float x, float y) {
+		return (GDXPolygon) getClosestShape(x,y,GDXPolygon.class);
+	}
+
+	private GDXShape getClosestShape(float x, float y, Class<? extends GDXShape> theClass) {
 		GDXShape closest = null;
 		float closestDistance = Float.MAX_VALUE;
-		for(GDXShape polygon : shapes){
-			float distance = polygon.getDistance(x, y);
-			if(closest == null || closestDistance > distance){
-				closest = polygon;
+		for(GDXShape shape : shapes){
+			float distance = shape.getDistance(x, y);
+			if((closest == null || closestDistance > distance) && 
+					(theClass == null || shape.getClass() == theClass)){
+				closest = shape;
 				closestDistance = distance;
 			}
 		}

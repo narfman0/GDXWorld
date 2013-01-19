@@ -42,6 +42,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private Vector2 lastTouchCoordinates, lastTouchPolygonLocalCoordinates;
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
+	private CircleWindow circleWindow;
 	private NPCWindow npcWindow;
 	private PathWindow pathWindow;
 	private GDXLevel gdxLevel;
@@ -93,20 +94,24 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				(polygonWindow == null || !polygonWindow.contains(x, y)) &&
 				(npcWindow == null || !npcWindow.contains(x, y)) &&
 				(pathWindow == null || !pathWindow.contains(x, y)) &&
-				(jointWindow == null || !jointWindow.contains(x, y))){
+				(jointWindow == null || !jointWindow.contains(x, y)) &&
+				(circleWindow == null || !circleWindow.contains(x, y))){
 			if(levelWindow.isPolygonMode()){
-				GDXShape shape = gdxLevel.getClosestShape(coordinates.x, coordinates.y);
-				if(shape instanceof GDXPolygon){
-					GDXPolygon polygon = (GDXPolygon) shape;
-					if(shape == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
-							dst(coordinates.x, coordinates.y) > NODE_RADIUS)
-						polygon = new GDXPolygon();
-					if(polygonWindow == null)
-						stage.addActor(polygonWindow = new PolygonWindow(skin, this, polygon));
-					Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
-					if(polygon.getVertices().isEmpty())
-						polygonWindow.add(vertex);
-				}
+				GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
+				if(polygon == null || polygon.getDistance(coordinates.x, coordinates.y) > NODE_RADIUS)
+					polygon = new GDXPolygon();
+				if(polygonWindow == null)
+					stage.addActor(polygonWindow = new PolygonWindow(skin, this, polygon));
+				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
+				if(polygon.getVertices().isEmpty())
+					polygonWindow.add(vertex);
+			}else if(levelWindow.isCircleMode()){
+				GDXCircle circle = gdxLevel.getClosestCircle(coordinates.x, coordinates.y);
+				if(circle == null || circle.getDistance(coordinates.x, coordinates.y) > NODE_RADIUS)
+					circle = new GDXCircle();
+				if(circleWindow == null)
+					stage.addActor(circleWindow = new CircleWindow(skin, this, circle));
+				circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
 			}else if(levelWindow.isNPCMode()){
 				GDXNPC npc = gdxLevel.getClosestNPC(coordinates.x, coordinates.y);
 				if(npc == null || npc.getCoordinates().dst(coordinates.x, coordinates.y) > NODE_RADIUS)
@@ -233,6 +238,37 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			world.destroyBody(body);
 		gdxLevel.getPaths().remove(path);
 	}
+
+	public void addJoint(GDXJoint gdxJoint) {
+		if(gdxJoint instanceof GearJoint){
+			GearJoint gear = (GearJoint)gdxJoint;
+			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
+		}
+		joints.put(gdxJoint.getName(), gdxJoint.attach(world));
+		if(!gdxLevel.getJoints().contains(gdxJoint))
+			gdxLevel.getJoints().add(gdxJoint);
+		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
+	}
+
+	public void addCircle(GDXCircle circle) {
+		Gdx.app.log("WorldEditorScreen.addCircle", circle.toString());
+		if(bodies.containsKey(circle))
+			for(Body body : bodies.remove(circle))
+				world.destroyBody(body);
+		Body body = circle.createFixture(world, !live);
+		if(body != null){
+			bodies.put(circle, Arrays.asList(body));
+			if(!gdxLevel.getShapes().contains(circle))
+				gdxLevel.getShapes().add(circle);
+		}
+	}
+
+	public void removeCircle(GDXCircle circle) {
+		gdxLevel.getShapes().remove(circle);
+		if(bodies.containsKey(circle))
+			for(Body body : bodies.get(circle))
+				world.destroyBody(body);
+	}
 	
 	public void removePolygonWindow(){
 		if(polygonWindow != null)
@@ -255,6 +291,12 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			pathWindow.remove();
 		pathWindow = null;
 	}
+
+	public void removeCircleWindow() {
+		if(circleWindow != null)
+			circleWindow.remove();
+		circleWindow = null;
+	}
 	
 	public void addJointWindow(){
 		stage.addActor(jointWindow);
@@ -264,17 +306,6 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
 		Gdx.app.log("LevelEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
-	}
-
-	public void addJoint(GDXJoint gdxJoint) {
-		if(gdxJoint instanceof GearJoint){
-			GearJoint gear = (GearJoint)gdxJoint;
-			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
-		}
-		joints.put(gdxJoint.getName(), gdxJoint.attach(world));
-		if(!gdxLevel.getJoints().contains(gdxJoint))
-			gdxLevel.getJoints().add(gdxJoint);
-		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
 	}
 
 	/**
