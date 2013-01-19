@@ -92,11 +92,11 @@ public class GDXLevel implements Serializable{
 	public GDXPolygon getClosestPolygon(float x, float y) {
 		GDXPolygon closest = null;
 		float closestDistance = Float.MAX_VALUE;
-		for(GDXPolygon level : polygons){
-			for(Vector2 vertex : level.getVertices()){
-				float distance = vertex.dst2(x, y);
+		for(GDXPolygon polygon : polygons){
+			for(Vector2 vertex : polygon.getVertices()){
+				float distance = vertex.cpy().add(polygon.getCenter()).dst2(x, y);
 				if(closest == null || closestDistance > distance){
-					closest = level;
+					closest = polygon;
 					closestDistance = distance;
 				}
 			}

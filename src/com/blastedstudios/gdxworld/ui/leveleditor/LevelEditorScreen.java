@@ -125,7 +125,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			List<Body> newBodies = new ArrayList<Body>();
 			newBodies.add(body);
 			for(Vector2 vertex : polygon.getVertices())
-				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex));
+				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex.cpy().add(polygon.getCenter())));
 			bodies.put(polygon, newBodies);
 		}
 	}

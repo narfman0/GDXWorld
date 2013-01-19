@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -13,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
@@ -20,13 +24,13 @@ import com.blastedstudios.gdxworld.world.GDXPolygon;
 public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
-	private final GDXPolygon polygon;
+	private List<Vector2> vertices;
 
 	public PolygonWindow(final Skin skin, final LevelEditorScreen screen, 
 			final GDXPolygon polygon) {
 		super("Polygon Editor", skin);
 		this.skin = skin;
-		this.polygon = polygon;
+		this.vertices = new ArrayList<Vector2>(polygon.getVerticesAbsolute());
 		vertexTables = new Table(skin);
 		final CheckBox staticBox = new CheckBox("Static", skin), 
 				kinematicBox = new CheckBox("Kinematic", skin), 
@@ -79,7 +83,7 @@ public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				polygon.getVertices().clear();
+				vertices.clear();
 				vertexTables.clear();
 			}
 		});
@@ -91,6 +95,8 @@ public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 					bodyType = BodyType.KinematicBody;
 				else if(dynamicBox.isChecked())
 					bodyType = BodyType.DynamicBody;
+				polygon.setCenter(PolygonUtils.getCenter(vertices));
+				polygon.setVertices(PolygonUtils.getCenterVertices(vertices, polygon.getCenter()));
 				polygon.setBodyType(bodyType);
 				polygon.setDensity(Float.parseFloat(densityField.getText()));
 				polygon.setFriction(Float.parseFloat(frictionField.getText()));
@@ -144,21 +150,21 @@ public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 	}
 
 	public void add(Vector2 vertex) {
-		polygon.getVertices().add(vertex);
+		vertices.add(vertex);
 		vertexTables.add(new VertexTable(vertex, skin, this));
 		vertexTables.row();
-		Gdx.app.log("PolygonWindow.add", " vector: " + vertex + " size: " + polygon.getVertices().size());
+		Gdx.app.log("PolygonWindow.add", " vector: " + vertex + " size: " + vertices.size());
 	}
 
 	public void remove(Vector2 vertex) {
-		polygon.getVertices().remove(vertex);
+		vertices.remove(vertex);
 		vertexTables.clear();
 		populateVertexTable();
-		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + polygon.getVertices().size());
+		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + vertices.size());
 	}
 
 	private void populateVertexTable(){
-		for(Vector2 vertex : polygon.getVertices()){
+		for(Vector2 vertex : vertices){
 			vertexTables.add(new VertexTable(vertex, skin, this));
 			vertexTables.row();
 		}

@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.math;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
@@ -28,6 +29,34 @@ public class PolygonUtils {
 
 	public static boolean isPolygonCCW(Vector2[] points) {
 		return getPolygonSignedArea(points) > 0;
+	}
+	
+	/**
+	 * @return the average coordinates of the given @param vertices
+	 */
+	public static Vector2 getCenter(List<Vector2> vertices){
+		Vector2 center = new Vector2();
+		for(Vector2 vertex : vertices)
+			center.add(vertex);
+		center.div(vertices.size());
+		return center;
+	}
+	
+	/**
+	 * @return list of skewed vertices to be centered around given origin
+	 */
+	public static List<Vector2> getCenterVertices(List<Vector2> vertices, Vector2 vertex){
+		List<Vector2> newVertices = new ArrayList<Vector2>();
+		for(Vector2 vertexNode : vertices)
+			newVertices.add(vertexNode.cpy().sub(vertex));
+		return newVertices;
+	}
+	
+	/**
+	 * @return list of skewed vertices to be centered around given origin
+	 */
+	public static List<Vector2> getCenterVerticesReverse(List<Vector2> vertices, Vector2 vertex){
+		return getCenterVertices(vertices, vertex.cpy().mul(-1));
 	}
 	
 	public static Vector2 getClosestNode(float x, float y, List<Vector2> nodes) {

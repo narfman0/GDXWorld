@@ -14,25 +14,26 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
 public class GDXPolygon implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Vector2> vertices;
+	/**
+	 * Coordinates for vertices relative to center
+	 */
+	private List<Vector2> vertices = new ArrayList<Vector2>();
 	private String name = "";
 	private float density = 1f, friction = .5f, restitution = .3f;
 	private BodyType bodyType = BodyType.StaticBody;
-	
-	public GDXPolygon(){
-		vertices = new ArrayList<Vector2>();
-	}
-	
-	public GDXPolygon(String name, ArrayList<Vector2> vertices){
-		this.name = name;
-		this.vertices = vertices;
-	}
+	private Vector2 center;
 
 	public List<Vector2> getVertices() {
 		return vertices;
 	}
 
-	public void setVertices(ArrayList<Vector2> vertices) {
+	public List<Vector2> getVerticesAbsolute() {
+		if(center == null || vertices.isEmpty())
+			return vertices;
+		return PolygonUtils.getCenterVerticesReverse(vertices, center);
+	}
+
+	public void setVertices(List<Vector2> vertices) {
 		this.vertices = vertices;
 	}
 
@@ -75,6 +76,14 @@ public class GDXPolygon implements Serializable{
 	public void setRestitution(float restitution) {
 		this.restitution = restitution;
 	}
+
+	public Vector2 getCenter() {
+		return center;
+	}
+
+	public void setCenter(Vector2 center) {
+		this.center = center;
+	}
 	
 	/**
 	 * @param overrideStatic use BodyType.StaticBody no matter what bodyType is set to
@@ -86,12 +95,13 @@ public class GDXPolygon implements Serializable{
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
 		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, PhysicsHelper.POLYGON_SHAPE);
+		body.setTransform(center, 0);
 		body.setUserData(name);
 		return body;
 	}
 
 	public Vector2 getClosestVertex(float x, float y) {
-		return PolygonUtils.getClosestNode(x, y, vertices);
+		return PolygonUtils.getClosestNode(x, y, getVerticesAbsolute());
 	}
 	
 	@Override public String toString(){
