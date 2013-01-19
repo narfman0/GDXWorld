@@ -18,11 +18,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.joints.JointWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 import com.blastedstudios.gdxworld.world.GDXPath;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 import com.blastedstudios.gdxworld.world.GDXWorld;
+import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private static final float NODE_RADIUS = 1;
@@ -201,7 +203,12 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 
 	@Override public boolean scrolled(int amount) {
 		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
-		Gdx.app.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
+		Gdx.app.log("LevelEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
+	}
+
+	public void addJoint(GDXJoint joint) {
+		Gdx.app.log("LevelEditorScreen.addJoint", "Adding joint " + joint.toString());
+		gdxLevel.getJoints().add(joint);
 	}
 }
