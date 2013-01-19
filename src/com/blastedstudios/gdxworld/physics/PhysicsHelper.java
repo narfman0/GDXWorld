@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.physics;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -42,6 +43,23 @@ public class PhysicsHelper {
 				((PolygonShape)shape).set(vertSet);
 			fixtureDef.shape = shape;
 			body.createFixture(fixtureDef);
+		}
+		return body;
+	}
+	
+	/**
+	 * @return closest body to the given x,y in world coordinates
+	 */
+	public static Body closestBody(World world, float x, float y){
+		Body body = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
+			Body worldBody = iter.next();
+			float distance = worldBody.getPosition().dst2(x,y);
+			if(body == null || closestDistance > distance){
+				body = worldBody;
+				closestDistance = distance;
+			}
 		}
 		return body;
 	}

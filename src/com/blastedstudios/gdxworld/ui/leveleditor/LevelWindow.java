@@ -114,4 +114,8 @@ public class LevelWindow extends GDXWindow{
 	public boolean isJointMode(){
 		return jointBox.isChecked();
 	}
+	
+	public boolean isLiveMode(){
+		return liveBox.isChecked();
+	}
 }

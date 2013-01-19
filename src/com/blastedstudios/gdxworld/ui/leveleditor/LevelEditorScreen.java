@@ -35,6 +35,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
 	private final HashMap<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
 	private final HashMap<String, Joint> joints = new HashMap<String, Joint>();
+	private Vector2 lastTouchDown = new Vector2();
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private NPCWindow npcWindow;
@@ -81,7 +82,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
-		Gdx.app.debug("LevelEditorScreen.render", "isTouched: x="+x+ " y="+y);
+		Gdx.app.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
 		camera.unproject(coordinates);
 		if(!levelWindow.contains(x,y) && 
@@ -119,6 +120,23 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			}else if(levelWindow.isJointMode())
 				jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
 		}
+		lastTouchDown = new Vector2(coordinates.x, coordinates.y);
+		return false;
+	}
+
+	@Override public boolean touchUp(int x, int y, int arg2, int arg3) {
+		if(levelWindow.isLiveMode()){
+			Vector3 coordinates = new Vector3(x,y,0);
+			camera.unproject(coordinates);
+			Body body = PhysicsHelper.closestBody(world, lastTouchDown.x, lastTouchDown.y);
+			if(body != null){
+				Vector2 impulse = new Vector2(coordinates.x, coordinates.y).
+						sub(lastTouchDown).mul(body.getMass());
+				Gdx.app.debug("LevelEditorScreen.touchUp", "applying delayed impulse: " + 
+						impulse + " on body: " + body.getPosition());
+				body.applyLinearImpulse(impulse, body.getPosition());
+			}
+		}
 		return false;
 	}
 	
@@ -128,13 +146,14 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			for(Body body : bodies.remove(polygon))
 				world.destroyBody(body);
 		Body body = polygon.createFixture(world, !live);
-		if(body != null && !live){
+		if(body != null){
 			if(!gdxLevel.getPolygons().contains(polygon))
 				gdxLevel.getPolygons().add(polygon);
 			List<Body> newBodies = new ArrayList<Body>();
 			newBodies.add(body);
-			for(Vector2 vertex : polygon.getVertices())
-				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex.cpy().add(polygon.getCenter())));
+			if(!live)
+				for(Vector2 vertex : polygon.getVertices())
+					newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex.cpy().add(polygon.getCenter())));
 			bodies.put(polygon, newBodies);
 		}
 	}
