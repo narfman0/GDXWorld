@@ -49,8 +49,7 @@ public class DistanceWindow extends BaseJointWindow {
 		joint.setDampeningRatio(Float.parseFloat(dampeningRatioField.getText()));
 		joint.setFrequencyHz(Float.parseFloat(frequencyHzField.getText()));
 		joint.setLength(Float.parseFloat(lengthField.getText()));
-		apply(joint);
-		return joint;
+		return apply(joint);
 	}
 
 	@Override public void clicked(Vector2 pos) {

@@ -81,7 +81,6 @@ public abstract class GDXJoint implements Serializable {
 			Gdx.app.error("GDXJoint.getDistance", "Body null! bodyA:" + bodyA + " bodyB:" + bodyB);
 			return Float.MAX_VALUE;
 		}
-		//TODO might not work as position is always 0,0, its the fixture that has pts
 		return Math.min(bodies[0].getPosition().dst(x,y), bodies[1].getPosition().dst(x, y));
 	}
 	

@@ -62,14 +62,15 @@ public abstract class BaseJointWindow extends GDXWindow {
 	}
 	
 	/**
-	 * apply ui values to @param joint 
+	 * apply ui values to joint 
 	 */
-	protected void apply(GDXJoint joint){
+	protected GDXJoint apply(GDXJoint joint){
 		joint.setBodyA(bodyAField.getText());
 		joint.setBodyB(bodyBField.getText());
 		joint.setCollideConnected(collideConnectedBox.isChecked());
 		joint.setName(nameField.getText());
 		joint.setJointType(jointType);
+		return joint;
 	}
 	
 	public abstract GDXJoint generate();

@@ -63,8 +63,7 @@ public class RevoluteWindow extends BaseJointWindow {
 		joint.setMotorSpeed(Float.parseFloat(motorSpeedField.getText()));
 		joint.setAnchor(anchorTable.getVertex());
 		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
-		apply(joint);
-		return joint;
+		return apply(joint);
 	}
 
 	@Override public void clicked(Vector2 pos) {
