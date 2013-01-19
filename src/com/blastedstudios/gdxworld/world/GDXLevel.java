@@ -2,11 +2,15 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
+import com.blastedstudios.gdxworld.world.joint.GearJoint;
 
 public class GDXLevel implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -143,6 +147,24 @@ public class GDXLevel implements Serializable{
 			}
 		}
 		return closest;
+	}
+	
+	/**
+	 * Populates the given world with physics data from this GDXLevel
+	 */
+	public void createLevel(World world){
+		for(GDXPolygon polygon : polygons)
+			polygon.createFixture(world, false);
+		Map<String,Joint> jointMap = new HashMap<String, Joint>();
+		for(GDXJoint joint : joints)
+			if(!(joint instanceof GearJoint))
+				jointMap.put(joint.getName(), joint.attach(world));
+		for(GDXJoint joint : joints)
+			if(joint instanceof GearJoint){
+				GearJoint gearJoint = (GearJoint) joint;
+				gearJoint.initialize(jointMap.get(gearJoint.getJoint1()), jointMap.get(gearJoint.getJoint2()));
+				joint.attach(world);
+			}
 	}
 
 	@Override public String toString(){
