@@ -15,7 +15,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelWindow extends GDXWindow{
-	private final CheckBox polygonBox, npcBox, pathBox, jointBox;
+	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox;
 	private final LevelEditorScreen levelEditorScreen;
 	
 	public LevelWindow(final GDXWorldEditor game, final Skin skin, 
@@ -29,6 +29,7 @@ public class LevelWindow extends GDXWindow{
 		npcBox = new CheckBox("NPC", skin);
 		pathBox = new CheckBox("Path", skin);
 		jointBox = new CheckBox("Joint", skin);
+		liveBox = new CheckBox("Live", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				gdxLevel.getPolygons().clear();
@@ -41,27 +42,34 @@ public class LevelWindow extends GDXWindow{
 		});
 		polygonBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				clearChecks();
+				resetState();
 				polygonBox.setChecked(true);
 			}
 		});
 		npcBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				clearChecks();
+				resetState();
 				npcBox.setChecked(true);
 			}
 		});
 		pathBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				clearChecks();
+				resetState();
 				pathBox.setChecked(true);
 			}
 		});
 		jointBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				clearChecks();
+				resetState();
 				jointBox.setChecked(true);
 				levelEditorScreen.addJointWindow();
+			}
+		});
+		liveBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				resetState();
+				liveBox.setChecked(true);
+				levelEditorScreen.setLive(true);
 			}
 		});
 		polygonBox.setChecked(true);
@@ -73,15 +81,18 @@ public class LevelWindow extends GDXWindow{
 		add(npcBox);
 		add(pathBox);
 		add(jointBox);
+		add(liveBox);
 		pack();
 		setY(Gdx.graphics.getHeight() - getHeight());
 	}
 	
-	private void clearChecks(){
+	private void resetState(){
+		levelEditorScreen.setLive(false);
 		npcBox.setChecked(false);
 		polygonBox.setChecked(false);
 		pathBox.setChecked(false);
 		jointBox.setChecked(false);
+		liveBox.setChecked(false);
 		levelEditorScreen.removeNPCWindow();
 		levelEditorScreen.removeJointWindow();
 		levelEditorScreen.removePathWindow();

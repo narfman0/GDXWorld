@@ -31,7 +31,7 @@ import com.blastedstudios.gdxworld.world.joint.GearJoint;
 public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private static final float NODE_RADIUS = 1;
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
-	private final World world = new World(new Vector2(), true);
+	private World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
 	private final HashMap<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
 	private final HashMap<String, Joint> joints = new HashMap<String, Joint>();
@@ -41,6 +41,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private PathWindow pathWindow;
 	private GDXLevel gdxLevel;
 	private final JointWindow jointWindow;
+	private boolean live;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super(game);
@@ -48,18 +49,26 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		jointWindow = new JointWindow(skin, this);
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this));
 		camera.zoom += 3;
+		resetLevel();
+	}
+	
+	private void resetLevel(){
 		for(GDXPolygon polygon : gdxLevel.getPolygons())
 			addPolygon(polygon);
 		for(GDXNPC npc : gdxLevel.getNpcs())
 			addNPC(npc);
 		for(GDXPath path : gdxLevel.getPaths())
 			addPath(path);
+		for(GDXJoint joint : gdxLevel.getJoints())
+			addJoint(joint);
 	}
 	
 	@Override public void render(float delta) {
 		super.render(delta);
 		camera.update();
 		camera.apply(Gdx.gl10);
+		if(live)
+			world.step(delta, 4, 4);
 		renderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
@@ -118,8 +127,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		if(bodies.containsKey(polygon))
 			for(Body body : bodies.remove(polygon))
 				world.destroyBody(body);
-		Body body = polygon.createFixture(world, true);
-		if(body != null){
+		Body body = polygon.createFixture(world, !live);
+		if(body != null && !live){
 			if(!gdxLevel.getPolygons().contains(polygon))
 				gdxLevel.getPolygons().add(polygon);
 			List<Body> newBodies = new ArrayList<Body>();
@@ -156,18 +165,20 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 
 	public void addPath(GDXPath path) {
 		Gdx.app.log("WorldEditorScreen.addPath", path.toString());
-		if(bodies.containsKey(path))
-			for(Body body : bodies.remove(path))
-				world.destroyBody(body);
-		Body body = path.createFixture(world, new FixtureDef(), BodyType.StaticBody);
-		if(body != null){
-			if(!gdxLevel.getPaths().contains(path))
-				gdxLevel.getPaths().add(path);
-			List<Body> newBodies = new ArrayList<Body>();
-			newBodies.add(body);
-			for(Vector2 vertex : path.getNodes())
-				newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex));
-			bodies.put(path, newBodies);
+		if(live){
+			if(bodies.containsKey(path))
+				for(Body body : bodies.remove(path))
+					world.destroyBody(body);
+			Body body = path.createFixture(world, new FixtureDef(), BodyType.StaticBody);
+			if(body != null){
+				if(!gdxLevel.getPaths().contains(path))
+					gdxLevel.getPaths().add(path);
+				List<Body> newBodies = new ArrayList<Body>();
+				newBodies.add(body);
+				for(Vector2 vertex : path.getNodes())
+					newBodies.add(PhysicsHelper.createCircle(world, NODE_RADIUS, vertex));
+				bodies.put(path, newBodies);
+			}
 		}
 	}
 
@@ -216,7 +227,21 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
 		}
 		joints.put(gdxJoint.getName(), gdxJoint.attach(world));
-		gdxLevel.getJoints().add(gdxJoint);
+		if(!gdxLevel.getJoints().contains(gdxJoint))
+			gdxLevel.getJoints().add(gdxJoint);
 		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
+	}
+
+	/**
+	 * Start simulating the world in a tester type mode
+	 * @param live simulate or not
+	 */
+	public void setLive(boolean live) {
+		this.live = live;
+		bodies.clear();
+		joints.clear();
+		world.dispose();
+		world = new World(live ? new Vector2(0,-10) : new Vector2(), true);
+		resetLevel();
 	}
 }

@@ -24,7 +24,6 @@ public class PhysicsHelper {
 		shape.setRadius(radius);
 		body.createFixture(shape, 1);
 		body.setTransform(position, 0);
-		body.setActive(false);
 		return body;
 	}
 	
