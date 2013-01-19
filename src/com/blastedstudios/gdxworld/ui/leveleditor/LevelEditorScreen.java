@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
+import com.blastedstudios.gdxworld.physics.CollideCallback;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.joints.JointWindow;
@@ -35,7 +36,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
 	private final HashMap<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
 	private final HashMap<String, Joint> joints = new HashMap<String, Joint>();
-	private Vector2 lastTouchDown = new Vector2();
+	private Body lastTouchPolygon;
+	private Vector2 lastTouchCoordinates, lastTouchPolygonLocalCoordinates;
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private NPCWindow npcWindow;
@@ -119,8 +121,18 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 					pathWindow.add(vertex);
 			}else if(levelWindow.isJointMode())
 				jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
+			else if(levelWindow.isLiveMode()){
+				CollideCallback callback = new CollideCallback();
+				world.QueryAABB(callback, coordinates.x-.01f, coordinates.y-.01f, coordinates.x+.01f, coordinates.y+.01f);
+				lastTouchPolygon = callback.getBody();
+				if(lastTouchPolygon != null){
+					lastTouchCoordinates = new Vector2(coordinates.x, coordinates.y);
+					lastTouchPolygonLocalCoordinates = lastTouchPolygon.getLocalPoint(lastTouchCoordinates);
+					Gdx.app.log("LevelEditorScreen.touchDown", "touched world coords: " + lastTouchCoordinates +
+							" touched poly local coords: " + lastTouchPolygonLocalCoordinates);
+				}
+			}
 		}
-		lastTouchDown = new Vector2(coordinates.x, coordinates.y);
 		return false;
 	}
 
@@ -128,13 +140,16 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		if(levelWindow.isLiveMode()){
 			Vector3 coordinates = new Vector3(x,y,0);
 			camera.unproject(coordinates);
-			Body body = PhysicsHelper.closestBody(world, lastTouchDown.x, lastTouchDown.y);
-			if(body != null){
+			if(lastTouchPolygon != null){
 				Vector2 impulse = new Vector2(coordinates.x, coordinates.y).
-						sub(lastTouchDown).mul(body.getMass());
-				Gdx.app.debug("LevelEditorScreen.touchUp", "applying delayed impulse: " + 
-						impulse + " on body: " + body.getPosition());
-				body.applyLinearImpulse(impulse, body.getPosition());
+						sub(lastTouchCoordinates).mul(lastTouchPolygon.getMass());
+				Gdx.app.log("LevelEditorScreen.touchUp", "applying impulse: " + 
+						impulse + " on body: " + lastTouchPolygon.getPosition());
+				lastTouchPolygon.applyLinearImpulse(impulse, 
+						lastTouchPolygonLocalCoordinates.add(lastTouchPolygon.getPosition()));
+				lastTouchCoordinates = null;
+				lastTouchPolygon = null;
+				lastTouchPolygonLocalCoordinates = null;
 			}
 		}
 		return false;
