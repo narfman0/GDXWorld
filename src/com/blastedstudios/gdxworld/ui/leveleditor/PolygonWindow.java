@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
-import com.blastedstudios.gdxworld.world.GDXPolygon;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 	private final Table vertexTables;

@@ -11,10 +11,11 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
+import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXLevel implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private final List<GDXPolygon> polygons = new ArrayList<GDXPolygon>();
+	private final List<GDXShape> shapes = new ArrayList<GDXShape>();
 	private String name = "";
 	private Vector2 coordinates = new Vector2();
 	/**
@@ -25,8 +26,8 @@ public class GDXLevel implements Serializable{
 	private List<GDXPath> paths = new ArrayList<GDXPath>();
 	private List<GDXJoint> joints = new ArrayList<GDXJoint>();
 
-	public List<GDXPolygon> getPolygons() {
-		return polygons;
+	public List<GDXShape> getShapes() {
+		return shapes;
 	}
 
 	public String getName() {
@@ -93,16 +94,14 @@ public class GDXLevel implements Serializable{
 		this.joints = joints;
 	}
 
-	public GDXPolygon getClosestPolygon(float x, float y) {
-		GDXPolygon closest = null;
+	public GDXShape getClosestShape(float x, float y) {
+		GDXShape closest = null;
 		float closestDistance = Float.MAX_VALUE;
-		for(GDXPolygon polygon : polygons){
-			for(Vector2 vertex : polygon.getVertices()){
-				float distance = vertex.cpy().add(polygon.getCenter()).dst2(x, y);
-				if(closest == null || closestDistance > distance){
-					closest = polygon;
-					closestDistance = distance;
-				}
+		for(GDXShape polygon : shapes){
+			float distance = polygon.getDistance(x, y);
+			if(closest == null || closestDistance > distance){
+				closest = polygon;
+				closestDistance = distance;
 			}
 		}
 		return closest;
@@ -153,8 +152,8 @@ public class GDXLevel implements Serializable{
 	 * Populates the given world with physics data from this GDXLevel
 	 */
 	public void createLevel(World world){
-		for(GDXPolygon polygon : polygons)
-			polygon.createFixture(world, false);
+		for(GDXShape shape : shapes)
+			shape.createFixture(world, false);
 		Map<String,Joint> jointMap = new HashMap<String, Joint>();
 		for(GDXJoint joint : joints)
 			if(!(joint instanceof GearJoint))

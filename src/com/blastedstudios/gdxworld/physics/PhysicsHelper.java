@@ -18,12 +18,14 @@ import com.blastedstudios.gdxworld.math.decomposers.Clipper.Polygonizer;
 
 public class PhysicsHelper {
 	public static final PolygonShape POLYGON_SHAPE = new PolygonShape();
+	public static final CircleShape CIRCLE_SHAPE = new CircleShape();
 	
-	public static Body createCircle(World world, float radius, Vector2 position){
-		Body body = world.createBody(new BodyDef());
-		CircleShape shape = new CircleShape();
-		shape.setRadius(radius);
-		body.createFixture(shape, 1);
+	public static Body createCircle(World world, float radius, Vector2 position, BodyType type){
+		BodyDef def = new BodyDef();
+		def.type = type;
+		Body body = world.createBody(def);
+		CIRCLE_SHAPE.setRadius(radius);
+		body.createFixture(CIRCLE_SHAPE, 1);
 		body.setTransform(position, 0);
 		return body;
 	}

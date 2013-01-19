@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
@@ -84,7 +85,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 
 	public void add(GDXLevel gdxLevel) {
 		Gdx.app.log("WorldEditorScreen.add", "Added level " + gdxLevel);
-		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, LEVEL_RADIUS, gdxLevel.getCoordinates()));
+		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, LEVEL_RADIUS, gdxLevel.getCoordinates(), BodyType.StaticBody));
 	}
 
 	public void update(GDXLevel gdxLevel) {

@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.world;
+package com.blastedstudios.gdxworld.world.shape;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,17 +12,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
-public class GDXPolygon implements Serializable{
+public class GDXPolygon extends GDXShape implements Serializable{
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Coordinates for vertices relative to center. To convert to world 
 	 * coordinates, use the absolute version, e.g. getVerticesAbsolute
 	 */
 	private List<Vector2> vertices = new ArrayList<Vector2>();
-	private String name = "";
-	private float density = 1f, friction = .5f, restitution = .3f;
-	private BodyType bodyType = BodyType.StaticBody;
-	private Vector2 center;
 
 	public List<Vector2> getVertices() {
 		return vertices;
@@ -40,54 +36,6 @@ public class GDXPolygon implements Serializable{
 
 	public void setVerticesAbsolute(List<Vector2> vertices) {
 		this.vertices = PolygonUtils.getCenterVertices(vertices, center);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public float getDensity() {
-		return density;
-	}
-
-	public void setDensity(float density) {
-		this.density = density;
-	}
-
-	public float getFriction() {
-		return friction;
-	}
-
-	public void setFriction(float friction) {
-		this.friction = friction;
-	}
-
-	public BodyType getBodyType() {
-		return bodyType;
-	}
-
-	public void setBodyType(BodyType bodyType) {
-		this.bodyType = bodyType;
-	}
-
-	public float getRestitution() {
-		return restitution;
-	}
-
-	public void setRestitution(float restitution) {
-		this.restitution = restitution;
-	}
-
-	public Vector2 getCenter() {
-		return center;
-	}
-
-	public void setCenter(Vector2 center) {
-		this.center = center;
 	}
 	
 	/**
@@ -111,5 +59,12 @@ public class GDXPolygon implements Serializable{
 	
 	@Override public String toString(){
 		return "[GDXPolygon: " + name + "]";
+	}
+
+	@Override public float getDistance(float x, float y) {
+		float closestDistance = Float.MAX_VALUE;
+		for(Vector2 vertex : vertices)
+			closestDistance = Math.min(closestDistance, vertex.cpy().add(center).dst2(x, y));
+		return (float) Math.sqrt(closestDistance);//just doing one sqrt, assuming its faster..?
 	}
 }

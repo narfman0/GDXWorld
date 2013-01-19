@@ -32,7 +32,7 @@ public class LevelWindow extends GDXWindow{
 		liveBox = new CheckBox("Live", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				gdxLevel.getPolygons().clear();
+				gdxLevel.getShapes().clear();
 			}
 		});
 		backButton.addListener(new ClickListener() {
