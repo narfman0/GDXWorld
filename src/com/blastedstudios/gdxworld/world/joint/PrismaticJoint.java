@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.world.joint;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -8,6 +10,7 @@ public class PrismaticJoint extends GDXJoint {
 	private static final long serialVersionUID = 1L;
 	private boolean enableLimit, enableMotor;
 	private float lowerTranslation, maxMotorForce, motorSpeed, referenceAngle;
+	private Vector2 anchor = new Vector2(), axis = new Vector2();
 
 	@Override public Joint attach(World world) {
 		PrismaticJointDef def = new PrismaticJointDef();
@@ -18,6 +21,8 @@ public class PrismaticJoint extends GDXJoint {
 		def.maxMotorForce = maxMotorForce;
 		def.motorSpeed = motorSpeed;
 		def.referenceAngle = referenceAngle;
+		Body[] bodies = getBodyAB(world);
+		def.initialize(bodies[0], bodies[1], anchor, axis);
 		return attach(world, def);
 	}
 
@@ -69,4 +74,19 @@ public class PrismaticJoint extends GDXJoint {
 		this.lowerTranslation = lowerTranslation;
 	}
 
+	public Vector2 getAnchor() {
+		return anchor;
+	}
+
+	public void setAnchor(Vector2 anchor) {
+		this.anchor = anchor;
+	}
+
+	public Vector2 getAxis() {
+		return axis;
+	}
+
+	public void setAxis(Vector2 axis) {
+		this.axis = axis;
+	}
 }

@@ -35,11 +35,13 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private NPCWindow npcWindow;
 	private PathWindow pathWindow;
 	private GDXLevel gdxLevel;
+	private final JointWindow jointWindow;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super(game);
 		this.gdxLevel = gdxLevel;
-		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel));
+		jointWindow = new JointWindow(skin, this);
+		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this));
 		camera.zoom += 3;
 		for(GDXPolygon polygon : gdxLevel.getPolygons())
 			addPolygon(polygon);
@@ -71,7 +73,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		if(!levelWindow.contains(x,y) && 
 				(polygonWindow == null || !polygonWindow.contains(x, y)) &&
 				(npcWindow == null || !npcWindow.contains(x, y)) &&
-				(pathWindow == null || !pathWindow.contains(x, y))){
+				(pathWindow == null || !pathWindow.contains(x, y)) &&
+				(jointWindow == null || !jointWindow.contains(x, y))){
 			if(levelWindow.isPolygonMode()){
 				GDXPolygon polygon = gdxLevel.getClosestPolygon(coordinates.x, coordinates.y);
 				if(polygon == null || polygon.getClosestVertex(coordinates.x, coordinates.y).
@@ -99,7 +102,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
 				if(path.getNodes().isEmpty())
 					pathWindow.add(vertex);
-			}
+			}else if(levelWindow.isJointMode())
+				jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
 		}
 		return false;
 	}
@@ -170,18 +174,29 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 	
 	public void removePolygonWindow(){
-		polygonWindow.remove();
+		if(polygonWindow != null)
+			polygonWindow.remove();
 		polygonWindow = null;
+	}
+	
+	public void removeJointWindow(){
+		jointWindow.remove();
 	}
 
 	public void removeNPCWindow() {
-		npcWindow.remove();
+		if(npcWindow != null)
+			npcWindow.remove();
 		npcWindow = null;
 	}
 
 	public void removePathWindow() {
-		pathWindow.remove();
+		if(pathWindow != null)
+			pathWindow.remove();
 		pathWindow = null;
+	}
+	
+	public void addJointWindow(){
+		stage.addActor(jointWindow);
 	}
 
 	@Override public boolean scrolled(int amount) {

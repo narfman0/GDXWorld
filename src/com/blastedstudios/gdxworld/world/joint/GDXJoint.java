@@ -39,6 +39,22 @@ public abstract class GDXJoint implements Serializable {
 	public void setCollideConnected(boolean collideConnected) {
 		this.collideConnected = collideConnected;
 	}
+
+	public String getBodyA() {
+		return bodyA;
+	}
+
+	public void setBodyA(String bodyA) {
+		this.bodyA = bodyA;
+	}
+
+	public String getBodyB() {
+		return bodyB;
+	}
+
+	public void setBodyB(String bodyB) {
+		this.bodyB = bodyB;
+	}
 	
 	public abstract Joint attach(World world);
 	
@@ -64,6 +80,28 @@ public abstract class GDXJoint implements Serializable {
 		def.collideConnected = collideConnected;
 		Gdx.app.error("GDXJoint.attach", "Successfully created joint " + toString());
 		return world.createJoint(def);
+	}
+	
+	public float getDistance(float x, float y, World world){
+		Body[] bodies = getBodyAB(world);
+		if(bodies[0] == null || bodies[1] == null){
+			Gdx.app.error("GDXJoint.getDistance", "Body null! bodyA:" + bodyA + " bodyB:" + bodyB);
+			return Float.MAX_VALUE;
+		}
+		//TODO might not work as position is always 0,0, its the fixture that has pts
+		return Math.min(bodies[0].getPosition().dst(x,y), bodies[1].getPosition().dst(x, y));
+	}
+	
+	protected Body[] getBodyAB(World world){
+		Body[] bodies = new Body[2];
+		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
+			Body body = iter.next();
+			if(body.getUserData().equals(this.bodyA))
+				bodies[0] = body;
+			else if(body.getUserData().equals(this.bodyB))
+				bodies[1] = body;
+		}
+		return bodies;
 	}
 	
 	@Override public String toString(){
