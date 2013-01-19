@@ -17,7 +17,7 @@ public class WeldWindow extends BaseJointWindow {
 	public WeldWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
 		super("Weld Editor", skin, JointType.WeldJoint, levelEditorScreen);
 		anchorTable = new VertexTable(new Vector2(), skin, null);
-		referenceAngleField = new TextField("", skin);
+		referenceAngleField = new TextField("0", skin);
 		referenceAngleField.setMessageText("<reference angle>");
 		add(new Label("Anchor: ", skin));
 		add(anchorTable);

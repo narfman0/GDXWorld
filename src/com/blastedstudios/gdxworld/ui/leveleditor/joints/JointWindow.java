@@ -25,6 +25,9 @@ public class JointWindow extends GDXWindow {
 					baseWindow.remove();
 				JointType type = JointType.values()[typeList.getSelectedIndex()];
 				switch(type){
+				case DistanceJoint:
+					baseWindow = new DistanceWindow(skin, levelEditorScreen);
+					break;
 				case WeldJoint:
 					baseWindow = new WeldWindow(skin, levelEditorScreen);
 					break;

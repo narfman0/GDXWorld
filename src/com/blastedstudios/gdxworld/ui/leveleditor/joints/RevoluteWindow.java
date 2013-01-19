@@ -20,13 +20,13 @@ public class RevoluteWindow extends BaseJointWindow {
 	public RevoluteWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
 		super("Revolute Editor", skin, JointType.RevoluteJoint, levelEditorScreen);
 		anchorTable = new VertexTable(new Vector2(), skin, null);
-		referenceAngleField = new TextField("", skin);
+		referenceAngleField = new TextField("0", skin);
 		referenceAngleField.setMessageText("<reference angle>");
-		lowerAngleField = new TextField("", skin);
+		lowerAngleField = new TextField("0", skin);
 		lowerAngleField.setMessageText("<lower angle>");
-		maxMotorTorqueField = new TextField("", skin);
+		maxMotorTorqueField = new TextField("0", skin);
 		maxMotorTorqueField.setMessageText("<max motor torque>");
-		motorSpeedField = new TextField("", skin);
+		motorSpeedField = new TextField("0", skin);
 		motorSpeedField.setMessageText("<motor speed>");
 		enableLimitBox = new CheckBox("", skin);
 		enableMotorBox = new CheckBox("", skin);
