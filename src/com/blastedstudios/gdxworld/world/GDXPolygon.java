@@ -15,7 +15,8 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 public class GDXPolygon implements Serializable{
 	private static final long serialVersionUID = 1L;
 	/**
-	 * Coordinates for vertices relative to center
+	 * Coordinates for vertices relative to center. To convert to world 
+	 * coordinates, use the absolute version, e.g. getVerticesAbsolute
 	 */
 	private List<Vector2> vertices = new ArrayList<Vector2>();
 	private String name = "";
@@ -35,6 +36,10 @@ public class GDXPolygon implements Serializable{
 
 	public void setVertices(List<Vector2> vertices) {
 		this.vertices = vertices;
+	}
+
+	public void setVerticesAbsolute(List<Vector2> vertices) {
+		this.vertices = PolygonUtils.getCenterVertices(vertices, center);
 	}
 
 	public String getName() {

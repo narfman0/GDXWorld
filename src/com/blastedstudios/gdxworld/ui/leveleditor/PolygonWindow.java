@@ -96,7 +96,7 @@ public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
 				else if(dynamicBox.isChecked())
 					bodyType = BodyType.DynamicBody;
 				polygon.setCenter(PolygonUtils.getCenter(vertices));
-				polygon.setVertices(PolygonUtils.getCenterVertices(vertices, polygon.getCenter()));
+				polygon.setVerticesAbsolute(vertices);
 				polygon.setBodyType(bodyType);
 				polygon.setDensity(Float.parseFloat(densityField.getText()));
 				polygon.setFriction(Float.parseFloat(frictionField.getText()));
