@@ -46,6 +46,7 @@ public abstract class BaseJointWindow extends Window {
 		add(collideConnectedBox);
 		row();
 		setX(Gdx.graphics.getWidth());
+		setMovable(false);
 	}
 	
 	protected void addCreateButton(){

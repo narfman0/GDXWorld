@@ -10,7 +10,7 @@ import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 
 public class WeldWindow extends BaseJointWindow {
-	private final TextField anchorXField, anchorYField, referenceAngle;
+	private final TextField anchorXField, anchorYField, referenceAngleField;
 
 	public WeldWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
 		super("Weld Editor", skin, JointType.WeldJoint, levelEditorScreen);
@@ -18,14 +18,14 @@ public class WeldWindow extends BaseJointWindow {
 		anchorXField.setMessageText("<anchorX>");
 		anchorYField = new TextField("", skin);
 		anchorYField.setMessageText("<anchorY>");
-		referenceAngle = new TextField("", skin);
-		referenceAngle.setMessageText("<reference angle>");
+		referenceAngleField = new TextField("", skin);
+		referenceAngleField.setMessageText("<reference angle>");
 		add(new Label("Anchor: ", skin));
 		add(anchorXField);
 		add(anchorYField);
 		row();
 		add(new Label("Reference Angle: ", skin));
-		add(referenceAngle);
+		add(referenceAngleField);
 		addCreateButton();
 		pack();
 	}
@@ -34,7 +34,7 @@ public class WeldWindow extends BaseJointWindow {
 		WeldJoint joint = new WeldJoint();
 		joint.setAnchor(new Vector2(Float.parseFloat(anchorXField.getText()), 
 				Float.parseFloat(anchorYField.getText())));
-		joint.setReferenceAngle(Float.parseFloat(referenceAngle.getText()));
+		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
 		apply(joint);
 		return joint;
 	}

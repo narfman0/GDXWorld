@@ -26,12 +26,17 @@ public class JointWindow extends GDXWindow {
 				JointType type = JointType.values()[typeList.getSelectedIndex()];
 				switch(type){
 				case WeldJoint:
-					levelEditorScreen.getStage().addActor(baseWindow = new WeldWindow(skin, levelEditorScreen));
+					baseWindow = new WeldWindow(skin, levelEditorScreen);
+					break;
+				case RevoluteJoint:
+					baseWindow = new RevoluteWindow(skin, levelEditorScreen);
 					break;
 				default:
-					Gdx.app.log("JointWindow.newButton.clicked", "Case not handled: " + type);
+					Gdx.app.log("JointWindow.newButton.clicked", "Joint not implemented: " + type);
 					break;
 				}
+				if(baseWindow != null)
+					levelEditorScreen.getStage().addActor(baseWindow);
 			}
 		});
 		add(typeList);
