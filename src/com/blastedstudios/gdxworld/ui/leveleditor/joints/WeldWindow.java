@@ -6,23 +6,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 
 public class WeldWindow extends BaseJointWindow {
-	private final TextField anchorXField, anchorYField, referenceAngleField;
+	private final VertexTable anchorTable;
+	private final TextField referenceAngleField;
 
 	public WeldWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
 		super("Weld Editor", skin, JointType.WeldJoint, levelEditorScreen);
-		anchorXField = new TextField("", skin);
-		anchorXField.setMessageText("<anchorX>");
-		anchorYField = new TextField("", skin);
-		anchorYField.setMessageText("<anchorY>");
+		anchorTable = new VertexTable(new Vector2(), skin, null);
 		referenceAngleField = new TextField("", skin);
 		referenceAngleField.setMessageText("<reference angle>");
 		add(new Label("Anchor: ", skin));
-		add(anchorXField);
-		add(anchorYField);
+		add(anchorTable);
 		row();
 		add(new Label("Reference Angle: ", skin));
 		add(referenceAngleField);
@@ -32,11 +30,14 @@ public class WeldWindow extends BaseJointWindow {
 	
 	@Override public GDXJoint generate(){
 		WeldJoint joint = new WeldJoint();
-		joint.setAnchor(new Vector2(Float.parseFloat(anchorXField.getText()), 
-				Float.parseFloat(anchorYField.getText())));
+		joint.setAnchor(anchorTable.getVertex());
 		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
 		apply(joint);
 		return joint;
+	}
+
+	@Override public void clicked(Vector2 pos) {
+		anchorTable.setVertex(pos.x, pos.y);
 	}
 
 }

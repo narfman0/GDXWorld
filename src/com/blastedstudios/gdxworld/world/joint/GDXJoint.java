@@ -62,20 +62,13 @@ public abstract class GDXJoint implements Serializable {
 	 * @return finished attached joint using GDXJoint data
 	 */
 	protected Joint attach(World world, JointDef def){
-		Body bodyA = null, bodyB = null;
-		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-			Body body = iter.next();
-			if(body.getUserData().equals(this.bodyA))
-				bodyA = body;
-			else if(body.getUserData().equals(this.bodyB))
-				bodyB = body;
-		}
-		if(bodyA == null || bodyB == null){
+		Body[] bodies = getBodyAB(world);
+		if(bodies[0] == null || bodies[1] == null){
 			Gdx.app.error("GDXJoint.attach", "Body null! bodyA:" + this.bodyA + " bodyB:" + this.bodyB);
 			return null;
 		}
-		def.bodyA = bodyA;
-		def.bodyB = bodyB;
+		def.bodyA = bodies[0];
+		def.bodyB = bodies[1];
 		def.type = jointType;
 		def.collideConnected = collideConnected;
 		Gdx.app.error("GDXJoint.attach", "Successfully created joint " + toString());
@@ -96,9 +89,9 @@ public abstract class GDXJoint implements Serializable {
 		Body[] bodies = new Body[2];
 		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
 			Body body = iter.next();
-			if(body.getUserData().equals(this.bodyA))
+			if(this.bodyA.equals(body.getUserData()))
 				bodies[0] = body;
-			else if(body.getUserData().equals(this.bodyB))
+			else if(this.bodyB.equals(body.getUserData()))
 				bodies[1] = body;
 		}
 		return bodies;

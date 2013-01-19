@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.joints;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -8,12 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
-public abstract class BaseJointWindow extends Window {
+public abstract class BaseJointWindow extends GDXWindow {
 	private final TextField nameField, bodyAField, bodyBField;
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;
@@ -72,4 +73,5 @@ public abstract class BaseJointWindow extends Window {
 	}
 	
 	public abstract GDXJoint generate();
+	public abstract void clicked(Vector2 vector2);
 }

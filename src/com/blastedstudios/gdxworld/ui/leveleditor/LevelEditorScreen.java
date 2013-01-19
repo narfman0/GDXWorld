@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
@@ -25,6 +26,7 @@ import com.blastedstudios.gdxworld.world.GDXPath;
 import com.blastedstudios.gdxworld.world.GDXPolygon;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
+import com.blastedstudios.gdxworld.world.joint.GearJoint;
 
 public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private static final float NODE_RADIUS = 1;
@@ -32,6 +34,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
 	private final HashMap<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
+	private final HashMap<String, Joint> joints = new HashMap<String, Joint>();
 	private LevelWindow levelWindow;
 	private PolygonWindow polygonWindow;
 	private NPCWindow npcWindow;
@@ -207,8 +210,13 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		return false;
 	}
 
-	public void addJoint(GDXJoint joint) {
-		Gdx.app.log("LevelEditorScreen.addJoint", "Adding joint " + joint.toString());
-		gdxLevel.getJoints().add(joint);
+	public void addJoint(GDXJoint gdxJoint) {
+		if(gdxJoint instanceof GearJoint){
+			GearJoint gear = (GearJoint)gdxJoint;
+			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
+		}
+		joints.put(gdxJoint.getName(), gdxJoint.attach(world));
+		gdxLevel.getJoints().add(gdxJoint);
+		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
 	}
 }

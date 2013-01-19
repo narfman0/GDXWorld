@@ -46,14 +46,17 @@ public class JointWindow extends GDXWindow {
 		pack();
 	}
 
-	public void clicked(Vector2 vector2) {
-		// TODO Auto-generated method stub
-		
+	public void clicked(Vector2 pos) {
+		baseWindow.clicked(pos);
 	}
 
 	@Override public boolean remove(){
 		if(baseWindow != null)
 			baseWindow.remove();
 		return super.remove();
+	}
+
+	public boolean contains(float x, float y){
+		return super.contains(x, y) || (baseWindow != null && baseWindow.contains(x, y));
 	}
 }
