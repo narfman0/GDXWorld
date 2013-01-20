@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GDXNPC implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String name = "";
+	private String name = "", faction = "", resource = "";
 	/**
 	 * A named reference to a path in the GDXLevel the npc will traverse
 	 */
@@ -50,6 +50,22 @@ public class GDXNPC implements Serializable{
 
 	public void setBehavior(String behavior) {
 		this.behavior = behavior;
+	}
+
+	public String getFaction() {
+		return faction;
+	}
+
+	public void setFaction(String faction) {
+		this.faction = faction;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
 	}
 	
 	@Override public String toString(){

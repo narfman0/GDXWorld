@@ -25,6 +25,12 @@ public class NPCWindow extends GDXWindow {
 		final TextField pathField = new TextField("", skin);
 		pathField.setMessageText("<path name>");
 		pathField.setText(npc.getPath());
+		final TextField resourceField = new TextField("", skin);
+		resourceField.setMessageText("<resource>");
+		resourceField.setText(npc.getResource());
+		final TextField factionField = new TextField("", skin);
+		factionField.setMessageText("<faction>");
+		factionField.setText(npc.getFaction());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -36,6 +42,8 @@ public class NPCWindow extends GDXWindow {
 				npc.setBehavior(behaviorField.getText());
 				npc.setCoordinates(coordinates.getVertex());
 				npc.setPath(pathField.getText());
+				npc.setResource(resourceField.getText());
+				npc.setFaction(factionField.getText());
 				screen.addNPC(npc);
 				screen.removeNPCWindow();
 			}
@@ -59,6 +67,12 @@ public class NPCWindow extends GDXWindow {
 		row();
 		add(new Label("Path: ", skin));
 		add(pathField);
+		row();
+		add(new Label("Resource: ", skin));
+		add(resourceField);
+		row();
+		add(new Label("Faction: ", skin));
+		add(factionField);
 		row();
 		add(new Label("Coordinates: ", skin));
 		add(coordinates).colspan(2);
