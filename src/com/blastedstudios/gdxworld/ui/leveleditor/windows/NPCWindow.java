@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.ui.leveleditor;
+package com.blastedstudios.gdxworld.ui.leveleditor.windows;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,12 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.NPCMouseMode;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 
 public class NPCWindow extends GDXWindow {
 	private final VertexTable coordinates;
 	
-	public NPCWindow(final Skin skin, final LevelEditorScreen screen, final GDXNPC npc) {
+	public NPCWindow(final Skin skin, final NPCMouseMode mouseMode, final GDXNPC npc) {
 		super("NPC Editor", skin);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<npc name>");
@@ -44,19 +46,19 @@ public class NPCWindow extends GDXWindow {
 				npc.setPath(pathField.getText());
 				npc.setResource(resourceField.getText());
 				npc.setFaction(factionField.getText());
-				screen.addNPC(npc);
-				screen.removeNPCWindow();
+				mouseMode.addNPC(npc);
+				mouseMode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removeNPCWindow();
+				mouseMode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removeNPC(npc);
-				screen.removeNPCWindow();
+				mouseMode.removeNPC(npc);
+				mouseMode.clean();
 			}
 		});
 		add(new Label("Name: ", skin));

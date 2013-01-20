@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.ui.leveleditor;
+package com.blastedstudios.gdxworld.ui.leveleditor.windows;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PathMouseMode;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
 public class PathWindow extends GDXWindow implements VertexRemoveListener {
@@ -20,7 +22,7 @@ public class PathWindow extends GDXWindow implements VertexRemoveListener {
 	private final Skin skin;
 	private final GDXPath path;
 
-	public PathWindow(final Skin skin, final LevelEditorScreen screen, 
+	public PathWindow(final Skin skin, final PathMouseMode mouseMode, 
 			final GDXPath path) {
 		super("Path Editor", skin);
 		this.skin = skin;
@@ -43,19 +45,19 @@ public class PathWindow extends GDXWindow implements VertexRemoveListener {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				path.setName(nameField.getText());
-				screen.addPath(path);
-				screen.removePathWindow();
+				mouseMode.addPath(path);
+				mouseMode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removePathWindow();
+				mouseMode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removePath(path);
-				screen.removePathWindow();
+				mouseMode.removePath(path);
+				mouseMode.clean();
 			}
 		});
 		populateVertexTable();

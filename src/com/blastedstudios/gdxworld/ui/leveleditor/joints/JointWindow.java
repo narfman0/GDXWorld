@@ -11,20 +11,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.DistanceJoint;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
 import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 
 public class JointWindow extends GDXWindow {
-	private final LevelEditorScreen levelEditorScreen;
 	private BaseJointWindow baseWindow;
 	private final Skin skin;
 	private GDXJoint joint;
+	private final JointMouseMode mouseMode;
+	private final LevelEditorScreen levelEditorScreen;
 	
-	public JointWindow(final Skin skin, final LevelEditorScreen levelEditorScreen) {
+	public JointWindow(final Skin skin, final LevelEditorScreen levelEditorScreen,
+			final JointMouseMode mouseMode) {
 		super("Joint Editor", skin);
 		this.skin = skin;
+		this.mouseMode = mouseMode;
 		this.levelEditorScreen = levelEditorScreen;
 		final List typeList = new List(JointType.values(), skin);
 		final Button newButton = new TextButton("New", skin);
@@ -46,15 +50,15 @@ public class JointWindow extends GDXWindow {
 		switch(type){
 		case DistanceJoint:
 			DistanceJoint djoint = joint == null ? new DistanceJoint() : (DistanceJoint)joint;
-			baseWindow = new DistanceWindow(skin, levelEditorScreen, djoint);
+			baseWindow = new DistanceWindow(skin, mouseMode, djoint);
 			break;
 		case WeldJoint:
 			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
-			baseWindow = new WeldWindow(skin, levelEditorScreen, wjoint);
+			baseWindow = new WeldWindow(skin, mouseMode, wjoint);
 			break;
 		case RevoluteJoint:
 			RevoluteJoint rjoint = joint == null ? new RevoluteJoint() : (RevoluteJoint)joint;
-			baseWindow = new RevoluteWindow(skin, levelEditorScreen, rjoint);
+			baseWindow = new RevoluteWindow(skin, mouseMode, rjoint);
 			break;
 		default:
 			Gdx.app.log("JointWindow.newButton.clicked", "Joint not implemented: " + type);

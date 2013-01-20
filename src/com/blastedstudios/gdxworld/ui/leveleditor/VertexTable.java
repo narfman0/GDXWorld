@@ -44,7 +44,7 @@ public class VertexTable extends Table {
 		coordYLabel.setText(y+"");
 	}
 	
-	interface VertexRemoveListener{
+	public interface VertexRemoveListener{
 		public void remove(Vector2 vertex);
 	}
 }

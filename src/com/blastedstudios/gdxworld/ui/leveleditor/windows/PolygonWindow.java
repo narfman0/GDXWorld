@@ -1,28 +1,43 @@
-package com.blastedstudios.gdxworld.ui.leveleditor;
+package com.blastedstudios.gdxworld.ui.leveleditor.windows;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
-import com.blastedstudios.gdxworld.world.shape.GDXCircle;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PolygonMouseMode;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
-public class CircleWindow extends GDXWindow {
-	private final VertexTable centerTable;
-	
-	public CircleWindow(final Skin skin, final LevelEditorScreen screen, final GDXCircle circle) {
-		super("Circle Editor", skin);
+public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
+	private final Table vertexTables;
+	private final Skin skin;
+	private List<Vector2> vertices;
+
+	public PolygonWindow(final Skin skin, final PolygonMouseMode mode, 
+			final GDXPolygon polygon) {
+		super("Polygon Editor", skin);
+		this.skin = skin;
+		this.vertices = new ArrayList<Vector2>(polygon.getVerticesAbsolute());
+		vertexTables = new Table(skin);
 		final CheckBox staticBox = new CheckBox("Static", skin), 
 				kinematicBox = new CheckBox("Kinematic", skin), 
 				dynamicBox = new CheckBox("Dynamic", skin);
-		switch(circle.getBodyType()){
+		switch(polygon.getBodyType()){
 		case DynamicBody:
 			dynamicBox.setChecked(true);
 			break;
@@ -53,52 +68,59 @@ public class CircleWindow extends GDXWindow {
 		});
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<polygon name>");
-		nameField.setText(circle.getName());
-		final TextField radiusField = new TextField("", skin);
-		radiusField.setMessageText("<radius>");
-		radiusField.setText(circle.getRadius()+"");
+		nameField.setText(polygon.getName());
 		final TextField densityField = new TextField("", skin);
 		densityField.setMessageText("<density, calculates mass>");
-		densityField.setText(circle.getDensity()+"");
+		densityField.setText(polygon.getDensity()+"");
 		final TextField frictionField = new TextField("", skin);
 		frictionField.setMessageText("<friction>");
-		frictionField.setText(circle.getFriction()+"");
+		frictionField.setText(polygon.getFriction()+"");
 		final TextField restitutionField = new TextField("", skin);
 		restitutionField.setMessageText("<restitution>");
-		restitutionField.setText(circle.getRestitution()+"");
+		restitutionField.setText(polygon.getRestitution()+"");
+		final Button clearButton = new TextButton("Clear vertices", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
-		centerTable = new VertexTable(circle.getCenter(), skin, null);
+		final ScrollPane scrollPane = new ScrollPane(vertexTables);
+		clearButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				vertices.clear();
+				vertexTables.clear();
+			}
+		});
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				circle.setName(nameField.getText());
+				polygon.setName(nameField.getText());
 				BodyType bodyType = BodyType.StaticBody;
 				if(kinematicBox.isChecked())
 					bodyType = BodyType.KinematicBody;
 				else if(dynamicBox.isChecked())
 					bodyType = BodyType.DynamicBody;
-				circle.setCenter(centerTable.getVertex());
-				circle.setRadius(Float.parseFloat(radiusField.getText()));
-				circle.setBodyType(bodyType);
-				circle.setDensity(Float.parseFloat(densityField.getText()));
-				circle.setFriction(Float.parseFloat(frictionField.getText()));
-				circle.setRestitution(Float.parseFloat(restitutionField.getText()));
-				screen.addCircle(circle);
-				screen.removeCircleWindow();
+				polygon.setCenter(PolygonUtils.getCenter(vertices));
+				polygon.setVerticesAbsolute(vertices);
+				polygon.setBodyType(bodyType);
+				polygon.setDensity(Float.parseFloat(densityField.getText()));
+				polygon.setFriction(Float.parseFloat(frictionField.getText()));
+				polygon.setRestitution(Float.parseFloat(restitutionField.getText()));
+				mode.addPolygon(polygon);
+				mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removeCircleWindow();
+				mode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.removeCircle(circle);
-				screen.removeCircleWindow();
+				mode.removePolygon(polygon);
+				mode.clean();
 			}
 		});
+		populateVertexTable();
+		add(scrollPane).colspan(2);
+		row();
 		Table bodyTypeTable = new Table();
 		bodyTypeTable.add(new Label("BodyType: ", skin));
 		bodyTypeTable.add(staticBox);
@@ -108,12 +130,6 @@ public class CircleWindow extends GDXWindow {
 		row();
 		add(new Label("Name: ", skin));
 		add(nameField);
-		row();
-		add(new Label("Center: ", skin));
-		add(centerTable);
-		row();
-		add(new Label("Radius: ", skin));
-		add(radiusField);
 		row();
 		add(new Label("Friction: ", skin));
 		add(frictionField);
@@ -126,14 +142,33 @@ public class CircleWindow extends GDXWindow {
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
+		controlTable.add(clearButton);
 		controlTable.add(deleteButton);
 		controlTable.add(cancelButton);
 		add(controlTable).colspan(2);
 		setMovable(false);
-		pack();
+		setHeight(400);
+		setWidth(400);
 	}
 
-	public void setCenter(Vector2 center) {
-		centerTable.setVertex(center.x, center.y);
+	public void add(Vector2 vertex) {
+		vertices.add(vertex);
+		vertexTables.add(new VertexTable(vertex, skin, this));
+		vertexTables.row();
+		Gdx.app.log("PolygonWindow.add", " vector: " + vertex + " size: " + vertices.size());
+	}
+
+	public void remove(Vector2 vertex) {
+		vertices.remove(vertex);
+		vertexTables.clear();
+		populateVertexTable();
+		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + vertices.size());
+	}
+
+	private void populateVertexTable(){
+		for(Vector2 vertex : vertices){
+			vertexTables.add(new VertexTable(vertex, skin, this));
+			vertexTables.row();
+		}
 	}
 }

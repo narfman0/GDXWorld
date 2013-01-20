@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
-import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 public abstract class BaseJointWindow extends GDXWindow {
@@ -19,15 +19,15 @@ public abstract class BaseJointWindow extends GDXWindow {
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;
 	private final Skin skin;
-	private final LevelEditorScreen levelEditorScreen;
+	private final JointMouseMode mouseMode;
 	private final GDXJoint joint;
 	
 	public BaseJointWindow(final String title, final Skin skin, 
-			JointType jointType, LevelEditorScreen levelEditorScreen, GDXJoint joint){
+			JointType jointType, JointMouseMode mouseMode, GDXJoint joint){
 		super(title, skin);
 		this.skin = skin;
 		this.jointType = jointType;
-		this.levelEditorScreen = levelEditorScreen;
+		this.mouseMode = mouseMode;
 		this.joint = joint;
 		nameField = new TextField(joint.getName(), skin);
 		nameField.setMessageText("<name>");
@@ -58,12 +58,12 @@ public abstract class BaseJointWindow extends GDXWindow {
 		final Button deleteButton = new TextButton("Delete", skin);
 		createButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				levelEditorScreen.addJoint(generate());
+				mouseMode.addJoint(generate());
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				levelEditorScreen.removeJoint(joint);
+				mouseMode.removeJoint(joint);
 			}
 		});
 		row();

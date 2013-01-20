@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
 
@@ -18,8 +18,8 @@ public class RevoluteWindow extends BaseJointWindow {
 	private final CheckBox enableLimitBox, enableMotorBox;
 	private final RevoluteJoint joint;
 
-	public RevoluteWindow(Skin skin, LevelEditorScreen levelEditorScreen, GDXJoint baseJoint) {
-		super("Revolute Editor", skin, JointType.RevoluteJoint, levelEditorScreen, baseJoint);
+	public RevoluteWindow(Skin skin, JointMouseMode mouseMode, GDXJoint baseJoint) {
+		super("Revolute Editor", skin, JointType.RevoluteJoint, mouseMode, baseJoint);
 		this.joint = (RevoluteJoint) baseJoint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);

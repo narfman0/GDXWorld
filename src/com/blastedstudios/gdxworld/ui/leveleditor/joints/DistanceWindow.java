@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.DistanceJoint;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
@@ -15,8 +15,8 @@ public class DistanceWindow extends BaseJointWindow {
 	private final TextField dampeningRatioField, frequencyHzField, lengthField;
 	private final DistanceJoint joint;
 
-	public DistanceWindow(Skin skin, LevelEditorScreen levelEditorScreen, GDXJoint baseJoint) {
-		super("Distance Editor", skin, JointType.WeldJoint, levelEditorScreen, baseJoint);
+	public DistanceWindow(Skin skin, JointMouseMode mouseMode, GDXJoint baseJoint) {
+		super("Distance Editor", skin, JointType.WeldJoint, mouseMode, baseJoint);
 		this.joint = (DistanceJoint)baseJoint;
 		anchorATable = new VertexTable(joint.getAnchorA(), skin, null);
 		anchorBTable = new VertexTable(joint.getAnchorB(), skin, null);
