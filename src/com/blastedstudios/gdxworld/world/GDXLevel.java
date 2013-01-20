@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
+import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
@@ -27,6 +28,7 @@ public class GDXLevel implements Serializable{
 	private List<GDXNPC> npcs = new ArrayList<GDXNPC>();
 	private List<GDXPath> paths = new ArrayList<GDXPath>();
 	private List<GDXJoint> joints = new ArrayList<GDXJoint>();
+	private List<GDXQuest> quests = new ArrayList<GDXQuest>();
 
 	public List<GDXShape> getShapes() {
 		return shapes;
@@ -94,6 +96,14 @@ public class GDXLevel implements Serializable{
 
 	public void setJoints(List<GDXJoint> joints) {
 		this.joints = joints;
+	}
+
+	public List<GDXQuest> getQuests() {
+		return quests;
+	}
+
+	public void setQuests(List<GDXQuest> quests) {
+		this.quests = quests;
 	}
 
 	public GDXShape getClosestShape(float x, float y) {
