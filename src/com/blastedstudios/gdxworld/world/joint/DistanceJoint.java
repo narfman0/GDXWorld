@@ -60,4 +60,8 @@ public class DistanceJoint extends GDXJoint {
 	public void setAnchorB(Vector2 anchorB) {
 		this.anchorB = anchorB;
 	}
+
+	@Override public Vector2 getCenter() {
+		return anchorA.cpy().add(anchorB).div(2);
+	}
 }

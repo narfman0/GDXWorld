@@ -34,4 +34,8 @@ public class WeldJoint extends GDXJoint {
 	public void setAnchor(Vector2 anchor) {
 		this.anchor = anchor;
 	}
+
+	@Override public Vector2 getCenter() {
+		return anchor.cpy();
+	}
 }

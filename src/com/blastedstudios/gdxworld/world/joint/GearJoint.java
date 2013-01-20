@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.world.joint;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.GearJointDef;
@@ -9,6 +10,14 @@ public class GearJoint extends GDXJoint {
 	private String joint1, joint2;
 	private transient Joint joint1J, joint2J;
 	private float ratio;
+	/**
+	 * Center is used for drawing
+	 */
+	private transient Vector2 center;
+	
+	public GearJoint(Vector2 center){
+		this.center = center;
+	}
 	
 	/**
 	 * Since GearJoint depends on the other joints being created, there is
@@ -56,6 +65,10 @@ public class GearJoint extends GDXJoint {
 
 	public void setJoint2(String joint2) {
 		this.joint2 = joint2;
+	}
+
+	@Override public Vector2 getCenter() {
+		return center.cpy();
 	}
 
 }

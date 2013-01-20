@@ -20,20 +20,23 @@ public abstract class BaseJointWindow extends GDXWindow {
 	private JointType jointType;
 	private final Skin skin;
 	private final LevelEditorScreen levelEditorScreen;
+	private final GDXJoint joint;
 	
 	public BaseJointWindow(final String title, final Skin skin, 
-			JointType jointType, LevelEditorScreen levelEditorScreen){
+			JointType jointType, LevelEditorScreen levelEditorScreen, GDXJoint joint){
 		super(title, skin);
 		this.skin = skin;
 		this.jointType = jointType;
 		this.levelEditorScreen = levelEditorScreen;
-		nameField = new TextField("", skin);
+		this.joint = joint;
+		nameField = new TextField(joint.getName(), skin);
 		nameField.setMessageText("<name>");
-		bodyAField = new TextField("", skin);
+		bodyAField = new TextField(joint.getBodyA(), skin);
 		bodyAField.setMessageText("<bodyA>");
-		bodyBField = new TextField("", skin);
+		bodyBField = new TextField(joint.getBodyB(), skin);
 		bodyBField.setMessageText("<bodyB>");
 		collideConnectedBox = new CheckBox("", skin);
+		collideConnectedBox.setChecked(joint.isCollideConnected());
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
@@ -50,15 +53,22 @@ public abstract class BaseJointWindow extends GDXWindow {
 		setMovable(false);
 	}
 	
-	protected void addCreateButton(){
+	protected void addControlTable(){
 		final Button createButton = new TextButton("Create", skin);
+		final Button deleteButton = new TextButton("Delete", skin);
 		createButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				levelEditorScreen.addJoint(generate());
 			}
 		});
+		deleteButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				levelEditorScreen.removeJoint(joint);
+			}
+		});
 		row();
-		add(createButton).colspan(3);
+		add(createButton);
+		add(deleteButton);
 	}
 	
 	/**

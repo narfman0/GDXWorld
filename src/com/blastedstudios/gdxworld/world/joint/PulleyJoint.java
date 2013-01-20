@@ -77,4 +77,8 @@ public class PulleyJoint extends GDXJoint {
 	public void setGroundAnchorB(Vector2 groundAnchorB) {
 		this.groundAnchorB = groundAnchorB;
 	}
+
+	@Override public Vector2 getCenter() {
+		return anchorA.cpy().add(anchorB).div(2);
+	}
 }

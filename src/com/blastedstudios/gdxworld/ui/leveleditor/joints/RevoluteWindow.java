@@ -16,20 +16,24 @@ public class RevoluteWindow extends BaseJointWindow {
 	private final TextField referenceAngleField,
 		lowerAngleField, maxMotorTorqueField, motorSpeedField;
 	private final CheckBox enableLimitBox, enableMotorBox;
+	private final RevoluteJoint joint;
 
-	public RevoluteWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
-		super("Revolute Editor", skin, JointType.RevoluteJoint, levelEditorScreen);
-		anchorTable = new VertexTable(new Vector2(), skin, null);
-		referenceAngleField = new TextField("0", skin);
+	public RevoluteWindow(Skin skin, LevelEditorScreen levelEditorScreen, GDXJoint baseJoint) {
+		super("Revolute Editor", skin, JointType.RevoluteJoint, levelEditorScreen, baseJoint);
+		this.joint = (RevoluteJoint) baseJoint;
+		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
+		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);
 		referenceAngleField.setMessageText("<reference angle>");
-		lowerAngleField = new TextField("0", skin);
+		lowerAngleField = new TextField(joint.getLowerAngle()+"", skin);
 		lowerAngleField.setMessageText("<lower angle>");
-		maxMotorTorqueField = new TextField("0", skin);
+		maxMotorTorqueField = new TextField(joint.getMaxMotorTorque()+"", skin);
 		maxMotorTorqueField.setMessageText("<max motor torque>");
-		motorSpeedField = new TextField("0", skin);
+		motorSpeedField = new TextField(joint.getMotorSpeed()+"", skin);
 		motorSpeedField.setMessageText("<motor speed>");
 		enableLimitBox = new CheckBox("", skin);
+		enableLimitBox.setChecked(joint.isEnableLimit());
 		enableMotorBox = new CheckBox("", skin);
+		enableMotorBox.setChecked(joint.isEnableMotor());
 		add(new Label("Anchor: ", skin));
 		add(anchorTable);
 		row();
@@ -50,12 +54,11 @@ public class RevoluteWindow extends BaseJointWindow {
 		row();
 		add(new Label("Enable Motor Box: ", skin));
 		add(enableMotorBox);
-		addCreateButton();
+		addControlTable();
 		pack();
 	}
 	
 	@Override public GDXJoint generate(){
-		RevoluteJoint joint = new RevoluteJoint();
 		joint.setEnableLimit(enableLimitBox.isChecked());
 		joint.setEnableMotor(enableMotorBox.isChecked());
 		joint.setLowerAngle(Float.parseFloat(lowerAngleField.getText()));

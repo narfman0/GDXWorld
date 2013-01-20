@@ -79,4 +79,8 @@ public class WheelJoint extends GDXJoint {
 	public void setAxis(Vector2 axis) {
 		this.axis = axis;
 	}
+
+	@Override public Vector2 getCenter() {
+		return anchor.cpy();
+	}
 }

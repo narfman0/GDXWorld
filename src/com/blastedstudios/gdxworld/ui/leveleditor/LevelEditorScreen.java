@@ -129,9 +129,12 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 				Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
 				if(path.getNodes().isEmpty())
 					pathWindow.add(vertex);
-			}else if(levelWindow.isJointMode())
+			}else if(levelWindow.isJointMode()){
+				GDXJoint joint = gdxLevel.getClosestJoint(coordinates.x, coordinates.y, world);
+				if(joint != null && joint.getCenter().dst(coordinates.x, coordinates.y) < NODE_RADIUS)
+					jointWindow.setSelected(joint);
 				jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
-			else if(levelWindow.isLiveMode()){
+			}else if(levelWindow.isLiveMode()){
 				CollideCallback callback = new CollideCallback();
 				world.QueryAABB(callback, coordinates.x-.01f, coordinates.y-.01f, coordinates.x+.01f, coordinates.y+.01f);
 				lastTouchPolygon = callback.getBody();
@@ -240,6 +243,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	}
 
 	public void addJoint(GDXJoint gdxJoint) {
+		removeJoint(gdxJoint);
 		if(gdxJoint instanceof GearJoint){
 			GearJoint gear = (GearJoint)gdxJoint;
 			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
@@ -247,7 +251,22 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		joints.put(gdxJoint.getName(), gdxJoint.attach(world));
 		if(!gdxLevel.getJoints().contains(gdxJoint))
 			gdxLevel.getJoints().add(gdxJoint);
+		if(!live){
+			Body body = PhysicsHelper.createCircle(world, NODE_RADIUS, gdxJoint.getCenter(), BodyType.DynamicBody);
+			bodies.put(gdxJoint.getName(), Arrays.asList(body));
+		}
 		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
+	}
+
+	public void removeJoint(GDXJoint joint) {
+		Gdx.app.log("LevelEditorScreen.removeJoint", "Removing joint " + joint.toString());
+		if(bodies.containsKey(joint.getName()))
+			for(Body body : bodies.remove(joint.getName()))
+					world.destroyBody(body);
+		if(joints.containsKey(joint.getName()))
+			world.destroyJoint(joints.remove(joint.getName()));
+		if(gdxLevel.getJoints().contains(joint))
+			gdxLevel.getJoints().remove(joint);
 	}
 
 	public void addCircle(GDXCircle circle) {

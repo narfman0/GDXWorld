@@ -13,16 +13,18 @@ import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 public class DistanceWindow extends BaseJointWindow {
 	private final VertexTable anchorATable, anchorBTable;
 	private final TextField dampeningRatioField, frequencyHzField, lengthField;
+	private final DistanceJoint joint;
 
-	public DistanceWindow(Skin skin, LevelEditorScreen levelEditorScreen) {
-		super("Distance Editor", skin, JointType.WeldJoint, levelEditorScreen);
-		anchorATable = new VertexTable(new Vector2(), skin, null);
-		anchorBTable = new VertexTable(new Vector2(), skin, null);
-		dampeningRatioField = new TextField("0", skin);
+	public DistanceWindow(Skin skin, LevelEditorScreen levelEditorScreen, GDXJoint baseJoint) {
+		super("Distance Editor", skin, JointType.WeldJoint, levelEditorScreen, baseJoint);
+		this.joint = (DistanceJoint)baseJoint;
+		anchorATable = new VertexTable(joint.getAnchorA(), skin, null);
+		anchorBTable = new VertexTable(joint.getAnchorB(), skin, null);
+		dampeningRatioField = new TextField(joint.getDampeningRatio()+"", skin);
 		dampeningRatioField.setMessageText("<dampening ratio>");
-		frequencyHzField = new TextField("0", skin);
+		frequencyHzField = new TextField(joint.getFrequencyHz()+"", skin);
 		frequencyHzField.setMessageText("<frequency hz>");
-		lengthField = new TextField("1", skin);
+		lengthField = new TextField(joint.getLength()+"", skin);
 		lengthField.setMessageText("<length>");
 		add(new Label("Anchor A: ", skin));
 		add(anchorATable);
@@ -38,12 +40,11 @@ public class DistanceWindow extends BaseJointWindow {
 		row();
 		add(new Label("Length: ", skin));
 		add(lengthField);
-		addCreateButton();
+		addControlTable();
 		pack();
 	}
 	
 	@Override public GDXJoint generate(){
-		DistanceJoint joint = new DistanceJoint();
 		joint.setAnchorA(anchorATable.getVertex());
 		joint.setAnchorB(anchorBTable.getVertex());
 		joint.setDampeningRatio(Float.parseFloat(dampeningRatioField.getText()));
