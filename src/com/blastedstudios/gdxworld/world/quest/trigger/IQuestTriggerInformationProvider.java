@@ -18,9 +18,10 @@ public interface IQuestTriggerInformationProvider{
 	public boolean isDead(String name);
 
 	/**
-	 * @param name of being to be physically close to
+	 * @param origin body 
+	 * @param target of being to be physically close to
 	 * @param distance threshold to being
 	 * @return true if within distance of npc with name
 	 */
-	public boolean isNear(String name, float distance);
+	public boolean isNear(String origin, String target, float distance);
 }

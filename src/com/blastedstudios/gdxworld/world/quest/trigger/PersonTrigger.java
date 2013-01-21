@@ -2,19 +2,24 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 
 public class PersonTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
-	private final String name;
+	private final String origin, target;
 	private final float distance;
 	
-	public PersonTrigger(String name, float distance){
-		this.name = name;
+	public PersonTrigger(String origin, String target, float distance){
+		this.origin = origin;
+		this.target = target;
 		this.distance = distance;
 	}
 
 	@Override public boolean activate() {
-		return getProvider().isNear(name, distance);
+		return getProvider().isNear(origin, target, distance);
 	}
 	
 	@Override public Object clone(){
-		return new PersonTrigger(name, distance);
+		return new PersonTrigger(origin, target, distance);
+	}
+
+	@Override public String toString() {
+		return "[PersonTrigger: origin:" + origin + " target:" + target + " distance:" + distance + "]";
 	}
 }

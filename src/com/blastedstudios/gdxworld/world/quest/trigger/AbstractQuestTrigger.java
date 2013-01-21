@@ -21,4 +21,5 @@ public abstract class AbstractQuestTrigger implements Cloneable,Serializable{
 	}
 	
 	@Override abstract public Object clone();
+	@Override abstract public String toString();
 }

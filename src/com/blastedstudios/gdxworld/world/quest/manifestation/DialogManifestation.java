@@ -33,4 +33,8 @@ public class DialogManifestation extends AbstractQuestManifestation{
 	@Override public Object clone() {
 		return new DialogManifestation(dialog, origin);
 	}
+
+	@Override public String toString() {
+		return "[DialogManifestation: dialog:" + dialog + " origin:" + origin + "]";
+	}
 }

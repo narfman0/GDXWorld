@@ -38,6 +38,11 @@ public class QuestStatus implements Comparable<QuestStatus>, Serializable{
 		return false;
 	}
 	
+	@Override public String toString(){
+		return "[QuestStatus: level:" + levelName + " quest:" + questName + 
+				" completed:" + completed + "]";
+	}
+	
 	/**
 	 * Used for sorting completed tasks. Completed comes last, incomplete first
 	 */

@@ -15,4 +15,8 @@ public class KillTrigger extends AbstractQuestTrigger {
 	@Override public Object clone(){
 		return new KillTrigger(name);
 	}
+
+	@Override public String toString() {
+		return "[KillTrigger:" + name + "]";
+	}
 }

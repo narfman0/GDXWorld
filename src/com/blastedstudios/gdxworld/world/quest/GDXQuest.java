@@ -60,4 +60,9 @@ public class GDXQuest implements Serializable, Cloneable{
 		quest.setTrigger((AbstractQuestTrigger) trigger.clone());
 		return quest;
 	}
+	
+	@Override public String toString(){
+		return "[GDXQuest: name:" + name + " prereq:" + prerequisites + 
+				" manifestation:" + manifestation + " trigger:" + trigger + "]";
+	}
 }

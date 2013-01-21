@@ -18,4 +18,8 @@ public class AABBTrigger extends AbstractQuestTrigger {
 	@Override public Object clone(){
 		return new AABBTrigger(llx, lly, urx, ury);
 	}
+	
+	@Override public String toString() {
+		return "[AABBTrigger:"+llx+","+lly+","+urx+","+ury+"]";
+	}
 }

@@ -56,4 +56,9 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	@Override public Object clone() {
 		return new PhysicsManifestation(name, impulse, type, torque);
 	}
+
+	@Override public String toString() {
+		return "[PhysicsManifestation: name:" + name + " impulse:" + impulse + 
+				" type:" + type + " torque:" + torque + "]";
+	}
 }

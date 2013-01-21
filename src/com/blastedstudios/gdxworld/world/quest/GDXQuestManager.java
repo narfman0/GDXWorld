@@ -83,9 +83,15 @@ public class GDXQuestManager implements Serializable{
 	public boolean isActive(GDXQuest quest){
 		for(String prereq : quest.getPrerequisites().split(",")){
 			List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
-			if(statuses.contains(new QuestStatus(currentLevel.getName(), prereq)))
+			if(statuses.contains(new QuestStatus(currentLevel.getName(), prereq.trim())))
 				return false;
 		}
 		return true;
+	}
+	
+	public boolean isCompleted(GDXQuest quest){
+		QuestStatus representative = new QuestStatus(currentLevel.getName(), quest.getName());
+		representative.setCompleted(true);
+		return levelQuestStatusMap.get(currentLevel.getName()).contains(representative);
 	}
 }

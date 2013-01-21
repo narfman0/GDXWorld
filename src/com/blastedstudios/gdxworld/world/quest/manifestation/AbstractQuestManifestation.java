@@ -25,4 +25,5 @@ public abstract class AbstractQuestManifestation implements Cloneable,Serializab
 	}
 	
 	@Override abstract public Object clone();
+	@Override abstract public String toString();
 }
