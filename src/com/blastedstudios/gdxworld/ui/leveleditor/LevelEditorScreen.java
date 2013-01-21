@@ -91,6 +91,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			mouseMode.touchDown(x, y, x1, y1);
 		return false;
 	}
+	
+	@Override public boolean touchUp(int x, int y, int x1, int y1){
+		mouseMode.touchUp(x, y, x1, y1);
+		return false;
+	}
 
 	@Override public boolean scrolled(int amount) {
 		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
