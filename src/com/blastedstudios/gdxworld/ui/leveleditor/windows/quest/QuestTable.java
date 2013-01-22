@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.ui.leveleditor.windows;
+package com.blastedstudios.gdxworld.ui.leveleditor.windows.quest;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
-class QuestTable extends Table{
+public class QuestTable extends Table{
 	private final GDXQuest quest;
 	
 	public QuestTable(final Skin skin, String name, final GDXQuest quest, 
