@@ -6,22 +6,25 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class PhysicsManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
+	public static PhysicsManifestation DEFAULT = new PhysicsManifestation("Name",new Vector2(),BodyType.StaticBody,0);
 	/**
 	 * Name of physics object on which we execute tweaks
 	 */
-	private final String name;
+	private String name;
 	/**
 	 * Impulse to be executed on named physics object
 	 */
-	private final Vector2 impulse;
+	private Vector2 impulse;
 	/**
 	 * Changing body type, for instance, unlocking door
 	 */
-	private final BodyType type;
+	private BodyType type;
 	/**
 	 * Provide torque, likely to turn a wheel or similar
 	 */
-	private final float torque;
+	private float torque;
+	
+	public PhysicsManifestation(){}
 	
 	public PhysicsManifestation(String name, Vector2 impulse, BodyType type, float torque){
 		this.name = name;
@@ -41,16 +44,32 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Vector2 getImpulse() {
 		return impulse;
+	}
+
+	public void setImpulse(Vector2 impulse) {
+		this.impulse = impulse;
 	}
 
 	public BodyType getType() {
 		return type;
 	}
 
+	public void setType(BodyType type) {
+		this.type = type;
+	}
+
 	public float getTorque() {
 		return torque;
+	}
+
+	public void setTorque(float torque) {
+		this.torque = torque;
 	}
 
 	@Override public Object clone() {

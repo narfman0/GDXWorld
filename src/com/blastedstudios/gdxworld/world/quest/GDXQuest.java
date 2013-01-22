@@ -3,15 +3,17 @@ package com.blastedstudios.gdxworld.world.quest;
 import java.io.Serializable;
 
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
+import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
+import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 
 public class GDXQuest implements Serializable, Cloneable{
 	private static final long serialVersionUID = 1L;
 	private String name = "", prerequisites = "";
-	private AbstractQuestTrigger trigger;
-	private AbstractQuestManifestation manifestation;
+	private AbstractQuestTrigger trigger = new AABBTrigger(0, 0, 1, 1);
+	private AbstractQuestManifestation manifestation = (AbstractQuestManifestation) DialogManifestation.DEFAULT.clone();
 	
 	public GDXQuest initialize(IQuestTriggerInformationProvider provider,
 			IQuestManifestationExecutor executor){

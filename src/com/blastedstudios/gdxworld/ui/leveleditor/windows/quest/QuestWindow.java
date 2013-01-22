@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.QuestMouseMode;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
@@ -17,13 +18,16 @@ public class QuestWindow extends GDXWindow {
 	private final Skin skin;
 	private final Table questTable;
 	private final List<GDXQuest> quests;
+	private final LevelEditorScreen screen;
 	private static int questCount = 0;
+	private QuestEditor editor;
 	
 	public QuestWindow(final Skin skin, final List<GDXQuest> quests, 
-			final QuestMouseMode mouseMode) {
-		super("Quest Editor", skin);
+			final QuestMouseMode mouseMode, LevelEditorScreen screen) {
+		super("Quest Window", skin);
 		this.skin = skin;
 		this.quests = quests;
+		this.screen = screen;
 		questTable = new Table(skin);
 		ScrollPane scrollPane = new ScrollPane(questTable);
 		Button clearButton = new TextButton("Clear", skin);
@@ -56,7 +60,7 @@ public class QuestWindow extends GDXWindow {
 	}
 	
 	private QuestTable createQuestTable(GDXQuest quest){
-		return new QuestTable(skin, quest.getName(), quest, new QuestTable.QuestRemoveListener() {
+		return new QuestTable(skin, quest.getName(), quest, new QuestTable.QuestControlListener() {
 			@Override public void remove(GDXQuest quest) {
 				quests.remove(quest);
 				questTable.clear();
@@ -65,6 +69,19 @@ public class QuestWindow extends GDXWindow {
 					questTable.row();
 				}
 			}
+			@Override public void edit(GDXQuest quest) {
+				if(editor != null)
+					editor.remove();
+				screen.getStage().addActor(editor = new QuestEditor(quest, skin));
+			}
 		});
+	}
+	
+	@Override public boolean remove(){
+		return super.remove() && (editor == null || editor.remove());
+	}
+	
+	@Override public boolean contains(float x, float y){
+		return super.contains(x, y) || (editor != null && editor.contains(x, y));
 	}
 }

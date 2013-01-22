@@ -13,15 +13,22 @@ public class QuestTable extends Table{
 	private final GDXQuest quest;
 	
 	public QuestTable(final Skin skin, String name, final GDXQuest quest, 
-			final QuestRemoveListener listener){
+			final QuestControlListener listener){
 		this.quest = quest;
+		final Button editButton = new TextButton("Edit", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
+		editButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				listener.edit(quest);
+			}
+		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				listener.remove(quest);
 			}
 		});
 		add(new Label("Name: " + name, skin));
+		add(editButton);
 		add(deleteButton);
 	}
 	
@@ -29,7 +36,8 @@ public class QuestTable extends Table{
 		return quest;
 	}
 
-	public interface QuestRemoveListener{
+	public interface QuestControlListener{
 		public void remove(GDXQuest quest);
+		public void edit(GDXQuest quest);
 	}
 }

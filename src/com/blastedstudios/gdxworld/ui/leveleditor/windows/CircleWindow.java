@@ -54,7 +54,7 @@ public class CircleWindow extends GDXWindow {
 			}
 		});
 		final TextField nameField = new TextField("", skin);
-		nameField.setMessageText("<polygon name>");
+		nameField.setMessageText("<circle name>");
 		nameField.setText(circle.getName());
 		final TextField radiusField = new TextField("", skin);
 		radiusField.setMessageText("<radius>");

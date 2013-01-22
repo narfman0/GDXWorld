@@ -2,16 +2,19 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 public class DialogManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
+	public static DialogManifestation DEFAULT = new DialogManifestation("Dialog","Origin");
 	/**
 	 * Dialog contents, for example, "You brought five volume units of 
 	 * food, high five"
 	 */
-	private final String dialog;
+	private String dialog;
 	/**
 	 * Origin of the dialog, for example, a character name referring to an
 	 * NPC
 	 */
-	private final String origin;
+	private String origin;
+	
+	public DialogManifestation(){}
 	
 	public DialogManifestation(String dialog, String origin){
 		this.dialog = dialog;
@@ -22,8 +25,16 @@ public class DialogManifestation extends AbstractQuestManifestation{
 		return dialog;
 	}
 	
+	public void setDialog(String dialog) {
+		this.dialog = dialog;
+	}
+
 	public String getOrigin() {
 		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 	@Override public void execute() {

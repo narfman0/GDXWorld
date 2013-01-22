@@ -13,7 +13,7 @@ public class QuestMouseMode extends AbstractMouseMode {
 	public QuestMouseMode(LevelEditorScreen screen) {
 		super(screen.getCamera());
 		this.screen = screen;
-		questWindow = new QuestWindow(screen.getSkin(), screen.getLevel().getQuests(), this);
+		questWindow = new QuestWindow(screen.getSkin(), screen.getLevel().getQuests(), this, screen);
 		screen.getStage().addActor(questWindow);
 	}
 
