@@ -1,20 +1,19 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.mousemode;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.physics.CollideCallback;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 
-public class LiveMouseMode extends LevelMouseMode {
+public class LiveMouseMode extends AbstractMouseMode {
 	private LevelEditorScreen screen;
 	private Body lastTouchPolygon;
 	private Vector2 lastTouchCoordinates, lastTouchPolygonLocalCoordinates;
 	
-	public LiveMouseMode(Camera camera, LevelEditorScreen screen){
-		super(camera);
+	public LiveMouseMode(LevelEditorScreen screen){
+		super(screen.getCamera());
 		this.screen = screen;
 	}
 	

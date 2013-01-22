@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class LevelMouseMode {
+public abstract class AbstractMouseMode {
 	protected final Camera camera;
 	protected Vector2 coordinates;
 	
-	public LevelMouseMode(Camera camera){
+	public AbstractMouseMode(Camera camera){
 		this.camera = camera;
 	}
 	

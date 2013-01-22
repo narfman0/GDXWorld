@@ -18,15 +18,14 @@ public class VertexTable extends Table {
 	 * @param listener used only in a list to delete vertex. if null, does not
 	 * add delete button
 	 */
-	public VertexTable(Vector2 vertex, final Skin skin, final VertexRemoveListener listener){
+	public VertexTable(final Vector2 vertex, final Skin skin, final VertexRemoveListener listener){
 		this.vertex = vertex;
-		final VertexTable table = this;
 		final Button deleteButton = new TextButton("Delete", skin);
 		coordXLabel = new TextField(vertex.x+"", skin);
 		coordYLabel = new TextField(vertex.y+"", skin);
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				listener.remove(table.getVertex());
+				listener.remove(vertex);
 			}
 		});
 		add(coordXLabel);

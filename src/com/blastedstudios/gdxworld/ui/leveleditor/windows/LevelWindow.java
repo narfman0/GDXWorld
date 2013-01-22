@@ -17,12 +17,14 @@ import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.LiveMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.NPCMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PathMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PolygonMouseMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.QuestMouseMode;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelWindow extends GDXWindow{
-	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox, circleBox;
+	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox, 
+		circleBox, questBox;
 	private final LevelEditorScreen levelEditorScreen;
 	
 	public LevelWindow(final GDXWorldEditor game, final Skin skin, 
@@ -37,6 +39,7 @@ public class LevelWindow extends GDXWindow{
 		npcBox = new CheckBox("NPC", skin);
 		pathBox = new CheckBox("Path", skin);
 		jointBox = new CheckBox("Joint", skin);
+		questBox = new CheckBox("Quest", skin);
 		liveBox = new CheckBox("Live", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -52,35 +55,42 @@ public class LevelWindow extends GDXWindow{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				polygonBox.setChecked(true);
-				levelEditorScreen.setMouseMode(new PolygonMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new PolygonMouseMode(levelEditorScreen));
 			}
 		});
 		circleBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				circleBox.setChecked(true);
-				levelEditorScreen.setMouseMode(new CircleMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new CircleMouseMode(levelEditorScreen));
 			}
 		});
 		npcBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				npcBox.setChecked(true);
-				levelEditorScreen.setMouseMode(new NPCMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new NPCMouseMode(levelEditorScreen));
 			}
 		});
 		pathBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				pathBox.setChecked(true);
-				levelEditorScreen.setMouseMode(new PathMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new PathMouseMode(levelEditorScreen));
 			}
 		});
 		jointBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				resetState();
 				jointBox.setChecked(true);
-				levelEditorScreen.setMouseMode(new JointMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new JointMouseMode(levelEditorScreen));
+			}
+		});
+		questBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				resetState();
+				questBox.setChecked(true);
+				levelEditorScreen.setMouseMode(new QuestMouseMode(levelEditorScreen));
 			}
 		});
 		liveBox.addListener(new ClickListener() {
@@ -88,20 +98,20 @@ public class LevelWindow extends GDXWindow{
 				resetState();
 				liveBox.setChecked(true);
 				levelEditorScreen.setLive(true);
-				levelEditorScreen.setMouseMode(new LiveMouseMode(levelEditorScreen.getCamera(), levelEditorScreen));
+				levelEditorScreen.setMouseMode(new LiveMouseMode(levelEditorScreen));
 			}
 		});
 		polygonBox.setChecked(true);
-		add(clearButton);
-		add(backButton);
-		row();
 		add(new Label("Mode:", skin));
 		add(polygonBox);
 		add(circleBox);
 		add(npcBox);
 		add(pathBox);
 		add(jointBox);
+		add(questBox);
 		add(liveBox);
+		add(clearButton);
+		add(backButton);
 		pack();
 		setY(Gdx.graphics.getHeight() - getHeight());
 	}
@@ -113,6 +123,7 @@ public class LevelWindow extends GDXWindow{
 		npcBox.setChecked(false);
 		pathBox.setChecked(false);
 		jointBox.setChecked(false);
+		questBox.setChecked(false);
 		liveBox.setChecked(false);
 	}
 }

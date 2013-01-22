@@ -3,19 +3,18 @@ package com.blastedstudios.gdxworld.ui.leveleditor.mousemode;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.CircleWindow;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
-public class CircleMouseMode extends LevelMouseMode {
+public class CircleMouseMode extends AbstractMouseMode {
 	private CircleWindow circleWindow;
 	private LevelEditorScreen screen;
 	
-	public CircleMouseMode(Camera camera, LevelEditorScreen screen){
-		super(camera);
+	public CircleMouseMode(LevelEditorScreen screen){
+		super(screen.getCamera());
 		this.screen = screen;
 	}
 	

@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.ui.leveleditor.mousemode;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -12,12 +11,12 @@ import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.NPCWindow;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 
-public class NPCMouseMode extends LevelMouseMode {
+public class NPCMouseMode extends AbstractMouseMode {
 	private LevelEditorScreen screen;
 	private NPCWindow npcWindow;
 	
-	public NPCMouseMode(Camera camera, LevelEditorScreen screen){
-		super(camera);
+	public NPCMouseMode(LevelEditorScreen screen){
+		super(screen.getCamera());
 		this.screen = screen;
 	}
 	

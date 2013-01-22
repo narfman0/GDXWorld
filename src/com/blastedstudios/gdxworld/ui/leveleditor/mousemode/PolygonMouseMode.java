@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -15,12 +14,12 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
-public class PolygonMouseMode extends LevelMouseMode {
+public class PolygonMouseMode extends AbstractMouseMode {
 	private PolygonWindow polygonWindow;
 	private LevelEditorScreen screen;
 	
-	public PolygonMouseMode(Camera camera, LevelEditorScreen screen){
-		super(camera);
+	public PolygonMouseMode(LevelEditorScreen screen){
+		super(screen.getCamera());
 		this.screen = screen;
 	}
 
