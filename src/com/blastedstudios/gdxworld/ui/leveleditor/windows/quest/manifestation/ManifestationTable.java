@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
 public abstract class ManifestationTable extends Table{
-	public ManifestationTable(final Skin skin, AbstractQuestManifestation manifestation){
+	public ManifestationTable(final Skin skin){
 		super(skin);
 	}
 	

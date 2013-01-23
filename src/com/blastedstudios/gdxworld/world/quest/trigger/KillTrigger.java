@@ -2,9 +2,20 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 
 public class KillTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
-	private final String name;
+	public static final KillTrigger DEFAULT = new KillTrigger("Name");
+	private String name = "";
+	
+	public KillTrigger(){}
 	
 	public KillTrigger(String name){
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
 		this.name = name;
 	}
 

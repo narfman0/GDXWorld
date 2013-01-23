@@ -14,14 +14,23 @@ import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.DialogManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.ManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.PhysicsManifestationTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.AABBTriggerTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.KillTriggerTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.PersonTriggerTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.TriggerTable;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.PhysicsManifestation;
+import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
+import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
+import com.blastedstudios.gdxworld.world.quest.trigger.KillTrigger;
+import com.blastedstudios.gdxworld.world.quest.trigger.PersonTrigger;
 
 public class QuestEditor extends GDXWindow {
-	private ManifestationTable table;
-	private Table parentManifestationTable;
+	private ManifestationTable manifestationTable;
+	private TriggerTable triggerTable;
+	private final Table parentManifestationTable, parentTriggerTable;
 	
 	public QuestEditor(final GDXQuest quest, final Skin skin) {
 		super("Quest Editor", skin);
@@ -36,18 +45,54 @@ public class QuestEditor extends GDXWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				quest.setName(nameField.getText());
 				quest.setPrerequisites(prerequisiteField.getText());
-				quest.setManifestation(table.apply());
+				quest.setTrigger(triggerTable.apply());
+				quest.setManifestation(manifestationTable.apply());
 				remove();
 			}
 		});
-		final CheckBox dialogBox = new CheckBox("Dialog", skin), 
+		final CheckBox aabbBox = new CheckBox("AABB", skin), 
+				killBox = new CheckBox("Kill", skin), 
+				personBox = new CheckBox("Person", skin), 
+				dialogBox = new CheckBox("Dialog", skin), 
 				physicsBox = new CheckBox("Physics", skin);
 		parentManifestationTable = new Table();
+		parentTriggerTable = new Table();
 		createManifestationTable(skin, quest.getManifestation());
+		createTriggerTable(skin, quest.getTrigger());
+		if(quest.getTrigger() instanceof AABBTrigger)
+			aabbBox.setChecked(true);
+		else if(quest.getTrigger() instanceof KillTrigger)
+			killBox.setChecked(true);
+		else if(quest.getTrigger() instanceof PersonTrigger)
+			personBox.setChecked(true);
 		if(quest.getManifestation() instanceof DialogManifestation)
 			dialogBox.setChecked(true);
 		else if(quest.getManifestation() instanceof PhysicsManifestation)
 			physicsBox.setChecked(true);
+		aabbBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				killBox.setChecked(false);
+				personBox.setChecked(false);
+				createTriggerTable(skin, (AbstractQuestTrigger)AABBTrigger.DEFAULT.clone());
+				pack();
+			}
+		});
+		killBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				aabbBox.setChecked(false);
+				personBox.setChecked(false);
+				createTriggerTable(skin, (AbstractQuestTrigger)KillTrigger.DEFAULT.clone());
+				pack();
+			}
+		});
+		personBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				aabbBox.setChecked(false);
+				killBox.setChecked(false);
+				createTriggerTable(skin, (AbstractQuestTrigger)PersonTrigger.DEFAULT.clone());
+				pack();
+			}
+		});
 		dialogBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				physicsBox.setChecked(false);
@@ -68,6 +113,13 @@ public class QuestEditor extends GDXWindow {
 		add(new Label("Prerequisites: ", skin));
 		add(prerequisiteField);
 		row();
+		add(new Label("Trigger Type: ", skin));
+		add(aabbBox);
+		add(killBox);
+		add(personBox);
+		row();
+		add(parentTriggerTable).colspan(3);
+		row();
 		add(new Label("Manifestation Type: ", skin));
 		add(dialogBox);
 		add(physicsBox);
@@ -82,14 +134,28 @@ public class QuestEditor extends GDXWindow {
 	}
 	
 	private ManifestationTable createManifestationTable(Skin skin, AbstractQuestManifestation manifestation){
-		if(table != null)
-			table.remove();
+		if(manifestationTable != null)
+			manifestationTable.remove();
 		if(manifestation instanceof DialogManifestation)
-			table = new DialogManifestationTable(skin, (DialogManifestation) manifestation);
-		else// if(manifestation instanceof PhysicsManifestation)
-			table = new PhysicsManifestationTable(skin, (PhysicsManifestation) manifestation);
+			manifestationTable = new DialogManifestationTable(skin, (DialogManifestation) manifestation);
+		else if(manifestation instanceof PhysicsManifestation)
+			manifestationTable = new PhysicsManifestationTable(skin, (PhysicsManifestation) manifestation);
 		parentManifestationTable.clear();
-		parentManifestationTable.add(table);
-		return table;
+		parentManifestationTable.add(manifestationTable);
+		return manifestationTable;
+	}
+	
+	private TriggerTable createTriggerTable(Skin skin, AbstractQuestTrigger trigger){
+		if(triggerTable != null)
+			triggerTable.remove();
+		if(trigger instanceof AABBTrigger)
+			triggerTable = new AABBTriggerTable(skin, (AABBTrigger) trigger);
+		else if(trigger instanceof KillTrigger)
+			triggerTable = new KillTriggerTable(skin, (KillTrigger) trigger);
+		else if(trigger instanceof PersonTrigger)
+			triggerTable = new PersonTriggerTable(skin, (PersonTrigger) trigger);
+		parentTriggerTable.clear();
+		parentTriggerTable.add(triggerTable);
+		return triggerTable;
 	}
 }

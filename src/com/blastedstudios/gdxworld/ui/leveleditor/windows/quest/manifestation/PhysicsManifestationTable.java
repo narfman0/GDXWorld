@@ -16,7 +16,7 @@ public class PhysicsManifestationTable extends ManifestationTable {
 	private final PhysicsManifestation manifestation;
 	
 	public PhysicsManifestationTable(Skin skin, PhysicsManifestation manifestation) {
-		super(skin, manifestation);
+		super(skin);
 		this.manifestation = manifestation;
 		nameText = new TextField(manifestation.getName(), skin);
 		nameText.setMessageText("<name>");

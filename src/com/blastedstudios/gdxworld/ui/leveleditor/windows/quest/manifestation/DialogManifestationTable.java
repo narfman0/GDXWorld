@@ -11,7 +11,7 @@ public class DialogManifestationTable extends ManifestationTable {
 	private final DialogManifestation manifestation;
 	
 	public DialogManifestationTable(Skin skin, DialogManifestation manifestation) {
-		super(skin, manifestation);
+		super(skin);
 		this.manifestation = manifestation;
 		dialogText = new TextField(manifestation.getDialog(), skin);
 		dialogText.setMessageText("<dialog text>");
