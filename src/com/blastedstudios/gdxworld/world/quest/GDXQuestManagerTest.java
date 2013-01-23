@@ -58,6 +58,9 @@ public class GDXQuestManagerTest {
 				Gdx.app.log("QuestManifestationExecutor.addDialog", 
 						"Dialog received:" + dialog + " origin: " + origin);
 			}
+			@Override public void endLevel(boolean success) {
+				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);
+			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {
 			@Override public boolean isDead(String name) {

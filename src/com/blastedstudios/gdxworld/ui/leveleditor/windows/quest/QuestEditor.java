@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.DialogManifestationTable;
+import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.EndLevelManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.ManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.PhysicsManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.AABBTriggerTable;
@@ -21,6 +22,7 @@ import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.trigger.TriggerT
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
+import com.blastedstudios.gdxworld.world.quest.manifestation.EndLevelManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.PhysicsManifestation;
 import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
@@ -54,6 +56,7 @@ public class QuestEditor extends GDXWindow {
 				killBox = new CheckBox("Kill", skin), 
 				personBox = new CheckBox("Person", skin), 
 				dialogBox = new CheckBox("Dialog", skin), 
+				endLevelBox = new CheckBox("End level", skin), 
 				physicsBox = new CheckBox("Physics", skin);
 		parentManifestationTable = new Table();
 		parentTriggerTable = new Table();
@@ -69,6 +72,8 @@ public class QuestEditor extends GDXWindow {
 			dialogBox.setChecked(true);
 		else if(quest.getManifestation() instanceof PhysicsManifestation)
 			physicsBox.setChecked(true);
+		else if(quest.getManifestation() instanceof EndLevelManifestation)
+			endLevelBox.setChecked(true);
 		aabbBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				killBox.setChecked(false);
@@ -96,13 +101,23 @@ public class QuestEditor extends GDXWindow {
 		dialogBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				physicsBox.setChecked(false);
+				endLevelBox.setChecked(false);
 				createManifestationTable(skin, (AbstractQuestManifestation) DialogManifestation.DEFAULT.clone());
+				pack();
+			}
+		});
+		endLevelBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				dialogBox.setChecked(false);
+				physicsBox.setChecked(false);
+				createManifestationTable(skin, (AbstractQuestManifestation) EndLevelManifestation.DEFAULT.clone());
 				pack();
 			}
 		});
 		physicsBox.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				dialogBox.setChecked(false);
+				endLevelBox.setChecked(false);
 				createManifestationTable(skin, (AbstractQuestManifestation) PhysicsManifestation.DEFAULT.clone());
 				pack();
 			}
@@ -122,6 +137,7 @@ public class QuestEditor extends GDXWindow {
 		row();
 		add(new Label("Manifestation Type: ", skin));
 		add(dialogBox);
+		add(endLevelBox);
 		add(physicsBox);
 		row();
 		add(parentManifestationTable).colspan(3);
@@ -140,6 +156,8 @@ public class QuestEditor extends GDXWindow {
 			manifestationTable = new DialogManifestationTable(skin, (DialogManifestation) manifestation);
 		else if(manifestation instanceof PhysicsManifestation)
 			manifestationTable = new PhysicsManifestationTable(skin, (PhysicsManifestation) manifestation);
+		else if(manifestation instanceof EndLevelManifestation)
+			manifestationTable = new EndLevelManifestationTable(skin, (EndLevelManifestation) manifestation);
 		parentManifestationTable.clear();
 		parentManifestationTable.add(manifestationTable);
 		return manifestationTable;

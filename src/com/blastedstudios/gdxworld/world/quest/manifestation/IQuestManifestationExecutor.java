@@ -17,4 +17,9 @@ public interface IQuestManifestationExecutor {
 	 * name string, or use GDXShape user data and map name, or whatever
 	 */
 	public Body getPhysicsObject(String name);
+	
+	/**
+	 * @param success true if level complete, false if beating criteria failed
+	 */
+	public void endLevel(boolean success);
 }
