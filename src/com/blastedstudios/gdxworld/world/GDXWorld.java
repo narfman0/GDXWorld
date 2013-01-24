@@ -14,10 +14,8 @@ import com.badlogic.gdx.Gdx;
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<GDXLevel> levels;
-	private String name;
 
-	public GDXWorld(String name){
-		this.name = name;
+	public GDXWorld(){
 		levels = new ArrayList<GDXLevel>();
 	}
 
@@ -108,7 +106,7 @@ public class GDXWorld implements Serializable{
 				return world;
 			}catch(Exception e){
 				try{
-					GDXWorld world = new GDXWorld(selectedFile.getName().replaceAll(File.pathSeparator, ""));
+					GDXWorld world = new GDXWorld();
 					for(File file : selectedFile.listFiles()){
 						FileInputStream fin = new FileInputStream(file);
 						ObjectInputStream in = new ObjectInputStream(fin);
@@ -142,15 +140,7 @@ public class GDXWorld implements Serializable{
 		return closest;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	@Override public String toString(){
-		return "[GDXWorld: " + name + "]";
+		return "[GDXWorld]";
 	}
 }
