@@ -73,6 +73,16 @@ public class GDXLevel implements Cloneable,Serializable{
 			prereqs += prereq + ",";
 		return prereqs.substring(0,prereqs.length()-1);
 	}
+	
+	/**
+	 * Iterate over all npcs and if matched, return one with the given name
+	 */
+	public GDXNPC getNPC(String name){
+		for(GDXNPC npc : npcs)
+			if(npc.getName().equals(name))
+				return npc;
+		return null;
+	}
 
 	public List<GDXNPC> getNpcs() {
 		return npcs;
@@ -84,6 +94,16 @@ public class GDXLevel implements Cloneable,Serializable{
 
 	public List<GDXPath> getPaths() {
 		return paths;
+	}
+	
+	/**
+	 * Iterate over all paths and if matched, return path with the given name
+	 */
+	public GDXPath getPath(String name){
+		for(GDXPath path : paths)
+			if(path.getName().equals(name))
+				return path;
+		return null;
 	}
 
 	public void setPaths(List<GDXPath> paths) {
