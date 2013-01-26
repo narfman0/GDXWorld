@@ -71,4 +71,12 @@ public class GearJoint extends GDXJoint {
 		return center.cpy();
 	}
 
+	@Override public Object clone() {
+		GearJoint clone = new GearJoint(center.cpy());
+		clone.setJoint1(joint1);
+		clone.setJoint2(joint2);
+		clone.setRatio(ratio);
+		return super.clone(clone);
+	}
+
 }

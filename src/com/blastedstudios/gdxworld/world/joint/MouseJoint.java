@@ -34,8 +34,8 @@ public class MouseJoint extends GDXJoint {
 		return frequencyHz;
 	}
 
-	public void setFrequencyHz(float frequency) {
-		this.frequencyHz = frequency;
+	public void setFrequencyHz(float frequencyHz) {
+		this.frequencyHz = frequencyHz;
 	}
 
 	public float getMaxForce() {
@@ -48,5 +48,13 @@ public class MouseJoint extends GDXJoint {
 
 	@Override public Vector2 getCenter() {
 		return center.cpy();
+	}
+
+	@Override public Object clone() {
+		MouseJoint clone = new MouseJoint(center.cpy());
+		clone.setDampeningRatio(dampeningRatio);
+		clone.setFrequencyHz(frequencyHz);
+		clone.setMaxForce(maxForce);
+		return super.clone(clone);
 	}
 }

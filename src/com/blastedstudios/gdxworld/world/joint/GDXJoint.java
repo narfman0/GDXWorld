@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class GDXJoint implements Serializable {
+public abstract class GDXJoint implements Cloneable,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name = "", bodyA = "", bodyB = "";
 	private JointType jointType = JointType.RevoluteJoint;
@@ -102,4 +102,15 @@ public abstract class GDXJoint implements Serializable {
 	}
 	
 	public abstract Vector2 getCenter();
+	
+	@Override public abstract Object clone();
+	
+	protected Object clone(GDXJoint clone){
+		clone.setBodyA(bodyA);
+		clone.setBodyB(bodyB);
+		clone.setCollideConnected(collideConnected);
+		clone.setJointType(jointType);
+		clone.setName(name);
+		return clone;
+	}
 }

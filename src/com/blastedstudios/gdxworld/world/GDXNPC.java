@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class GDXNPC implements Serializable{
+public class GDXNPC implements  Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name = "", faction = "", resource = "";
 	/**
@@ -70,5 +70,16 @@ public class GDXNPC implements Serializable{
 	
 	@Override public String toString(){
 		return "[GDXNPC: " + name + coordinates + " path:" + path + " behavior: " + behavior + "]";
+	}
+	
+	@Override public Object clone(){
+		GDXNPC npc = new GDXNPC();
+		npc.setBehavior(behavior);
+		npc.setCoordinates(coordinates.cpy());
+		npc.setFaction(faction);
+		npc.setName(name);
+		npc.setPath(path);
+		npc.setResource(resource);
+		return npc;
 	}
 }

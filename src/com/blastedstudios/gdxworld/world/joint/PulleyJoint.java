@@ -81,4 +81,16 @@ public class PulleyJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchorA.cpy().add(anchorB).div(2);
 	}
+
+	@Override public Object clone() {
+		PulleyJoint clone = new PulleyJoint();
+		clone.setAnchorA(anchorA.cpy());
+		clone.setAnchorB(anchorB.cpy());
+		clone.setGroundAnchorA(groundAnchorA.cpy());
+		clone.setGroundAnchorB(groundAnchorB.cpy());
+		clone.setLengthA(lengthA);
+		clone.setLengthB(lengthB);
+		clone.setRatio(ratio);
+		return super.clone(clone);
+	}
 }

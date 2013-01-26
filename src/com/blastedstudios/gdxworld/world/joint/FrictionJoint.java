@@ -47,4 +47,12 @@ public class FrictionJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
+
+	@Override public Object clone() {
+		FrictionJoint clone = new FrictionJoint();
+		clone.setAnchor(anchor);
+		clone.setMaxForce(maxForce);
+		clone.setMaxTorque(maxTorque);
+		return super.clone(clone);
+	}
 }

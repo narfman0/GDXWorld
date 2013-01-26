@@ -33,4 +33,10 @@ public class GDXCircle extends GDXShape {
 	@Override public float getDistance(float x, float y) {
 		return Math.max(0, center.dst(x, y) - radius);
 	}
+
+	@Override public Object clone() {
+		GDXCircle clone = new GDXCircle();
+		clone.setRadius(radius);
+		return super.clone(clone);
+	}
 }

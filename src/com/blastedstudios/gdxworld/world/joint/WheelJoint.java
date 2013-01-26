@@ -83,4 +83,16 @@ public class WheelJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
+
+	@Override public Object clone() {
+		WheelJoint clone = new WheelJoint();
+		clone.setAnchor(anchor.cpy());
+		clone.setAxis(axis.cpy());
+		clone.setDampingRatio(dampingRatio);
+		clone.setEnableMotor(enableMotor);
+		clone.setFrequencyHz(frequencyHz);
+		clone.setMaxMotorTorque(maxMotorTorque);
+		clone.setMotorSpeed(motorSpeed);
+		return super.clone(clone);
+	}
 }

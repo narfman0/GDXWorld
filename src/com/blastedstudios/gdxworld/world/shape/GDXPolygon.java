@@ -67,4 +67,11 @@ public class GDXPolygon extends GDXShape implements Serializable{
 			closestDistance = Math.min(closestDistance, vertex.cpy().add(center).dst2(x, y));
 		return (float) Math.sqrt(closestDistance);//just doing one sqrt, assuming its faster..?
 	}
+
+	@Override public Object clone() {
+		GDXPolygon clone = new GDXPolygon();
+		for(Vector2 vertex : vertices)
+			clone.getVertices().add(vertex.cpy());
+		return super.clone(clone);
+	}
 }

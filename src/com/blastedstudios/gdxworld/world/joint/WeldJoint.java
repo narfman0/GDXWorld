@@ -38,4 +38,11 @@ public class WeldJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
+
+	@Override public Object clone() {
+		WeldJoint clone = new WeldJoint();
+		clone.setAnchor(anchor.cpy());
+		clone.setReferenceAngle(referenceAngle);
+		return super.clone(clone);
+	}
 }

@@ -16,7 +16,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
-public class GDXLevel implements Serializable{
+public class GDXLevel implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private final List<GDXShape> shapes = new ArrayList<GDXShape>();
 	private String name = "";
@@ -193,5 +193,23 @@ public class GDXLevel implements Serializable{
 
 	@Override public String toString(){
 		return "[GDXLevel name:" + name + " coords:" + coordinates + "]";
+	}
+	
+	@Override public Object clone(){
+		GDXLevel level = new GDXLevel();
+		level.setCoordinates(coordinates.cpy());
+		for(GDXJoint joint : joints)
+			level.getJoints().add((GDXJoint) joint.clone());
+		for(GDXShape shape : shapes)
+			level.getShapes().add((GDXShape) shape.clone());
+		for(String prereq : prerequisites)
+			level.getPrerequisites().add(prereq);
+		for(GDXNPC npc : npcs)
+			level.getNpcs().add((GDXNPC) npc.clone());
+		for(GDXPath path : paths)
+			level.getPaths().add((GDXPath) path.clone());
+		for(GDXQuest quest : quests)
+			level.getQuests().add((GDXQuest) quest.clone());
+		return level;
 	}
 }

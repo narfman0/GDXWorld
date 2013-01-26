@@ -33,8 +33,8 @@ public class DistanceJoint extends GDXJoint {
 		return frequencyHz;
 	}
 
-	public void setFrequencyHz(float frequency) {
-		this.frequencyHz = frequency;
+	public void setFrequencyHz(float frequencyHz) {
+		this.frequencyHz = frequencyHz;
 	}
 
 	public float getLength() {
@@ -63,5 +63,15 @@ public class DistanceJoint extends GDXJoint {
 
 	@Override public Vector2 getCenter() {
 		return anchorA.cpy().add(anchorB).div(2);
+	}
+
+	@Override public Object clone() {
+		DistanceJoint clone = new DistanceJoint();
+		clone.setAnchorA(anchorA);
+		clone.setAnchorB(anchorB);
+		clone.setDampeningRatio(dampeningRatio);
+		clone.setFrequencyHz(frequencyHz);
+		clone.setLength(length);
+		return super.clone(clone);
 	}
 }

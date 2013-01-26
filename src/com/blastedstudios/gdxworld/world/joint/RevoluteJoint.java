@@ -84,4 +84,16 @@ public class RevoluteJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
+
+	@Override public Object clone() {
+		RevoluteJoint clone = new RevoluteJoint();
+		clone.setAnchor(anchor.cpy());
+		clone.setEnableLimit(enableLimit);
+		clone.setEnableMotor(enableMotor);
+		clone.setLowerAngle(lowerAngle);
+		clone.setMaxMotorTorque(maxMotorTorque);
+		clone.setMotorSpeed(motorSpeed);
+		clone.setReferenceAngle(referenceAngle);
+		return super.clone(clone);
+	}
 }

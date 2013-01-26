@@ -93,4 +93,17 @@ public class PrismaticJoint extends GDXJoint {
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
+
+	@Override public Object clone() {
+		PrismaticJoint clone = new PrismaticJoint();
+		clone.setAnchor(anchor.cpy());
+		clone.setAxis(axis.cpy());
+		clone.setEnableLimit(enableLimit);
+		clone.setEnableMotor(enableMotor);
+		clone.setLowerTranslation(lowerTranslation);
+		clone.setMaxMotorForce(maxMotorForce);
+		clone.setMotorSpeed(motorSpeed);
+		clone.setReferenceAngle(referenceAngle);
+		return super.clone(clone);
+	}
 }
