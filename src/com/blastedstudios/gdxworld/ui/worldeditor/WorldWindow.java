@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 
 import com.badlogic.gdx.Gdx;
@@ -14,10 +16,15 @@ import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldWindow extends GDXWindow{
-	public WorldWindow(final GDXWorldEditor game, final Skin skin, final GDXWorld gdxWorld) {
+	private File lastSavedFile;
+	
+	public WorldWindow(final GDXWorldEditor game, final Skin skin, final GDXWorld gdxWorld, 
+			File savedFile) {
 		super("World Editor", skin);
+		this.lastSavedFile = savedFile;
 		final Button clearButton = new TextButton("Clear", skin);
 		final Button saveButton = new TextButton("Save", skin);
+		final Button saveAsButton = new TextButton("Save As...", skin);
 		final Button backButton = new TextButton("Back", skin);
 		final Button exitButton = new TextButton("Exit", skin);
 		clearButton.addListener(new ClickListener() {
@@ -27,9 +34,19 @@ public class WorldWindow extends GDXWindow{
 		});
 		saveButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				gdxWorld.save(lastSavedFile);
+			}
+		});
+		saveAsButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
 				final JFileChooser fc = new JFileChooser();
 				fc.showSaveDialog(null);
-				gdxWorld.save(fc.getSelectedFile());
+				if(fc.getSelectedFile() != null && fc.getSelectedFile().canWrite()){
+					gdxWorld.save(lastSavedFile = fc.getSelectedFile());
+					saveButton.setDisabled(false);
+				}else
+					Gdx.app.error("WorldWindow.saveAsButton ClickListener", 
+							"Selected file null or not writable");
 			}
 		});
 		backButton.addListener(new ClickListener() {
@@ -42,9 +59,12 @@ public class WorldWindow extends GDXWindow{
 				Gdx.app.exit();
 			}
 		});
+		saveButton.setDisabled(lastSavedFile == null || !lastSavedFile.canRead());
 		add(clearButton);
 		row();
 		add(saveButton);
+		row();
+		add(saveAsButton);
 		row();
 		add(backButton);
 		row();

@@ -13,7 +13,7 @@ public class GDXWorldEditor extends Game {
 	
 	@Override public void create () {
 		if(loadFile != null && loadFile.canRead())
-			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile)));
+			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
 		else
 			setScreen(new MainScreen(this));
 	}

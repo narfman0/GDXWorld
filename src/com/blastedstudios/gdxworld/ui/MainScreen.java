@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.ui;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 
 import com.badlogic.gdx.Gdx;
@@ -20,15 +22,19 @@ public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 		final Button exitButton = new TextButton("Exit", skin);
 		newButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new WorldEditorScreen(game, new GDXWorld()));
+				game.setScreen(new WorldEditorScreen(game, null, null));
 			}
 		});
 		loadButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				final JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(null);
-				GDXWorld loaded = GDXWorld.load(fc.getSelectedFile());
-				game.setScreen(new WorldEditorScreen(game, loaded == null ? new GDXWorld() : loaded));
+				if(fc.getSelectedFile() != null && fc.getSelectedFile().canRead()){
+					File file = fc.getSelectedFile();
+					game.setScreen(new WorldEditorScreen(game, GDXWorld.load(file), file));
+				}else
+					Gdx.app.error("MainScreen.loadButton ClickListener", 
+							"Selected file null or not readable");
 			}
 		});
 		exitButton.addListener(new ClickListener() {

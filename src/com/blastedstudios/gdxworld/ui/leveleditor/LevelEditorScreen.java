@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private boolean live;
 	private AbstractMouseMode mouseMode;
 	
-	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
+	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, 
+			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
-		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this));
+		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
 		mouseMode = new PolygonMouseMode(this);
 		camera.zoom += 3;
 		resetLevel();

@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
+import java.io.File;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
@@ -27,11 +28,14 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private GDXWindow worldWindow;
 	private final GDXWorld gdxWorld;
 	private HashMap<GDXLevel, Body> bodies = new HashMap<GDXLevel, Body>();
+	private File lastSavedFile;
 	
-	public WorldEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld){
+	public WorldEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld,
+			File lastSavedFile){
 		super(game);
-		this.gdxWorld = gdxWorld;
-		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld));
+		this.lastSavedFile = lastSavedFile;
+		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
+		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
 		for(GDXLevel level : gdxWorld.getLevels())
 			add(level);
 		camera.zoom += 3;
@@ -64,7 +68,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 						Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
 					}else
 						Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
-					levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level);
+					levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level, lastSavedFile);
 					stage.addActor(levelInfo);
 				}else
 					levelInfo.setCoordinates(coordinates.x, coordinates.y);
