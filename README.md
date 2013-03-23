@@ -67,6 +67,22 @@ before the editor was brought up.
 ### Circle
 See Polygon above, but this time in circles
 
+### Background
+Background mode is the interface through which the user may put down images
+that do not get loaded into the physics world upon level load. It is up to
+the user to render these, and a reference GDXRenderer is included for using
+backgrounds faster.
+
+Background support parallax scrolling 
+http://en.wikipedia.org/wiki/Parallax_scrolling. This is handled primarily
+through the "depth" attribute. This attribute will scale the texture in size
+and will offset it linearly according to camera position. A depth of 0 is 
+on the camera (and this invalid/never visible), 0-1 is the foreground up to
+the physics plane, 1 is the physics plane a.k.a. midground, and greater than 1
+means the object is being drawn in the background. The reference implementation
+code for offsetting according to depth is the following line:
+xy.sub(camera.position.x, camera.position.y).div(scale)
+
 ### NPC
 NPC editor defines what we view as "keys" to other properties. After naming 
 said npc, the behavior could be used as a reference to the a.i. (in my case

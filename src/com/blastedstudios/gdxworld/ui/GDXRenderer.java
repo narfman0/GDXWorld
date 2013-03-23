@@ -33,7 +33,7 @@ public class GDXRenderer {
 				Texture texture = getTexture(background.getTexture());
 				if(texture != null){
 					float scale = Math.max(background.getDepth(), .001f);
-					Vector2 offset = new Vector2(texture.getWidth()/scale/2f,texture.getHeight()/scale/2f);
+					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).div(scale/2f);
 					Vector2 xy = new Vector2(background.getCoordinates()).sub(offset);
 					xy.sub(camera.position.x, camera.position.y).div(scale);//parallax scrolling effect
 					batch.draw(texture, xy.x, xy.y, texture.getWidth()/scale, texture.getHeight()/scale);
