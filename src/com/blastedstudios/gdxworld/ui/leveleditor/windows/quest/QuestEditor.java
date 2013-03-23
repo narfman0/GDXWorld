@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.DialogManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.EndLevelManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.manifestation.ManifestationTable;
@@ -29,7 +29,7 @@ import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.KillTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.PersonTrigger;
 
-public class QuestEditor extends GDXWindow {
+public class QuestEditor extends AbstractWindow {
 	private ManifestationTable manifestationTable;
 	private TriggerTable triggerTable;
 	private final Table parentManifestationTable, parentTriggerTable;

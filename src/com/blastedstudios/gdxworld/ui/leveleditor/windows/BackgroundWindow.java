@@ -9,12 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.BackgroundMouseMode;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 
-public class BackgroundWindow extends GDXWindow {
+public class BackgroundWindow extends AbstractWindow {
 	private final VertexTable centerTable;
 	
 	public BackgroundWindow(final Skin skin, final BackgroundMouseMode mouseMode, final GDXBackground background) {

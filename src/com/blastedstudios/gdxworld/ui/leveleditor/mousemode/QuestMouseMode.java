@@ -1,14 +1,14 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.mousemode;
 
 import com.badlogic.gdx.Gdx;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.windows.quest.QuestWindow;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
 public class QuestMouseMode extends AbstractMouseMode {
 	private final LevelEditorScreen screen;
-	private final GDXWindow questWindow;
+	private final AbstractWindow questWindow;
 
 	public QuestMouseMode(LevelEditorScreen screen) {
 		super(screen.getCamera());

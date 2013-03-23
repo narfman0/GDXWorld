@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.DistanceJoint;
@@ -17,7 +17,7 @@ import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
 import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 
-public class JointWindow extends GDXWindow {
+public class JointWindow extends AbstractWindow {
 	private BaseJointWindow baseWindow;
 	private final Skin skin;
 	private GDXJoint joint;

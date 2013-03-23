@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class LevelInformationWindow extends GDXWindow{
+public class LevelInformationWindow extends AbstractWindow{
 	private final TextField coordXLabel, coordYLabel, levelNameLabel, prereqLabel;
 	private final WorldEditorScreen worldEditorScreen;
 	private final GDXWorld gdxWorld;

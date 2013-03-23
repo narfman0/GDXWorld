@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
-public abstract class BaseJointWindow extends GDXWindow {
+public abstract class BaseJointWindow extends AbstractWindow {
 	private final TextField nameField, bodyAField, bodyBField;
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;

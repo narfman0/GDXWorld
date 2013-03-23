@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -25,7 +25,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private World world = new World(new Vector2(), true);
 	private Box2DDebugRenderer renderer = new Box2DDebugRenderer();
 	private LevelInformationWindow levelInfo;
-	private GDXWindow worldWindow;
+	private AbstractWindow worldWindow;
 	private final GDXWorld gdxWorld;
 	private HashMap<GDXLevel, Body> bodies = new HashMap<GDXLevel, Body>();
 	private File lastSavedFile;

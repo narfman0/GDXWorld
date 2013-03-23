@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
-public abstract class GDXWindow extends Window {
-	public GDXWindow(String title, Skin skin) {
+public abstract class AbstractWindow extends Window {
+	public AbstractWindow(String title, Skin skin) {
 		super(title, skin);
 	}
 

@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.CircleMouseMode;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
-public class CircleWindow extends GDXWindow {
+public class CircleWindow extends AbstractWindow {
 	private final VertexTable centerTable;
 	
 	public CircleWindow(final Skin skin, final CircleMouseMode mouseMode, final GDXCircle circle) {

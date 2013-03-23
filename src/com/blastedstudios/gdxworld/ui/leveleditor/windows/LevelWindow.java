@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.BackgroundMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.CircleMouseMode;
@@ -25,7 +25,7 @@ import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class LevelWindow extends GDXWindow{
+public class LevelWindow extends AbstractWindow{
 	private final CheckBox polygonBox, circleBox, backgroundBox, npcBox, 
 		pathBox, jointBox, liveBox, questBox;
 	private final LevelEditorScreen levelEditorScreen;

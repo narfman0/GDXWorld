@@ -17,13 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PolygonMouseMode;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
-public class PolygonWindow extends GDXWindow implements VertexRemoveListener {
+public class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
 	private List<Vector2> vertices;

@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.NPCMouseMode;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 
-public class NPCWindow extends GDXWindow {
+public class NPCWindow extends AbstractWindow {
 	private final VertexTable coordinates;
 	
 	public NPCWindow(final Skin skin, final NPCMouseMode mouseMode, final GDXNPC npc) {

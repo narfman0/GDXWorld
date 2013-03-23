@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.AbstractMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.NPCMouseMode;
@@ -36,7 +37,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public static final float NODE_RADIUS = 1;
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world = new World(new Vector2(), true);
-	private final Box2DDebugRenderer renderer = new Box2DDebugRenderer();
+	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+	private final GDXRenderer gdxRenderer = new GDXRenderer(true);
 	private final Map<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
 	private final Map<String, Joint> joints = new HashMap<String, Joint>();
 	private LevelWindow levelWindow;
@@ -77,7 +79,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		camera.apply(Gdx.gl10);
 		if(live)
 			world.step(delta, 4, 4);
-		renderer.render(world, camera.combined);
+		gdxRenderer.render(gdxLevel, camera);
+		debugRenderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))

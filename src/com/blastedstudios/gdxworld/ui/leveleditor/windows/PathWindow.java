@@ -11,13 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PathMouseMode;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
-public class PathWindow extends GDXWindow implements VertexRemoveListener {
+public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
 	private final GDXPath path;

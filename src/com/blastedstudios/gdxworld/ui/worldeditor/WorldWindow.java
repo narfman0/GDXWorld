@@ -11,11 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class WorldWindow extends GDXWindow{
+public class WorldWindow extends AbstractWindow{
 	private File lastSavedFile;
 	
 	public WorldWindow(final GDXWorldEditor game, final Skin skin, final GDXWorld gdxWorld, 

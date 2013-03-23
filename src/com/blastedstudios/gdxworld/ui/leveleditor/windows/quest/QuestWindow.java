@@ -9,12 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.GDXWindow;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.QuestMouseMode;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
-public class QuestWindow extends GDXWindow {
+public class QuestWindow extends AbstractWindow {
 	private final Skin skin;
 	private final Table questTable;
 	private final List<GDXQuest> quests;
