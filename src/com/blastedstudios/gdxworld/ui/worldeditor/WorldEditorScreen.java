@@ -35,8 +35,8 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		super(game);
 		this.lastSavedFile = lastSavedFile;
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
-		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
-		for(GDXLevel level : gdxWorld.getLevels())
+		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
+		for(GDXLevel level : this.gdxWorld.getLevels())
 			add(level);
 		camera.zoom += 3;
 	}
