@@ -20,7 +20,7 @@ public class CircleMouseMode extends AbstractMouseMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("CircleMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXCircle circle = screen.getLevel().getClosestCircle(coordinates.x, coordinates.y);
 		if(circle == null || circle.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.NODE_RADIUS)
 			circle = new GDXCircle();
@@ -31,7 +31,7 @@ public class CircleMouseMode extends AbstractMouseMode {
 	}
 
 	public void addCircle(GDXCircle circle) {
-		Gdx.app.log("WorldEditorScreen.addCircle", circle.toString());
+		Gdx.app.log("CircleMouseMode.addCircle", circle.toString());
 		if(screen.getBodies().containsKey(circle))
 			for(Body body : screen.getBodies().remove(circle))
 				screen.getWorld().destroyBody(body);

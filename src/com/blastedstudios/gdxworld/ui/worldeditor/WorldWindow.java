@@ -41,12 +41,18 @@ public class WorldWindow extends GDXWindow{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				final JFileChooser fc = new JFileChooser();
 				fc.showSaveDialog(null);
-				if(fc.getSelectedFile() != null && fc.getSelectedFile().canWrite()){
-					gdxWorld.save(lastSavedFile = fc.getSelectedFile());
-					saveButton.setDisabled(false);
+				File file = fc.getSelectedFile(); 
+				if(file != null){
+					if( (file.exists() && !file.canWrite()) || 
+						(!file.exists() && !file.getParentFile().canWrite()) ){
+						Gdx.app.error("WorldWindow.saveAsButton ClickListener", 
+								"Selected file " + file.getAbsolutePath() + " not writable");
+					}else {
+						gdxWorld.save(lastSavedFile = file);
+						saveButton.setDisabled(false);
+					};
 				}else
-					Gdx.app.error("WorldWindow.saveAsButton ClickListener", 
-							"Selected file null or not writable");
+					Gdx.app.error("WorldWindow.saveAsButton ClickListener", "Selected file null");
 			}
 		});
 		backButton.addListener(new ClickListener() {

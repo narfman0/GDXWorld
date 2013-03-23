@@ -29,6 +29,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private List<GDXPath> paths = new ArrayList<GDXPath>();
 	private List<GDXJoint> joints = new ArrayList<GDXJoint>();
 	private List<GDXQuest> quests = new ArrayList<GDXQuest>();
+	private List<GDXBackground> backgrounds = new ArrayList<GDXBackground>();
 
 	public List<GDXShape> getShapes() {
 		return shapes;
@@ -126,6 +127,14 @@ public class GDXLevel implements Cloneable,Serializable{
 		this.quests = quests;
 	}
 
+	public List<GDXBackground> getBackgrounds() {
+		return backgrounds;
+	}
+
+	public void setBackgrounds(List<GDXBackground> backgrounds) {
+		this.backgrounds = backgrounds;
+	}
+
 	public GDXShape getClosestShape(float x, float y) {
 		return getClosestShape(x,y,null);
 	}
@@ -136,6 +145,19 @@ public class GDXLevel implements Cloneable,Serializable{
 
 	public GDXPolygon getClosestPolygon(float x, float y) {
 		return (GDXPolygon) getClosestShape(x,y,GDXPolygon.class);
+	}
+
+	public GDXBackground getClosestBackground(float x, float y) {
+		GDXBackground closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(GDXBackground shape : backgrounds){
+			float distanceSq = shape.getCoordinates().dst2(x,y);
+			if(closest == null || closestDistance > distanceSq){
+				closest = shape;
+				closestDistance = distanceSq;
+			}
+		}
+		return closest;
 	}
 
 	private GDXShape getClosestShape(float x, float y, Class<? extends GDXShape> theClass) {
@@ -230,6 +252,8 @@ public class GDXLevel implements Cloneable,Serializable{
 			level.getPaths().add((GDXPath) path.clone());
 		for(GDXQuest quest : quests)
 			level.getQuests().add((GDXQuest) quest.clone());
+		for(GDXBackground background : backgrounds)
+			level.getBackgrounds().add((GDXBackground) background.clone());
 		return level;
 	}
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.GDXWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.BackgroundMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.CircleMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.LiveMouseMode;
@@ -25,8 +26,8 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelWindow extends GDXWindow{
-	private final CheckBox polygonBox, npcBox, pathBox, jointBox, liveBox, 
-		circleBox, questBox;
+	private final CheckBox polygonBox, circleBox, backgroundBox, npcBox, 
+		pathBox, jointBox, liveBox, questBox;
 	private final LevelEditorScreen levelEditorScreen;
 	
 	public LevelWindow(final GDXWorldEditor game, final Skin skin, 
@@ -38,6 +39,7 @@ public class LevelWindow extends GDXWindow{
 		final Button backButton = new TextButton("Back", skin);
 		polygonBox = new CheckBox("Polygon", skin);
 		circleBox = new CheckBox("Circle", skin);
+		backgroundBox = new CheckBox("Background", skin);
 		npcBox = new CheckBox("NPC", skin);
 		pathBox = new CheckBox("Path", skin);
 		jointBox = new CheckBox("Joint", skin);
@@ -65,6 +67,13 @@ public class LevelWindow extends GDXWindow{
 				resetState();
 				circleBox.setChecked(true);
 				levelEditorScreen.setMouseMode(new CircleMouseMode(levelEditorScreen));
+			}
+		});
+		backgroundBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				resetState();
+				backgroundBox.setChecked(true);
+				levelEditorScreen.setMouseMode(new BackgroundMouseMode(levelEditorScreen));
 			}
 		});
 		npcBox.addListener(new ClickListener() {
@@ -107,6 +116,7 @@ public class LevelWindow extends GDXWindow{
 		add(new Label("Mode:", skin));
 		add(polygonBox);
 		add(circleBox);
+		add(backgroundBox);
 		add(npcBox);
 		add(pathBox);
 		add(jointBox);
@@ -122,6 +132,7 @@ public class LevelWindow extends GDXWindow{
 		levelEditorScreen.setLive(false);
 		polygonBox.setChecked(false);
 		circleBox.setChecked(false);
+		backgroundBox.setChecked(false);
 		npcBox.setChecked(false);
 		pathBox.setChecked(false);
 		jointBox.setChecked(false);
