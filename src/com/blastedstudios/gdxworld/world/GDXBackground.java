@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
  * loaded in to the physics engine, and may be at different depths to emulate
  * parallax scrolling.
  */
-public class GDXBackground implements Cloneable,Serializable {
+public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackground> {
 	private static final long serialVersionUID = 1L;
 	private Vector2 coordinates = new Vector2();
 	private String texture = "";
@@ -54,5 +54,9 @@ public class GDXBackground implements Cloneable,Serializable {
 	@Override public String toString(){
 		return "[GDXBackground texture:" + texture + " depth:" + depth + 
 				" coords:" + coordinates.toString() + "]";
+	}
+
+	@Override public int compareTo(GDXBackground o) {
+		return -((Float)depth).compareTo(o.depth);
 	}
 }

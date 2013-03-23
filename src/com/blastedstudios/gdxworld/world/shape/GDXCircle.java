@@ -39,4 +39,8 @@ public class GDXCircle extends GDXShape {
 		clone.setRadius(radius);
 		return super.clone(clone);
 	}
+	
+	@Override public String toString(){
+		return "[GDXCircle: name " + name + " radius " + radius + " center " + center + "]";
+	}
 }

@@ -58,7 +58,7 @@ public class GDXPolygon extends GDXShape implements Serializable{
 	}
 	
 	@Override public String toString(){
-		return "[GDXPolygon: " + name + "]";
+		return "[GDXPolygon: " + name + " center " + center + "]";
 	}
 
 	@Override public float getDistance(float x, float y) {

@@ -33,13 +33,21 @@ public class GDXRenderer {
 				Texture texture = getTexture(background.getTexture());
 				if(texture != null){
 					float scale = Math.max(background.getDepth(), .001f);
-					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).div(scale/2f);
-					Vector2 xy = new Vector2(background.getCoordinates()).sub(offset);
-					xy.sub(camera.position.x, camera.position.y).div(scale);//parallax scrolling effect
-					batch.draw(texture, xy.x, xy.y, texture.getWidth()/scale, texture.getHeight()/scale);
+					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).div(2f);
+					Vector2 xy = toParallax(scale, background.getCoordinates(), camera).sub(offset);
+					batch.draw(texture, xy.x, xy.y, texture.getWidth(), texture.getHeight());
 				}
 			}
 		batch.end();
+	}
+	
+	/**
+	 * Convert from world coordinates to parallax screen coordinates
+	 */
+	public static Vector2 toParallax(float scale, Vector2 world, Camera camera){
+		Vector2 xy = new Vector2(world).sub(camera.position.x, camera.position.y);
+		xy.div(scale);
+		return xy;
 	}
 
 	public boolean isDrawBackground() {
@@ -50,7 +58,7 @@ public class GDXRenderer {
 		this.drawBackground = drawBackground;
 	}
 	
-	private Texture getTexture(String name){
+	public Texture getTexture(String name){
 		if(!textureMap.containsKey(name)){
 			FileHandle file = find(Gdx.files.internal("data"), name);
 			if(file == null)

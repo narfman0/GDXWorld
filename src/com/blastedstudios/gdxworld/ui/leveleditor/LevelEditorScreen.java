@@ -52,7 +52,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		this.gdxLevel = gdxLevel;
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
 		mouseMode = new PolygonMouseMode(this);
-		camera.zoom += 3;
+		camera.zoom = 70;
 		resetLevel();
 	}
 	
@@ -151,5 +151,9 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	
 	public Camera getCamera(){
 		return camera;
+	}
+	
+	public GDXRenderer getGDXRenderer(){
+		return gdxRenderer;
 	}
 }

@@ -71,4 +71,10 @@ public class PolygonUtils {
 		}
 		return closest;
 	}
+	
+	public static boolean aabbCollide(float x, float y, float centerX,
+			float centerY, float width, float height){
+		return centerX - width/2 < x &&	centerX + width/2 > x &&
+				centerY - height/2 < y && centerY + height/2 > y;
+	}
 }

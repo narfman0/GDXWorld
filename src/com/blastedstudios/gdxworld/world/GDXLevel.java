@@ -147,19 +147,6 @@ public class GDXLevel implements Cloneable,Serializable{
 		return (GDXPolygon) getClosestShape(x,y,GDXPolygon.class);
 	}
 
-	public GDXBackground getClosestBackground(float x, float y) {
-		GDXBackground closest = null;
-		float closestDistance = Float.MAX_VALUE;
-		for(GDXBackground shape : backgrounds){
-			float distanceSq = shape.getCoordinates().dst2(x,y);
-			if(closest == null || closestDistance > distanceSq){
-				closest = shape;
-				closestDistance = distanceSq;
-			}
-		}
-		return closest;
-	}
-
 	private GDXShape getClosestShape(float x, float y, Class<? extends GDXShape> theClass) {
 		GDXShape closest = null;
 		float closestDistance = Float.MAX_VALUE;
