@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 
@@ -63,7 +64,7 @@ public class GDXRenderer {
 	
 	public Texture getTexture(String name){
 		if(!textureMap.containsKey(name)){
-			FileHandle file = find(Gdx.files.internal("data"), name);
+			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
 			if(file == null)
 				Gdx.app.error("GDXRenderer.render", "Texture " + name + " not found!");
 			else{
@@ -77,20 +78,5 @@ public class GDXRenderer {
 			}
 		}
 		return textureMap.get(name);
-	}
-	
-	/**
-	 * recursively find file in directory
-	 */
-	private FileHandle find(FileHandle handle, String name){
-		if(handle.isDirectory())
-			for(FileHandle childHandle : handle.list()){
-				FileHandle found = find(childHandle, name);
-				if(found != null)
-					return found;
-			}
-		else if(handle.name().equals(name))
-			return handle;
-		return null;
 	}
 }

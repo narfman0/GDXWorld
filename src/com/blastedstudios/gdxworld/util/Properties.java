@@ -1,7 +1,6 @@
 package com.blastedstudios.gdxworld.util;
 
-import java.io.File;
-import java.io.FileInputStream;
+import com.badlogic.gdx.Gdx;
 
 public class Properties extends java.util.Properties{
 	private static final long serialVersionUID = 1L;
@@ -10,7 +9,7 @@ public class Properties extends java.util.Properties{
 	static{
 		properties = new java.util.Properties();
 		try {
-			properties.load(new FileInputStream(new File("data/properties")));
+			properties.load(FileUtil.find(Gdx.files.internal("data"),"gdxworld.properties").read());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
