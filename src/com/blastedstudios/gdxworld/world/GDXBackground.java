@@ -18,7 +18,7 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 	 * foreground, 1 is the mid-ground (normal distance where physics objects
 	 * are located), 1+ is the background (and subject to parallax scrolling)
 	 */
-	private float depth = 1;
+	private float depth = 1, scale = 1;
 	
 	public String getTexture() {
 		return texture;
@@ -43,17 +43,26 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 	public void setCoordinates(Vector2 coordinates) {
 		this.coordinates = coordinates;
 	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
 	
 	@Override public Object clone(){
 		GDXBackground background = new GDXBackground();
 		background.setCoordinates(coordinates.cpy());
 		background.setDepth(depth);
 		background.setTexture(texture);
+		background.setScale(scale);
 		return background;
 	}
 	@Override public String toString(){
 		return "[GDXBackground texture:" + texture + " depth:" + depth + 
-				" coords:" + coordinates.toString() + "]";
+				" coords:" + coordinates.toString() + " scale:" + scale + "]";
 	}
 
 	@Override public int compareTo(GDXBackground o) {

@@ -25,7 +25,7 @@ public abstract class AbstractScreen<T extends Game> implements Screen, InputPro
 		inputMultiplexer.addProcessor(stage);
 	}
 
-	@Override public void render(float arg0) {
+	@Override public void render(float delta) {
 		Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 	}

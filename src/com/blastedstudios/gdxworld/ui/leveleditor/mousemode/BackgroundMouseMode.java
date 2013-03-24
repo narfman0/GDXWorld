@@ -49,7 +49,7 @@ public class BackgroundMouseMode extends AbstractMouseMode {
 			Texture tex = screen.getGDXRenderer().getTexture(background.getTexture());
 			if(tex != null && PolygonUtils.aabbCollide(x,y,
 				background.getCoordinates().x, background.getCoordinates().y,
-				tex.getWidth(), tex.getHeight()))
+				tex.getWidth()*background.getScale(), tex.getHeight()*background.getScale()))
 				return background;
 		}
 		return null;

@@ -53,4 +53,9 @@ public class MainScreen extends AbstractScreen<GDXWorldEditor> {
 		window.setY(Gdx.graphics.getHeight()/2 - window.getHeight()/2);
 		stage.addActor(window);
 	}
+	
+	@Override public void render(float delta){
+		super.render(delta);
+		stage.draw();
+	}
 }

@@ -26,6 +26,9 @@ public class BackgroundWindow extends AbstractWindow {
 		final TextField depthField = new TextField("", skin);
 		depthField.setMessageText("<depth>");
 		depthField.setText(background.getDepth()+"");
+		final TextField scaleField = new TextField("", skin);
+		scaleField.setMessageText("<scale>");
+		scaleField.setText(background.getScale()+"");
 		
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
@@ -35,6 +38,7 @@ public class BackgroundWindow extends AbstractWindow {
 				background.setTexture(textureField.getText());
 				background.setCoordinates(centerTable.getVertex());
 				background.setDepth(Float.parseFloat(depthField.getText()));
+				background.setScale(Float.parseFloat(scaleField.getText()));
 				mouseMode.addBackground(background);
 				mouseMode.clean();
 			}
@@ -56,6 +60,9 @@ public class BackgroundWindow extends AbstractWindow {
 		row();
 		add(new Label("Depth: ", skin));
 		add(depthField);
+		row();
+		add(new Label("Scale: ", skin));
+		add(scaleField);
 		row();
 		add(new Label("Center: ", skin));
 		add(centerTable);

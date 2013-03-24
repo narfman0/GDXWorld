@@ -33,11 +33,12 @@ public class GDXRenderer {
 				Texture texture = getTexture(background.getTexture());
 				if(texture != null){
 					//Disabling parallax for now
-					//float scale = Math.max(background.getDepth(), .001f);
-					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).div(2f);
-					//Vector2 xy = toParallax(scale, background.getCoordinates(), camera).sub(offset);
+					//float depth = Math.max(background.getDepth(), .001f);
+					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).mul(background.getScale()/2f);
+					//Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
 					Vector2 xy = background.getCoordinates().cpy().sub(offset);
-					batch.draw(texture, xy.x, xy.y, texture.getWidth(), texture.getHeight());
+					batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
+							texture.getHeight()*background.getScale());
 				}
 			}
 		batch.end();
@@ -46,9 +47,9 @@ public class GDXRenderer {
 	/**
 	 * Convert from world coordinates to parallax screen coordinates
 	 */
-	public static Vector2 toParallax(float scale, Vector2 world, Camera camera){
+	public static Vector2 toParallax(float depth, Vector2 world, Camera camera){
 		Vector2 xy = new Vector2(world).sub(camera.position.x, camera.position.y);
-		xy.div(scale);
+		xy.div(depth);
 		return xy;
 	}
 
