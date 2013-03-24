@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.world;
 import java.io.Serializable;
 
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.Properties;
 
 /**
  * Represents an item that is rendered in the background. THis will not be
@@ -18,7 +19,8 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 	 * foreground, 1 is the mid-ground (normal distance where physics objects
 	 * are located), 1+ is the background (and subject to parallax scrolling)
 	 */
-	private float depth = 1, scale = 1;
+	private float depth = Properties.getFloat("background.depth.default"), 
+			scale = Properties.getFloat("background.scale.default");
 	
 	public String getTexture() {
 		return texture;
