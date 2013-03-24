@@ -11,8 +11,10 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class GDXWorldEditor extends Game {
 	private static File loadFile;
+	private static String[] args;
 	
 	@Override public void create () {
+		parseArgs(args);
 		if(loadFile != null && loadFile.canRead())
 			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
 		else
@@ -20,6 +22,11 @@ public class GDXWorldEditor extends Game {
 	}
 	
 	public static void main (String[] argv) {
+		args = argv;
+		new LwjglApplication(new GDXWorldEditor(), "GDX World Editor", 1280, 1024, false);
+	}
+	
+	private void parseArgs(String[] argv){
 		for(int i=0; i<argv.length; i+=2){
 			if(argv[i].equals("-l"))
 				loadFile = new File(argv[i+1]);
@@ -27,6 +34,5 @@ public class GDXWorldEditor extends Game {
 			if(argv[i].startsWith("-P"))
 				Properties.set(argv[i].substring(2), argv[i+1]);
 		}
-		new LwjglApplication(new GDXWorldEditor(), "GDX World Editor", 1280, 1024, false);
 	}
 }

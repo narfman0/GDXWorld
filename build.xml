@@ -28,6 +28,7 @@
         <attribute name="Main-Class" value="com.blastedstudios.gdxworld.GDXWorldEditor"/>
       </manifest>
     </jar>
+  	<jar jarfile="${build}/lib/gdxworld-src-${DSTAMP}.jar" basedir="${src}"/>
   </target>
 
   <target name="clean" description="clean up" >

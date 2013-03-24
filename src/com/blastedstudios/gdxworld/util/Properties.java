@@ -1,15 +1,21 @@
 package com.blastedstudios.gdxworld.util;
 
+import java.io.InputStream;
+
 import com.badlogic.gdx.Gdx;
 
-public class Properties extends java.util.Properties{
-	private static final long serialVersionUID = 1L;
+public class Properties {
+	private static final String DEFAULT_PROPERTIES = "gdxworld.properties";
 	private static java.util.Properties properties;
 
 	static{
 		properties = new java.util.Properties();
+		load(FileUtil.find(Gdx.files.internal("data"),DEFAULT_PROPERTIES).read());
+	}
+	
+	public static void load(InputStream stream){
 		try {
-			properties.load(FileUtil.find(Gdx.files.internal("data"),"gdxworld.properties").read());
+			properties.load(stream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
