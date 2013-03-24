@@ -47,7 +47,8 @@ public class LevelWindow extends AbstractWindow{
 		liveBox = new CheckBox("Live", skin);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				gdxLevel.getShapes().clear();
+				gdxLevel.clear();
+				levelEditorScreen.clear();
 			}
 		});
 		backButton.addListener(new ClickListener() {

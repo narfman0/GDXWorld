@@ -128,6 +128,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	}
 
 	public List<GDXBackground> getBackgrounds() {
+		if(backgrounds == null)
+			backgrounds = new ArrayList<GDXBackground>();
 		return backgrounds;
 	}
 
@@ -242,5 +244,18 @@ public class GDXLevel implements Cloneable,Serializable{
 		for(GDXBackground background : backgrounds)
 			level.getBackgrounds().add((GDXBackground) background.clone());
 		return level;
+	}
+
+	/**
+	 * Clear all objects from a level
+	 */
+	public void clear() {
+		shapes.clear();
+		prerequisites.clear();
+		npcs.clear();
+		paths.clear();
+		joints.clear();
+		quests.clear();
+		backgrounds.clear();
 	}
 }

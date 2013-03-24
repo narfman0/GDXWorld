@@ -89,6 +89,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
+		stage.draw();
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -155,5 +156,14 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	
 	public GDXRenderer getGDXRenderer(){
 		return gdxRenderer;
+	}
+
+	/**
+	 * Clear all saved information about bodies, joints, and other world info
+	 */
+	public void clear() {
+		bodies.clear();
+		joints.clear();
+		world = new World(new Vector2(), true);
 	}
 }

@@ -74,6 +74,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 					levelInfo.setCoordinates(coordinates.x, coordinates.y);
 			}
 		}
+		stage.draw();
 	}
 	
 	void removeLevelInformationWindow(){

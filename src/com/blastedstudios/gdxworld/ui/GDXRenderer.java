@@ -32,9 +32,11 @@ public class GDXRenderer {
 			for(GDXBackground background : level.getBackgrounds()){
 				Texture texture = getTexture(background.getTexture());
 				if(texture != null){
-					float scale = Math.max(background.getDepth(), .001f);
+					//Disabling parallax for now
+					//float scale = Math.max(background.getDepth(), .001f);
 					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).div(2f);
-					Vector2 xy = toParallax(scale, background.getCoordinates(), camera).sub(offset);
+					//Vector2 xy = toParallax(scale, background.getCoordinates(), camera).sub(offset);
+					Vector2 xy = background.getCoordinates().cpy().sub(offset);
 					batch.draw(texture, xy.x, xy.y, texture.getWidth(), texture.getHeight());
 				}
 			}
