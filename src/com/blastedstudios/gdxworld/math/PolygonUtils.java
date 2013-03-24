@@ -77,4 +77,24 @@ public class PolygonUtils {
 		return centerX - width/2 < x &&	centerX + width/2 > x &&
 				centerY - height/2 < y && centerY + height/2 > y;
 	}
+	
+	/**
+	 * @return array representing {upper left,lower right} aabb verts
+	 */
+	public static Vector2[] getAABB(Vector2[] verts){
+		Vector2[] aabb = {new Vector2(Float.MAX_VALUE, Float.MIN_VALUE), 
+				new Vector2(Float.MIN_VALUE, Float.MAX_VALUE)};
+		for(Vector2 vert : verts){
+			aabb[0].x = Math.min(aabb[0].x, vert.x);
+			aabb[0].y = Math.max(aabb[0].y, vert.y);
+			aabb[1].x = Math.max(aabb[1].x, vert.x);
+			aabb[1].y = Math.min(aabb[1].y, vert.y);
+		}
+		return aabb;
+	}
+	
+	public static Vector2 getDimensions(Vector2[] verts){
+		Vector2[] aabb = getAABB(verts); 
+		return new Vector2(aabb[1].x - aabb[0].x, aabb[0].y - aabb[1].y);
+	}
 }

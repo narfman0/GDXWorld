@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.world.shape;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -42,5 +43,9 @@ public class GDXCircle extends GDXShape {
 	
 	@Override public String toString(){
 		return "[GDXCircle: name " + name + " radius " + radius + " center " + center + "]";
+	}
+
+	@Override public Vector2 getDimensions() {
+		return new Vector2(radius*2,radius*2);
 	}
 }

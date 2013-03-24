@@ -19,6 +19,10 @@ public class GDXPolygon extends GDXShape implements Serializable{
 	 * coordinates, use the absolute version, e.g. getVerticesAbsolute
 	 */
 	private List<Vector2> vertices = new ArrayList<Vector2>();
+	/**
+	 * Dimensions of poly after getting aabb's max/min x/y. Cached for performance
+	 */
+	private transient Vector2 dimensions;
 
 	public List<Vector2> getVertices() {
 		return vertices;
@@ -73,5 +77,11 @@ public class GDXPolygon extends GDXShape implements Serializable{
 		for(Vector2 vertex : vertices)
 			clone.getVertices().add(vertex.cpy());
 		return super.clone(clone);
+	}
+
+	@Override public Vector2 getDimensions() {
+		if(dimensions == null)
+			dimensions = PolygonUtils.getDimensions((Vector2[]) vertices.toArray());
+		return dimensions;
 	}
 }

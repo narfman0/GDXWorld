@@ -62,6 +62,8 @@ public abstract class GDXShape implements Cloneable,Serializable{
 		this.center = center;
 	}
 	
+	public abstract Vector2 getDimensions();
+	
 	/**
 	 * @param overrideStatic use BodyType.StaticBody no matter what bodyType is set to
 	 */

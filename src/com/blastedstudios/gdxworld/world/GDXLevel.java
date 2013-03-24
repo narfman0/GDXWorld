@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
@@ -207,19 +208,31 @@ public class GDXLevel implements Cloneable,Serializable{
 	/**
 	 * Populates the given world with physics data from this GDXLevel
 	 */
-	public void createLevel(World world){
-		for(GDXShape shape : shapes)
-			shape.createFixture(world, false);
+	public CreateLevelReturnStruct createLevel(World world){
+		HashMap<GDXShape,Body> returnBodies = new HashMap<>();
+		HashMap<GDXJoint,Joint> returnJoints = new HashMap<>();
+		for(GDXShape shape : shapes){
+			Body body = shape.createFixture(world, false);
+			returnBodies.put(shape, body); 
+		}
 		Map<String,Joint> jointMap = new HashMap<String, Joint>();
 		for(GDXJoint joint : joints)
-			if(!(joint instanceof GearJoint))
-				jointMap.put(joint.getName(), joint.attach(world));
+			if(!(joint instanceof GearJoint)){
+				Joint physicsJoint = joint.attach(world);
+				jointMap.put(joint.getName(), physicsJoint);
+				returnJoints.put(joint, physicsJoint);
+			}
+		//Need to initialize other joints first since GearJoint depends on them
+		//being done
 		for(GDXJoint joint : joints)
 			if(joint instanceof GearJoint){
 				GearJoint gearJoint = (GearJoint) joint;
-				gearJoint.initialize(jointMap.get(gearJoint.getJoint1()), jointMap.get(gearJoint.getJoint2()));
-				joint.attach(world);
+				gearJoint.initialize(jointMap.get(gearJoint.getJoint1()), 
+						jointMap.get(gearJoint.getJoint2()));
+				Joint physicsJoint = joint.attach(world);
+				returnJoints.put(joint, physicsJoint);
 			}
+		return new CreateLevelReturnStruct(returnBodies, returnJoints);
 	}
 
 	@Override public String toString(){
@@ -257,5 +270,16 @@ public class GDXLevel implements Cloneable,Serializable{
 		joints.clear();
 		quests.clear();
 		backgrounds.clear();
+	}
+	
+	public class CreateLevelReturnStruct{
+		public final Map<GDXShape,Body> bodies;
+		public final Map<GDXJoint,Joint> joints;
+		
+		CreateLevelReturnStruct(Map<GDXShape,Body> bodies,
+				Map<GDXJoint,Joint> joints){
+			this.bodies = bodies;
+			this.joints = joints;
+		}
 	}
 }
