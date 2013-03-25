@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 
 public class NPCMode extends AbstractMode {
@@ -59,4 +60,11 @@ public class NPCMode extends AbstractMode {
 			npcWindow.remove();
 		npcWindow = null;
 	}
+
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXNPC npc : level.getNpcs())
+			addNPC(npc);
+	}
+
+	@Override public void start() {}
 }

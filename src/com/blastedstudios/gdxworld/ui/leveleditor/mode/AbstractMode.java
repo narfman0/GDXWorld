@@ -1,10 +1,14 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.mode;
 
+import org.reflections.Reflections;
+
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 
 public abstract class AbstractMode {
+	private static Iterable<Class<? extends AbstractMode>> children;
 	protected final Camera camera;
 	protected Vector2 coordinates;
 	
@@ -23,6 +27,16 @@ public abstract class AbstractMode {
 		return false;
 	}
 	
+	public static Iterable<Class<? extends AbstractMode>> getChildClasses(){
+		if(children == null){
+			Reflections reflections = new Reflections("com.blastedstudios.gdxworld.ui.leveleditor.mode");
+			children = reflections.getSubTypesOf(AbstractMode.class);
+		}
+		return children;
+	}
+	
 	public abstract boolean contains(float x, float y);
 	public abstract void clean();
+	public abstract void loadLevel(GDXLevel level);
+	public abstract void start();
 }

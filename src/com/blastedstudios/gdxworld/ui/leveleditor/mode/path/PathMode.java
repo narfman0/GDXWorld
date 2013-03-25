@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
 public class PathMode extends AbstractMode {
@@ -71,4 +72,11 @@ public class PathMode extends AbstractMode {
 			pathWindow.remove();
 		pathWindow = null;
 	}
+
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXPath npc : level.getPaths())
+			addPath(npc);
+	}
+	
+	@Override public void start() {}
 }

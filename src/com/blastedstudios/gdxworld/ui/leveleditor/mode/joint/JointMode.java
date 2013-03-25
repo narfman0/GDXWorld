@@ -10,6 +10,7 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.joint.JointWindow;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
 
@@ -20,7 +21,6 @@ public class JointMode extends AbstractMode {
 	public JointMode(LevelEditorScreen screen){
 		super(screen.getCamera());
 		this.screen = screen;
-		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -70,4 +70,12 @@ public class JointMode extends AbstractMode {
 		jointWindow = null;
 	}
 
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXJoint joint : level.getJoints())
+			addJoint(joint);
+	}
+
+	@Override public void start() {
+		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
+	}
 }

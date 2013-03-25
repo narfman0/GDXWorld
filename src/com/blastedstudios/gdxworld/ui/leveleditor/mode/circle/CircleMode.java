@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
+import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class CircleMode extends AbstractMode {
 	private CircleWindow circleWindow;
@@ -59,4 +61,12 @@ public class CircleMode extends AbstractMode {
 			circleWindow.remove();
 		circleWindow = null;
 	}
+
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXShape shape : level.getShapes())
+			if(shape instanceof GDXCircle)
+				addCircle((GDXCircle)shape);
+	}
+
+	@Override public void start() {}
 }

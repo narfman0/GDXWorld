@@ -9,6 +9,7 @@ import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXBackground;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 
 public class BackgroundMode extends AbstractMode {
 	private BackgroundWindow backgroundWindow;
@@ -64,4 +65,11 @@ public class BackgroundMode extends AbstractMode {
 			backgroundWindow.remove();
 		backgroundWindow = null;
 	}
+
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXBackground background : level.getBackgrounds())
+			addBackground(background);
+	}
+
+	@Override public void start() {}
 }

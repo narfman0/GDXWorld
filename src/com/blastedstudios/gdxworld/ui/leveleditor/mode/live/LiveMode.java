@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.physics.CollideCallback;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 
 public class LiveMode extends AbstractMode {
 	private LevelEditorScreen screen;
@@ -54,5 +55,12 @@ public class LiveMode extends AbstractMode {
 		return false;
 	}
 
-	@Override public void clean() {}
+	@Override public void clean() {
+		screen.setLive(false);
+	}
+
+	@Override public void loadLevel(GDXLevel level) {}
+	@Override public void start() {
+		screen.setLive(true);
+	}
 }

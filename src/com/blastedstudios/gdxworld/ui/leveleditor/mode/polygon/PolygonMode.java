@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
@@ -38,7 +39,7 @@ public class PolygonMode extends AbstractMode {
 	}
 
 	public void addPolygon(GDXShape shape){
-		Gdx.app.log("WorldEditorScreen.addPolygon", shape.toString());
+		Gdx.app.log("PolygonMode.addPolygon", shape.toString());
 		if(screen.getBodies().containsKey(shape))
 			for(Body body : screen.getBodies().remove(shape))
 				screen.getWorld().destroyBody(body);
@@ -63,7 +64,7 @@ public class PolygonMode extends AbstractMode {
 	}
 
 	public void removePolygon(GDXPolygon polygon) {
-		Gdx.app.log("WorldEditorScreen.removePolygon", polygon.toString());
+		Gdx.app.log("PolygonMode.removePolygon", polygon.toString());
 		for(Body body : screen.getBodies().remove(polygon))
 			screen.getWorld().destroyBody(body);
 		screen.getLevel().getShapes().remove(polygon);
@@ -78,4 +79,12 @@ public class PolygonMode extends AbstractMode {
 			polygonWindow.remove();
 		polygonWindow = null;
 	}
+
+	@Override public void loadLevel(GDXLevel level) {
+		for(GDXShape shape : level.getShapes())
+			if(shape instanceof GDXPolygon)
+				addPolygon((GDXPolygon)shape);
+	}
+	
+	@Override public void start() {}
 }

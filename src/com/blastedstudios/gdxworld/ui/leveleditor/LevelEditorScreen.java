@@ -19,18 +19,8 @@ import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.joint.JointMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.npc.NPCMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.path.PathMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.polygon.PolygonMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.quest.QuestMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
-import com.blastedstudios.gdxworld.world.GDXNPC;
-import com.blastedstudios.gdxworld.world.GDXPath;
 import com.blastedstudios.gdxworld.world.GDXWorld;
-import com.blastedstudios.gdxworld.world.joint.GDXJoint;
-import com.blastedstudios.gdxworld.world.quest.GDXQuest;
-import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public static final float NODE_RADIUS = 1;
@@ -43,33 +33,26 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
-	private AbstractMode mouseMode;
+	private AbstractMode mode;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
-		mouseMode = new PolygonMode(this);
 		camera.zoom = 4;
-		resetLevel();
+		loadLevel();
 	}
 	
-	private void resetLevel(){
-		for(GDXShape shape : gdxLevel.getShapes())
-			new PolygonMode(this).addPolygon(shape);
-		for(GDXNPC npc : gdxLevel.getNpcs())
-			new NPCMode(this).addNPC(npc);
-		for(GDXPath path : gdxLevel.getPaths())
-			new PathMode(this).addPath(path);
-		JointMode jointMode = new JointMode(this);
-		for(GDXJoint joint : gdxLevel.getJoints())
-			jointMode.addJoint(joint);
-		jointMode.clean();
-		QuestMode questMode = new QuestMode(this);
-		for(GDXQuest quest : gdxLevel.getQuests())
-			questMode.addQuest(quest);
-		questMode.clean();
+	private void loadLevel(){
+		for(Class<? extends AbstractMode> child : AbstractMode.getChildClasses()){
+			try {
+				AbstractMode mode = child.getConstructor(LevelEditorScreen.class).newInstance(this);
+				mode.loadLevel(gdxLevel);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override public void render(float delta) {
@@ -95,13 +78,13 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		Gdx.app.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
 		camera.unproject(coordinates);
-		if(!levelWindow.contains(x,y) && !mouseMode.contains(x,y))
-			mouseMode.touchDown(x, y, x1, y1);
+		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
+			mode.touchDown(x, y, x1, y1);
 		return false;
 	}
 	
 	@Override public boolean touchUp(int x, int y, int x1, int y1){
-		mouseMode.touchUp(x, y, x1, y1);
+		mode.touchUp(x, y, x1, y1);
 		return false;
 	}
 
@@ -117,11 +100,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	 */
 	public void setLive(boolean live) {
 		this.live = live;
-		bodies.clear();
-		joints.clear();
-		world.dispose();
-		world = new World(live ? new Vector2(0,-10) : new Vector2(), true);
-		resetLevel();
+		clear();
+		loadLevel();
 	}
 	
 	public boolean isLive(){
@@ -144,9 +124,11 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		return gdxLevel;
 	}
 
-	public void setMouseMode(AbstractMode mouseMode) {
-		this.mouseMode.clean();
-		this.mouseMode = mouseMode;
+	public void setMouseMode(AbstractMode mode) {
+		if(this.mode != null)
+			this.mode.clean();
+		this.mode = mode;
+		mode.start();
 	}
 	
 	public Camera getCamera(){
@@ -163,6 +145,8 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	public void clear() {
 		bodies.clear();
 		joints.clear();
-		world = new World(new Vector2(), true);
+		if(world != null)
+			world.dispose();
+		world = new World(live ? new Vector2(0,-10) : new Vector2(), true);
 	}
 }
