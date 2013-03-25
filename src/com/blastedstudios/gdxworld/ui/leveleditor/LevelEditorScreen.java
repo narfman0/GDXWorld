@@ -18,13 +18,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.JointMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.AbstractMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.NPCMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PathMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.PolygonMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.mousemode.QuestMouseMode;
-import com.blastedstudios.gdxworld.ui.leveleditor.windows.LevelWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.joint.JointMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.npc.NPCMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.path.PathMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.polygon.PolygonMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.quest.QuestMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 import com.blastedstudios.gdxworld.world.GDXPath;
@@ -44,30 +43,30 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
-	private AbstractMouseMode mouseMode;
+	private AbstractMode mouseMode;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
-		mouseMode = new PolygonMouseMode(this);
+		mouseMode = new PolygonMode(this);
 		camera.zoom = 4;
 		resetLevel();
 	}
 	
 	private void resetLevel(){
 		for(GDXShape shape : gdxLevel.getShapes())
-			new PolygonMouseMode(this).addPolygon(shape);
+			new PolygonMode(this).addPolygon(shape);
 		for(GDXNPC npc : gdxLevel.getNpcs())
-			new NPCMouseMode(this).addNPC(npc);
+			new NPCMode(this).addNPC(npc);
 		for(GDXPath path : gdxLevel.getPaths())
-			new PathMouseMode(this).addPath(path);
-		JointMouseMode jointMode = new JointMouseMode(this);
+			new PathMode(this).addPath(path);
+		JointMode jointMode = new JointMode(this);
 		for(GDXJoint joint : gdxLevel.getJoints())
 			jointMode.addJoint(joint);
 		jointMode.clean();
-		QuestMouseMode questMode = new QuestMouseMode(this);
+		QuestMode questMode = new QuestMode(this);
 		for(GDXQuest quest : gdxLevel.getQuests())
 			questMode.addQuest(quest);
 		questMode.clean();
@@ -145,7 +144,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		return gdxLevel;
 	}
 
-	public void setMouseMode(AbstractMouseMode mouseMode) {
+	public void setMouseMode(AbstractMode mouseMode) {
 		this.mouseMode.clean();
 		this.mouseMode = mouseMode;
 	}
