@@ -23,6 +23,7 @@ public class QuestMode extends AbstractMode {
 	@Override public void clean() {
 		if(questWindow != null)
 			questWindow.remove();
+		questWindow = null;
 	}
 
 	public void addQuest(GDXQuest quest) {
