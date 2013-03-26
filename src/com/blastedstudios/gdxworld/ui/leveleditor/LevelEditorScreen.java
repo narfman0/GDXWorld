@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.IMode;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -33,26 +35,23 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
-	private AbstractMode mode;
+	private final Collection<IMode> modes = PluginUtil.getPlugins(IMode.class);
+	private IMode mode;
 	
 	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
+		for(IMode child : modes)
+			child.init(this);
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
 		camera.zoom = 4;
 		loadLevel();
 	}
 	
 	private void loadLevel(){
-		for(Class<? extends AbstractMode> child : AbstractMode.getChildClasses()){
-			try {
-				AbstractMode mode = child.getConstructor(LevelEditorScreen.class).newInstance(this);
-				mode.loadLevel(gdxLevel);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		for(IMode child : modes)
+			child.loadLevel(gdxLevel);
 	}
 	
 	@Override public void render(float delta) {
@@ -124,7 +123,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		return gdxLevel;
 	}
 
-	public void setMouseMode(AbstractMode mode) {
+	public void setMode(IMode mode) {
 		if(this.mode != null)
 			this.mode.clean();
 		this.mode = mode;
@@ -148,5 +147,9 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 		if(world != null)
 			world.dispose();
 		world = new World(live ? new Vector2(0,-10) : new Vector2(), true);
+	}
+
+	public Collection<IMode> getModes() {
+		return modes;
 	}
 }
