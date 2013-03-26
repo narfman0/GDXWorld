@@ -34,12 +34,12 @@ public class LightMode extends AbstractMode {
 	@Override public void loadLevel(GDXLevel level) {
 		for(GDXLight light : level.getLights())
 			addLight(light);
-		screen.getLevel().setLightAmbient(level.getLightAmbient().cpy());
+		screen.getLevel().setLightAmbient(level.getLightAmbient());
 	}
 
 	@Override public void start() {
 		lightWindow = new LightWindow(screen.getSkin(), screen.getLevel().getLights(), 
-				screen.getLevel().getLightAmbient(), this, screen);
+				GDXLight.convert(screen.getLevel().getLightAmbient()), this, screen);
 		screen.getStage().addActor(lightWindow);
 	}
 }

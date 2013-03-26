@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.graphics.Color;
+import box2dLight.Light;
+import box2dLight.RayHandler;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -34,8 +36,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	private List<GDXQuest> quests = new ArrayList<GDXQuest>();
 	private List<GDXBackground> backgrounds = new ArrayList<GDXBackground>();
 	private List<GDXLight> lights = new ArrayList<GDXLight>();
-	private Color lightAmbient = GDXLight.DEFAULT_COLOR.cpy();
-
+	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
+	
 	public List<GDXShape> getShapes() {
 		return shapes;
 	}
@@ -152,13 +154,11 @@ public class GDXLevel implements Cloneable,Serializable{
 		this.lights = lights;
 	}
 
-	public Color getLightAmbient() {
-		if(lightAmbient == null)
-			lightAmbient = GDXLight.DEFAULT_COLOR.cpy();
+	public int getLightAmbient() {
 		return lightAmbient;
 	}
 
-	public void setLightAmbient(Color lightAmbient) {
+	public void setLightAmbient(int lightAmbient) {
 		this.lightAmbient = lightAmbient;
 	}
 
@@ -256,7 +256,12 @@ public class GDXLevel implements Cloneable,Serializable{
 				Joint physicsJoint = joint.attach(world);
 				returnJoints.put(joint, physicsJoint);
 			}
-		return new CreateLevelReturnStruct(returnBodies, returnJoints);
+		RayHandler rayHandler = new RayHandler(world);
+		rayHandler.setAmbientLight(GDXLight.convert(lightAmbient));
+		ArrayList<Light> returnLights = new ArrayList<>();
+		for(GDXLight light : getLights())
+			returnLights.add(light.create(rayHandler));
+		return new CreateLevelReturnStruct(returnBodies, returnJoints, rayHandler, returnLights);
 	}
 
 	@Override public String toString(){
@@ -282,7 +287,7 @@ public class GDXLevel implements Cloneable,Serializable{
 			level.getBackgrounds().add((GDXBackground) background.clone());
 		for(GDXLight light : lights)
 			level.getLights().add((GDXLight) light.clone());
-		level.setLightAmbient(lightAmbient.cpy());
+		level.setLightAmbient(lightAmbient);
 		return level;
 	}
 
@@ -298,17 +303,22 @@ public class GDXLevel implements Cloneable,Serializable{
 		quests.clear();
 		backgrounds.clear();
 		lights.clear();
-		lightAmbient = GDXLight.DEFAULT_COLOR.cpy();
+		lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	}
 
 	public class CreateLevelReturnStruct{
 		public final Map<GDXShape,Body> bodies;
 		public final Map<GDXJoint,Joint> joints;
+		public final RayHandler rayHandler;
+		public final List<Light> lights;
 		
 		CreateLevelReturnStruct(Map<GDXShape,Body> bodies,
-				Map<GDXJoint,Joint> joints){
+				Map<GDXJoint,Joint> joints, RayHandler rayHandler,
+				List<Light> lights){
 			this.bodies = bodies;
 			this.joints = joints;
+			this.rayHandler = rayHandler;
+			this.lights = lights;
 		}
 	}
 }

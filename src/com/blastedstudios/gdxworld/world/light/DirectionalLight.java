@@ -22,6 +22,6 @@ public class DirectionalLight extends GDXLight {
 	}
 
 	@Override public Light create(RayHandler handler) {
-		return new box2dLight.DirectionalLight(handler, rays, color, direction);
+		return new box2dLight.DirectionalLight(handler, rays, GDXLight.convert(color), direction);
 	}
 }

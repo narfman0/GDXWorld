@@ -10,15 +10,28 @@ import com.badlogic.gdx.graphics.Color;
 public abstract class GDXLight implements Cloneable,Serializable{
 	public static final Color DEFAULT_COLOR = new Color(.9f,.9f,.9f,.1f);
 	private static final long serialVersionUID = 1L;
-	protected Color color = DEFAULT_COLOR.cpy();
+	/**
+	 * Color in RGBA8888 format so it can be serialized
+	 */
+	protected int color = Color.rgba8888(DEFAULT_COLOR);
 	protected int rays = 1000;
-	
-	public Color getColor() {
+
+	public int getColor() {
 		return color;
 	}
 	
-	public void setColor(Color color) {
+	public void setColor(int color) {
 		this.color = color;
+	}
+
+	public static Color convert(int color) {
+		Color colorObj = new Color();
+		Color.rgba8888ToColor(colorObj, color);
+		return colorObj;
+	}
+	
+	public static int convert(Color color) {
+		return Color.rgba8888(color);
 	}
 
 	public int getRays() {
@@ -32,7 +45,7 @@ public abstract class GDXLight implements Cloneable,Serializable{
 
 	protected Object clone(GDXLight clone){
 		clone.setRays(rays);
-		clone.setColor(color.cpy());
+		clone.setColor(color);
 		return clone;
 	}
 	

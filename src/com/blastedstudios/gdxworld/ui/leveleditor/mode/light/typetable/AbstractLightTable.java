@@ -31,7 +31,7 @@ public abstract class AbstractLightTable extends Table {
 	public abstract GDXLight create();
 	
 	protected GDXLight create(GDXLight light){
-		light.setColor(colorTable.parseColor());
+		light.setColor(GDXLight.convert(colorTable.parseColor()));
 		light.setRays(Integer.parseInt(raysField.getText()));
 		return light;
 	}

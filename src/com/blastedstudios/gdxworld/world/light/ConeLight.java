@@ -52,7 +52,7 @@ public class ConeLight extends GDXLight {
 	}
 
 	@Override public Light create(RayHandler handler) {
-		return new box2dLight.ConeLight(handler, rays, color, distance, 
+		return new box2dLight.ConeLight(handler, rays, GDXLight.convert(color), distance, 
 				coordinates.x, coordinates.y, directionDegree, coneDegree);
 	}
 }

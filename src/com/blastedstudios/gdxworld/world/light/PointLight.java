@@ -34,7 +34,7 @@ public class PointLight extends GDXLight {
 	}
 
 	@Override public Light create(RayHandler handler) {
-		return new box2dLight.PointLight(handler, rays, color, distance, 
-				coordinates.x, coordinates.y);
+		return new box2dLight.PointLight(handler, rays, GDXLight.convert(color),
+				distance, coordinates.x, coordinates.y);
 	}
 }

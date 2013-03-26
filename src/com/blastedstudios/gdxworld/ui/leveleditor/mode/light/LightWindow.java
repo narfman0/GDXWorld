@@ -51,7 +51,7 @@ class LightWindow extends AbstractWindow {
 		final Button applyButton = new TextButton("Apply", skin);
 		applyButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.getLevel().setLightAmbient(colorTable.parseColor().cpy());
+				screen.getLevel().setLightAmbient(GDXLight.convert(colorTable.parseColor()));
 				screen.getLevel().getLights().clear();
 				Gdx.app.debug("LightWindow.applyButton.ClickListener", "Cleared lights");
 				for(GDXLight light : getLights())
@@ -103,17 +103,17 @@ class LightWindow extends AbstractWindow {
 		switch(lightType){
 		case Cone:
 			ConeLight coneLight = light == null ? new ConeLight() : (ConeLight) light;
-			return new ConeLightTable(skin, coneLight.getColor(), coneLight.getRays(), 
+			return new ConeLightTable(skin, GDXLight.convert(coneLight.getColor()), coneLight.getRays(), 
 					coneLight.getDistance(), coneLight.getCoordinates(), coneLight.getConeDegree(),
 					coneLight.getDirectionDegree());
 		case Directional:
 			DirectionalLight directionalLight = light == null ? new DirectionalLight() : (DirectionalLight) light;
-			return new DirectionalLightTable(skin, directionalLight.getColor(), directionalLight.getRays(), 
+			return new DirectionalLightTable(skin, GDXLight.convert(directionalLight.getColor()), directionalLight.getRays(), 
 					directionalLight.getDirection());
 		case Point:
 		default:
 			PointLight pointLight = light == null ? new PointLight() : (PointLight) light;
-			return new PointLightTable(skin, pointLight.getColor(), pointLight.getRays(), 
+			return new PointLightTable(skin, GDXLight.convert(pointLight.getColor()), pointLight.getRays(), 
 					pointLight.getDistance(), pointLight.getCoordinates());
 		}
 	}
