@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.world.folder;
+package com.blastedstudios.gdxworld.world.light;
 
 import box2dLight.Light;
 import box2dLight.RayHandler;

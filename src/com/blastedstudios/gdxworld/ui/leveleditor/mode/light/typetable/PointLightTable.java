@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
-import com.blastedstudios.gdxworld.world.folder.PointLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
+import com.blastedstudios.gdxworld.world.light.PointLight;
 
 public class PointLightTable extends AbstractLightTable {
 	private TextField distanceField;
@@ -16,12 +16,15 @@ public class PointLightTable extends AbstractLightTable {
 	public PointLightTable(final Skin skin, Color color, int rays, 
 			float distance, Vector2 coordinates){
 		super(skin, color, rays);
+		distanceField = new TextField(distance+"", skin);
+		coordinatesTable = new VertexTable(coordinates, skin, null, AbstractLightTable.WIDTH);
 		add(new Label("Type: Point", skin));
 		init();
 		add(new Label("Distance: ", skin));
-		add(distanceField = new TextField(distance+"", skin));
+		add(distanceField).width(AbstractLightTable.WIDTH);
 		distanceField.setMessageText("<distance>");
-		add(coordinatesTable = new VertexTable(coordinates, skin, null));
+		add(new Label("Coordinates: ", skin));
+		add(coordinatesTable);
 	}
 
 	@Override public GDXLight create() {

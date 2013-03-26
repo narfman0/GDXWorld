@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 
 public class LightMode extends AbstractMode {
 	private LevelEditorScreen screen;

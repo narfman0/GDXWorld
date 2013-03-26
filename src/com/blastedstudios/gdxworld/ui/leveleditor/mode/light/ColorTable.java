@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.typetable.AbstractLightTable;
 
 public class ColorTable extends Table {
 	private final TextField rLabel, gLabel, bLabel, aLabel;
@@ -17,18 +18,18 @@ public class ColorTable extends Table {
 		gLabel.setMessageText("<g, [0-1]>");
 		bLabel.setMessageText("<b, [0-1]>");
 		aLabel.setMessageText("<a, [0-1]>");
-		add(rLabel);
-		add(gLabel);
-		add(bLabel);
-		add(aLabel);
+		add(rLabel).width(AbstractLightTable.WIDTH);
+		add(gLabel).width(AbstractLightTable.WIDTH);
+		add(bLabel).width(AbstractLightTable.WIDTH);
+		add(aLabel).width(AbstractLightTable.WIDTH);
 	}
 	
-	public Color getColor(){
+	public Color parseColor(){
 		return new Color(Float.parseFloat(rLabel.getText()), Float.parseFloat(gLabel.getText()),
 				Float.parseFloat(bLabel.getText()), Float.parseFloat(aLabel.getText()));
 	}
 	
-	public void setVertex(Color color){
+	public void applyColor(Color color){
 		rLabel.setText(color.r+"");
 		gLabel.setText(color.g+"");
 		bLabel.setText(color.b+"");

@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.world.folder;
+package com.blastedstudios.gdxworld.world.light;
 
 import java.io.Serializable;
 

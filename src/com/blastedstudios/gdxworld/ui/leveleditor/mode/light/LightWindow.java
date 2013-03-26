@@ -1,12 +1,17 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.mode.light;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -17,14 +22,14 @@ import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.typetable.AbstractL
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.typetable.ConeLightTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.typetable.DirectionalLightTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.typetable.PointLightTable;
-import com.blastedstudios.gdxworld.world.folder.ConeLight;
-import com.blastedstudios.gdxworld.world.folder.DirectionalLight;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
-import com.blastedstudios.gdxworld.world.folder.PointLight;
+import com.blastedstudios.gdxworld.world.light.ConeLight;
+import com.blastedstudios.gdxworld.world.light.DirectionalLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
+import com.blastedstudios.gdxworld.world.light.PointLight;
 
 class LightWindow extends AbstractWindow {
 	private ColorTable colorTable;
-	private ArrayList<AbstractLightTable> lightTables;
+	private final Map<AbstractLightTable,Button> lightTables;
 	private Table lightTable = new Table();
 	private Skin skin;
 	
@@ -32,7 +37,7 @@ class LightWindow extends AbstractWindow {
 			final LightMode lightMode, final LevelEditorScreen screen) {
 		super("Light Editor", skin);
 		this.skin = skin;
-		lightTables = new ArrayList<>();
+		lightTables = new HashMap<>();
 		final List lightTypes = new List(LightType.values(), skin);
 		final Button newButton = new TextButton("New", skin);
 		newButton.addListener(new ClickListener() {
@@ -41,64 +46,91 @@ class LightWindow extends AbstractWindow {
 			}
 		});
 		for(GDXLight light : screen.getLevel().getLights()){
-			String name = light.getClass().getSimpleName();
-			addLightTable(Enum.valueOf(LightType.class, name.substring(0,name.length()-5)), light);
+			addLightTable(LightType.convert(light), light);
 		}
 		final Button applyButton = new TextButton("Apply", skin);
 		applyButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				screen.getLevel().setLightAmbient(colorTable.getColor().cpy());
+				screen.getLevel().setLightAmbient(colorTable.parseColor().cpy());
 				screen.getLevel().getLights().clear();
+				Gdx.app.debug("LightWindow.applyButton.ClickListener", "Cleared lights");
 				for(GDXLight light : getLights())
-					screen.getLevel().getLights().add(light);
+					lightMode.addLight(light);
 			}
 		});
-		add(new Label("Ambient: ", skin));
-		add(colorTable = new ColorTable(ambient, skin)).colspan(2);
+		Table ambientTable = new Table();
+		ambientTable.add(new Label("Ambient: ", skin));
+		ambientTable.add(colorTable = new ColorTable(ambient, skin));
+		add(ambientTable);
 		row();
-		add(new Label("Type: ", skin));
-		add(lightTypes);
-		add(newButton);
+		Table controlTable = new Table();
+		controlTable.add(new Label("Type: ", skin));
+		controlTable.add(lightTypes);
+		controlTable.add(newButton);
+		add(controlTable);
 		row();
-		add(lightTable);
+		final ScrollPane scrollPane = new ScrollPane(lightTable);
+		add(scrollPane);
+		row();
+		add(applyButton);
 		setMovable(false);
-		//pack();
-		setSize(900, 500);
+		setSize(Gdx.graphics.getWidth(), 500);
 	}
 	
 	private void addLightTable(LightType lightType, GDXLight light){
-		AbstractLightTable table = null;
+		final AbstractLightTable table = createTable(lightType, light);
+		final Button deleteButton = new TextButton("Delete", skin);
+		deleteButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				deleteButton.remove();
+				table.remove();
+				lightTables.remove(table).remove();
+				lightTable.reset();
+				for(Entry<AbstractLightTable, Button> entry : lightTables.entrySet()){
+					lightTable.add(entry.getKey());
+					lightTable.add(entry.getValue());
+					lightTable.row();
+				}
+			}
+		});
+		lightTable.add(table);
+		lightTable.add(deleteButton);
+		lightTable.row();
+		lightTables.put(table,deleteButton);
+	}
+	
+	private AbstractLightTable createTable(LightType lightType, GDXLight light){
 		switch(lightType){
 		case Cone:
 			ConeLight coneLight = light == null ? new ConeLight() : (ConeLight) light;
-			table = new ConeLightTable(skin, coneLight.getColor(), coneLight.getRays(), 
+			return new ConeLightTable(skin, coneLight.getColor(), coneLight.getRays(), 
 					coneLight.getDistance(), coneLight.getCoordinates(), coneLight.getConeDegree(),
 					coneLight.getDirectionDegree());
-			break;
 		case Directional:
 			DirectionalLight directionalLight = light == null ? new DirectionalLight() : (DirectionalLight) light;
-			table = new DirectionalLightTable(skin, directionalLight.getColor(), directionalLight.getRays(), 
+			return new DirectionalLightTable(skin, directionalLight.getColor(), directionalLight.getRays(), 
 					directionalLight.getDirection());
-			break;
 		case Point:
+		default:
 			PointLight pointLight = light == null ? new PointLight() : (PointLight) light;
-			table = new PointLightTable(skin, pointLight.getColor(), pointLight.getRays(), 
+			return new PointLightTable(skin, pointLight.getColor(), pointLight.getRays(), 
 					pointLight.getDistance(), pointLight.getCoordinates());
-			break;
 		}
-		lightTable.add(table).colspan(4);
-		lightTables.add(table);
-		lightTable.row();
 	}
 
 	private ArrayList<GDXLight> getLights() {
 		ArrayList<GDXLight> lights = new ArrayList<>();
-		for(AbstractLightTable table : lightTables)
+		for(AbstractLightTable table : lightTables.keySet())
 			lights.add(table.create());
 		return lights;
 	}
 	
 	private enum LightType{
-		Directional, Cone, Point
+		Directional, Cone, Point;
+		
+		public static LightType convert(GDXLight light){
+			String name = light.getClass().getSimpleName();
+			return Enum.valueOf(LightType.class, name.substring(0,name.length()-5));
+		}
 	}
 }

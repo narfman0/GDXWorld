@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;

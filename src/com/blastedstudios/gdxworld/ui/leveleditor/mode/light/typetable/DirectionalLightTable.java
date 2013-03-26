@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.blastedstudios.gdxworld.world.folder.DirectionalLight;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
+import com.blastedstudios.gdxworld.world.light.DirectionalLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 
 public class DirectionalLightTable extends AbstractLightTable {
 	private TextField directionField;
@@ -15,7 +15,7 @@ public class DirectionalLightTable extends AbstractLightTable {
 		add(new Label("Type: Directional", skin));
 		init();
 		add(new Label("Direction: ", skin));
-		add(directionField = new TextField(direction+"", skin));
+		add(directionField = new TextField(direction+"", skin)).width(AbstractLightTable.WIDTH);
 		directionField.setMessageText("<direction>");
 	}
 

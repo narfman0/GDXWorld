@@ -13,12 +13,17 @@ public class VertexTable extends Table {
 	private final TextField coordXLabel, coordYLabel;
 	private final Vector2 vertex;
 	
+	public VertexTable(final Vector2 vertex, final Skin skin, 
+			final VertexRemoveListener listener){
+		this(vertex, skin, listener, 150);
+	}
 	/**
 	 * @param vertex current vertex to set text field data
 	 * @param listener used only in a list to delete vertex. if null, does not
 	 * add delete button
 	 */
-	public VertexTable(final Vector2 vertex, final Skin skin, final VertexRemoveListener listener){
+	public VertexTable(final Vector2 vertex, final Skin skin, 
+			final VertexRemoveListener listener, int width){
 		this.vertex = vertex;
 		final Button deleteButton = new TextButton("Delete", skin);
 		coordXLabel = new TextField(vertex.x+"", skin);
@@ -28,8 +33,8 @@ public class VertexTable extends Table {
 				listener.remove(vertex);
 			}
 		});
-		add(coordXLabel);
-		add(coordYLabel);
+		add(coordXLabel).width(width);
+		add(coordYLabel).width(width);
 		if(listener != null)
 			add(deleteButton);
 	}

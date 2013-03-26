@@ -6,9 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.light.ColorTable;
-import com.blastedstudios.gdxworld.world.folder.GDXLight;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 
 public abstract class AbstractLightTable extends Table {
+	public static int WIDTH = 50;
 	private final Skin skin;
 	protected final ColorTable colorTable;
 	protected final TextField raysField;
@@ -24,13 +25,13 @@ public abstract class AbstractLightTable extends Table {
 		add(new Label("Color: ", skin));
 		add(colorTable);
 		add(new Label("Rays: ", skin));
-		add(raysField);
+		add(raysField).width(WIDTH);
 	}
 	
 	public abstract GDXLight create();
 	
 	protected GDXLight create(GDXLight light){
-		light.setColor(colorTable.getColor());
+		light.setColor(colorTable.parseColor());
 		light.setRays(Integer.parseInt(raysField.getText()));
 		return light;
 	}
