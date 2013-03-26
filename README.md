@@ -125,6 +125,15 @@ current quest is active,
 active to complete is represented, be it visually, in the physics environment,
 or in another similarly stealthy and cool manner. 
 
+### Light
+Light mode creates a world editor interface for the box2dlights 
+https://code.google.com/p/box2dlights extension to libgdx. This allows you to 
+create three different types of lights, Directional, Point, and Cone. The 
+populated ray handler is in the CreateLevelReturnStruct, so caching the result,
+updating the matrix, and rendering (after the objects you want affected have 
+been rendered). Quick example here: 
+https://code.google.com/p/box2dlights/wiki/HelloWorld
+
 Project setup/Cold Start
 ------------------------
 
