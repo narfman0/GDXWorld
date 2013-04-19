@@ -4,18 +4,18 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class MainScreen extends AbstractScreen<GDXWorldEditor> {
-	public MainScreen(final GDXWorldEditor game){
+public class MainScreen extends AbstractScreen{
+	public MainScreen(final Game game){
 		super(game);
 		final Button newButton = new TextButton("New", skin);
 		final Button loadButton = new TextButton("Load", skin);

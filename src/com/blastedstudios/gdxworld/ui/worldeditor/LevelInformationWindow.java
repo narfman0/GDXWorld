@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -22,7 +22,7 @@ public class LevelInformationWindow extends AbstractWindow{
 	private final GDXWorld gdxWorld;
 	private final GDXLevel gdxLevel;
 	
-	public LevelInformationWindow(final GDXWorldEditor game, final WorldEditorScreen worldEditorScreen, 
+	public LevelInformationWindow(final Game game, final WorldEditorScreen worldEditorScreen, 
 			final Skin skin, final GDXWorld gdxWorld, final GDXLevel gdxLevel, final File lastSavedFile){
 		super("Level Info", skin);
 		this.gdxWorld = gdxWorld;

@@ -3,23 +3,23 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 import java.io.File;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
+public class WorldEditorScreen extends AbstractScreen {
 	private static final float LEVEL_RADIUS = 1;
 	private OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world = new World(new Vector2(), true);
@@ -30,8 +30,7 @@ public class WorldEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private HashMap<GDXLevel, Body> bodies = new HashMap<GDXLevel, Body>();
 	private File lastSavedFile;
 	
-	public WorldEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld,
-			File lastSavedFile){
+	public WorldEditorScreen(final Game game, final GDXWorld gdxWorld, File lastSavedFile){
 		super(game);
 		this.lastSavedFile = lastSavedFile;
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;

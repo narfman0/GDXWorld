@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
@@ -16,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.IMode;
@@ -24,7 +24,7 @@ import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
+public class LevelEditorScreen extends AbstractScreen {
 	public static final float NODE_RADIUS = 1;
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world = new World(new Vector2(), true);
@@ -38,7 +38,7 @@ public class LevelEditorScreen extends AbstractScreen<GDXWorldEditor> {
 	private final Collection<IMode> modes = PluginUtil.getPlugins(IMode.class);
 	private IMode mode;
 	
-	public LevelEditorScreen(final GDXWorldEditor game, final GDXWorld gdxWorld, 
+	public LevelEditorScreen(final Game game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;

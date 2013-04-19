@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public abstract class AbstractScreen<T extends Game> implements Screen, InputProcessor{
+public abstract class AbstractScreen implements Screen, InputProcessor{
 	protected final Stage stage;
 	protected static Skin skin;
-	protected final T game;
+	protected final Game game;
 	protected final InputMultiplexer inputMultiplexer;
 	
-	public AbstractScreen(final T game){
+	public AbstractScreen(final Game game){
 		this.game = game;
 		if(skin == null)
 			skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
