@@ -56,7 +56,7 @@ public class PolygonUtils {
 	 * @return list of skewed vertices to be centered around given origin
 	 */
 	public static List<Vector2> getCenterVerticesReverse(List<Vector2> vertices, Vector2 vertex){
-		return getCenterVertices(vertices, vertex.cpy().mul(-1));
+		return getCenterVertices(vertices, vertex.cpy().scl(-1));
 	}
 	
 	public static Vector2 getClosestNode(float x, float y, List<Vector2> nodes) {

@@ -35,9 +35,9 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 
 	@Override public void execute() {
 		Body body = executor.getPhysicsObject(name); 
-		body.applyLinearImpulse(impulse, body.getPosition());
+		body.applyLinearImpulse(impulse, body.getPosition(),true);
 		body.setType(type);
-		body.applyTorque(torque);
+		body.applyTorque(torque,true);
 	}
 
 	public String getName() {

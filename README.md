@@ -141,5 +141,5 @@ Designed to be managed from eclipse, preferably in Fedora 16+ with the egit
 plugin, but should work under any environment. To run, navigate to
 GDXWorldEditor, right click, Run As, Java Application. 
 
-Uses libGDX nightly snapshot from 2012Jan12
+Uses libGDX nightly snapshot from 2013Apr20
 Refer to LICENSE for (admittedly lacking) licensing information

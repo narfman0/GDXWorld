@@ -34,11 +34,11 @@ public class LiveMode extends AbstractMode {
 		camera.unproject(coordinates);
 		if(lastTouchPolygon != null){
 			Vector2 impulse = new Vector2(coordinates.x, coordinates.y).
-					sub(lastTouchCoordinates).mul(lastTouchPolygon.getMass());
+					sub(lastTouchCoordinates).scl(lastTouchPolygon.getMass());
 			Gdx.app.log("LevelEditorScreen.touchUp", "applying impulse: " + 
 					impulse + " on body: " + lastTouchPolygon.getPosition());
 			lastTouchPolygon.applyLinearImpulse(impulse, 
-					lastTouchPolygonLocalCoordinates.add(lastTouchPolygon.getPosition()));
+					lastTouchPolygonLocalCoordinates.add(lastTouchPolygon.getPosition()),true);
 			lastTouchCoordinates = null;
 			lastTouchPolygon = null;
 			lastTouchPolygonLocalCoordinates = null;
