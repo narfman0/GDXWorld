@@ -31,4 +31,5 @@ public abstract class AbstractMode implements IMode{
 	}
 	
 	public void start(){};
+	public void render(float delta, Camera camera){};
 }

@@ -30,19 +30,22 @@ public class GDXRenderer {
         batch.begin();
         
 		if(drawBackground)
-			for(GDXBackground background : level.getBackgrounds()){
-				Texture texture = getTexture(background.getTexture());
-				if(texture != null){
-					//Disabling parallax for now
-					//float depth = Math.max(background.getDepth(), .001f);
-					Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(background.getScale()/2f);
-					//Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
-					Vector2 xy = background.getCoordinates().cpy().sub(offset);
-					batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
-							texture.getHeight()*background.getScale());
-				}
-			}
+			for(GDXBackground background : level.getBackgrounds())
+				drawBackground(background, batch);
 		batch.end();
+	}
+	
+	public void drawBackground(GDXBackground background, SpriteBatch batch){
+		Texture texture = getTexture(background.getTexture());
+		if(texture != null){
+			//Disabling parallax for now
+			//float depth = Math.max(background.getDepth(), .001f);
+			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(background.getScale()/2f);
+			//Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
+			Vector2 xy = background.getCoordinates().cpy().sub(offset);
+			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
+					texture.getHeight()*background.getScale());
+		}
 	}
 	
 	/**

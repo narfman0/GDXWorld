@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.leveleditor.mode;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 
@@ -13,4 +14,5 @@ public interface IMode extends Plugin {
 	public void loadLevel(GDXLevel level);
 	public void init(LevelEditorScreen screen);
 	public void start();
+	public void render(float delta, Camera camera);
 }
