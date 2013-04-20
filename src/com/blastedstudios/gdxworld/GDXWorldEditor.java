@@ -23,7 +23,7 @@ public class GDXWorldEditor extends Game {
 	
 	public static void main (String[] argv) {
 		args = argv;
-		new LwjglApplication(new GDXWorldEditor(), "GDX World Editor", 1280, 1024, false);
+		new LwjglApplication(new GDXWorldEditor(), "GDX World Editor", 1280, 1024, true);
 	}
 	
 	private void parseArgs(String[] argv){

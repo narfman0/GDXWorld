@@ -6,10 +6,14 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public abstract class AbstractScreen implements Screen, InputProcessor{
+	private static final int GL_CLEAR = Gdx.graphics.isGL20Available() ? 
+			GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT : 
+			GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT;
 	protected final Stage stage;
 	protected static Skin skin;
 	protected final Game game;
@@ -26,7 +30,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	}
 
 	@Override public void render(float delta) {
-		Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl.glClear(GL_CLEAR);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 	}
 	

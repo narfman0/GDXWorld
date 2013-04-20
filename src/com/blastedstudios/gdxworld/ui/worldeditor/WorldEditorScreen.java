@@ -43,7 +43,8 @@ public class WorldEditorScreen extends AbstractScreen {
 	@Override public void render(float delta) {
 		super.render(delta);
 		camera.update();
-		camera.apply(Gdx.gl10);
+		if(!Gdx.graphics.isGL20Available())
+			camera.apply(Gdx.gl10);
 		renderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
