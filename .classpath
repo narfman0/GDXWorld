@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="src/com/blastedstudios/gdxworld/plugin/serializer/xml/lib/xmlpull-1.1.3.1.jar"/>
 	<classpathentry kind="lib" path="src/com/blastedstudios/gdxworld/plugin/serializer/xml/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="src/com/blastedstudios/gdxworld/plugin/serializer/xml/lib/xstream-1.4.4.jar"/>
+	<classpathentry kind="lib" path="src/com/blastedstudios/gdxworld/plugin/serializer/json/lib/jettison-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
