@@ -3,13 +3,19 @@ package com.blastedstudios.gdxworld.world;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.swing.filechooser.FileFilter;
+
+import net.xeoh.plugins.base.Plugin;
+
 import com.badlogic.gdx.Gdx;
-import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
+	private static Collection<IWorldSerializer> serializers = PluginUtil.getPlugins(IWorldSerializer.class);
 	private List<GDXLevel> levels;
 
 	public GDXWorld(){
@@ -41,61 +47,36 @@ public class GDXWorld implements Serializable{
 	 * @param selectedFile location to save world
 	 */
 	public void save(File selectedFile) {
-		save(selectedFile, false);
-	}
-
-	/**
-	 * Serialize this into filesystem
-	 * @param selectedFile location to save world
-	 * @param split up levels into different files
-	 */
-	public void save(File selectedFile, boolean split) {
-		if(selectedFile == null)
-			Gdx.app.error("GDXWorld.save", "Cannot write to null file");
-		else{
-			selectedFile.getParentFile().mkdirs();
-			if(split){
-				selectedFile.delete();
-				selectedFile.mkdirs();
-				for(int i=0; i<levels.size(); i++){
-					FileUtil.write(new File(selectedFile + File.separator + i), levels.get(i), false);
-					Gdx.app.log("GDXWorld.save", "Successfully saved split " + selectedFile);
-				}
-			}else
-				try{
-					FileUtil.write(selectedFile, this, false);
-					Gdx.app.log("GDXWorld.save", "Successfully saved non-split " + selectedFile);
-				}catch(Exception e){
-					e.printStackTrace();
-				}
+		try{
+			getSerializer(selectedFile).save(selectedFile, this);
+		}catch(Exception e){
+			Gdx.app.error("GDXWorld.save", "Detected serializer failed: " + e.getMessage());
+			try{
+				PluginUtil.getPlugins(IWorldSerializer.class).iterator().next().save(selectedFile, this);
+			}catch(Exception e1){
+				Gdx.app.error("GDXWorld.save", "Default serializer failed: " + e.getMessage());
+				e1.printStackTrace();
+			}
 		}
 	}
 	
-	/**
-	 * Deserialize GDXWorld, detects if split or not
-	 */
 	public static GDXWorld load(File selectedFile) {
-		if(selectedFile == null)
-			Gdx.app.error("GDXWorld.load", "Cannot read null file");
-		else if(!selectedFile.canRead())
-			Gdx.app.error("GDXWorld.load", "Cannot read file: " + selectedFile.getAbsolutePath());
-		else
-			try{
-				GDXWorld world = (GDXWorld) FileUtil.read(selectedFile, false);
-				Gdx.app.log("GDXWorld.load", "Successfully loaded non-split " + selectedFile);
-				return world;
-			}catch(Exception e){
+		try{
+			return getSerializer(selectedFile).load(selectedFile);
+		}catch(Exception e){
+			Gdx.app.error("GDXWorld.load", "Serializer error: " + e.getMessage());
+			for(IWorldSerializer serializer : serializers)
 				try{
-					GDXWorld world = new GDXWorld();
-					for(File file : selectedFile.listFiles())
-						world.levels.add((GDXLevel)FileUtil.read(file, false));
-					Gdx.app.log("GDXWorld.load", "Successfully loaded split " + selectedFile);
-					return world;
-				}catch(Exception e1){
-					Gdx.app.log("GDXWorld.load", "Failed to load " + selectedFile);
-					e.printStackTrace();
-				}
-			}
+					return serializer.load(selectedFile);
+				}catch(Exception e1){}
+		}
+		return null;
+	}
+	
+	private static IWorldSerializer getSerializer(File selectedFile){
+		for(IWorldSerializer serializer : serializers)
+			if(serializer.getFileFilter().accept(selectedFile))
+				return serializer;
 		return null;
 	}
 
@@ -117,5 +98,15 @@ public class GDXWorld implements Serializable{
 
 	@Override public String toString(){
 		return "[GDXWorld]";
+	}
+	
+	public static Collection<IWorldSerializer> getSerializers(){
+		return serializers;
+	}
+	
+	public interface IWorldSerializer extends Plugin{
+		public GDXWorld load(File selectedFile) throws Exception;
+		public void save(File selectedFile, GDXWorld world) throws Exception;
+		public FileFilter getFileFilter();
 	}
 }

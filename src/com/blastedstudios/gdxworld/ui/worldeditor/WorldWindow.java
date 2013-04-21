@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.world.GDXWorld;
+import com.blastedstudios.gdxworld.world.GDXWorld.IWorldSerializer;
 
 public class WorldWindow extends AbstractWindow{
 	private File lastSavedFile;
@@ -40,8 +41,10 @@ public class WorldWindow extends AbstractWindow{
 		saveAsButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				final JFileChooser fc = new JFileChooser();
+				for(IWorldSerializer serializer : GDXWorld.getSerializers())
+					fc.addChoosableFileFilter(serializer.getFileFilter());
 				fc.showSaveDialog(null);
-				File file = fc.getSelectedFile(); 
+				File file = fc.getSelectedFile();
 				if(file != null){
 					if( (file.exists() && !file.canWrite()) || 
 						(!file.exists() && !file.getParentFile().canWrite()) ){
