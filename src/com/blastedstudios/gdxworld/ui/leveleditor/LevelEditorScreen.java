@@ -89,6 +89,11 @@ public class LevelEditorScreen extends AbstractScreen {
 		return false;
 	}
 
+	@Override public boolean touchDragged(int x, int y, int ptr) {
+		mode.touchDragged(x, y, ptr);
+		return false;
+	}
+
 	@Override public boolean scrolled(int amount) {
 		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
 		Gdx.app.log("LevelEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);

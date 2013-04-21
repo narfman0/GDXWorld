@@ -16,6 +16,11 @@ public abstract class AbstractMode implements IMode{
 		return false;
 	}
 	
+	public boolean touchDragged(int x, int y, int ptr){
+		updateTouched(x,y);
+		return false;
+	}
+	
 	public boolean touchUp(int x, int y, int arg2, int arg3){
 		updateTouched(x,y);
 		return false;

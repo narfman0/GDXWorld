@@ -45,16 +45,25 @@ public class BackgroundMode extends AbstractMode {
 		return false;
 	}
 	
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		shift();
+		return false;
+	}
+	
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
+		shift();
+		return false;
+	}
+	
+	private void shift(){
 		if(lastTouched != null){
 			Gdx.app.debug("BackgroundMode.touchUp", lastTouched.toString() + " to " + coordinates);
 			lastTouched.getCoordinates().set(coordinates);
-			lastTouched = null;
 			if(backgroundWindow != null)
 				backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
 		}
-		return false;
 	}
 	
 	private GDXBackground getClosest(float x, float y){

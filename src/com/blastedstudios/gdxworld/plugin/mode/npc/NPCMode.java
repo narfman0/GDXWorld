@@ -35,6 +35,12 @@ public class NPCMode extends AbstractMode {
 		return false;
 	}
 	
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		shift();
+		return false;
+	}
+	
 	public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x,y,arg2,arg3);
 		shift();

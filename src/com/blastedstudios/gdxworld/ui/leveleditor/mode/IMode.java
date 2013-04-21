@@ -8,6 +8,7 @@ import net.xeoh.plugins.base.Plugin;
 
 public interface IMode extends Plugin {
 	public boolean touchDown(int x, int y, int x1, int y1);
+	public boolean touchDragged(int x, int y, int ptr);
 	public boolean touchUp(int x, int y, int arg2, int arg3);
 	public boolean contains(float x, float y);
 	public void clean();
