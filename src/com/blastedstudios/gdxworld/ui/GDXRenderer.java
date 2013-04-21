@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +18,7 @@ public class GDXRenderer {
 	private boolean drawBackground;
 	private Map<String, Texture> textureMap;
 	private SpriteBatch batch;
+	private static final Texture EMPTY = new Texture(1,1,Format.RGBA4444);
 	
 	public GDXRenderer(boolean drawBackground){
 		this.drawBackground = drawBackground;
@@ -67,16 +69,18 @@ public class GDXRenderer {
 	public Texture getTexture(String name){
 		if(!textureMap.containsKey(name)){
 			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
-			if(file == null)
-				Gdx.app.error("GDXRenderer.render", "Texture " + name + " not found!");
-			else{
+			if(file != null){
 				try{
 					textureMap.put(name, new Texture(file));
 					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
-					Gdx.app.error("GDXRenderer.render", "Exception loading texture " + name);
-					e.printStackTrace();
+					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
+							name + ", using empty");
+					textureMap.put(name, EMPTY);
 				}
+			}else{
+				Gdx.app.error("GDXRenderer.render", "Texture " + name + " not found, using empty");
+				textureMap.put(name, EMPTY);
 			}
 		}
 		return textureMap.get(name);
