@@ -61,7 +61,7 @@ public class JavaSerializable implements IWorldSerializer{
 	}
 
 	private boolean isSplit(){
-		return Properties.getBool("world.serializer.javaserializable.split");
+		return Properties.getBool("world.serializer.javaserializable.split", false);
 	}
 
 	static void write(File file, Object obj){

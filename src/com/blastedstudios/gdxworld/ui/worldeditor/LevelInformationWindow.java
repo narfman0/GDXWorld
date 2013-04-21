@@ -93,6 +93,10 @@ public class LevelInformationWindow extends AbstractWindow{
 		worldEditorScreen.removeLevelInformationWindow();
 	}
 	
+	public GDXLevel getLevel(){
+		return gdxLevel;
+	}
+	
 	public void setCoordinates(float x, float y){
 		coordXLabel.setText(x+"");
 		coordYLabel.setText(y+"");

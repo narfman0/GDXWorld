@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileFilter;
 import net.xeoh.plugins.base.Plugin;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 
 public class GDXWorld implements Serializable{
@@ -79,10 +80,11 @@ public class GDXWorld implements Serializable{
 				return serializer;
 		return null;
 	}
+	
+	public GDXLevel getClosestLevel(Vector2 coords){
+		return getClosestLevel(coords.x, coords.y);
+	}
 
-	/**
-	 * @return closest GDXLevel to the given coordinates
-	 */
 	public GDXLevel getClosestLevel(float x, float y) {
 		GDXLevel closest = null;
 		float closestDistance = Float.MAX_VALUE;

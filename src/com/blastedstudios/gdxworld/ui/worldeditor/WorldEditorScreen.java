@@ -16,11 +16,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
+import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldEditorScreen extends AbstractScreen {
-	private static final float LEVEL_RADIUS = 1;
 	private OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world = new World(new Vector2(), true);
 	private Box2DDebugRenderer renderer = new Box2DDebugRenderer();
@@ -54,26 +54,6 @@ public class WorldEditorScreen extends AbstractScreen {
 			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
-		
-		if(Gdx.input.isTouched()){
-			int x = Gdx.input.getX(), y = Gdx.input.getY();
-			Gdx.app.debug("WodlEditorScren.render", "isTouched: x="+x+ " y="+y);
-			if(!worldWindow.contains(x,y) && (levelInfo == null || !levelInfo.contains(x, y))){
-				Vector3 coordinates = new Vector3(x,y,0);
-				camera.unproject(coordinates);
-				if(levelInfo == null){
-					GDXLevel level = gdxWorld.getClosestLevel(coordinates.x,coordinates.y);
-					if(level == null || level.getCoordinates().dst(coordinates.x, coordinates.y) > LEVEL_RADIUS){
-						level = new GDXLevel();
-						Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
-					}else
-						Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
-					levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level, lastSavedFile);
-					stage.addActor(levelInfo);
-				}else
-					levelInfo.setCoordinates(coordinates.x, coordinates.y);
-			}
-		}
 		stage.draw();
 	}
 	
@@ -90,7 +70,7 @@ public class WorldEditorScreen extends AbstractScreen {
 
 	public void add(GDXLevel gdxLevel) {
 		Gdx.app.log("WorldEditorScreen.add", "Added level " + gdxLevel);
-		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, LEVEL_RADIUS, gdxLevel.getCoordinates(), BodyType.StaticBody));
+		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, getLevelRadius(), gdxLevel.getCoordinates(), BodyType.StaticBody));
 	}
 
 	public void update(GDXLevel gdxLevel) {
@@ -101,5 +81,55 @@ public class WorldEditorScreen extends AbstractScreen {
 		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
 		Gdx.app.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
+	}
+
+	@Override public boolean touchDown(int x, int y, int ptr, int button) {
+		super.touchDown(x, y, ptr, button);
+		touched(x,y);
+		return false;
+	}
+
+	@Override public boolean touchDragged(int x, int y, int ptr) {
+		super.touchDragged(x, y, ptr);
+		touched(x,y);
+		return false;
+	}
+
+	@Override public boolean touchUp(int x, int y, int ptr, int button) {
+		super.touchUp(x, y, ptr, button);
+		touched(x,y);
+		return false;
+	}
+	
+	private void touched(int x, int y){
+		if(!worldWindow.contains(x,y) && (levelInfo == null || !levelInfo.contains(x, y))){
+			Vector2 coordinates = toWorldCoordinates(x,y);
+			if(levelInfo == null){
+				GDXLevel level = gdxWorld.getClosestLevel(coordinates.x,coordinates.y);
+				if(level == null || level.getCoordinates().dst(coordinates.x, coordinates.y) > getLevelRadius()){
+					level = new GDXLevel();
+					Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
+				}else
+					Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
+				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level, lastSavedFile);
+				stage.addActor(levelInfo);
+			}else{
+				if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
+					levelInfo.setCoordinates(coordinates.x, coordinates.y);
+					if(bodies.containsKey(levelInfo.getLevel()))
+						bodies.get(levelInfo.getLevel()).setTransform(coordinates, 0);
+				}
+			}
+		}
+	}
+	
+	private Vector2 toWorldCoordinates(int x, int y){
+		Vector3 coordinates = new Vector3(x,y,0);
+		camera.unproject(coordinates);
+		return new Vector2(coordinates.x,coordinates.y);
+	}
+	
+	private static float getLevelRadius(){
+		return Properties.getFloat("world.editor.node.radius", 1f);
 	}
 }

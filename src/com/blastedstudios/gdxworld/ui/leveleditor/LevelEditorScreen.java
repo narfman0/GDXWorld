@@ -161,6 +161,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	}
 	
 	public static float getNodeRadius(){
-		return Properties.getFloat("screen.level.node.radius");
+		return Properties.getFloat("screen.level.node.radius", .3f);
 	}
 }

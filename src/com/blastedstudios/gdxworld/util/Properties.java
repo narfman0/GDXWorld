@@ -29,16 +29,34 @@ public class Properties {
 		return properties.getProperty(key);
 	}
 	
+	public static String get(String key, String defaultVal){
+		if(!properties.containsKey(key))
+			set(key, defaultVal);
+		return properties.getProperty(key);
+	}
+	
 	public static boolean getBool(String key){
 		return Boolean.parseBoolean(get(key));
+	}
+	
+	public static boolean getBool(String key, boolean defaultVal){
+		return Boolean.parseBoolean(get(key, defaultVal+""));
 	}
 	
 	public static int getInt(String key){
 		return Integer.parseInt(get(key));
 	}
+	
+	public static int getInt(String key, int defaultVal){
+		return Integer.parseInt(get(key,defaultVal+""));
+	}
 
 	public static float getFloat(String key) {
 		return Float.parseFloat(get(key));
+	}
+
+	public static float getFloat(String key, float defaultVal) {
+		return Float.parseFloat(get(key,defaultVal+""));
 	}
 	
 	public static Object set(String key, String value){
