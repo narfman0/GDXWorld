@@ -52,8 +52,10 @@ public class GDXPolygon extends GDXShape implements Serializable{
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
 		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, PhysicsHelper.POLYGON_SHAPE);
-		body.setTransform(center, 0);
-		body.setUserData(name);
+		if(body != null){
+			body.setTransform(center, 0);
+			body.setUserData(name);
+		}
 		return body;
 	}
 

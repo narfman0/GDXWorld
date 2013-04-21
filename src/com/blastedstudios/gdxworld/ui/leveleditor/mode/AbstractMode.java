@@ -12,14 +12,21 @@ public abstract class AbstractMode implements IMode{
 	protected LevelEditorScreen screen;
 	
 	public boolean touchDown(int x, int y, int x1, int y1){
-		Vector3 coordinates = new Vector3(x,y,0);
-		camera.unproject(coordinates);
-		this.coordinates = new Vector2(coordinates.x,coordinates.y);
+		updateTouched(x,y);
 		return false;
 	}
 	
 	public boolean touchUp(int x, int y, int arg2, int arg3){
+		updateTouched(x,y);
 		return false;
+	}
+	
+	private void updateTouched(int x, int y){
+		if(!contains(x,y)){
+			Vector3 coordinates = new Vector3(x,y,0);
+			camera.unproject(coordinates);
+			this.coordinates = new Vector2(coordinates.x,coordinates.y);
+		}
 	}
 
 	public void loadLevel(GDXLevel level) {

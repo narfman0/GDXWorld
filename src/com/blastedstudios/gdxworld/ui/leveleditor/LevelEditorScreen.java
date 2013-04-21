@@ -21,11 +21,11 @@ import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.IMode;
 import com.blastedstudios.gdxworld.util.PluginUtil;
+import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelEditorScreen extends AbstractScreen {
-	public static final float NODE_RADIUS = 1;
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world = new World(new Vector2(), true);
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -153,5 +153,9 @@ public class LevelEditorScreen extends AbstractScreen {
 
 	public Collection<IMode> getModes() {
 		return modes;
+	}
+	
+	public static float getNodeRadius(){
+		return Properties.getFloat("screen.level.node.radius");
 	}
 }

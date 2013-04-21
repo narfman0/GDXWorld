@@ -24,7 +24,7 @@ public class JointMode extends AbstractMode {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXJoint joint = screen.getLevel().getClosestJoint(coordinates.x, coordinates.y, screen.getWorld());
-		if(joint != null && joint.getCenter().dst(coordinates.x, coordinates.y) < LevelEditorScreen.NODE_RADIUS)
+		if(joint != null && joint.getCenter().dst(coordinates.x, coordinates.y) < LevelEditorScreen.getNodeRadius())
 			jointWindow.setSelected(joint);
 		jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
 		return false;
@@ -40,7 +40,7 @@ public class JointMode extends AbstractMode {
 		if(!screen.getLevel().getJoints().contains(gdxJoint))
 			screen.getLevel().getJoints().add(gdxJoint);
 		if(!screen.isLive()){
-			Body body = PhysicsHelper.createCircle(screen.getWorld(), LevelEditorScreen.NODE_RADIUS, gdxJoint.getCenter(), BodyType.DynamicBody);
+			Body body = PhysicsHelper.createCircle(screen.getWorld(), LevelEditorScreen.getNodeRadius(), gdxJoint.getCenter(), BodyType.DynamicBody);
 			screen.getBodies().put(gdxJoint.getName(), Arrays.asList(body));
 		}
 		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());

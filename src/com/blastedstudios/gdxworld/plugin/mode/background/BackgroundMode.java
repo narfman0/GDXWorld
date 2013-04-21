@@ -5,6 +5,7 @@ import java.util.Collections;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
@@ -15,6 +16,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 @PluginImplementation
 public class BackgroundMode extends AbstractMode {
 	private BackgroundWindow backgroundWindow;
+	private GDXBackground lastTouched;
 	
 	public void addBackground(GDXBackground background) {
 		Gdx.app.log("BackgroundMouseMode.addBackground", background.toString());
@@ -33,11 +35,25 @@ public class BackgroundMode extends AbstractMode {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("BackgroundMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXBackground background = getClosest(coordinates.x, coordinates.y);
-		if(background == null)
+		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || background == null)
 			background = new GDXBackground();
 		if(backgroundWindow == null)
 			screen.getStage().addActor(backgroundWindow = new BackgroundWindow(screen.getSkin(), this, background));
 		backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+			lastTouched = background;
+		return false;
+	}
+	
+	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
+		super.touchUp(x, y, arg2, arg3);
+		if(lastTouched != null){
+			Gdx.app.debug("BackgroundMode.touchUp", lastTouched.toString() + " to " + coordinates);
+			lastTouched.getCoordinates().set(coordinates);
+			lastTouched = null;
+			if(backgroundWindow != null)
+				backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+		}
 		return false;
 	}
 	

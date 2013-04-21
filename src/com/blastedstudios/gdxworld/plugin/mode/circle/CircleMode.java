@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
@@ -16,17 +17,38 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 @PluginImplementation
 public class CircleMode extends AbstractMode {
 	private CircleWindow circleWindow;
+	private GDXCircle lastTouched;
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("CircleMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXCircle circle = screen.getLevel().getClosestCircle(coordinates.x, coordinates.y);
-		if(circle == null || circle.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.NODE_RADIUS)
+		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || circle == null || 
+				circle.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
 			circle = new GDXCircle();
 		if(circleWindow == null)
 			screen.getStage().addActor(circleWindow = new CircleWindow(screen.getSkin(), this, circle));
 		circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+			lastTouched = circle;
 		return false;
+	}
+	
+	public boolean touchUp(int x, int y, int arg2, int arg3){
+		super.touchUp(x, y, arg2, arg3);
+		shift();
+		return false;
+	}
+	
+	private void shift(){
+		if(lastTouched != null){
+			Gdx.app.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
+			lastTouched.getCenter().set(coordinates);
+			removeCircle(lastTouched);
+			addCircle(lastTouched);
+			if(circleWindow != null)
+				circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+		}
 	}
 
 	public void addCircle(GDXCircle circle) {

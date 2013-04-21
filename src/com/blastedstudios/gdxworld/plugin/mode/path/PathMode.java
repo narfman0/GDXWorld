@@ -6,6 +6,7 @@ import java.util.List;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -24,8 +25,9 @@ public class PathMode extends AbstractMode {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXPath path = screen.getLevel().getClosestPath(coordinates.x, coordinates.y);
-		if(path == null || path.getClosestNode(coordinates.x, coordinates.y).
-				dst(coordinates.x, coordinates.y) > LevelEditorScreen.NODE_RADIUS)
+		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || path == null || 
+				path.getClosestNode(coordinates.x, coordinates.y).
+				dst(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
 			path = new GDXPath();
 		if(pathWindow == null)
 			screen.getStage().addActor(pathWindow = new PathWindow(screen.getSkin(), this, path));
@@ -48,7 +50,7 @@ public class PathMode extends AbstractMode {
 			newBodies.add(body);
 			for(Vector2 vertex : path.getNodes())
 				newBodies.add(PhysicsHelper.createCircle(screen.getWorld(), 
-						LevelEditorScreen.NODE_RADIUS, vertex, BodyType.StaticBody));
+						LevelEditorScreen.getNodeRadius(), vertex, BodyType.StaticBody));
 			screen.getBodies().put(path, newBodies);
 		}
 	}
