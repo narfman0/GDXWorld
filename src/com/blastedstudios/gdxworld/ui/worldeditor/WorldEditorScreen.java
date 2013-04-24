@@ -46,13 +46,13 @@ public class WorldEditorScreen extends AbstractScreen {
 		if(!Gdx.graphics.isGL20Available())
 			camera.apply(Gdx.gl10);
 		renderer.render(world, camera.combined);
-		if(Gdx.input.isKeyPressed(Keys.UP))
+		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
 			camera.position.y+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.DOWN))
+		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
 			camera.position.y-=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.RIGHT))
+		if(Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
 			camera.position.x+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.LEFT))
+		if(Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
 			camera.position.x-=camera.zoom;
 		stage.draw();
 	}

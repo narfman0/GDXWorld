@@ -9,14 +9,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
+import com.blastedstudios.gdxworld.plugin.mode.circle.CircleMode;
+import com.blastedstudios.gdxworld.plugin.mode.polygon.PolygonMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
-import com.blastedstudios.gdxworld.plugin.mode.joint.JointWindow;
+import com.blastedstudios.gdxworld.util.PluginUtil.Dependency;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
 
 @PluginImplementation
+@Dependency(classes={CircleMode.class,PolygonMode.class})
 public class JointMode extends AbstractMode {
 	private JointWindow jointWindow;
 	
