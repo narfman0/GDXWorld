@@ -99,25 +99,21 @@ class QuestEditor extends AbstractWindow {
 			try {
 				String boxText = (String) tableClass.getField("BOX_TEXT").get(tableClass);
 				final CheckBox box = new CheckBox(boxText, skin);
-				final Class<?> tableClazz = tableClass;
+				final Class<?> clazz = Class.forName(componentClass.getPackage().getName() + "." + 
+						tableClass.getSimpleName().replaceAll("Table", ""));
+				final Object defaultValue = clazz.getField("DEFAULT").get(clazz);
 				checkBoxes.add(box);
 				if(tableClass.getSimpleName().startsWith(current.getClass().getSimpleName()))
 					box.setChecked(true);
 				box.addListener(new ClickListener() {
 					@Override public void clicked(InputEvent event, float x, float y) {
-						try {
-							Class<?> clazz = Class.forName(componentClass.getPackage().getName() + "." + 
-									tableClazz.getSimpleName().replaceAll("Table", ""));
-							if(componentClass == AbstractQuestManifestation.class)
-								createManifestationTable(skin, clazz.getField("DEFAULT").get(clazz));
-							else
-								createTriggerTable(skin, clazz.getField("DEFAULT").get(clazz));
-							for(CheckBox cbox : checkBoxes)
-								cbox.setChecked(cbox == box);
-							pack();
-						}catch(Exception e){
-							e.printStackTrace();
-						}
+						if(componentClass == AbstractQuestManifestation.class)
+							createManifestationTable(skin, defaultValue);
+						else
+							createTriggerTable(skin, defaultValue);
+						for(CheckBox cbox : checkBoxes)
+							cbox.setChecked(cbox == box);
+						pack();
 					}
 				});
 			} catch (Exception e) {
