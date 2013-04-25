@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.plugin.mode.quest;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -59,65 +58,16 @@ class QuestEditor extends AbstractWindow {
 		parentTriggerTable = new Table();
 		createManifestationTable(skin, quest.getManifestation());
 		createTriggerTable(skin, quest.getTrigger());
-		for(Class<? extends ManifestationTable> tableClass : Arrays.asList(
-				BeingSpawnManifestationTable.class, DialogManifestationTable.class, 
-				EndLevelManifestationTable.class, PhysicsManifestationTable.class)){
-			try {
-				String boxText = (String) tableClass.getField("BOX_TEXT").get(tableClass);
-				final CheckBox box = new CheckBox(boxText, skin);
-				final Class<?> tableClazz = tableClass;
-				manifestationBoxes.add(box);
-				if(tableClass.getSimpleName().startsWith(quest.getManifestation().getClass().getSimpleName()))
-					box.setChecked(true);
-				box.addListener(new ClickListener() {
-					@Override public void clicked(InputEvent event, float x, float y) {
-						try {
-							setManifestationBoxesChecked(false);
-							box.setChecked(true);
-							Class<?> clazz = Class.forName(AbstractQuestManifestation.class.getPackage().getName() + "." + 
-									tableClazz.getSimpleName().replaceAll("Table", ""));
-							createManifestationTable(skin, (AbstractQuestManifestation) clazz.getField("DEFAULT").get(clazz));
-							pack();
-						}catch(Exception e){
-							e.printStackTrace();
-						}
-					}
-				});
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
+
+		createQuestComponent(skin, manifestationBoxes, AbstractQuestManifestation.class, 
+				quest.getManifestation(), BeingSpawnManifestationTable.class, 
+				DialogManifestationTable.class,	EndLevelManifestationTable.class, 
+				PhysicsManifestationTable.class);
+		createQuestComponent(skin, triggerBoxes, AbstractQuestTrigger.class, 
+				quest.getTrigger(), AABBTriggerTable.class, 
+				ActivateTriggerTable.class, KillTriggerTable.class, 
+				PersonTriggerTable.class);
 		
-		for(Class<? extends TriggerTable> tableClass : Arrays.asList(
-				AABBTriggerTable.class, ActivateTriggerTable.class, 
-				KillTriggerTable.class, PersonTriggerTable.class)){
-			try {
-				String boxText = (String) tableClass.getField("BOX_TEXT").get(tableClass);
-				final CheckBox box = new CheckBox(boxText, skin);
-				final Class<?> tableClazz = tableClass;
-				triggerBoxes.add(box);
-				if(tableClass.getSimpleName().startsWith(quest.getTrigger().getClass().getSimpleName()))
-					box.setChecked(true);
-				box.addListener(new ClickListener() {
-					@Override public void clicked(InputEvent event, float x, float y) {
-						try {
-							setTriggerBoxesChecked(false);
-							box.setChecked(true);
-							Class<?> clazz = Class.forName(AbstractQuestTrigger.class.getPackage().getName() + "." + 
-									tableClazz.getSimpleName().replaceAll("Table", ""));
-							createTriggerTable(skin, (AbstractQuestTrigger) clazz.getField("DEFAULT").get(clazz));
-							pack();
-						}catch(Exception e){
-							e.printStackTrace();
-						}
-					}
-				});
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
@@ -143,17 +93,41 @@ class QuestEditor extends AbstractWindow {
 		setMovable(false);
 	}
 	
-	private void setTriggerBoxesChecked(boolean checked){
-		for(CheckBox box : triggerBoxes)
-			box.setChecked(checked);
+	private void createQuestComponent(final Skin skin, final List<CheckBox> checkBoxes, 
+			final Class<?> componentClass, Object current, Class<?>... tableClasses){
+		for(Class<?> tableClass : tableClasses){
+			try {
+				String boxText = (String) tableClass.getField("BOX_TEXT").get(tableClass);
+				final CheckBox box = new CheckBox(boxText, skin);
+				final Class<?> tableClazz = tableClass;
+				checkBoxes.add(box);
+				if(tableClass.getSimpleName().startsWith(current.getClass().getSimpleName()))
+					box.setChecked(true);
+				box.addListener(new ClickListener() {
+					@Override public void clicked(InputEvent event, float x, float y) {
+						try {
+							Class<?> clazz = Class.forName(componentClass.getPackage().getName() + "." + 
+									tableClazz.getSimpleName().replaceAll("Table", ""));
+							if(componentClass == AbstractQuestManifestation.class)
+								createManifestationTable(skin, clazz.getField("DEFAULT").get(clazz));
+							else
+								createTriggerTable(skin, clazz.getField("DEFAULT").get(clazz));
+							for(CheckBox cbox : checkBoxes)
+								cbox.setChecked(cbox == box);
+							pack();
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
-	private void setManifestationBoxesChecked(boolean checked){
-		for(CheckBox box : manifestationBoxes)
-			box.setChecked(checked);
-	}
-	
-	private ManifestationTable createManifestationTable(Skin skin, AbstractQuestManifestation manifestation){
+	private ManifestationTable createManifestationTable(Skin skin, Object manifestation){
 		if(manifestationTable != null)
 			manifestationTable.remove();
 		manifestationTable = (ManifestationTable) createTable(ManifestationTable.class, manifestation, skin);
@@ -162,7 +136,7 @@ class QuestEditor extends AbstractWindow {
 		return manifestationTable;
 	}
 	
-	private TriggerTable createTriggerTable(Skin skin, AbstractQuestTrigger trigger){
+	private TriggerTable createTriggerTable(Skin skin, Object trigger){
 		if(triggerTable != null)
 			triggerTable.remove();
 		triggerTable = (TriggerTable) createTable(TriggerTable.class, trigger, skin);
