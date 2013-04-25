@@ -49,10 +49,10 @@ class RevoluteWindow extends BaseJointWindow {
 		add(new Label("Motor Speed: ", skin));
 		add(motorSpeedField);
 		row();
-		add(new Label("Enable Limit Box: ", skin));
+		add(new Label("Enable Limit: ", skin));
 		add(enableLimitBox);
 		row();
-		add(new Label("Enable Motor Box: ", skin));
+		add(new Label("Enable Motor: ", skin));
 		add(enableMotorBox);
 		addControlTable();
 		pack();

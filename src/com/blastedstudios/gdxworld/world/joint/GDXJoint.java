@@ -72,8 +72,10 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 		def.bodyB = bodies[1];
 		def.type = jointType;
 		def.collideConnected = collideConnected;
+		Joint joint = world.createJoint(def);
 		Gdx.app.error("GDXJoint.attach", "Successfully created joint " + toString());
-		return world.createJoint(def);
+		joint.setUserData(name);
+		return joint;
 	}
 	
 	public float getDistance(float x, float y, World world){

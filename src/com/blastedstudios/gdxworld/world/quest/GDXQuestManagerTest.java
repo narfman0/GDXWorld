@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.GDXWorldEditor;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -60,6 +61,14 @@ public class GDXQuestManagerTest {
 			}
 			@Override public void endLevel(boolean success) {
 				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);
+			}
+			@Override public Joint getPhysicsJoint(String name) {
+				for(Iterator<Joint> iter = world.getJoints(); iter.hasNext();){
+					Joint joint = iter.next();
+					if(joint.getUserData().equals(name))
+						return joint;
+				}
+				return null;
 			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {

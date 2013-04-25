@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
 
 /**
  * Interface client must implement to be able to execute/run the given
@@ -22,4 +23,9 @@ public interface IQuestManifestationExecutor {
 	 * @param success true if level complete, false if beating criteria failed
 	 */
 	public void endLevel(boolean success);
+
+	/**
+	 * @return Joint with the given name 
+	 */
+	public Joint getPhysicsJoint(String name);
 }
