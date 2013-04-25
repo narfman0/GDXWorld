@@ -57,9 +57,9 @@ public class GDXQuest implements Serializable, Cloneable{
 	@Override public Object clone(){
 		GDXQuest quest = new GDXQuest();
 		quest.setName(name);
-		quest.setManifestation((AbstractQuestManifestation) manifestation.clone());
+		quest.setManifestation(manifestation.clone());
 		quest.setPrerequisites(prerequisites);
-		quest.setTrigger((AbstractQuestTrigger) trigger.clone());
+		quest.setTrigger(trigger.clone());
 		return quest;
 	}
 	

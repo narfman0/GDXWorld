@@ -39,7 +39,7 @@ public class AABBTrigger extends AbstractQuestTrigger {
 				getProvider().getPlayerPosition().x > lowerLeft.x && getProvider().getPlayerPosition().y > lowerLeft.y;
 	}
 	
-	@Override public Object clone(){
+	@Override public AbstractQuestTrigger clone(){
 		return new AABBTrigger(lowerLeft.cpy(), upperRight.cpy());
 	}
 	

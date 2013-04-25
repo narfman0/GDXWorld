@@ -42,7 +42,7 @@ public class PersonTrigger extends AbstractQuestTrigger {
 		return getProvider().isNear(origin, target, distance);
 	}
 	
-	@Override public Object clone(){
+	@Override public AbstractQuestTrigger clone(){
 		return new PersonTrigger(origin, target, distance);
 	}
 

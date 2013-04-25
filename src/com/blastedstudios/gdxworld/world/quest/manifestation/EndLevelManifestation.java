@@ -23,7 +23,7 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 		this.success = success;
 	}
 
-	@Override public Object clone() {
+	@Override public AbstractQuestManifestation clone() {
 		return new EndLevelManifestation(success);
 	}
 

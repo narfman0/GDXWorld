@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
-	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation();
+	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "Name");
 	private Vector2 coordinates = new Vector2();
 	private String being = "";
 	
@@ -19,7 +19,7 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 		// This is more retrieving a spawn location, informative rather than executable
 	}
 
-	@Override public Object clone() {
+	@Override public AbstractQuestManifestation clone() {
 		return new BeingSpawnManifestation(coordinates.cpy(), being);
 	}
 

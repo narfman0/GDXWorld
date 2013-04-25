@@ -7,6 +7,7 @@ import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.KillTrigger;
 
 public class KillTriggerTable extends TriggerTable{
+	public static final String BOX_TEXT = "Kill";
 	private final TextField nameField;
 	private final KillTrigger trigger;
 	

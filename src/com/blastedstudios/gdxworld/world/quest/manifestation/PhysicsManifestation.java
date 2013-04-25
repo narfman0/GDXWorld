@@ -72,7 +72,7 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 		this.torque = torque;
 	}
 
-	@Override public Object clone() {
+	@Override public AbstractQuestManifestation clone() {
 		return new PhysicsManifestation(name, impulse, type, torque);
 	}
 

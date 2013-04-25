@@ -7,6 +7,7 @@ import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.PersonTrigger;
 
 public class PersonTriggerTable extends TriggerTable {
+	public static final String BOX_TEXT = "Person";
 	private final TextField targetText, originText, distanceText;
 	private final PersonTrigger trigger;
 

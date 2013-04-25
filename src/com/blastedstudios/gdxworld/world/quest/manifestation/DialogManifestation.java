@@ -41,7 +41,7 @@ public class DialogManifestation extends AbstractQuestManifestation{
 		executor.addDialog(dialog, origin);
 	}
 
-	@Override public Object clone() {
+	@Override public AbstractQuestManifestation clone() {
 		return new DialogManifestation(dialog, origin);
 	}
 

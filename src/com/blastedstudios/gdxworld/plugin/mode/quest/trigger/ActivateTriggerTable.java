@@ -5,6 +5,8 @@ import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.ActivateTrigger;
 
 public class ActivateTriggerTable extends TriggerTable {
+	public static final String BOX_TEXT = "Activate";
+	
 	public ActivateTriggerTable(Skin skin, ActivateTrigger trigger) {
 		super(skin);
 	}

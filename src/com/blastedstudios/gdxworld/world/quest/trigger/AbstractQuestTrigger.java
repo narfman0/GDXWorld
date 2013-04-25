@@ -20,6 +20,6 @@ public abstract class AbstractQuestTrigger implements Cloneable,Serializable{
 		this.provider = provider;
 	}
 	
-	@Override abstract public Object clone();
+	@Override abstract public AbstractQuestTrigger clone();
 	@Override abstract public String toString();
 }

@@ -8,7 +8,7 @@ public class ActivateTrigger extends AbstractQuestTrigger {
 		return true;
 	}
 
-	@Override public Object clone() {
+	@Override public AbstractQuestTrigger clone() {
 		return new ActivateTrigger();
 	}
 

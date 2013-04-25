@@ -1,12 +1,16 @@
 package com.blastedstudios.gdxworld.plugin.mode.quest.manifestation;
 
+import net.xeoh.plugins.base.annotations.PluginImplementation;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 
+@PluginImplementation
 public class DialogManifestationTable extends ManifestationTable {
+	public static final String BOX_TEXT = "Dialog";
 	private final TextField dialogText, originText;
 	private final DialogManifestation manifestation;
 	

@@ -7,6 +7,7 @@ import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 
 public class AABBTriggerTable extends TriggerTable{
+	public static final String BOX_TEXT = "AABB";
 	private final VertexTable llTable,urTable;
 	private final AABBTrigger trigger;
 	

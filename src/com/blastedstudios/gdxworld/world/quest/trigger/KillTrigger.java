@@ -23,7 +23,7 @@ public class KillTrigger extends AbstractQuestTrigger {
 		return getProvider().isDead(name);
 	}
 	
-	@Override public Object clone(){
+	@Override public AbstractQuestTrigger clone(){
 		return new KillTrigger(name);
 	}
 
