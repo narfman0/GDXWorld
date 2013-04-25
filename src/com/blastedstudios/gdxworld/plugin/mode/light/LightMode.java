@@ -2,7 +2,10 @@ package com.blastedstudios.gdxworld.plugin.mode.light;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
@@ -10,6 +13,7 @@ import com.blastedstudios.gdxworld.world.light.GDXLight;
 @PluginImplementation
 public class LightMode extends AbstractMode {
 	private LightWindow lightWindow;
+	private RayHandler rayHandler;
 	
 	public void addLight(GDXLight light){
 		Gdx.app.debug("LightMode.addLight", "Adding light");
@@ -25,13 +29,28 @@ public class LightMode extends AbstractMode {
 		if(lightWindow != null)
 			lightWindow.remove();
 		lightWindow = null;
+		if(rayHandler != null)
+			rayHandler.dispose();
+		rayHandler = null;
 	}
 
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
 		for(GDXLight light : level.getLights())
 			addLight(light);
-		screen.getLevel().setLightAmbient(level.getLightAmbient());
+		if(rayHandler != null)
+			rayHandler.dispose();
+		rayHandler = null;
+		if(screen.isLive())
+			rayHandler = level.createLights(screen.getWorld()).rayHandler;
+	}
+	
+	@Override public void render(float delta, Camera camera){
+		super.render(delta, camera);
+		if(rayHandler != null){
+			rayHandler.setCombinedMatrix(camera.combined);
+			rayHandler.updateAndRender();
+		}
 	}
 
 	@Override public void start() {

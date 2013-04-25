@@ -233,12 +233,23 @@ public class GDXLevel implements Cloneable,Serializable{
 	 * Populates the given world with physics data from this GDXLevel
 	 */
 	public CreateLevelReturnStruct createLevel(World world){
+		HashMap<GDXShape,Body> bodies = createBodies(world);
+		HashMap<GDXJoint,Joint> joints = createJoints(world);
+		CreateLevelLightReturn lights = createLights(world);
+		return new CreateLevelReturnStruct(bodies, joints, lights);
+	}
+	
+	public HashMap<GDXShape,Body> createBodies(World world){
 		HashMap<GDXShape,Body> returnBodies = new HashMap<>();
-		HashMap<GDXJoint,Joint> returnJoints = new HashMap<>();
 		for(GDXShape shape : shapes){
 			Body body = shape.createFixture(world, false);
 			returnBodies.put(shape, body); 
 		}
+		return returnBodies;
+	}
+
+	public HashMap<GDXJoint,Joint> createJoints(World world){
+		HashMap<GDXJoint,Joint> returnJoints = new HashMap<>();
 		Map<String,Joint> jointMap = new HashMap<String, Joint>();
 		for(GDXJoint joint : joints)
 			if(!(joint instanceof GearJoint)){
@@ -256,14 +267,18 @@ public class GDXLevel implements Cloneable,Serializable{
 				Joint physicsJoint = joint.attach(world);
 				returnJoints.put(joint, physicsJoint);
 			}
+		return returnJoints;
+	}
+	
+	public CreateLevelLightReturn createLights(World world){
 		RayHandler rayHandler = new RayHandler(world);
 		rayHandler.setAmbientLight(GDXLight.convert(lightAmbient));
 		ArrayList<Light> returnLights = new ArrayList<>();
 		for(GDXLight light : getLights())
 			returnLights.add(light.create(rayHandler));
-		return new CreateLevelReturnStruct(returnBodies, returnJoints, rayHandler, returnLights);
+		return new CreateLevelLightReturn(rayHandler, returnLights);
 	}
-
+	
 	@Override public String toString(){
 		return "[GDXLevel name:" + name + " coords:" + coordinates + "]";
 	}
@@ -309,14 +324,21 @@ public class GDXLevel implements Cloneable,Serializable{
 	public class CreateLevelReturnStruct{
 		public final Map<GDXShape,Body> bodies;
 		public final Map<GDXJoint,Joint> joints;
+		public final CreateLevelLightReturn lights;
+		
+		CreateLevelReturnStruct(Map<GDXShape,Body> bodies,
+				Map<GDXJoint,Joint> joints, CreateLevelLightReturn lights){
+			this.bodies = bodies;
+			this.joints = joints;
+			this.lights = lights;
+		}
+	}
+
+	public class CreateLevelLightReturn{
 		public final RayHandler rayHandler;
 		public final List<Light> lights;
 		
-		CreateLevelReturnStruct(Map<GDXShape,Body> bodies,
-				Map<GDXJoint,Joint> joints, RayHandler rayHandler,
-				List<Light> lights){
-			this.bodies = bodies;
-			this.joints = joints;
+		public CreateLevelLightReturn(RayHandler rayHandler, List<Light> lights){
 			this.rayHandler = rayHandler;
 			this.lights = lights;
 		}
