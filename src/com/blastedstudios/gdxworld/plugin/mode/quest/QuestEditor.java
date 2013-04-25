@@ -15,6 +15,7 @@ import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.TriggerTable;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
+import com.blastedstudios.gdxworld.world.quest.manifestation.BeingSpawnManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.EndLevelManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.PhysicsManifestation;
@@ -29,7 +30,7 @@ class QuestEditor extends AbstractWindow {
 	private TriggerTable triggerTable;
 	private final Table parentManifestationTable, parentTriggerTable;
 	private final CheckBox aabbBox, activateBox, killBox, personBox,//triggers
-		dialogBox, endLevelBox, physicsBox;//manifestions
+		beingSpawnBox, dialogBox, endLevelBox, physicsBox;//manifestions
 	
 	public QuestEditor(final GDXQuest quest, final Skin skin) {
 		super("Quest Editor", skin);
@@ -55,6 +56,7 @@ class QuestEditor extends AbstractWindow {
 		killBox = new CheckBox("Kill", skin); 
 		personBox = new CheckBox("Person", skin);
 		//Manifestations
+		beingSpawnBox = new CheckBox("BeingSpawn", skin);
 		dialogBox = new CheckBox("Dialog", skin);
 		endLevelBox = new CheckBox("End level", skin);
 		physicsBox = new CheckBox("Physics", skin);
@@ -70,6 +72,8 @@ class QuestEditor extends AbstractWindow {
 			killBox.setChecked(true);
 		else if(quest.getTrigger() instanceof PersonTrigger)
 			personBox.setChecked(true);
+		if(quest.getManifestation() instanceof BeingSpawnManifestation)
+			beingSpawnBox.setChecked(true);
 		if(quest.getManifestation() instanceof DialogManifestation)
 			dialogBox.setChecked(true);
 		else if(quest.getManifestation() instanceof PhysicsManifestation)
@@ -88,7 +92,7 @@ class QuestEditor extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				setTriggerBoxesChecked(false);
 				activateBox.setChecked(true);
-				createTriggerTable(skin, new ActivateTrigger());
+				createTriggerTable(skin, ActivateTrigger.DEFAULT);
 				pack();
 			}
 		});
@@ -105,6 +109,14 @@ class QuestEditor extends AbstractWindow {
 				setTriggerBoxesChecked(false);
 				personBox.setChecked(true);
 				createTriggerTable(skin, (AbstractQuestTrigger)PersonTrigger.DEFAULT.clone());
+				pack();
+			}
+		});
+		beingSpawnBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				setManifestationBoxesChecked(false);
+				beingSpawnBox.setChecked(true);
+				createManifestationTable(skin, (AbstractQuestManifestation) BeingSpawnManifestation.DEFAULT.clone());
 				pack();
 			}
 		});
@@ -147,6 +159,7 @@ class QuestEditor extends AbstractWindow {
 		add(parentTriggerTable).colspan(3);
 		row();
 		add(new Label("Manifestation Type: ", skin));
+		add(beingSpawnBox);
 		add(dialogBox);
 		add(endLevelBox);
 		add(physicsBox);
@@ -168,6 +181,7 @@ class QuestEditor extends AbstractWindow {
 	}
 	
 	private void setManifestationBoxesChecked(boolean checked){
+		beingSpawnBox.setChecked(checked);
 		dialogBox.setChecked(checked);
 		endLevelBox.setChecked(checked);
 		physicsBox.setChecked(checked);
