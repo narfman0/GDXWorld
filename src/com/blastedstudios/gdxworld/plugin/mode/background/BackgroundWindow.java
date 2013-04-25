@@ -16,7 +16,7 @@ import com.blastedstudios.gdxworld.world.GDXBackground;
 class BackgroundWindow extends AbstractWindow {
 	private final VertexTable centerTable;
 	
-	public BackgroundWindow(final Skin skin, final BackgroundMode mouseMode, final GDXBackground background) {
+	public BackgroundWindow(final Skin skin, final BackgroundMode mode, final GDXBackground background) {
 		super("Background Editor", skin);
 		centerTable = new VertexTable(background.getCoordinates(), skin, null);
 		final TextField textureField = new TextField("", skin);
@@ -38,19 +38,19 @@ class BackgroundWindow extends AbstractWindow {
 				background.setCoordinates(centerTable.getVertex());
 				background.setDepth(Float.parseFloat(depthField.getText()));
 				background.setScale(Float.parseFloat(scaleField.getText()));
-				mouseMode.addBackground(background);
-				mouseMode.clean();
+				mode.addBackground(background);
+				mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.clean();
+				mode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.removeBackground(background);
-				mouseMode.clean();
+				mode.removeBackground(background);
+				mode.clean();
 			}
 		});
 

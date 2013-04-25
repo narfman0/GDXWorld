@@ -19,15 +19,15 @@ abstract class BaseJointWindow extends AbstractWindow {
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;
 	private final Skin skin;
-	private final JointMode mouseMode;
+	private final JointMode mode;
 	private final GDXJoint joint;
 	
 	public BaseJointWindow(final String title, final Skin skin, 
-			JointType jointType, JointMode mouseMode, GDXJoint joint){
+			JointType jointType, JointMode mode, GDXJoint joint){
 		super(title, skin);
 		this.skin = skin;
 		this.jointType = jointType;
-		this.mouseMode = mouseMode;
+		this.mode = mode;
 		this.joint = joint;
 		nameField = new TextField(joint.getName(), skin);
 		nameField.setMessageText("<name>");
@@ -58,12 +58,12 @@ abstract class BaseJointWindow extends AbstractWindow {
 		final Button deleteButton = new TextButton("Delete", skin);
 		createButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.addJoint(generate());
+				mode.addJoint(generate());
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.removeJoint(joint);
+				mode.removeJoint(joint);
 			}
 		});
 		row();

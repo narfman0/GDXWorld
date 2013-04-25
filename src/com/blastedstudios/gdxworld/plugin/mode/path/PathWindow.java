@@ -21,7 +21,7 @@ public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Skin skin;
 	private final GDXPath path;
 
-	public PathWindow(final Skin skin, final PathMode mouseMode, 
+	public PathWindow(final Skin skin, final PathMode mode, 
 			final GDXPath path) {
 		super("Path Editor", skin);
 		this.skin = skin;
@@ -44,19 +44,19 @@ public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				path.setName(nameField.getText());
-				mouseMode.addPath(path);
-				mouseMode.clean();
+				mode.addPath(path);
+				mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.clean();
+				mode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.removePath(path);
-				mouseMode.clean();
+				mode.removePath(path);
+				mode.clean();
 			}
 		});
 		populateVertexTable();

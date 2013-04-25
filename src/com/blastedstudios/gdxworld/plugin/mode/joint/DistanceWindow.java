@@ -15,8 +15,8 @@ class DistanceWindow extends BaseJointWindow {
 	private final TextField dampeningRatioField, frequencyHzField, lengthField;
 	private final DistanceJoint joint;
 
-	public DistanceWindow(Skin skin, JointMode mouseMode, GDXJoint baseJoint) {
-		super("Distance Editor", skin, JointType.WeldJoint, mouseMode, baseJoint);
+	public DistanceWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
+		super("Distance Editor", skin, JointType.WeldJoint, mode, baseJoint);
 		this.joint = (DistanceJoint)baseJoint;
 		anchorATable = new VertexTable(joint.getAnchorA(), skin, null);
 		anchorBTable = new VertexTable(joint.getAnchorB(), skin, null);

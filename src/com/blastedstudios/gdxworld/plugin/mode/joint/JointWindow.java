@@ -21,14 +21,14 @@ class JointWindow extends AbstractWindow {
 	private BaseJointWindow baseWindow;
 	private final Skin skin;
 	private GDXJoint joint;
-	private final JointMode mouseMode;
+	private final JointMode mode;
 	private final LevelEditorScreen levelEditorScreen;
 	
 	public JointWindow(final Skin skin, final LevelEditorScreen levelEditorScreen,
-			final JointMode mouseMode) {
+			final JointMode mode) {
 		super("Joint Editor", skin);
 		this.skin = skin;
-		this.mouseMode = mouseMode;
+		this.mode = mode;
 		this.levelEditorScreen = levelEditorScreen;
 		final List typeList = new List(JointType.values(), skin);
 		final Button newButton = new TextButton("New", skin);
@@ -50,15 +50,15 @@ class JointWindow extends AbstractWindow {
 		switch(type){
 		case DistanceJoint:
 			DistanceJoint djoint = joint == null ? new DistanceJoint() : (DistanceJoint)joint;
-			baseWindow = new DistanceWindow(skin, mouseMode, djoint);
+			baseWindow = new DistanceWindow(skin, mode, djoint);
 			break;
 		case WeldJoint:
 			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
-			baseWindow = new WeldWindow(skin, mouseMode, wjoint);
+			baseWindow = new WeldWindow(skin, mode, wjoint);
 			break;
 		case RevoluteJoint:
 			RevoluteJoint rjoint = joint == null ? new RevoluteJoint() : (RevoluteJoint)joint;
-			baseWindow = new RevoluteWindow(skin, mouseMode, rjoint);
+			baseWindow = new RevoluteWindow(skin, mode, rjoint);
 			break;
 		default:
 			Gdx.app.log("JointWindow.newButton.clicked", "Joint not implemented: " + type);

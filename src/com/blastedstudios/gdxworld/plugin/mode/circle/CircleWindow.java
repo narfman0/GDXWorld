@@ -18,7 +18,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 public class CircleWindow extends AbstractWindow {
 	private final VertexTable centerTable;
 	
-	public CircleWindow(final Skin skin, final CircleMode mouseMode, final GDXCircle circle) {
+	public CircleWindow(final Skin skin, final CircleMode mode, final GDXCircle circle) {
 		super("Circle Editor", skin);
 		final CheckBox staticBox = new CheckBox("Static", skin), 
 				kinematicBox = new CheckBox("Kinematic", skin), 
@@ -85,19 +85,19 @@ public class CircleWindow extends AbstractWindow {
 				circle.setDensity(Float.parseFloat(densityField.getText()));
 				circle.setFriction(Float.parseFloat(frictionField.getText()));
 				circle.setRestitution(Float.parseFloat(restitutionField.getText()));
-				mouseMode.addCircle(circle);
-				mouseMode.clean();
+				mode.addCircle(circle);
+				mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.clean();
+				mode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.removeCircle(circle);
-				mouseMode.clean();
+				mode.removeCircle(circle);
+				mode.clean();
 			}
 		});
 		Table bodyTypeTable = new Table();

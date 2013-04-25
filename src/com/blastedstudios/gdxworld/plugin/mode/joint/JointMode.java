@@ -25,7 +25,7 @@ public class JointMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("JointMode.touchDown", "x="+x+ " y="+y);
 		GDXJoint joint = screen.getLevel().getClosestJoint(coordinates.x, coordinates.y, screen.getWorld());
 		if(joint != null && joint.getCenter().dst(coordinates.x, coordinates.y) < LevelEditorScreen.getNodeRadius())
 			jointWindow.setSelected(joint);
@@ -46,11 +46,11 @@ public class JointMode extends AbstractMode {
 			Body body = PhysicsHelper.createCircle(screen.getWorld(), LevelEditorScreen.getNodeRadius(), gdxJoint.getCenter(), BodyType.DynamicBody);
 			screen.getBodies().put(gdxJoint.getName(), Arrays.asList(body));
 		}
-		Gdx.app.log("LevelEditorScreen.addJoint", "Added joint " + gdxJoint.toString());
+		Gdx.app.log("JointMode.addJoint", "Added joint " + gdxJoint.toString());
 	}
 
 	public void removeJoint(GDXJoint joint) {
-		Gdx.app.log("LevelEditorScreen.removeJoint", "Removing joint " + joint.toString());
+		Gdx.app.log("JointMode.removeJoint", "Removing joint " + joint.toString());
 		if(screen.getBodies().containsKey(joint.getName()))
 			for(Body body : screen.getBodies().remove(joint.getName()))
 				screen.getWorld().destroyBody(body);

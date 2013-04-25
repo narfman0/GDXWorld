@@ -19,7 +19,7 @@ public class BackgroundMode extends AbstractMode {
 	private GDXBackground lastTouched;
 	
 	public void addBackground(GDXBackground background) {
-		Gdx.app.log("BackgroundMouseMode.addBackground", background.toString());
+		Gdx.app.log("BackgroundMode.addBackground", background.toString());
 		if(!screen.getLevel().getBackgrounds().contains(background)){
 			screen.getLevel().getBackgrounds().add(background);
 			Collections.sort(screen.getLevel().getBackgrounds());
@@ -27,13 +27,13 @@ public class BackgroundMode extends AbstractMode {
 	}
 
 	public void removeBackground(GDXBackground background) {
-		Gdx.app.log("BackgroundMouseMode.removeBackground", background.toString());
+		Gdx.app.log("BackgroundMode.removeBackground", background.toString());
 		screen.getLevel().getBackgrounds().remove(background);
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("BackgroundMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("BackgroundMode.touchDown", "x="+x+ " y="+y);
 		GDXBackground background = getClosest(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || background == null)
 			background = new GDXBackground();

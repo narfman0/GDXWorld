@@ -23,7 +23,7 @@ class QuestWindow extends AbstractWindow {
 	private QuestEditor editor;
 	
 	public QuestWindow(final Skin skin, final List<GDXQuest> quests, 
-			final QuestMode mouseMode, LevelEditorScreen screen) {
+			final QuestMode mode, LevelEditorScreen screen) {
 		super("Quest Window", skin);
 		this.skin = skin;
 		this.quests = quests;

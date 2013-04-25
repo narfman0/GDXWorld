@@ -23,7 +23,7 @@ public class PathMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("PathMode.touchDown", "x="+x+ " y="+y);
 		GDXPath path = screen.getLevel().getClosestPath(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || path == null || 
 				path.getClosestNode(coordinates.x, coordinates.y).
@@ -38,7 +38,7 @@ public class PathMode extends AbstractMode {
 	}
 
 	public void addPath(GDXPath path) {
-		Gdx.app.log("WorldEditorScreen.addPath", path.toString());
+		Gdx.app.log("PathMode.addPath", path.toString());
 		if(screen.getBodies().containsKey(path))
 			for(Body body : screen.getBodies().remove(path))
 				screen.getWorld().destroyBody(body);
@@ -56,7 +56,7 @@ public class PathMode extends AbstractMode {
 	}
 
 	public void removePath(GDXPath path) {
-		Gdx.app.log("WorldEditorScreen.removePath", path.toString());
+		Gdx.app.log("PathMode.removePath", path.toString());
 		for(Body body : screen.getBodies().remove(path))
 			screen.getWorld().destroyBody(body);
 		screen.getLevel().getPaths().remove(path);

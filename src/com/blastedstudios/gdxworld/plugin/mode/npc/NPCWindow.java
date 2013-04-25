@@ -15,7 +15,7 @@ import com.blastedstudios.gdxworld.world.GDXNPC;
 class NPCWindow extends AbstractWindow {
 	private final VertexTable coordinates;
 	
-	public NPCWindow(final Skin skin, final NPCMode mouseMode, final GDXNPC npc) {
+	public NPCWindow(final Skin skin, final NPCMode mode, final GDXNPC npc) {
 		super("NPC Editor", skin);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<npc name>");
@@ -45,19 +45,19 @@ class NPCWindow extends AbstractWindow {
 				npc.setPath(pathField.getText());
 				npc.setResource(resourceField.getText());
 				npc.setFaction(factionField.getText());
-				mouseMode.addNPC(npc);
-				mouseMode.clean();
+				mode.addNPC(npc);
+				mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.clean();
+				mode.clean();
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mouseMode.removeNPC(npc);
-				mouseMode.clean();
+				mode.removeNPC(npc);
+				mode.clean();
 			}
 		});
 		add(new Label("Name: ", skin));

@@ -22,7 +22,7 @@ public class NPCMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("NPCMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("NPCMode.touchDown", "x="+x+ " y="+y);
 		GDXNPC npc = screen.getLevel().getClosestNPC(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || npc == null || 
 				npc.getCoordinates().dst(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -60,7 +60,7 @@ public class NPCMode extends AbstractMode {
 	}
 
 	public void addNPC(GDXNPC npc){
-		Gdx.app.log("WorldEditorScreen.addNPC", npc.toString());
+		Gdx.app.log("NPCMode.addNPC", npc.toString());
 		if(screen.getBodies().containsKey(npc))
 			for(Body body : screen.getBodies().remove(npc))
 				screen.getWorld().destroyBody(body);
@@ -71,7 +71,7 @@ public class NPCMode extends AbstractMode {
 	}
 
 	public void removeNPC(GDXNPC npc) {
-		Gdx.app.log("WorldEditorScreen.removeNPC", npc.toString());
+		Gdx.app.log("NPCMode.removeNPC", npc.toString());
 		for(Body body : screen.getBodies().remove(npc))
 			screen.getWorld().destroyBody(body);
 		screen.getLevel().getNpcs().remove(npc);

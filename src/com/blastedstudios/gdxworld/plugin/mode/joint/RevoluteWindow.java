@@ -18,8 +18,8 @@ class RevoluteWindow extends BaseJointWindow {
 	private final CheckBox enableLimitBox, enableMotorBox;
 	private final RevoluteJoint joint;
 
-	public RevoluteWindow(Skin skin, JointMode mouseMode, GDXJoint baseJoint) {
-		super("Revolute Editor", skin, JointType.RevoluteJoint, mouseMode, baseJoint);
+	public RevoluteWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
+		super("Revolute Editor", skin, JointType.RevoluteJoint, mode, baseJoint);
 		this.joint = (RevoluteJoint) baseJoint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);
