@@ -44,6 +44,7 @@ public class NPCMode extends AbstractMode {
 	public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x,y,arg2,arg3);
 		shift();
+		lastTouched = null;
 		return false;
 	}
 	
@@ -51,8 +52,8 @@ public class NPCMode extends AbstractMode {
 		if(lastTouched != null){
 			Gdx.app.debug("NPCMode.touchDown", lastTouched.toString() + " to " + coordinates);
 			lastTouched.getCoordinates().set(coordinates);
-			removeNPC(lastTouched);
-			addNPC(lastTouched);
+			for(Body body : screen.getBodies().get(lastTouched))
+				body.setTransform(coordinates, 0);
 			if(npcWindow != null)
 				npcWindow.setCoordinates(coordinates);
 		}

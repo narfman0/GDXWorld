@@ -43,6 +43,7 @@ public class CircleMode extends AbstractMode {
 	public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
 		shift();
+		lastTouched = null;
 		return false;
 	}
 	
@@ -50,8 +51,8 @@ public class CircleMode extends AbstractMode {
 		if(lastTouched != null){
 			Gdx.app.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
 			lastTouched.getCenter().set(coordinates);
-			removeCircle(lastTouched);
-			addCircle(lastTouched);
+			for(Body body : screen.getBodies().get(lastTouched))
+				body.setTransform(coordinates, 0);
 			if(circleWindow != null)
 				circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
 		}
@@ -73,7 +74,7 @@ public class CircleMode extends AbstractMode {
 	public void removeCircle(GDXCircle circle) {
 		screen.getLevel().getShapes().remove(circle);
 		if(screen.getBodies().containsKey(circle))
-			for(Body body : screen.getBodies().get(circle))
+			for(Body body : screen.getBodies().remove(circle))
 				screen.getWorld().destroyBody(body);
 	}
 
