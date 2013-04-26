@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.trigger;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * Interface providing information to the quest system to activate 
@@ -24,4 +25,9 @@ public interface IQuestTriggerInformationProvider{
 	 * @return true if within distance of npc with name
 	 */
 	public boolean isNear(String origin, String target, float distance);
+	
+	/**
+	 * @return Physics body with given name
+	 */
+	public Body getPhysicsObject(String name);
 }

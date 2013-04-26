@@ -89,6 +89,14 @@ public class GDXQuestManagerTest {
 				}
 				return originBody.getPosition().dst(targetBody.getPosition()) < distance;
 			}
+			@Override public Body getPhysicsObject(String name) {
+				for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
+					Body body = iter.next();
+					if(body.getUserData().equals(name))
+						return body;
+				}
+				return null;
+			}
 		};
 		manager = new GDXQuestManager(provider, executor);
 	}
