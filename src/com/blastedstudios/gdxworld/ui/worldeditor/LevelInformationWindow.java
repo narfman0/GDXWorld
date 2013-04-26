@@ -82,7 +82,7 @@ public class LevelInformationWindow extends AbstractWindow{
 	 * Adds level with current ui parameters
 	 */
 	private void addLevel(){
-		gdxLevel.setCoordinates(new Vector2(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText())));
+		gdxLevel.setCoordinates(getCoordinates());
 		gdxLevel.setName(levelNameLabel.getText());
 		gdxLevel.setPrerequisitesString(prereqLabel.getText());
 		if(!gdxWorld.contains(gdxLevel))
@@ -97,5 +97,11 @@ public class LevelInformationWindow extends AbstractWindow{
 	public void setCoordinates(float x, float y){
 		coordXLabel.setText(x+"");
 		coordYLabel.setText(y+"");
+	}
+	
+	public Vector2 getCoordinates(){
+		return new Vector2(
+				Float.parseFloat(coordXLabel.getText()), 
+				Float.parseFloat(coordYLabel.getText()));
 	}
 }

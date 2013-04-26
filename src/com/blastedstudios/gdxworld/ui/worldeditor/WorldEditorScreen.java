@@ -5,6 +5,7 @@ import java.io.File;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -37,10 +38,15 @@ public class WorldEditorScreen extends AbstractScreen {
 		camera.update();
 		if(!Gdx.graphics.isGL20Available())
 			camera.apply(Gdx.gl10);
+		renderer.setColor(Color.WHITE);
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
 		for(GDXLevel level : gdxWorld.getLevels())
 			renderer.circle(level.getCoordinates().x, level.getCoordinates().y, getLevelRadius());
+		if(levelInfo != null){
+			renderer.setColor(Color.GRAY);
+			renderer.circle(levelInfo.getCoordinates().x, levelInfo.getCoordinates().y, getLevelRadius());
+		}
 		renderer.end();
 		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
 			camera.position.y+=camera.zoom;

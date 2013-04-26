@@ -100,11 +100,27 @@ public class PolygonMode extends AbstractMode {
 	}
 	
 	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
-		renderer.setColor(Color.CYAN);
-		if(!screen.isLive())
+		if(!screen.isLive()){
+			//Draw set polygons
+			renderer.setColor(Color.GREEN);
 			for(GDXShape shape : screen.getLevel().getShapes())
 				if(shape instanceof GDXPolygon)
 					for(Vector2 vertex : ((GDXPolygon) shape).getVerticesAbsolute())
 						renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
+			//Draw currently selected polygon/nodes
+			renderer.setColor(new Color(0, .8f, 0, 1));
+			if(polygonWindow != null)
+				for(int i=0; i<polygonWindow.getVertices().size(); i++){
+					Vector2 vertex = polygonWindow.getVertices().get(i);
+					renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius());
+					if(i>0){
+						Vector2 previous = polygonWindow.getVertices().get(i-1);
+						renderer.line(vertex.x, vertex.y, previous.x, previous.y);
+					}else{
+						Vector2 last = polygonWindow.getVertices().get(polygonWindow.getVertices().size()-1);
+						renderer.line(vertex.x, vertex.y, last.x, last.y);
+					}
+				}
+		}
 	};
 }

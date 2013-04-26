@@ -63,4 +63,9 @@ public class VertexTable extends Table {
 	private float convert(TextField field){
 		return Float.parseFloat(field.getText());
 	}
+	
+	public void setDisabled(boolean disabled){
+		coordXLabel.setDisabled(disabled);
+		coordYLabel.setDisabled(disabled);
+	}
 }
