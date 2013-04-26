@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.blastedstudios.gdxworld.plugin.mode.light.LightWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.light.PointLight;
@@ -13,9 +14,9 @@ public class PointLightTable extends AbstractLightTable {
 	private TextField distanceField;
 	private VertexTable coordinatesTable;
 
-	public PointLightTable(final Skin skin, Color color, int rays, 
-			float distance, Vector2 coordinates){
-		super(skin, color, rays);
+	public PointLightTable(final Skin skin, LightWindow lightWindow, 
+			Color color, int rays, float distance, Vector2 coordinates){
+		super(skin, lightWindow, color, rays);
 		distanceField = new TextField(distance+"", skin);
 		coordinatesTable = new VertexTable(coordinates, skin, null, AbstractLightTable.WIDTH);
 		add(new Label("Type: Point", skin));
@@ -32,5 +33,9 @@ public class PointLightTable extends AbstractLightTable {
 		light.setCoordinates(coordinatesTable.getVertex());
 		light.setDistance(Float.parseFloat(distanceField.getText()));
 		return super.create(light);
+	}
+
+	@Override public void setCoordinates(float x, float y) {
+		coordinatesTable.setVertex(x, y);
 	}
 }

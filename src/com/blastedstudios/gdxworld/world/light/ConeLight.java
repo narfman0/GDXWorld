@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ConeLight extends GDXLight {
 	private static final long serialVersionUID = 1L;
 	private Vector2 coordinates = new Vector2();
-	private float distance = 10f, directionDegree = 0f, coneDegree = 15f;
+	private float distance = 10f, directionDegree = 270f, coneDegree = 15f;
 	
 	public Vector2 getCoordinates() {
 		return coordinates;
@@ -54,5 +54,14 @@ public class ConeLight extends GDXLight {
 	@Override public Light create(RayHandler handler) {
 		return new box2dLight.ConeLight(handler, rays, GDXLight.convert(color), distance, 
 				coordinates.x, coordinates.y, directionDegree, coneDegree);
+	}
+
+	@Override public int compareTo(GDXLight o) {
+		if(getClass() != o.getClass())
+			return getClass().getName().compareTo(o.getClass().getName());
+		int coordXCompare = ((Float)coordinates.x).compareTo(((ConeLight)o).coordinates.x); 
+		if(coordXCompare != 0)
+			return coordXCompare;
+		return ((Float)coordinates.y).compareTo(((ConeLight)o).coordinates.y);
 	}
 }

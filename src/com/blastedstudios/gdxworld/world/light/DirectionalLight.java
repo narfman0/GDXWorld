@@ -24,4 +24,10 @@ public class DirectionalLight extends GDXLight {
 	@Override public Light create(RayHandler handler) {
 		return new box2dLight.DirectionalLight(handler, rays, GDXLight.convert(color), direction);
 	}
+
+	@Override public int compareTo(GDXLight o) {
+		if(getClass() != o.getClass())
+			return getClass().getName().compareTo(o.getClass().getName());
+		return ((Float)direction).compareTo(((DirectionalLight)o).direction);
+	}
 }

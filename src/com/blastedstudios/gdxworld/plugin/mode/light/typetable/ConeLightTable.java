@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.blastedstudios.gdxworld.plugin.mode.light.LightWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.world.light.ConeLight;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
@@ -13,10 +14,10 @@ public class ConeLightTable extends AbstractLightTable {
 	private TextField distanceField, coneDegreeField, directionDegreeField;
 	private VertexTable coordinatesTable;
 	
-	public ConeLightTable(final Skin skin, Color color, int rays, 
-			float distance, Vector2 coordinates, float coneDegree,
+	public ConeLightTable(final Skin skin, LightWindow lightWindow, Color color, 
+			int rays, float distance, Vector2 coordinates, float coneDegree,
 			float directionDegree){
-		super(skin, color, rays);
+		super(skin, lightWindow, color, rays);
 		directionDegreeField = new TextField(directionDegree+"", skin);
 		coneDegreeField = new TextField(coneDegree+"", skin);
 		distanceField = new TextField(distance+"", skin);
@@ -45,4 +46,7 @@ public class ConeLightTable extends AbstractLightTable {
 		return super.create(light);
 	}
 
+	@Override public void setCoordinates(float x, float y) {
+		coordinatesTable.setVertex(x, y);
+	}
 }

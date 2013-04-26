@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	public List<GDXLight> getLights() {
 		if(lights == null)
 			lights = new ArrayList<GDXLight>();
+		Collections.sort(lights);
 		return lights;
 	}
 

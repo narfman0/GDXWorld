@@ -27,11 +27,12 @@ import com.blastedstudios.gdxworld.world.light.DirectionalLight;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.light.PointLight;
 
-class LightWindow extends AbstractWindow {
+public class LightWindow extends AbstractWindow {
 	private ColorTable colorTable;
 	private final Map<AbstractLightTable,Button> lightTables;
 	private Table lightTable = new Table();
 	private Skin skin;
+	private AbstractLightTable selected;
 	
 	public LightWindow(Skin skin, java.util.List<GDXLight> lights, Color ambient, 
 			final LightMode lightMode, final LevelEditorScreen screen) {
@@ -45,9 +46,8 @@ class LightWindow extends AbstractWindow {
 				addLightTable(LightType.values()[lightTypes.getSelectedIndex()], null);
 			}
 		});
-		for(GDXLight light : screen.getLevel().getLights()){
+		for(GDXLight light : screen.getLevel().getLights())
 			addLightTable(LightType.convert(light), light);
-		}
 		final Button applyButton = new TextButton("Apply", skin);
 		applyButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -97,23 +97,24 @@ class LightWindow extends AbstractWindow {
 		lightTable.add(deleteButton);
 		lightTable.row();
 		lightTables.put(table,deleteButton);
+		selected = table;
 	}
 	
 	private AbstractLightTable createTable(LightType lightType, GDXLight light){
 		switch(lightType){
 		case Cone:
 			ConeLight coneLight = light == null ? new ConeLight() : (ConeLight) light;
-			return new ConeLightTable(skin, GDXLight.convert(coneLight.getColor()), coneLight.getRays(), 
+			return new ConeLightTable(skin, this, GDXLight.convert(coneLight.getColor()), coneLight.getRays(), 
 					coneLight.getDistance(), coneLight.getCoordinates(), coneLight.getConeDegree(),
 					coneLight.getDirectionDegree());
 		case Directional:
 			DirectionalLight directionalLight = light == null ? new DirectionalLight() : (DirectionalLight) light;
-			return new DirectionalLightTable(skin, GDXLight.convert(directionalLight.getColor()), directionalLight.getRays(), 
+			return new DirectionalLightTable(skin, this, GDXLight.convert(directionalLight.getColor()), directionalLight.getRays(), 
 					directionalLight.getDirection());
 		case Point:
 		default:
 			PointLight pointLight = light == null ? new PointLight() : (PointLight) light;
-			return new PointLightTable(skin, GDXLight.convert(pointLight.getColor()), pointLight.getRays(), 
+			return new PointLightTable(skin, this, GDXLight.convert(pointLight.getColor()), pointLight.getRays(), 
 					pointLight.getDistance(), pointLight.getCoordinates());
 		}
 	}
@@ -124,7 +125,15 @@ class LightWindow extends AbstractWindow {
 			lights.add(table.create());
 		return lights;
 	}
+
+	public void setSelected(AbstractLightTable selected) {
+		this.selected = selected;
+	}
 	
+	public AbstractLightTable getSelected(){
+		return selected;
+	}
+
 	private enum LightType{
 		Directional, Cone, Point;
 		

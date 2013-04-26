@@ -5,6 +5,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -23,6 +24,29 @@ public class LightMode extends AbstractMode {
 
 	@Override public boolean contains(float x, float y) {
 		return lightWindow.contains(x, y);
+	}
+
+	@Override public boolean touchDown(int x, int y, int x1, int y1){
+		super.touchDown(x,y,x1,y1);
+		drag();
+		return false;
+	}
+	
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		drag();
+		return false;
+	}
+	
+	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
+		super.touchUp(x, y, arg2, arg3);
+		drag();
+		return false;
+	}
+	
+	private void drag(){
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && lightWindow.getSelected() != null)
+			lightWindow.getSelected().setCoordinates(coordinates.x, coordinates.y);
 	}
 
 	@Override public void clean() {

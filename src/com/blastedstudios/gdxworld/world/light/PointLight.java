@@ -37,4 +37,13 @@ public class PointLight extends GDXLight {
 		return new box2dLight.PointLight(handler, rays, GDXLight.convert(color),
 				distance, coordinates.x, coordinates.y);
 	}
+
+	@Override public int compareTo(GDXLight o) {
+		if(getClass() != o.getClass())
+			return getClass().getName().compareTo(o.getClass().getName());
+		int coordXCompare = ((Float)coordinates.x).compareTo(((PointLight)o).coordinates.x); 
+		if(coordXCompare != 0)
+			return coordXCompare;
+		return ((Float)coordinates.y).compareTo(((PointLight)o).coordinates.y);
+	}
 }

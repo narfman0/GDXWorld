@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -40,7 +41,7 @@ public class VertexTable extends Table {
 	}
 	
 	public Vector2 getVertex(){
-		return vertex.set(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText()));
+		return vertex.set(convert(coordXLabel), convert(coordYLabel));
 	}
 	
 	public void setVertex(float x, float y){
@@ -50,5 +51,16 @@ public class VertexTable extends Table {
 	
 	public interface VertexRemoveListener{
 		public void remove(Vector2 vertex);
+	}
+	
+	/**
+	 * Center the camera on the current coordinates
+	 */
+	public void center(Camera camera){
+		camera.position.set(convert(coordXLabel), convert(coordYLabel), camera.position.z);
+	}
+	
+	private float convert(TextField field){
+		return Float.parseFloat(field.getText());
 	}
 }

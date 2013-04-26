@@ -7,8 +7,8 @@ import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.Color;
 
-public abstract class GDXLight implements Cloneable,Serializable{
-	public static final Color DEFAULT_COLOR = new Color(.9f,.9f,.9f,.1f);
+public abstract class GDXLight implements Cloneable,Serializable,Comparable<GDXLight>{
+	public static final Color DEFAULT_COLOR = new Color(.9f,.9f,.9f,.5f);
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Color in RGBA8888 format so it can be serialized
