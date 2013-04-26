@@ -158,8 +158,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 
 	public void remove(Vector2 vertex) {
 		vertices.remove(vertex);
-		vertexTables.clear();
-		populateVertexTable();
+		repopulate();
 		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + vertices.size());
 	}
 	
@@ -177,5 +176,10 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		vertexTables.add(table);
 		vertexTables.row();
 		table.setDisabled(true);
+	}
+
+	public void repopulate() {
+		vertexTables.clear();
+		populateVertexTable();
 	}
 }

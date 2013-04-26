@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -32,34 +33,50 @@ public class PolygonMode extends AbstractMode {
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || polygon == null || 
 				polygon.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
 			polygon = new GDXPolygon();
-		if(polygonWindow == null)
-			screen.getStage().addActor(polygonWindow = new PolygonWindow(screen.getSkin(), this, polygon));
-
-		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
-			lastTouchedPolygon = polygon;
-			lastTouchedVertex = polygon.getClosestVertex(coordinates.x, coordinates.y);
-		}else if(polygon.getVertices().isEmpty())
+		//If window isn't up, we can either move a poly (holding shift) or make
+		//a new poly. If window is up, either move a vertex (holding shift) or
+		//make a new vertex.
+		if(polygonWindow == null){
+			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+				lastTouchedPolygon = polygon;
+			else{
+				if(polygon.getVertices().isEmpty())
+					polygon.getVertices().add(new Vector2(coordinates.x, coordinates.y));
+				screen.getStage().addActor(polygonWindow = new PolygonWindow(screen.getSkin(), this, polygon));
+			}
+		}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && PolygonUtils.getClosestNode(coordinates.x, 
+				coordinates.y, polygonWindow.getVertices()).dst(coordinates) < LevelEditorScreen.getNodeRadius()){
+			lastTouchedVertex = PolygonUtils.getClosestNode(coordinates.x, coordinates.y, polygonWindow.getVertices());
+		}else
 			polygonWindow.add(new Vector2(coordinates.x, coordinates.y));
+		return false;
+	}
+	
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		shift();
 		return false;
 	}
 	
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
 		shift();
+		if(lastTouchedPolygon != null)
+			lastTouchedPolygon = null;
+		else if(lastTouchedVertex != null)
+			lastTouchedVertex = null;
 		return false;
 	}
 	
 	private void shift(){
-		if(lastTouchedVertex != null && lastTouchedPolygon != null){
+		if(lastTouchedPolygon != null){
+			lastTouchedPolygon.getCenter().set(coordinates);
+			lastTouchedPolygon.setCenter(coordinates);
+			if(bodies.containsKey(lastTouchedPolygon))
+				bodies.get(lastTouchedPolygon).setTransform(coordinates, 0);
+		}else if(lastTouchedVertex != null){
 			lastTouchedVertex.set(coordinates);
-			if(polygonWindow != null){
-				polygonWindow.remove(lastTouchedVertex);
-				polygonWindow.add(lastTouchedVertex);
-			}
-			removePolygon(lastTouchedPolygon);
-			addPolygon(lastTouchedPolygon);
-			lastTouchedVertex = null;
-			lastTouchedPolygon = null;
+			polygonWindow.repopulate();
 		}
 	}
 
