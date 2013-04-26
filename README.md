@@ -35,6 +35,14 @@ editor will pop up again. The user may now delete it, causing the node to
 disappear, edit, going into level edit mode, cancel changes, or accept
 current changes.
 
+A level that is currently being moved around or otherwise edited is in light
+gray, whereas a level that has been saved is in white. One may edit a levels
+properties or location by left clicking on it, or one may immediately move the
+level by holding left shift and click and dragging the level to a new desired
+location. During this process the edited level is a gray instead of white to
+indicate its fluidity. When the changes are accepted, the level changes to
+a single white circle representing its new location.
+
 The world editor has a basic camera to manage navigation lest the users worlds
 grow past the meager extents of a 1080p screen. To pan the camera, use the
 left/right/up/down arrow keys. To zoom out, roll back on the mouse wheel. To
@@ -50,19 +58,36 @@ of check boxes. These check boxes represent the mode of the level editor.
 ### Polygon
 Polygon mode is the most basic type of mode. The user may create, edit, or 
 delete polygons in this mode. From a clean level, start clicking on the void
-to start populating the world. While the void does not show live updates, note
-vertices are being added to a yet unknown polygon. After clicking a box-like
-polygon, explore the options. 
+to start populating the world. Note while clicking vertices are being added
+to a yet unknown polygon. While a polygon is being edited, it is a lighter
+color green, and after accepting the changes or editing a finished polygon,
+the polygon will be a lighter green. After finishing a polygon, either by 
+creating a new polygon or by editing a pre-existing polygon, explore the 
+options. 
 
 Dynamic, Static, and Kinematic (as are other parameters) are Box2d specific
 attributes defining mobility. I feel they are self describing and shall thus
 cop out and link you to the official manual, which a swarm of brilliant folks
-likely put together for this express purpose: http://www.box2d.org/manual.html
+likely put together for this expressed purpose: http://www.box2d.org/manual.html
 
 Take special note of the Name parameter, as you may use it to connect joints.
 Accepting the changes adds the polygon, deleting removes the polygon from the
 level, and cancel eradicates changes, bringing the user back to a clean state
 before the editor was brought up.
+
+A polygon is composed of a set of vertices and a center point around which 
+these vertices orient. One may move a whole polygon by holding down the left
+shift key (while the edit window is NOT active), left clicking a vertex which 
+is part of the polygon, and dragging to a new location. Note that while the
+vertex was selected, the center of the polygon will be moved (which is likely
+different from the specific vertex selected) and the whole polygon will then be
+shifted around the center (rather than the selected vertex). 
+
+Alternatively, if the user wishes to move just one vertex in a polygon, first
+select the polygon by clicking one of its vertices, then hold left shift and
+left click the vertex to be moved, and drag it to its new desired location. 
+When in polygon edit mode, with the polygon window up showing the many vertices
+in a windows, one may more easily shift certain vertices.
 
 ### Circle
 See Polygon above, but this time in circles
@@ -73,15 +98,18 @@ that do not get loaded into the physics world upon level load. It is up to
 the user to render these, and a reference GDXRenderer is included for using
 backgrounds faster.
 
-Background support parallax scrolling 
+Background supports parallax scrolling 
 http://en.wikipedia.org/wiki/Parallax_scrolling. This is handled primarily
 through the "depth" attribute. This attribute will scale the texture in size
 and will offset it linearly according to camera position. A depth of 0 is 
 on the camera (and this invalid/never visible), 0-1 is the foreground up to
 the physics plane, 1 is the physics plane a.k.a. midground, and greater than 1
-means the object is being drawn in the background. The reference implementation
-code for offsetting according to depth is the following line:
-xy.sub(camera.position.x, camera.position.y).div(scale)
+means the object is being drawn in the background.
+
+To shift the backgrounds, again hold left shift while left click and dragging
+the background to move it around freely. Upon releasing left click, the image
+will plant in its new home to forever be (hopefully attractively) centered
+on the last clicked coordinates.
 
 ### NPC
 NPC editor defines what we view as "keys" to other properties. After naming 
@@ -93,6 +121,10 @@ the animation set, model, or otherwise ui/graphics resource one will use to
 render or visually represent the NPC. Faction is an open-ended string, to be
 interpreted by the client, ideally indicating friend, foe, and any level in
 between.
+
+One may, in a similar fashion, move NPC nodes by holding left shift and
+dragging towards its new intended location. Upon releasing the mouse, the NPC
+should be moved the the new location.
 
 ### Path
 Path indicates the route an NPC should work in-game. It is a named reference
@@ -109,10 +141,27 @@ up.
 If the specific type window demands a body, then use the named reference you
 used for the circle/polygon. Often, clicking on the map will fill in anchor 
 coordinates or similar as a convenience method. Clicking create will commit
-the joint to the world, while delete removes the joint currently being edited
+the joint to the world, while delete removes the joint currently being edited.
+
+Example: a commonly requested feature is the car motor. A car motor may be
+accomplished by first creating a dynamic car body, two dynamic car wheels,
+and a platform beneath the car on which it may drive. Following this, the user
+should take special note of the RevoluteJoint, which may provide motor 
+capabilities. Attach two revolute joints to each wheel, for RWD, the back wheel
+may have the motor with the unique revolute joint properties "enable motor",
+"max torque", and "motor speed" set to some reasonable figures. At this point,
+(when 3 dynamic bodies have been "joined" using two revolute joints), you have
+a simple motor drive RWD vehicle. Click live mode to demonstrate the 
+capabilities of your sweet ride in gdxworld real time.
+
+Advanced Example: For the slightly more advanced GDXWorlder, you may wish to
+employ a quest which takes a trigger "Input" (to grab when the user inputs an 
+accelerate keyboard button) and a manifestation "Physics" that causes the motor
+to turn on/off. This could yield a dynamic vehicle, and of course it is left up
+to the implementing IQuestManifestationExecutor to what degree the car handles. 
 
 ### Quest
-Each level has a set of quests. The intent as that any number of quests may be
+Each level has a set of quests. The intent is that any number of quests may be
 active simultaneously, as seen in the reference GDXQuestManager and 
 corresponding unit test. Please take note of that while reading the following.
 
@@ -125,6 +174,11 @@ current quest is active,
 active to complete is represented, be it visually, in the physics environment,
 or in another similarly stealthy and cool manner. 
 
+A quest may be repeatable, which could be useful for what some may consider
+"scripting," such that you have some sort of environmental trigger and 
+repeatable physics manifestation. An example could be a distance based trigger
+which manifests in a motor turning on for an elevator or similar behavior.
+
 ### Light
 Light mode creates a world editor interface for the box2dlights 
 https://code.google.com/p/box2dlights extension to libgdx. This allows you to 
@@ -133,6 +187,11 @@ populated ray handler is in the CreateLevelReturnStruct, so caching the result,
 updating the matrix, and rendering (after the objects you want affected have 
 been rendered). Quick example here: 
 https://code.google.com/p/box2dlights/wiki/HelloWorld
+
+One may use opengl 1 or 2 es, however, due to the shading centric nature of
+opengl 2, 2.0 is the preferred lighting method. It is strongly encouraged that
+the client uses opengl 2 es, so as to take advantage of hardware shader mastery
+for great justice.
 
 Project setup/Cold Start
 ------------------------
