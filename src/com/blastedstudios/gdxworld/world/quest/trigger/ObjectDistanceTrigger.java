@@ -2,15 +2,18 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 
 public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
-	public static final ObjectDistanceTrigger DEFAULT = new ObjectDistanceTrigger("Target", 1); 
+	public static final ObjectDistanceTrigger DEFAULT = new ObjectDistanceTrigger("Target", 1, false); 
 	private String target = "";
 	private float distance = 1f;
+	private boolean actionRequired;
 	
 	public ObjectDistanceTrigger(){}
 	
-	public ObjectDistanceTrigger(String target, float distance){
+	public ObjectDistanceTrigger(String target, float distance, 
+			boolean actionRequired){
 		this.target = target;
 		this.distance = distance;
+		this.actionRequired = actionRequired;
 	}
 
 	public String getTarget() {
@@ -29,13 +32,22 @@ public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 		this.distance = distance;
 	}
 
+	public boolean isActionRequired() {
+		return actionRequired;
+	}
+
+	public void setActionRequired(boolean actionRequired) {
+		this.actionRequired = actionRequired;
+	}
+
 	@Override public boolean activate() {
 		return getProvider().getPlayerPosition().dst(
-				getProvider().getPhysicsObject(target).getPosition()) <= distance;
+				getProvider().getPhysicsObject(target).getPosition()) <= distance &&
+				(!actionRequired || getProvider().isAction());
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new ObjectDistanceTrigger(target, distance);
+		return new ObjectDistanceTrigger(target, distance, actionRequired);
 	}
 
 	@Override public String toString() {

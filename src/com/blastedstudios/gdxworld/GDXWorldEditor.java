@@ -14,7 +14,8 @@ public class GDXWorldEditor extends Game {
 	private static String[] args;
 	
 	@Override public void create () {
-		parseArgs(args);
+		if(args != null)
+			parseArgs(args);
 		if(loadFile != null && loadFile.canRead())
 			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
 		else

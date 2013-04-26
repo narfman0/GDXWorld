@@ -30,4 +30,9 @@ public interface IQuestTriggerInformationProvider{
 	 * @return Physics body with given name
 	 */
 	public Body getPhysicsObject(String name);
+	
+	/**
+	 * @return true if action button is pressed
+	 */
+	public boolean isAction();
 }

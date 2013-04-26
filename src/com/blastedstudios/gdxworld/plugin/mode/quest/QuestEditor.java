@@ -46,6 +46,8 @@ class QuestEditor extends AbstractWindow {
 		final TextField prerequisiteField = new TextField("", skin);
 		prerequisiteField.setMessageText("<prerequisites>");
 		prerequisiteField.setText(quest.getPrerequisites());
+		final CheckBox repeatableBox = new CheckBox("Repeatable", skin);
+		repeatableBox.setChecked(quest.isRepeatable());
 		final Button acceptButton = new TextButton("Accept", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -53,6 +55,7 @@ class QuestEditor extends AbstractWindow {
 				quest.setPrerequisites(prerequisiteField.getText());
 				quest.setTrigger(triggerTable.apply());
 				quest.setManifestation(manifestationTable.apply());
+				quest.setRepeatable(repeatableBox.isChecked());
 				remove();
 			}
 		});
@@ -72,6 +75,7 @@ class QuestEditor extends AbstractWindow {
 		
 		add(new Label("Name: ", skin));
 		add(nameField);
+		add(repeatableBox);
 		row();
 		add(new Label("Prerequisites: ", skin));
 		add(prerequisiteField);

@@ -12,6 +12,7 @@ import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationP
 public class GDXQuest implements Serializable, Cloneable{
 	private static final long serialVersionUID = 1L;
 	private String name = "", prerequisites = "";
+	private boolean repeatable;
 	private AbstractQuestTrigger trigger = new AABBTrigger(0, 0, 1, 1);
 	private AbstractQuestManifestation manifestation = (AbstractQuestManifestation) DialogManifestation.DEFAULT.clone();
 	
@@ -38,6 +39,14 @@ public class GDXQuest implements Serializable, Cloneable{
 		this.prerequisites = prerequisites;
 	}
 
+	public boolean isRepeatable() {
+		return repeatable;
+	}
+
+	public void setRepeatable(boolean repeatable) {
+		this.repeatable = repeatable;
+	}
+
 	public AbstractQuestTrigger getTrigger() {
 		return trigger;
 	}
@@ -60,6 +69,7 @@ public class GDXQuest implements Serializable, Cloneable{
 		quest.setManifestation(manifestation.clone());
 		quest.setPrerequisites(prerequisites);
 		quest.setTrigger(trigger.clone());
+		quest.setRepeatable(repeatable);
 		return quest;
 	}
 	

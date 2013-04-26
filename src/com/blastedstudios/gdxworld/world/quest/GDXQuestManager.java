@@ -58,9 +58,9 @@ public class GDXQuestManager implements Serializable{
 			return;
 		}
 		boolean statusChanged = false;	//can't sort while looping through map
-		for(QuestStatus status : levelQuestStatusMap.get(currentLevel.getName()))
-			if(!status.isCompleted()){
-				GDXQuest quest = currentLevelQuestMap.get(status.questName);
+		for(QuestStatus status : levelQuestStatusMap.get(currentLevel.getName())){
+			GDXQuest quest = currentLevelQuestMap.get(status.questName);
+			if(!status.isCompleted() || quest.isRepeatable()){
 				if(isActive(quest) && quest.getTrigger().activate()){
 					status.setCompleted(statusChanged = true);
 					quest.getManifestation().execute();
@@ -68,6 +68,7 @@ public class GDXQuestManager implements Serializable{
 				}
 			}else
 				break;
+		}
 		if(statusChanged)
 			Collections.sort(levelQuestStatusMap.get(currentLevel.getName()), 
 					new QuestStatus.CompletionComparator());
@@ -81,11 +82,12 @@ public class GDXQuestManager implements Serializable{
 	 * @return true if the quest's prerequisites have been completed
 	 */
 	public boolean isActive(GDXQuest quest){
-		for(String prereq : quest.getPrerequisites().split(",")){
-			List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
-			if(statuses.contains(new QuestStatus(currentLevel.getName(), prereq.trim())))
-				return false;
-		}
+		if(!quest.getPrerequisites().trim().equals(""))
+			for(String prereq : quest.getPrerequisites().split(",")){
+				List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
+				if(statuses.contains(new QuestStatus(currentLevel.getName(), prereq.trim())))
+					return false;
+			}
 		return true;
 	}
 	
