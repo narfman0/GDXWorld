@@ -1,19 +1,15 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
-import java.util.HashMap;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -21,13 +17,11 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldEditorScreen extends AbstractScreen {
-	private OrthographicCamera camera = new OrthographicCamera(28, 20);
-	private World world = new World(new Vector2(), true);
-	private Box2DDebugRenderer renderer = new Box2DDebugRenderer();
+	private final ShapeRenderer renderer = new ShapeRenderer();
+	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private LevelInformationWindow levelInfo;
 	private AbstractWindow worldWindow;
 	private final GDXWorld gdxWorld;
-	private HashMap<GDXLevel, Body> bodies = new HashMap<GDXLevel, Body>();
 	private File lastSavedFile;
 	
 	public WorldEditorScreen(final Game game, final GDXWorld gdxWorld, File lastSavedFile){
@@ -35,8 +29,6 @@ public class WorldEditorScreen extends AbstractScreen {
 		this.lastSavedFile = lastSavedFile;
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
-		for(GDXLevel level : this.gdxWorld.getLevels())
-			add(level);
 		camera.zoom += 3;
 	}
 
@@ -45,7 +37,11 @@ public class WorldEditorScreen extends AbstractScreen {
 		camera.update();
 		if(!Gdx.graphics.isGL20Available())
 			camera.apply(Gdx.gl10);
-		renderer.render(world, camera.combined);
+		renderer.setProjectionMatrix(camera.combined);
+		renderer.begin(ShapeType.Line);
+		for(GDXLevel level : gdxWorld.getLevels())
+			renderer.circle(level.getCoordinates().x, level.getCoordinates().y, getLevelRadius());
+		renderer.end();
 		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
@@ -60,21 +56,6 @@ public class WorldEditorScreen extends AbstractScreen {
 	void removeLevelInformationWindow(){
 		levelInfo.remove();
 		levelInfo = null;
-	}
-
-	public void remove(GDXLevel gdxLevel) {
-		Gdx.app.log("WorldEditorScreen.remove", "Removing level " + gdxLevel + " | contained:" + bodies.containsKey(gdxLevel));
-		if(bodies.containsKey(gdxLevel))
-			world.destroyBody(bodies.remove(gdxLevel));
-	}
-
-	public void add(GDXLevel gdxLevel) {
-		Gdx.app.log("WorldEditorScreen.add", "Added level " + gdxLevel);
-		bodies.put(gdxLevel, PhysicsHelper.createCircle(world, getLevelRadius(), gdxLevel.getCoordinates(), BodyType.StaticBody));
-	}
-
-	public void update(GDXLevel gdxLevel) {
-		bodies.get(gdxLevel).setTransform(gdxLevel.getCoordinates(), 0);
 	}
 
 	@Override public boolean scrolled(int amount) {
@@ -113,13 +94,8 @@ public class WorldEditorScreen extends AbstractScreen {
 					Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
 				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level, lastSavedFile);
 				stage.addActor(levelInfo);
-			}else{
-				if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
-					levelInfo.setCoordinates(coordinates.x, coordinates.y);
-					if(bodies.containsKey(levelInfo.getLevel()))
-						bodies.get(levelInfo.getLevel()).setTransform(coordinates, 0);
-				}
-			}
+			}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+				levelInfo.setCoordinates(coordinates.x, coordinates.y);
 		}
 	}
 	

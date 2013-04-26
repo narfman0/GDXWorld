@@ -1,17 +1,13 @@
 package com.blastedstudios.gdxworld.plugin.mode.path;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -39,26 +35,12 @@ public class PathMode extends AbstractMode {
 
 	public void addPath(GDXPath path) {
 		Gdx.app.log("PathMode.addPath", path.toString());
-		if(screen.getBodies().containsKey(path))
-			for(Body body : screen.getBodies().remove(path))
-				screen.getWorld().destroyBody(body);
-		Body body = path.createFixture(screen.getWorld(), new FixtureDef(), BodyType.StaticBody);
-		if(body != null){
-			if(!screen.getLevel().getPaths().contains(path))
-				screen.getLevel().getPaths().add(path);
-			List<Body> newBodies = new ArrayList<Body>();
-			newBodies.add(body);
-			for(Vector2 vertex : path.getNodes())
-				newBodies.add(PhysicsHelper.createCircle(screen.getWorld(), 
-						LevelEditorScreen.getNodeRadius(), vertex, BodyType.StaticBody));
-			screen.getBodies().put(path, newBodies);
-		}
+		if(!screen.getLevel().getPaths().contains(path))
+			screen.getLevel().getPaths().add(path);
 	}
 
 	public void removePath(GDXPath path) {
 		Gdx.app.log("PathMode.removePath", path.toString());
-		for(Body body : screen.getBodies().remove(path))
-			screen.getWorld().destroyBody(body);
 		screen.getLevel().getPaths().remove(path);
 	}
 
@@ -77,4 +59,18 @@ public class PathMode extends AbstractMode {
 		for(GDXPath npc : level.getPaths())
 			addPath(npc);
 	}
+	
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		renderer.setColor(Color.GRAY);
+		if(!screen.isLive())
+			for(GDXPath object : screen.getLevel().getPaths())
+				for(int i=0; i<object.getNodes().size(); i++){
+					Vector2 node = object.getNodes().get(i);
+					renderer.circle(node.x, node.y, LevelEditorScreen.getNodeRadius(), 8);
+					if(i>0){
+						Vector2 previousNode = object.getNodes().get(i-1);
+						renderer.line(node.x, node.y, previousNode.x, previousNode.y);
+					}
+				}
+	};
 }

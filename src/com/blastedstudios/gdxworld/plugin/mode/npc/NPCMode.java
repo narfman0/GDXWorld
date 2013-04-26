@@ -1,15 +1,13 @@
 package com.blastedstudios.gdxworld.plugin.mode.npc;
 
-import java.util.Arrays;
-
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -52,8 +50,6 @@ public class NPCMode extends AbstractMode {
 		if(lastTouched != null){
 			Gdx.app.debug("NPCMode.touchDown", lastTouched.toString() + " to " + coordinates);
 			lastTouched.getCoordinates().set(coordinates);
-			for(Body body : screen.getBodies().get(lastTouched))
-				body.setTransform(coordinates, 0);
 			if(npcWindow != null)
 				npcWindow.setCoordinates(coordinates);
 		}
@@ -61,19 +57,12 @@ public class NPCMode extends AbstractMode {
 
 	public void addNPC(GDXNPC npc){
 		Gdx.app.log("NPCMode.addNPC", npc.toString());
-		if(screen.getBodies().containsKey(npc))
-			for(Body body : screen.getBodies().remove(npc))
-				screen.getWorld().destroyBody(body);
 		if(!screen.getLevel().getNpcs().contains(npc))
 			screen.getLevel().getNpcs().add(npc);
-		screen.getBodies().put(npc, Arrays.asList(PhysicsHelper.createCircle(screen.getWorld(), 
-				LevelEditorScreen.getNodeRadius(), npc.getCoordinates(), BodyType.StaticBody)));
 	}
 
 	public void removeNPC(GDXNPC npc) {
 		Gdx.app.log("NPCMode.removeNPC", npc.toString());
-		for(Body body : screen.getBodies().remove(npc))
-			screen.getWorld().destroyBody(body);
 		screen.getLevel().getNpcs().remove(npc);
 	}
 
@@ -92,4 +81,11 @@ public class NPCMode extends AbstractMode {
 		for(GDXNPC npc : level.getNpcs())
 			addNPC(npc);
 	}
+	
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		renderer.setColor(Color.PINK);
+		if(!screen.isLive())
+			for(GDXNPC object : screen.getLevel().getNpcs())
+				renderer.circle(object.getCoordinates().x, object.getCoordinates().y, LevelEditorScreen.getNodeRadius(), 12);
+	};
 }

@@ -2,20 +2,17 @@ package com.blastedstudios.gdxworld.ui.leveleditor;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
@@ -27,11 +24,10 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelEditorScreen extends AbstractScreen {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
-	private World world = new World(new Vector2(), true);
+	private World world;
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 	private final GDXRenderer gdxRenderer = new GDXRenderer(true);
-	private final Map<Object, List<Body>> bodies = new HashMap<Object, List<Body>>();
-	private final Map<String, Joint> joints = new HashMap<String, Joint>();
+	private final ShapeRenderer renderer = new ShapeRenderer();
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
@@ -49,7 +45,10 @@ public class LevelEditorScreen extends AbstractScreen {
 		loadLevel();
 	}
 	
-	private void loadLevel(){
+	void loadLevel(){
+		if(world != null)
+			world.dispose();
+		world = new World(new Vector2(0,live ? -10 : 0), true);
 		for(IMode child : modes)
 			child.loadLevel(gdxLevel);
 	}
@@ -63,8 +62,11 @@ public class LevelEditorScreen extends AbstractScreen {
 			world.step(delta, 4, 4);
 		gdxRenderer.render(gdxLevel, camera);
 		debugRenderer.render(world, camera.combined);
+		renderer.setProjectionMatrix(camera.combined);
+		renderer.begin(ShapeType.Line);
 		for(IMode child : modes)
-			child.render(delta, camera);
+			child.render(delta, camera, renderer);
+		renderer.end();
 		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
@@ -107,7 +109,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	 */
 	public void setLive(boolean live) {
 		this.live = live;
-		clear();
 		loadLevel();
 	}
 	
@@ -117,14 +118,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	
 	public World getWorld(){
 		return world;
-	}
-	
-	public Map<Object, List<Body>> getBodies(){
-		return bodies;
-	}
-	
-	public Map<String,Joint> getJoints(){
-		return joints;
 	}
 	
 	public GDXLevel getLevel(){
@@ -144,17 +137,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	
 	public GDXRenderer getGDXRenderer(){
 		return gdxRenderer;
-	}
-
-	/**
-	 * Clear all saved information about bodies, joints, and other world info
-	 */
-	public void clear() {
-		bodies.clear();
-		joints.clear();
-		if(world != null)
-			world.dispose();
-		world = new World(live ? new Vector2(0,-10) : new Vector2(), true);
 	}
 
 	public Collection<IMode> getModes() {

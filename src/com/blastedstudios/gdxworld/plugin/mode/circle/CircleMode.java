@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.mode.circle;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
@@ -16,12 +17,13 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 @PluginImplementation
 public class CircleMode extends AbstractMode {
+	private final Map<GDXCircle, Body> bodies = new HashMap<>();
 	private CircleWindow circleWindow;
 	private GDXCircle lastTouched;
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("CircleMouseMode.touchDown", "x="+x+ " y="+y);
+		Gdx.app.debug("CircleMode.touchDown", "x="+x+ " y="+y);
 		GDXCircle circle = screen.getLevel().getClosestCircle(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || circle == null || 
 				circle.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -51,21 +53,19 @@ public class CircleMode extends AbstractMode {
 		if(lastTouched != null){
 			Gdx.app.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
 			lastTouched.getCenter().set(coordinates);
-			for(Body body : screen.getBodies().get(lastTouched))
-				body.setTransform(coordinates, 0);
+			bodies.get(lastTouched).setTransform(coordinates, 0);
 			if(circleWindow != null)
 				circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
 		}
 	}
 
 	public void addCircle(GDXCircle circle) {
-		Gdx.app.log("CircleMouseMode.addCircle", circle.toString());
-		if(screen.getBodies().containsKey(circle))
-			for(Body body : screen.getBodies().remove(circle))
-				screen.getWorld().destroyBody(body);
+		Gdx.app.log("CircleMode.addCircle", circle.toString());
+		if(bodies.containsKey(circle))
+			screen.getWorld().destroyBody(bodies.remove(circle));
 		Body body = circle.createFixture(screen.getWorld(), !screen.isLive());
 		if(body != null){
-			screen.getBodies().put(circle, Arrays.asList(body));
+			bodies.put(circle, body);
 			if(!screen.getLevel().getShapes().contains(circle))
 				screen.getLevel().getShapes().add(circle);
 		}
@@ -73,9 +73,8 @@ public class CircleMode extends AbstractMode {
 
 	public void removeCircle(GDXCircle circle) {
 		screen.getLevel().getShapes().remove(circle);
-		if(screen.getBodies().containsKey(circle))
-			for(Body body : screen.getBodies().remove(circle))
-				screen.getWorld().destroyBody(body);
+		if(bodies.containsKey(circle))
+			screen.getWorld().destroyBody(bodies.remove(circle));
 	}
 
 	@Override public boolean contains(float x, float y) {
@@ -90,6 +89,7 @@ public class CircleMode extends AbstractMode {
 
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
+		bodies.clear();
 		for(GDXShape shape : level.getShapes())
 			if(shape instanceof GDXCircle)
 				addCircle((GDXCircle)shape);

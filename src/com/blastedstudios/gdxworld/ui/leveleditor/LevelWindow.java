@@ -55,7 +55,7 @@ public class LevelWindow extends AbstractWindow{
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				gdxLevel.clear();
-				levelEditorScreen.clear();
+				levelEditorScreen.loadLevel();
 			}
 		});
 		backButton.addListener(new ClickListener() {

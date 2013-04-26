@@ -1,25 +1,26 @@
 package com.blastedstudios.gdxworld.plugin.mode.polygon;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
-import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 @PluginImplementation
 public class PolygonMode extends AbstractMode {
+	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
 	private PolygonWindow polygonWindow;
 	private Vector2 lastTouchedVertex;
 	private GDXPolygon lastTouchedPolygon;
@@ -62,35 +63,21 @@ public class PolygonMode extends AbstractMode {
 		}
 	}
 
-	public void addPolygon(GDXShape shape){
-		Gdx.app.log("PolygonMode.addPolygon", shape.toString());
-		if(screen.getBodies().containsKey(shape))
-			for(Body body : screen.getBodies().remove(shape))
-				screen.getWorld().destroyBody(body);
-		Body body = shape.createFixture(screen.getWorld(), !screen.isLive());
+	public void addPolygon(GDXPolygon polygon){
+		Gdx.app.log("PolygonMode.addPolygon", polygon.toString());
+		if(bodies.containsKey(polygon))
+			screen.getWorld().destroyBody(bodies.remove(polygon));
+		Body body = polygon.createFixture(screen.getWorld(), !screen.isLive());
 		if(body != null){
-			if(!screen.getLevel().getShapes().contains(shape))
-				screen.getLevel().getShapes().add(shape);
-			List<Body> newBodies = new ArrayList<Body>();
-			newBodies.add(body);
-			if(!screen.isLive())
-				if(shape instanceof GDXPolygon){
-					for(Vector2 vertex : ((GDXPolygon)shape).getVertices()){
-						Vector2 position = vertex.cpy().add(shape.getCenter());
-						newBodies.add(PhysicsHelper.createCircle(screen.getWorld(), 
-								LevelEditorScreen.getNodeRadius(), position, BodyType.StaticBody));
-					}
-				}else if(shape instanceof GDXCircle)
-					newBodies.add(PhysicsHelper.createCircle(screen.getWorld(), ((GDXCircle)shape).getRadius(), 
-							shape.getCenter(), BodyType.StaticBody));
-			screen.getBodies().put(shape, newBodies);
+			if(!screen.getLevel().getShapes().contains(polygon))
+				screen.getLevel().getShapes().add(polygon);
+			bodies.put(polygon, body);
 		}
 	}
 
 	public void removePolygon(GDXPolygon polygon) {
 		Gdx.app.log("PolygonMode.removePolygon", polygon.toString());
-		for(Body body : screen.getBodies().remove(polygon))
-			screen.getWorld().destroyBody(body);
+		screen.getWorld().destroyBody(bodies.remove(polygon));
 		screen.getLevel().getShapes().remove(polygon);
 	}
 
@@ -106,8 +93,18 @@ public class PolygonMode extends AbstractMode {
 
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
+		bodies.clear();
 		for(GDXShape shape : level.getShapes())
 			if(shape instanceof GDXPolygon)
 				addPolygon((GDXPolygon)shape);
 	}
+	
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		renderer.setColor(Color.CYAN);
+		if(!screen.isLive())
+			for(GDXShape shape : screen.getLevel().getShapes())
+				if(shape instanceof GDXPolygon)
+					for(Vector2 vertex : ((GDXPolygon) shape).getVerticesAbsolute())
+						renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
+	};
 }

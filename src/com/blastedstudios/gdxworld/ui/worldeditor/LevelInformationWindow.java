@@ -51,7 +51,7 @@ public class LevelInformationWindow extends AbstractWindow{
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				worldEditorScreen.remove(gdxLevel);
+				gdxWorld.remove(gdxLevel);
 				worldEditorScreen.removeLevelInformationWindow();
 			}
 		});
@@ -85,11 +85,8 @@ public class LevelInformationWindow extends AbstractWindow{
 		gdxLevel.setCoordinates(new Vector2(Float.parseFloat(coordXLabel.getText()), Float.parseFloat(coordYLabel.getText())));
 		gdxLevel.setName(levelNameLabel.getText());
 		gdxLevel.setPrerequisitesString(prereqLabel.getText());
-		if(!gdxWorld.contains(gdxLevel)){
+		if(!gdxWorld.contains(gdxLevel))
 			gdxWorld.add(gdxLevel);
-			worldEditorScreen.add(gdxLevel);
-		}else
-			worldEditorScreen.update(gdxLevel);
 		worldEditorScreen.removeLevelInformationWindow();
 	}
 	

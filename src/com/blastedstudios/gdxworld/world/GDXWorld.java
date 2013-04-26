@@ -23,20 +23,20 @@ public class GDXWorld implements Serializable{
 		levels = new ArrayList<GDXLevel>();
 	}
 
-	public void add(GDXLevel polygon){
-		levels.add(polygon);
+	public void add(GDXLevel level){
+		levels.add(level);
 	}
 
-	public void remove(GDXLevel polygon){
-		levels.remove(polygon);
+	public void remove(GDXLevel level){
+		levels.remove(level);
 	}
 
 	public void clear(){
 		levels.clear();
 	}
 
-	public boolean contains(GDXLevel gdxLevel) {
-		return levels.contains(gdxLevel);
+	public boolean contains(GDXLevel level) {
+		return levels.contains(level);
 	}
 
 	public List<GDXLevel> getLevels(){

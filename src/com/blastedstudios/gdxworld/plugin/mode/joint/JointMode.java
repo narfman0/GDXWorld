@@ -1,14 +1,16 @@
 package com.blastedstudios.gdxworld.plugin.mode.joint;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blastedstudios.gdxworld.physics.PhysicsHelper;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.blastedstudios.gdxworld.plugin.mode.circle.CircleMode;
 import com.blastedstudios.gdxworld.plugin.mode.polygon.PolygonMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
@@ -21,6 +23,7 @@ import com.blastedstudios.gdxworld.world.joint.GearJoint;
 @PluginImplementation
 @Dependency(classes={CircleMode.class,PolygonMode.class})
 public class JointMode extends AbstractMode {
+	private final Map<String, Joint> joints = new HashMap<>();
 	private JointWindow jointWindow;
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -34,28 +37,24 @@ public class JointMode extends AbstractMode {
 	}
 
 	public void addJoint(GDXJoint gdxJoint) {
-		removeJoint(gdxJoint);
 		if(gdxJoint instanceof GearJoint){
 			GearJoint gear = (GearJoint)gdxJoint;
-			gear.initialize(screen.getJoints().get(gear.getJoint1()), screen.getJoints().get(gear.getJoint2()));
+			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
 		}
-		screen.getJoints().put(gdxJoint.getName(), gdxJoint.attach(screen.getWorld()));
+		//destroy previous and make new joint
+		if(joints.containsKey(gdxJoint.getName()))
+			screen.getWorld().destroyJoint(joints.remove(gdxJoint.getName()));
+		joints.put(gdxJoint.getName(), gdxJoint.attach(screen.getWorld()));
+		//add to level
 		if(!screen.getLevel().getJoints().contains(gdxJoint))
 			screen.getLevel().getJoints().add(gdxJoint);
-		if(!screen.isLive()){
-			Body body = PhysicsHelper.createCircle(screen.getWorld(), LevelEditorScreen.getNodeRadius(), gdxJoint.getCenter(), BodyType.DynamicBody);
-			screen.getBodies().put(gdxJoint.getName(), Arrays.asList(body));
-		}
 		Gdx.app.log("JointMode.addJoint", "Added joint " + gdxJoint.toString());
 	}
 
 	public void removeJoint(GDXJoint joint) {
 		Gdx.app.log("JointMode.removeJoint", "Removing joint " + joint.toString());
-		if(screen.getBodies().containsKey(joint.getName()))
-			for(Body body : screen.getBodies().remove(joint.getName()))
-				screen.getWorld().destroyBody(body);
-		if(screen.getJoints().containsKey(joint.getName()))
-			screen.getWorld().destroyJoint(screen.getJoints().remove(joint.getName()));
+		if(joints.containsKey(joint.getName()))
+			screen.getWorld().destroyJoint(joints.remove(joint.getName()));
 		if(screen.getLevel().getJoints().contains(joint))
 			screen.getLevel().getJoints().remove(joint);
 	}
@@ -72,6 +71,7 @@ public class JointMode extends AbstractMode {
 
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
+		joints.clear();
 		for(GDXJoint joint : level.getJoints())
 			addJoint(joint);
 	}
@@ -80,4 +80,11 @@ public class JointMode extends AbstractMode {
 		super.start();
 		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
 	}
+	
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		renderer.setColor(Color.GREEN);
+		if(!screen.isLive())
+			for(GDXJoint object : screen.getLevel().getJoints())
+				renderer.circle(object.getCenter().x, object.getCenter().y, LevelEditorScreen.getNodeRadius(), 12);
+	};
 }

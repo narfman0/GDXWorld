@@ -7,6 +7,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
@@ -69,8 +70,8 @@ public class LightMode extends AbstractMode {
 			rayHandler = level.createLights(screen.getWorld()).rayHandler;
 	}
 	
-	@Override public void render(float delta, Camera camera){
-		super.render(delta, camera);
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		super.render(delta, camera, renderer);
 		if(rayHandler != null){
 			rayHandler.setCombinedMatrix(camera.combined);
 			rayHandler.updateAndRender();
