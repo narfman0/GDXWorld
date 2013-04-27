@@ -20,13 +20,11 @@ import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.group.GDXGroupExportStruct;
 
 class GroupEditor extends AbstractWindow {
-	private final GDXGroup group;
 	private final TextField nameField, circlesField, jointsField, polygonsField;
 	private final VertexTable centerTable;
 	
 	public GroupEditor(final GDXGroup group, final Skin skin, final GDXLevel level) {
 		super("Group Editor", skin);
-		this.group = group;
 		nameField = new TextField("", skin);
 		nameField.setMessageText("<group name>");
 		nameField.setText(group.getName());
@@ -43,7 +41,7 @@ class GroupEditor extends AbstractWindow {
 		final Button acceptButton = new TextButton("Accept", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				apply();
+				apply(group);
 				remove();
 			}
 		});
@@ -57,7 +55,8 @@ class GroupEditor extends AbstractWindow {
 		final Button exportButton = new TextButton("Export", skin);
 		exportButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				apply();
+				GDXGroup group = new GDXGroup();
+				apply(group);
 				try {
 					File file = FileUtil.fileChooser(false, true);
 					if(file != null){
@@ -94,7 +93,7 @@ class GroupEditor extends AbstractWindow {
 		setMovable(false);
 	}
 	
-	private void apply(){
+	private void apply(GDXGroup group){
 		group.setName(nameField.getText());
 		group.setCenter(centerTable.getVertex());
 		group.setCircles(parseField(circlesField));
