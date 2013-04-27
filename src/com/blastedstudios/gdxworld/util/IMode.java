@@ -1,4 +1,4 @@
-package com.blastedstudios.gdxworld.ui.leveleditor.mode;
+package com.blastedstudios.gdxworld.util;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

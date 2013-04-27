@@ -9,7 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 

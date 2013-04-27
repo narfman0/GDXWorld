@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.physics.CollideCallback;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 
 @PluginImplementation
 public class LiveMode extends AbstractMode {

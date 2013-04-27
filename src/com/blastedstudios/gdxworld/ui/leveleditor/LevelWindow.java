@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.IMode;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
+import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 

@@ -4,7 +4,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.leveleditor.mode.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
