@@ -225,7 +225,7 @@ GDXWorld supports a variety of serializer plugins. By default, there are three
 available. These may be used when serializing items to a file, for instance
 when saving the world or exporting a group.
 
-=== Java Serializer
+### Java Serializer
 
 The java serializer will save items in a .ser file and and must be
 used with things implementing Serializable. This is a binary format and 
@@ -234,7 +234,7 @@ in the classes it is serializing. Thus if a world is saved with one version of
 GDXWorld, and a later version adds a field, an exception will be thrown and it
 will be tough to recover. Be forewarned..!
 
-=== XML Serializer
+### XML Serializer
 
 The XML serializer uses reflection to go over every field in the class to be
 serialized and will make a node for each. If it is a complex element, it will
@@ -242,7 +242,7 @@ in turn reflect that class, and so on (recursively). As a result the worlds are
 saved with minimal code. This format is more text, but can be hand edited or 
 viewed outside of the world editor.
 
-=== JSON serializer
+### JSON serializer
 
 Operates the same was as XML, see above
 
