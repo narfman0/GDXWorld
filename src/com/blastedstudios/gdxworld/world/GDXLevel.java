@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +25,10 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXLevel implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	private final List<GDXShape> shapes = new ArrayList<GDXShape>();
 	private String name = "";
 	private Vector2 coordinates = new Vector2();
+	private final List<GDXCircle> circles = new ArrayList<GDXCircle>();
+	private final List<GDXPolygon> polygons = new ArrayList<GDXPolygon>();
 	/**
 	 * Contains list of level names this level depends on before being playable
 	 */
@@ -39,8 +41,19 @@ public class GDXLevel implements Cloneable,Serializable{
 	private List<GDXLight> lights = new ArrayList<GDXLight>();
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	
-	public List<GDXShape> getShapes() {
-		return shapes;
+	public List<GDXCircle> getCircles() {
+		return circles;
+	}
+
+	public List<GDXPolygon> getPolygons() {
+		return polygons;
+	}
+
+	public Collection<GDXShape> getShapes() {
+		List<GDXShape> shapes = new ArrayList<>();
+		shapes.addAll(circles);
+		shapes.addAll(polygons);
+		return Collections.unmodifiableList(shapes);
 	}
 
 	public String getName() {
@@ -179,7 +192,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private GDXShape getClosestShape(float x, float y, Class<? extends GDXShape> theClass) {
 		GDXShape closest = null;
 		float closestDistance = Float.MAX_VALUE;
-		for(GDXShape shape : shapes){
+		for(GDXShape shape : getShapes()){
 			float distance = shape.getDistance(x, y);
 			if((closest == null || closestDistance > distance) && 
 					(theClass == null || shape.getClass() == theClass)){
@@ -243,7 +256,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	
 	public HashMap<GDXShape,Body> createBodies(World world){
 		HashMap<GDXShape,Body> returnBodies = new HashMap<>();
-		for(GDXShape shape : shapes){
+		for(GDXShape shape : getShapes()){
 			Body body = shape.createFixture(world, false);
 			returnBodies.put(shape, body); 
 		}
@@ -290,8 +303,10 @@ public class GDXLevel implements Cloneable,Serializable{
 		level.setCoordinates(coordinates.cpy());
 		for(GDXJoint joint : joints)
 			level.getJoints().add((GDXJoint) joint.clone());
-		for(GDXShape shape : shapes)
-			level.getShapes().add((GDXShape) shape.clone());
+		for(GDXCircle circle : circles)
+			level.getCircles().add((GDXCircle) circle.clone());
+		for(GDXPolygon polygon : polygons)
+			level.getPolygons().add((GDXPolygon) polygon.clone());
 		for(String prereq : prerequisites)
 			level.getPrerequisites().add(prereq);
 		for(GDXNPC npc : npcs)
@@ -312,7 +327,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	 * Clear all objects from a level
 	 */
 	public void clear() {
-		shapes.clear();
+		polygons.clear();
+		circles.clear();
 		prerequisites.clear();
 		npcs.clear();
 		paths.clear();
