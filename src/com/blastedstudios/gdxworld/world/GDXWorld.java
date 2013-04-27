@@ -6,17 +6,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.filechooser.FileFilter;
-
-import net.xeoh.plugins.base.Plugin;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.ISerializer;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private static Collection<IWorldSerializer> serializers = PluginUtil.getPlugins(IWorldSerializer.class);
+	private static Collection<ISerializer> serializers = PluginUtil.getPlugins(ISerializer.class);
 	private List<GDXLevel> levels;
 
 	public GDXWorld(){
@@ -53,7 +50,7 @@ public class GDXWorld implements Serializable{
 		}catch(Exception e){
 			Gdx.app.error("GDXWorld.save", "Detected serializer failed: " + e.getMessage());
 			try{
-				PluginUtil.getPlugins(IWorldSerializer.class).iterator().next().save(selectedFile, this);
+				PluginUtil.getPlugins(ISerializer.class).iterator().next().save(selectedFile, this);
 			}catch(Exception e1){
 				Gdx.app.error("GDXWorld.save", "Default serializer failed: " + e.getMessage());
 				e1.printStackTrace();
@@ -63,19 +60,19 @@ public class GDXWorld implements Serializable{
 	
 	public static GDXWorld load(File selectedFile) {
 		try{
-			return getSerializer(selectedFile).load(selectedFile);
+			return (GDXWorld) getSerializer(selectedFile).load(selectedFile);
 		}catch(Exception e){
 			Gdx.app.error("GDXWorld.load", "Serializer error: " + e.getMessage());
-			for(IWorldSerializer serializer : serializers)
+			for(ISerializer serializer : serializers)
 				try{
-					return serializer.load(selectedFile);
+					return (GDXWorld) serializer.load(selectedFile);
 				}catch(Exception e1){}
 		}
 		return null;
 	}
 	
-	private static IWorldSerializer getSerializer(File selectedFile){
-		for(IWorldSerializer serializer : serializers)
+	private static ISerializer getSerializer(File selectedFile){
+		for(ISerializer serializer : serializers)
 			if(serializer.getFileFilter().accept(selectedFile))
 				return serializer;
 		return null;
@@ -102,13 +99,7 @@ public class GDXWorld implements Serializable{
 		return "[GDXWorld]";
 	}
 	
-	public static Collection<IWorldSerializer> getSerializers(){
+	public static Collection<ISerializer> getSerializers(){
 		return serializers;
-	}
-	
-	public interface IWorldSerializer extends Plugin{
-		public GDXWorld load(File selectedFile) throws Exception;
-		public void save(File selectedFile, GDXWorld world) throws Exception;
-		public FileFilter getFileFilter();
 	}
 }

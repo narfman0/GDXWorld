@@ -21,6 +21,6 @@ public class ExtensionFileFilter extends FileFilter{
 	}
 
 	@Override public String getDescription() {
-		return "GDXWorld " + name + " (*." + extension + ")";
+		return name + " (*." + extension + ")";
 	}
 }

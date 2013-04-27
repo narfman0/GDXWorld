@@ -10,12 +10,11 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.util.ExtensionFileFilter;
 import com.blastedstudios.gdxworld.util.FileUtil;
-import com.blastedstudios.gdxworld.world.GDXWorld;
-import com.blastedstudios.gdxworld.world.GDXWorld.IWorldSerializer;
+import com.blastedstudios.gdxworld.util.ISerializer;
 import com.thoughtworks.xstream.XStream;
 
 @PluginImplementation
-public class XMLSerializer implements IWorldSerializer {
+public class XMLSerializer implements ISerializer {
 	protected final XStream xStream;
 	protected final String extension;
 	
@@ -30,7 +29,7 @@ public class XMLSerializer implements IWorldSerializer {
 		xStream.aliasPackage("world", "com.blastedstudios.gdxworld.world");
 	}
 	
-	@Override public GDXWorld load(File selectedFile) throws Exception {
+	@Override public Object load(File selectedFile) throws Exception {
 		if(selectedFile == null){
 			Gdx.app.error(this.getClass().getSimpleName() + ".load", "Cannot read null file");
 			throw new NullPointerException("selectedFile null");
@@ -39,18 +38,18 @@ public class XMLSerializer implements IWorldSerializer {
 			Gdx.app.error(this.getClass().getSimpleName() + ".load", "Cannot read file: " + selectedFile.getAbsolutePath());
 			throw new Exception("Cannot read file " + selectedFile.getAbsolutePath());
 		}
-		GDXWorld world = (GDXWorld) xStream.fromXML(selectedFile);
+		Object object = xStream.fromXML(selectedFile);
 		Gdx.app.log(this.getClass().getSimpleName() + ".load", "Successfully loaded " + selectedFile);
-		return world;
+		return object;
 	}
 
-	@Override public void save(File selectedFile, GDXWorld world) throws Exception {
+	@Override public void save(File selectedFile, Object object) throws Exception {
 		if(selectedFile == null)
 			Gdx.app.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
 		selectedFile.getParentFile().mkdirs();
 		if(FileUtil.getExtension(selectedFile) != null && !FileUtil.getExtension(selectedFile).equals(extension))
 			selectedFile = new File(selectedFile.getAbsolutePath() + "." + extension);
-		xStream.toXML(world, new FileOutputStream(selectedFile));
+		xStream.toXML(object, new FileOutputStream(selectedFile));
 		Gdx.app.log(this.getClass().getSimpleName() + ".save", "Successfully saved " + selectedFile);
 	}
 
