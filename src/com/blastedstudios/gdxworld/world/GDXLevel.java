@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
+import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
@@ -27,18 +28,19 @@ public class GDXLevel implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name = "";
 	private Vector2 coordinates = new Vector2();
-	private final List<GDXCircle> circles = new ArrayList<GDXCircle>();
-	private final List<GDXPolygon> polygons = new ArrayList<GDXPolygon>();
+	private final List<GDXCircle> circles = new ArrayList<>();
+	private final List<GDXPolygon> polygons = new ArrayList<>();
 	/**
 	 * Contains list of level names this level depends on before being playable
 	 */
-	private List<String> prerequisites = new ArrayList<String>();
-	private List<GDXNPC> npcs = new ArrayList<GDXNPC>();
-	private List<GDXPath> paths = new ArrayList<GDXPath>();
-	private List<GDXJoint> joints = new ArrayList<GDXJoint>();
-	private List<GDXQuest> quests = new ArrayList<GDXQuest>();
-	private List<GDXBackground> backgrounds = new ArrayList<GDXBackground>();
-	private List<GDXLight> lights = new ArrayList<GDXLight>();
+	private List<String> prerequisites = new ArrayList<>();
+	private List<GDXNPC> npcs = new ArrayList<>();
+	private List<GDXPath> paths = new ArrayList<>();
+	private List<GDXJoint> joints = new ArrayList<>();
+	private List<GDXQuest> quests = new ArrayList<>();
+	private List<GDXBackground> backgrounds = new ArrayList<>();
+	private List<GDXLight> lights = new ArrayList<>();
+	private List<GDXGroup> groups = new ArrayList<>();
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	
 	public List<GDXCircle> getCircles() {
@@ -150,7 +152,7 @@ public class GDXLevel implements Cloneable,Serializable{
 
 	public List<GDXBackground> getBackgrounds() {
 		if(backgrounds == null)
-			backgrounds = new ArrayList<GDXBackground>();
+			backgrounds = new ArrayList<>();
 		return backgrounds;
 	}
 
@@ -160,7 +162,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	
 	public List<GDXLight> getLights() {
 		if(lights == null)
-			lights = new ArrayList<GDXLight>();
+			lights = new ArrayList<>();
 		Collections.sort(lights);
 		return lights;
 	}
@@ -175,6 +177,16 @@ public class GDXLevel implements Cloneable,Serializable{
 
 	public void setLightAmbient(int lightAmbient) {
 		this.lightAmbient = lightAmbient;
+	}
+
+	public List<GDXGroup> getGroups() {
+		if(groups == null)
+			groups = new ArrayList<>();
+		return groups;
+	}
+
+	public void setGroups(List<GDXGroup> groups) {
+		this.groups = groups;
 	}
 
 	public GDXShape getClosestShape(float x, float y) {
@@ -320,6 +332,8 @@ public class GDXLevel implements Cloneable,Serializable{
 		for(GDXLight light : lights)
 			level.getLights().add((GDXLight) light.clone());
 		level.setLightAmbient(lightAmbient);
+		for(GDXGroup group : groups)
+			level.getGroups().add((GDXGroup) group.clone());
 		return level;
 	}
 
@@ -337,6 +351,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		backgrounds.clear();
 		lights.clear();
 		lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
+		groups.clear();
 	}
 
 	public class CreateLevelReturnStruct{

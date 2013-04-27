@@ -43,6 +43,11 @@ public abstract class AbstractMode implements IMode{
 		this.screen = screen;
 	}
 	
+	public boolean contains(float x, float y) {
+		return false;
+	}
+	
 	public void start(){};
 	public void render(float delta, Camera camera, ShapeRenderer renderer){};
+	public void clean() {}
 }

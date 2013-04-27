@@ -45,7 +45,7 @@ public class LevelEditorScreen extends AbstractScreen {
 		loadLevel();
 	}
 	
-	void loadLevel(){
+	public void loadLevel(){
 		if(world != null)
 			world.dispose();
 		world = new World(new Vector2(0,live ? -10 : 0), true);
@@ -67,13 +67,13 @@ public class LevelEditorScreen extends AbstractScreen {
 		for(IMode child : modes)
 			child.render(delta, camera, renderer);
 		renderer.end();
-		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
+		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
+		if(Gdx.input.isKeyPressed(Keys.DOWN))
 			camera.position.y-=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
+		if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			camera.position.x+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
+		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
 		stage.draw();
 	}

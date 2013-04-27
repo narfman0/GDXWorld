@@ -23,4 +23,8 @@ public class ExtensionFileFilter extends FileFilter{
 	@Override public String getDescription() {
 		return name + " (*." + extension + ")";
 	}
+	
+	public String getExtension(){
+		return extension;
+	}
 }

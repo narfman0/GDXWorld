@@ -2,8 +2,6 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
 
-import javax.swing.JFileChooser;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.MainScreen;
-import com.blastedstudios.gdxworld.util.ISerializer;
+import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldWindow extends AbstractWindow{
@@ -40,22 +38,8 @@ public class WorldWindow extends AbstractWindow{
 		});
 		saveAsButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				final JFileChooser fc = new JFileChooser();
-				for(ISerializer serializer : GDXWorld.getSerializers())
-					fc.addChoosableFileFilter(serializer.getFileFilter());
-				fc.showSaveDialog(null);
-				File file = fc.getSelectedFile();
-				if(file != null){
-					if( (file.exists() && !file.canWrite()) || 
-						(!file.exists() && !file.getParentFile().canWrite()) ){
-						Gdx.app.error("WorldWindow.saveAsButton ClickListener", 
-								"Selected file " + file.getAbsolutePath() + " not writable");
-					}else {
-						gdxWorld.save(lastSavedFile = file);
-						saveButton.setDisabled(false);
-					};
-				}else
-					Gdx.app.error("WorldWindow.saveAsButton ClickListener", "Selected file null");
+				gdxWorld.save(lastSavedFile = FileUtil.fileChooser(false, true));
+				saveButton.setDisabled(false);
 			}
 		});
 		backButton.addListener(new ClickListener() {

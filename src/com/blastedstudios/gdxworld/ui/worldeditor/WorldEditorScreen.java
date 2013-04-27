@@ -48,13 +48,13 @@ public class WorldEditorScreen extends AbstractScreen {
 			renderer.circle(levelInfo.getCoordinates().x, levelInfo.getCoordinates().y, getLevelRadius());
 		}
 		renderer.end();
-		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
+		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
+		if(Gdx.input.isKeyPressed(Keys.DOWN))
 			camera.position.y-=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
+		if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			camera.position.x+=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
+		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
 		stage.draw();
 	}
