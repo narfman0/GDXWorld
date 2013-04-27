@@ -22,6 +22,7 @@ import com.blastedstudios.gdxworld.plugin.mode.quest.manifestation.PhysicsManife
 import com.blastedstudios.gdxworld.plugin.mode.quest.manifestation.RevoluteJointManifestationTable;
 import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.AABBTriggerTable;
 import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.ActivateTriggerTable;
+import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.InputTriggerTable;
 import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.KillTriggerTable;
 import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.ObjectDistanceTriggerTable;
 import com.blastedstudios.gdxworld.plugin.mode.quest.trigger.PersonTriggerTable;
@@ -71,6 +72,7 @@ class QuestEditor extends AbstractWindow {
 		createQuestComponent(skin, triggerBoxes, AbstractQuestTrigger.class, 
 				quest.getTrigger(), AABBTriggerTable.class, 
 				ActivateTriggerTable.class, KillTriggerTable.class, 
+				InputTriggerTable.class,
 				ObjectDistanceTriggerTable.class, PersonTriggerTable.class);
 		
 		add(new Label("Name: ", skin));
