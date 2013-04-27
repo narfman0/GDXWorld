@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.mode.path;
 
+import java.util.List;
+
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
@@ -27,9 +29,8 @@ public class PathMode extends AbstractMode {
 			path = new GDXPath();
 		if(pathWindow == null)
 			screen.getStage().addActor(pathWindow = new PathWindow(screen.getSkin(), this, path));
-		Vector2 vertex = new Vector2(coordinates.x, coordinates.y);
 		if(path.getNodes().isEmpty())
-			pathWindow.add(vertex);
+			pathWindow.add(coordinates.cpy());
 		return false;
 	}
 
@@ -61,16 +62,23 @@ public class PathMode extends AbstractMode {
 	}
 	
 	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
-		renderer.setColor(Color.GRAY);
-		if(!screen.isLive())
+		if(!screen.isLive()){
 			for(GDXPath object : screen.getLevel().getPaths())
-				for(int i=0; i<object.getNodes().size(); i++){
-					Vector2 node = object.getNodes().get(i);
-					renderer.circle(node.x, node.y, LevelEditorScreen.getNodeRadius(), 8);
-					if(i>0){
-						Vector2 previousNode = object.getNodes().get(i-1);
-						renderer.line(node.x, node.y, previousNode.x, previousNode.y);
-					}
-				}
+				renderNodeList(object.getNodes(), renderer, Color.GRAY);
+			if(pathWindow != null)
+				renderNodeList(pathWindow.getNodes(), renderer, Color.DARK_GRAY);
+		}
 	};
+	
+	private static void renderNodeList(List<Vector2> nodes, ShapeRenderer renderer, Color color){
+		renderer.setColor(color);
+		for(int i=0; i<nodes.size(); i++){
+			Vector2 node = nodes.get(i);
+			renderer.circle(node.x, node.y, LevelEditorScreen.getNodeRadius(), 8);
+			if(i>0){
+				Vector2 previousNode = nodes.get(i-1);
+				renderer.line(node.x, node.y, previousNode.x, previousNode.y);
+			}
+		}
+	}
 }

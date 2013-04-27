@@ -31,8 +31,7 @@ public class CircleMode extends AbstractMode {
 		if(circleWindow == null)
 			screen.getStage().addActor(circleWindow = new CircleWindow(screen.getSkin(), this, circle));
 		circleWindow.setCenter(coordinates);
-		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
-			lastTouched = circle;
+		lastTouched = circle;
 		return false;
 	}
 	

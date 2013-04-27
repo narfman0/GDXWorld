@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.path;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,13 +22,13 @@ import com.blastedstudios.gdxworld.world.GDXPath;
 public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
-	private final GDXPath path;
+	private final List<Vector2> nodes;
 
 	public PathWindow(final Skin skin, final PathMode mode, 
 			final GDXPath path) {
 		super("Path Editor", skin);
 		this.skin = skin;
-		this.path = path;
+		nodes = new ArrayList<>();
 		vertexTables = new Table(skin);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<path name>");
@@ -37,13 +40,14 @@ public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				path.getNodes().clear();
 				vertexTables.clear();
+				nodes.clear();
 			}
 		});
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				path.setName(nameField.getText());
+				path.setNodes(nodes);
 				mode.addPath(path);
 				mode.clean();
 			}
@@ -59,6 +63,8 @@ public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 				mode.clean();
 			}
 		});
+		for(Vector2 node : path.getNodes())
+			nodes.add(node.cpy());
 		populateVertexTable();
 		add(scrollPane).colspan(3);
 		row();
@@ -75,23 +81,27 @@ public class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	}
 
 	public void add(Vector2 vertex) {
-		path.getNodes().add(vertex);
+		nodes.add(vertex);
 		vertexTables.add(new VertexTable(vertex, skin, this));
 		vertexTables.row();
-		Gdx.app.log("PathWindow.add", " vector: " + vertex + " size: " + path.getNodes().size());
+		Gdx.app.log("PathWindow.add", " vector: " + vertex);
 	}
 
 	public void remove(Vector2 vertex) {
-		path.getNodes().remove(vertex);
+		nodes.remove(vertex);
 		vertexTables.clear();
 		populateVertexTable();
-		Gdx.app.log("PathWindow.remove", " vector: " + vertex + " size: " + path.getNodes().size());
+		Gdx.app.log("PathWindow.remove", " vector: " + vertex);
 	}
 
 	private void populateVertexTable(){
-		for(Vector2 vertex : path.getNodes()){
+		for(Vector2 vertex : nodes){
 			vertexTables.add(new VertexTable(vertex, skin, this));
 			vertexTables.row();
 		}
+	}
+	
+	public List<Vector2> getNodes(){
+		return nodes;
 	}
 }

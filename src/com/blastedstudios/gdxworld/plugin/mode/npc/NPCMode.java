@@ -7,7 +7,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -27,9 +26,8 @@ public class NPCMode extends AbstractMode {
 			npc = new GDXNPC();
 		if(npcWindow == null)
 			screen.getStage().addActor(npcWindow = new NPCWindow(screen.getSkin(), this, npc));
-		npcWindow.setCoordinates(new Vector2(coordinates.x, coordinates.y));
-		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
-			lastTouched = npc;
+		npcWindow.setCoordinates(coordinates);
+		lastTouched = npc;
 		return false;
 	}
 	
@@ -49,7 +47,6 @@ public class NPCMode extends AbstractMode {
 	private void shift(){
 		if(lastTouched != null){
 			Gdx.app.debug("NPCMode.touchDown", lastTouched.toString() + " to " + coordinates);
-			lastTouched.getCoordinates().set(coordinates);
 			if(npcWindow != null)
 				npcWindow.setCoordinates(coordinates);
 		}
@@ -87,5 +84,8 @@ public class NPCMode extends AbstractMode {
 		if(!screen.isLive())
 			for(GDXNPC object : screen.getLevel().getNpcs())
 				renderer.circle(object.getCoordinates().x, object.getCoordinates().y, LevelEditorScreen.getNodeRadius(), 12);
+		renderer.setColor(new Color(.9f, 0.5f, 0.5f, 1));
+		if(npcWindow != null)
+			renderer.circle(npcWindow.getCoordinates().x, npcWindow.getCoordinates().y, LevelEditorScreen.getNodeRadius());
 	};
 }
