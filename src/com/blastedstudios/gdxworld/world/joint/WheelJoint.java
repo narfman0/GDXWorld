@@ -95,4 +95,9 @@ public class WheelJoint extends GDXJoint {
 		clone.setMotorSpeed(motorSpeed);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		anchor.add(center);
+		axis.add(center);
+	}
 }

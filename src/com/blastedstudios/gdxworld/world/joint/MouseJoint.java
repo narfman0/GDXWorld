@@ -57,4 +57,8 @@ public class MouseJoint extends GDXJoint {
 		clone.setMaxForce(maxForce);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		center.add(center);
+	}
 }

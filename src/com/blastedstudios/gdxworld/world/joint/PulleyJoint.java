@@ -93,4 +93,11 @@ public class PulleyJoint extends GDXJoint {
 		clone.setRatio(ratio);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		anchorA.add(center);
+		anchorB.add(center);
+		groundAnchorA.add(center);
+		groundAnchorB.add(center);
+	}
 }

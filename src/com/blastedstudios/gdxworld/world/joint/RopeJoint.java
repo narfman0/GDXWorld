@@ -37,4 +37,8 @@ public class RopeJoint extends GDXJoint {
 		clone.setMaxLength(maxLength);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		center.add(center);
+	}
 }

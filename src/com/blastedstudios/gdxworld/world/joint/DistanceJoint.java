@@ -74,4 +74,9 @@ public class DistanceJoint extends GDXJoint {
 		clone.setLength(length);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		anchorA.add(center);
+		anchorB.add(center);
+	}
 }

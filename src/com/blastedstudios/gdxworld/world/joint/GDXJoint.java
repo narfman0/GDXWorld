@@ -104,6 +104,7 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 	}
 	
 	public abstract Vector2 getCenter();
+	public abstract void translate(Vector2 center);
 	
 	@Override public abstract Object clone();
 	

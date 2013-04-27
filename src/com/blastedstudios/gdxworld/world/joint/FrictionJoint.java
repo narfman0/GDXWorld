@@ -55,4 +55,8 @@ public class FrictionJoint extends GDXJoint {
 		clone.setMaxTorque(maxTorque);
 		return super.clone(clone);
 	}
+
+	@Override public void translate(Vector2 center) {
+		anchor.add(center);
+	}
 }
