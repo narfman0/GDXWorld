@@ -37,7 +37,7 @@ public class PluginUtil {
 	public static <T extends Plugin> List<T> getPluginsSorted(Class<T> theInterface){
 		List<T> activePlugins = new ArrayList<>();
 		boolean changed = false;
-		List<T> inactivePlugins = new ArrayList<>(getPlugins(theInterface));
+		List<? extends Plugin> inactivePlugins = new ArrayList<>(pluginManager.getPlugins());
 		for(int i=0; i<inactivePlugins.size(); i++){
 			boolean dependenciesSatisfied = true;
 			Class<? extends Plugin> clazz = inactivePlugins.get(i).getClass();
@@ -52,7 +52,9 @@ public class PluginUtil {
 				}
 			}
 			if(dependenciesSatisfied){
-				activePlugins.add(inactivePlugins.remove(i));
+				Plugin plugin = inactivePlugins.remove(i);
+				if(theInterface.isInstance(plugin))
+					activePlugins.add(theInterface.cast(plugin));
 				changed = true;
 			}
 			if(inactivePlugins.size() == i)
