@@ -7,13 +7,13 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
-import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 @PluginImplementation
 public class CircleMode extends AbstractMode {
@@ -30,7 +30,7 @@ public class CircleMode extends AbstractMode {
 			circle = new GDXCircle();
 		if(circleWindow == null)
 			screen.getStage().addActor(circleWindow = new CircleWindow(screen.getSkin(), this, circle));
-		circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+		circleWindow.setCenter(coordinates);
 		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
 			lastTouched = circle;
 		return false;
@@ -52,10 +52,8 @@ public class CircleMode extends AbstractMode {
 	private void shift(){
 		if(lastTouched != null){
 			Gdx.app.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
-			lastTouched.getCenter().set(coordinates);
-			bodies.get(lastTouched).setTransform(coordinates, 0);
 			if(circleWindow != null)
-				circleWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+				circleWindow.setCenter(coordinates);
 		}
 	}
 
@@ -66,8 +64,8 @@ public class CircleMode extends AbstractMode {
 		Body body = circle.createFixture(screen.getWorld(), !screen.isLive());
 		if(body != null){
 			bodies.put(circle, body);
-			if(!screen.getLevel().getShapes().contains(circle))
-				screen.getLevel().getShapes().add(circle);
+			if(!screen.getLevel().getCircles().contains(circle))
+				screen.getLevel().getCircles().add(circle);
 		}
 	}
 
@@ -90,8 +88,12 @@ public class CircleMode extends AbstractMode {
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
 		bodies.clear();
-		for(GDXShape shape : level.getShapes())
-			if(shape instanceof GDXCircle)
-				addCircle((GDXCircle)shape);
+		for(GDXCircle shape : level.getCircles())
+			addCircle(shape);
+	}
+	
+	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+		if(circleWindow != null)
+			circleWindow.render(delta, camera, renderer);
 	}
 }

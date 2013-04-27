@@ -17,7 +17,6 @@ import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
-import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 @PluginImplementation
 public class PolygonMode extends AbstractMode {
@@ -86,8 +85,8 @@ public class PolygonMode extends AbstractMode {
 			screen.getWorld().destroyBody(bodies.remove(polygon));
 		Body body = polygon.createFixture(screen.getWorld(), !screen.isLive());
 		if(body != null){
-			if(!screen.getLevel().getShapes().contains(polygon))
-				screen.getLevel().getShapes().add(polygon);
+			if(!screen.getLevel().getPolygons().contains(polygon))
+				screen.getLevel().getPolygons().add(polygon);
 			bodies.put(polygon, body);
 		}
 	}
@@ -95,7 +94,7 @@ public class PolygonMode extends AbstractMode {
 	public void removePolygon(GDXPolygon polygon) {
 		Gdx.app.log("PolygonMode.removePolygon", polygon.toString());
 		screen.getWorld().destroyBody(bodies.remove(polygon));
-		screen.getLevel().getShapes().remove(polygon);
+		screen.getLevel().getPolygons().remove(polygon);
 	}
 
 	@Override public boolean contains(float x, float y) {
@@ -111,19 +110,17 @@ public class PolygonMode extends AbstractMode {
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
 		bodies.clear();
-		for(GDXShape shape : level.getShapes())
-			if(shape instanceof GDXPolygon)
-				addPolygon((GDXPolygon)shape);
+		for(GDXPolygon shape : level.getPolygons())
+			addPolygon(shape);
 	}
 	
 	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
 		if(!screen.isLive()){
 			//Draw set polygons
 			renderer.setColor(Color.GREEN);
-			for(GDXShape shape : screen.getLevel().getShapes())
-				if(shape instanceof GDXPolygon)
-					for(Vector2 vertex : ((GDXPolygon) shape).getVerticesAbsolute())
-						renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
+			for(GDXPolygon shape : screen.getLevel().getPolygons())
+				for(Vector2 vertex : shape.getVerticesAbsolute())
+					renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
 			//Draw currently selected polygon/nodes
 			renderer.setColor(new Color(0, .8f, 0, 1));
 			if(polygonWindow != null)

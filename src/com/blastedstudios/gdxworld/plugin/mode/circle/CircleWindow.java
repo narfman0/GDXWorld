@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.circle;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +20,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
 public class CircleWindow extends AbstractWindow {
 	private final VertexTable centerTable;
+	private final TextField radiusField;
 	
 	public CircleWindow(final Skin skin, final CircleMode mode, final GDXCircle circle) {
 		super("Circle Editor", skin);
@@ -55,7 +59,7 @@ public class CircleWindow extends AbstractWindow {
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<circle name>");
 		nameField.setText(circle.getName());
-		final TextField radiusField = new TextField("", skin);
+		radiusField = new TextField("", skin);
 		radiusField.setMessageText("<radius>");
 		radiusField.setText(circle.getRadius()+"");
 		final TextField densityField = new TextField("", skin);
@@ -70,7 +74,7 @@ public class CircleWindow extends AbstractWindow {
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
-		centerTable = new VertexTable(circle.getCenter(), skin, null);
+		centerTable = new VertexTable(circle.getCenter().cpy(), skin, null);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				circle.setName(nameField.getText());
@@ -80,7 +84,7 @@ public class CircleWindow extends AbstractWindow {
 				else if(dynamicBox.isChecked())
 					bodyType = BodyType.DynamicBody;
 				circle.setCenter(centerTable.getVertex());
-				circle.setRadius(Float.parseFloat(radiusField.getText()));
+				circle.setRadius(getRadius());
 				circle.setBodyType(bodyType);
 				circle.setDensity(Float.parseFloat(densityField.getText()));
 				circle.setFriction(Float.parseFloat(frictionField.getText()));
@@ -136,5 +140,14 @@ public class CircleWindow extends AbstractWindow {
 
 	public void setCenter(Vector2 center) {
 		centerTable.setVertex(center.x, center.y);
+	}
+	
+	private float getRadius(){
+		return Float.parseFloat(radiusField.getText());
+	}
+
+	public void render(float delta, Camera camera, ShapeRenderer renderer){
+		renderer.setColor(new Color(.1f, 1, .1f, 1));
+		renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, getRadius());
 	}
 }
