@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class GDXShape implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	protected String name = "";
+	protected String name;
 	protected float density = 1f, friction = .5f, restitution = .3f;
 	protected BodyType bodyType = BodyType.StaticBody;
 	protected Vector2 center = new Vector2();

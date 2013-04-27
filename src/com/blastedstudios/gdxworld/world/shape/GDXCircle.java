@@ -9,7 +9,12 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
 public class GDXCircle extends GDXShape {
 	private static final long serialVersionUID = 1L;
+	private static int count = 0;
 	private float radius = 1f;
+	
+	public GDXCircle(){
+		name = "Circle-" + count++;
+	}
 
 	@Override public Body createFixture(World world, boolean overrideStatic) {
 		FixtureDef fd = new FixtureDef();

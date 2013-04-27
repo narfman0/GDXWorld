@@ -193,6 +193,59 @@ opengl 2, 2.0 is the preferred lighting method. It is strongly encouraged that
 the client uses opengl 2 es, so as to take advantage of hardware shader mastery
 for great justice.
 
+### Group
+Group mode is designed to batch move, import, and export related objects. A 
+group is composed of polygons, circles, and joints. In the editor, one may
+simply refer to them by name, but when exporting and importing special 
+attention must be paid to the "center" attribute. When exporting, all pertinent
+vertices, anchors, centers, etc, are saved relative to the center. This means
+when the user loads the group again, it will load at 0,0 and may be shifted
+after that. 
+
+To create a group, first click the group mode and "add" button. Next, name the
+group and list which polygons, circles, and joints are in the group by name, 
+comma delimited. For a car, one may make a rectangular body named "body", two
+wheels names "front" and "back", and two revolute joints, one with a motor,
+named "w1joint" and "w2joint". In the group editor, then, you could name it
+"car", in the polygon text field type "body", in the circles text field type
+"w1, w2", and in the joints field type "w1joint, w2joint".
+
+To export, hit the export button from the editor window. Select which 
+serializer you wish to use, then navigate to a file and hit save. If using the
+XML or JSON serializer, you could open that file and note the contents, but for
+now make a new level in which you may import. Again in group mode, click the
+import button and navigate to the file to load in the same group. Note that the
+names are not changed, so you may not currently load multiples of the same body
+without odd repercussions since the editor assumes unique names.
+
+Serializers
+-----------
+
+GDXWorld supports a variety of serializer plugins. By default, there are three
+available. These may be used when serializing items to a file, for instance
+when saving the world or exporting a group.
+
+=== Java Serializer
+
+The java serializer will save items in a .ser file and and must be
+used with things implementing Serializable. This is a binary format and 
+therefore small, but is less prone to gracefully recovering from slight changes
+in the classes it is serializing. Thus if a world is saved with one version of
+GDXWorld, and a later version adds a field, an exception will be thrown and it
+will be tough to recover. Be forewarned..!
+
+=== XML Serializer
+
+The XML serializer uses reflection to go over every field in the class to be
+serialized and will make a node for each. If it is a complex element, it will
+in turn reflect that class, and so on (recursively). As a result the worlds are
+saved with minimal code. This format is more text, but can be hand edited or 
+viewed outside of the world editor.
+
+=== JSON serializer
+
+Operates the same was as XML, see above
+
 Project setup/Cold Start
 ------------------------
 

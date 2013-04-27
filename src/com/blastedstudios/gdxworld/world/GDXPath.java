@@ -14,7 +14,8 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
 public class GDXPath implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	private String name = "";
+	private static int count = 0;
+	private String name = "Path-"+count++;
 	private List<Vector2> nodes = new ArrayList<Vector2>();
 
 	public String getName() {

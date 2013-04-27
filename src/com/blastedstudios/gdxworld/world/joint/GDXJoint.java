@@ -13,7 +13,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class GDXJoint implements Cloneable,Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name = "", bodyA = "", bodyB = "";
+	private static int count = 0;
+	private String name = "Joint-"+count++, bodyA = "", bodyB = "";
 	private JointType jointType = JointType.RevoluteJoint;
 	private boolean collideConnected;
 	

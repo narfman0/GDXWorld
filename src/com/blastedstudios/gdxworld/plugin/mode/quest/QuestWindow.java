@@ -19,7 +19,6 @@ class QuestWindow extends AbstractWindow {
 	private final Table questTable;
 	private final List<GDXQuest> quests;
 	private final LevelEditorScreen screen;
-	private static int questCount = 0;
 	private QuestEditor editor;
 	
 	public QuestWindow(final Skin skin, final List<GDXQuest> quests, 
@@ -46,7 +45,6 @@ class QuestWindow extends AbstractWindow {
 		addButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				GDXQuest quest = new GDXQuest();
-				quest.setName("newQuest-"+questCount++);
 				quests.add(quest);
 				questTable.add(createQuestTable(quest));
 			}

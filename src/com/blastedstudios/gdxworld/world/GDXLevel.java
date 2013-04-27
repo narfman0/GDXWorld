@@ -26,7 +26,8 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXLevel implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	private String name = "";
+	private static int count = 0;
+	private String name = "Level-" + count++;
 	private Vector2 coordinates = new Vector2();
 	private final List<GDXCircle> circles = new ArrayList<>();
 	private final List<GDXPolygon> polygons = new ArrayList<>();

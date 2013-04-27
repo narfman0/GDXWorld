@@ -6,7 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GDXNPC implements  Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	private String name = "", faction = "", resource = "";
+	private static int count = 0;
+	private String name = "NPC-"+count++, faction = "", resource = "";
 	/**
 	 * A named reference to a path in the GDXLevel the npc will traverse
 	 */

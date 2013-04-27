@@ -11,7 +11,8 @@ import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationP
 
 public class GDXQuest implements Serializable, Cloneable{
 	private static final long serialVersionUID = 1L;
-	private String name = "", prerequisites = "";
+	private static int count = 0;
+	private String name = "Quest-"+count++, prerequisites = "";
 	private boolean repeatable;
 	private AbstractQuestTrigger trigger = new AABBTrigger(0, 0, 1, 1);
 	private AbstractQuestManifestation manifestation = (AbstractQuestManifestation) DialogManifestation.DEFAULT.clone();
