@@ -83,7 +83,7 @@ class GroupWindow extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(editor != null)
 					editor.remove();
-				screen.getStage().addActor(editor = new GroupEditor(group, skin, screen.getLevel()));
+				screen.getStage().addActor(editor = new GroupEditor(group, skin, screen));
 			}
 		});
 		groupTable.add(groupButton);

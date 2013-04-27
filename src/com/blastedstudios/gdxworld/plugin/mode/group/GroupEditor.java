@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,18 +14,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.util.FileUtil;
-import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.group.GDXGroupExportStruct;
+import com.blastedstudios.gdxworld.world.joint.GDXJoint;
+import com.blastedstudios.gdxworld.world.shape.GDXCircle;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 class GroupEditor extends AbstractWindow {
 	private final TextField nameField, circlesField, jointsField, polygonsField;
 	private final VertexTable centerTable;
+	private final GDXGroup group;
+	private final LevelEditorScreen screen;
 	
-	public GroupEditor(final GDXGroup group, final Skin skin, final GDXLevel level) {
+	public GroupEditor(final GDXGroup group, final Skin skin, final LevelEditorScreen screen) {
 		super("Group Editor", skin);
+		this.group = group;
+		this.screen = screen;
 		nameField = new TextField("", skin);
 		nameField.setMessageText("<group name>");
 		nameField.setText(group.getName());
@@ -48,7 +56,7 @@ class GroupEditor extends AbstractWindow {
 		final Button deleteButton = new TextButton("Delete", skin);
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				level.getGroups().remove(group);
+				screen.getLevel().getGroups().remove(group);
 				remove();
 			}
 		});
@@ -60,7 +68,7 @@ class GroupEditor extends AbstractWindow {
 				try {
 					File file = FileUtil.fileChooser(false, true);
 					if(file != null){
-						GDXGroupExportStruct struct = group.exportGroup(level);
+						GDXGroupExportStruct struct = group.exportGroup(screen.getLevel());
 						FileUtil.getSerializer(file).save(file, struct);
 					}
 				} catch (Exception e) {
@@ -115,6 +123,20 @@ class GroupEditor extends AbstractWindow {
 	}
 
 	public void touched(float x, float y) {
+		Vector2 offset = centerTable.getVertex().cpy().sub(x, y);
 		centerTable.setVertex(x,y);
+		for(String objectName : group.getCircles())
+			for(GDXCircle object : screen.getLevel().getCircles())
+				if(object.getName().equals(objectName))
+					object.setCenter(object.getCenter().sub(offset));
+		for(String objectName : group.getPolygons())
+			for(GDXPolygon object : screen.getLevel().getPolygons())
+				if(object.getName().equals(objectName))
+					object.setCenter(object.getCenter().sub(offset));
+		for(String objectName : group.getJoints())
+			for(GDXJoint object : screen.getLevel().getJoints())
+				if(object.getName().equals(objectName))
+					object.translate(offset.cpy().scl(-1f));
+		screen.loadLevel();
 	}
 }

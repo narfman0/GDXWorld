@@ -88,12 +88,14 @@ public class LevelEditorScreen extends AbstractScreen {
 	}
 	
 	@Override public boolean touchUp(int x, int y, int x1, int y1){
-		mode.touchUp(x, y, x1, y1);
+		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
+			mode.touchUp(x, y, x1, y1);
 		return false;
 	}
 
 	@Override public boolean touchDragged(int x, int y, int ptr) {
-		mode.touchDragged(x, y, ptr);
+		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
+			mode.touchDragged(x, y, ptr);
 		return false;
 	}
 

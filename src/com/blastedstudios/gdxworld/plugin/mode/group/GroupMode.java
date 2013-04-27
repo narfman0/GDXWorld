@@ -49,22 +49,19 @@ public class GroupMode extends AbstractMode implements IMode {
 
 	@Override public boolean touchDown(int x, int y, int x1, int y1){
 		super.touchDown(x, y, x1, y1);
-		if(!contains(x, y) && window != null)
-			window.touched(coordinates.x, coordinates.y);
+		window.touched(coordinates.x, coordinates.y);
 		return false;
 	}
 	
 	@Override public boolean touchDragged(int x, int y, int ptr){
 		super.touchDragged(x, y, ptr);
-		if(!contains(x, y) && window != null)
-			window.touched(coordinates.x, coordinates.y);
+		window.touched(coordinates.x, coordinates.y);
 		return false;
 	}
 	
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
-		if(!contains(x, y) && window != null)
-			window.touched(coordinates.x, coordinates.y);
+		window.touched(coordinates.x, coordinates.y);
 		return false;
 	}
 }
