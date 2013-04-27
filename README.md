@@ -20,6 +20,9 @@ creation. The user would click on the check box representing the mode to be in,
 then use it appropriately. In some cases, a window will come up immediately,
 otherwise the user may have to click around to invoke a window.
 
+[![GDXWorld car demo](http://img.youtube.com/vi/ghzrj9eY6AU/0.jpg)]
+(http://www.youtube.com/watch?v=ghzrj9eY6AU)
+
 World Editor
 ------------
 
