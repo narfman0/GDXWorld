@@ -60,6 +60,7 @@ class RevoluteWindow extends BaseJointWindow {
 	}
 	
 	@Override public void apply(){
+		super.apply();
 		joint.setEnableLimit(enableLimitBox.isChecked());
 		joint.setEnableMotor(enableMotorBox.isChecked());
 		joint.setLowerAngle(Float.parseFloat(lowerAngleField.getText()));

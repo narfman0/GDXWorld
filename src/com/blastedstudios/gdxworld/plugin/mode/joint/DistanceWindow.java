@@ -46,6 +46,7 @@ class DistanceWindow extends BaseJointWindow {
 	}
 	
 	@Override public void apply(){
+		super.apply();
 		joint.setAnchorA(anchorATable.getVertex());
 		joint.setAnchorB(anchorBTable.getVertex());
 		joint.setDampeningRatio(Float.parseFloat(dampeningRatioField.getText()));
