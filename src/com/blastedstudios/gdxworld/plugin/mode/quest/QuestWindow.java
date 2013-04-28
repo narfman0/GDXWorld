@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.plugin.mode.quest;
 
 import java.util.List;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -59,21 +60,22 @@ class QuestWindow extends AbstractWindow {
 	}
 	
 	private QuestTable createQuestTable(GDXQuest quest){
-		return new QuestTable(skin, quest.getName(), quest, new QuestTable.QuestControlListener() {
-			@Override public void remove(GDXQuest quest) {
-				quests.remove(quest);
-				questTable.clear();
-				for(GDXQuest addQuest : quests){
-					questTable.add(createQuestTable(addQuest));
-					questTable.row();
-				}
-			}
-			@Override public void edit(GDXQuest quest) {
-				if(editor != null)
-					editor.remove();
-				screen.getStage().addActor(editor = new QuestEditor(quest, skin));
-			}
-		});
+		return new QuestTable(skin, quest, this);
+	}
+	
+	public void removeQuest(GDXQuest quest) {
+		quests.remove(quest);
+		questTable.clear();
+		for(GDXQuest addQuest : quests){
+			questTable.add(createQuestTable(addQuest));
+			questTable.row();
+		}
+	}
+	
+	public void editQuest(GDXQuest quest, QuestTable table) {
+		if(editor != null)
+			editor.remove();
+		screen.getStage().addActor(editor = new QuestEditor(quest, skin, table));
 	}
 	
 	@Override public boolean remove(){
@@ -82,5 +84,10 @@ class QuestWindow extends AbstractWindow {
 	
 	@Override public boolean contains(float x, float y){
 		return super.contains(x, y) || (editor != null && editor.contains(x, y));
+	}
+
+	public void touched(Vector2 coordinates) {
+		if(editor != null)
+			editor.touched(coordinates);
 	}
 }

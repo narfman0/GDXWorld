@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.mode.quest.trigger;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
@@ -27,5 +28,9 @@ public class AABBTriggerTable extends TriggerTable{
 		trigger.setLowerLeft(llTable.getVertex());
 		trigger.setUpperRight(urTable.getVertex());
 		return trigger;
+	}
+
+	@Override public void touched(Vector2 coordinates) {
+		llTable.setVertex(coordinates.x, coordinates.y);
 	}
 }

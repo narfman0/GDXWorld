@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -39,7 +40,7 @@ class QuestEditor extends AbstractWindow {
 	private final List<CheckBox> manifestationBoxes = new ArrayList<>(),
 			triggerBoxes = new ArrayList<>();
 	
-	public QuestEditor(final GDXQuest quest, final Skin skin) {
+	public QuestEditor(final GDXQuest quest, final Skin skin, final QuestTable questTable) {
 		super("Quest Editor", skin);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<quest name>");
@@ -50,6 +51,7 @@ class QuestEditor extends AbstractWindow {
 		final CheckBox repeatableBox = new CheckBox("Repeatable", skin);
 		repeatableBox.setChecked(quest.isRepeatable());
 		final Button acceptButton = new TextButton("Accept", skin);
+		final Button cancelButton = new TextButton("Cancel", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				quest.setName(nameField.getText());
@@ -57,6 +59,12 @@ class QuestEditor extends AbstractWindow {
 				quest.setTrigger(triggerTable.apply());
 				quest.setManifestation(manifestationTable.apply());
 				quest.setRepeatable(repeatableBox.isChecked());
+				questTable.setName(quest.getName());
+				remove();
+			}
+		});
+		cancelButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
 				remove();
 			}
 		});
@@ -94,8 +102,10 @@ class QuestEditor extends AbstractWindow {
 		row();
 		add(parentManifestationTable).colspan(3);
 		row();
-		add(acceptButton).colspan(3);
-		setMovable(false);
+		Table controlTable = new Table();
+		controlTable.add(acceptButton);
+		controlTable.add(cancelButton);
+		add(controlTable).colspan(3);
 		pack();
 		setX(Gdx.graphics.getWidth());
 		setMovable(false);
@@ -162,5 +172,13 @@ class QuestEditor extends AbstractWindow {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void touched(Vector2 coordinates) {
+		if(manifestationTable != null)
+			manifestationTable.touched(coordinates);
+		if(triggerTable != null)
+			triggerTable.touched(coordinates);
+		
 	}
 }

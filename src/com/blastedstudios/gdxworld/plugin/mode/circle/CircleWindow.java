@@ -143,7 +143,11 @@ public class CircleWindow extends AbstractWindow {
 	}
 	
 	private float getRadius(){
-		return Float.parseFloat(radiusField.getText());
+		try{
+			return Float.parseFloat(radiusField.getText());
+		}catch(Exception e){
+			return 1f;
+		}
 	}
 
 	public void render(float delta, Camera camera, ShapeRenderer renderer){
