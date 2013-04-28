@@ -102,8 +102,8 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 				polygon.setDensity(Float.parseFloat(densityField.getText()));
 				polygon.setFriction(Float.parseFloat(frictionField.getText()));
 				polygon.setRestitution(Float.parseFloat(restitutionField.getText()));
-				mode.addPolygon(polygon);
-				mode.clean();
+				if(mode.addPolygon(polygon))
+					mode.clean();
 			}
 		});
 		cancelButton.addListener(new ClickListener() {

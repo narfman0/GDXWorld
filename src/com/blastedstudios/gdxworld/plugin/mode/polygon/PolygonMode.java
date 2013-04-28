@@ -79,7 +79,7 @@ public class PolygonMode extends AbstractMode {
 		}
 	}
 
-	public void addPolygon(GDXPolygon polygon){
+	public boolean addPolygon(GDXPolygon polygon){
 		Gdx.app.log("PolygonMode.addPolygon", polygon.toString());
 		if(bodies.containsKey(polygon))
 			screen.getWorld().destroyBody(bodies.remove(polygon));
@@ -89,6 +89,7 @@ public class PolygonMode extends AbstractMode {
 				screen.getLevel().getPolygons().add(polygon);
 			bodies.put(polygon, body);
 		}
+		return body != null;
 	}
 
 	public void removePolygon(GDXPolygon polygon) {

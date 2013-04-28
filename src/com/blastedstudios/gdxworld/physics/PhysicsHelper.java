@@ -32,9 +32,12 @@ public class PhysicsHelper {
 	
 	public static Body createFixture(World world, FixtureDef fixtureDef, BodyType type,
 			List<Vector2> nodes, Shape shape) {
-		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, nodes.toArray(new Vector2[nodes.size()]));
+		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, 
+				nodes.toArray(new Vector2[nodes.size()]));
 		if(verts == null){
-			Gdx.app.log("GDXPolygon.createFixture", "Can't create fixture(s), verts null");
+			Gdx.app.log("GDXPolygon.createFixture", "Can't create fixture(s),"+
+					" verts null. Did a vertex cross the line segment between"+
+					" two other vertices (e.g. hourglass)?");
 			return null;
 		}
 		BodyDef bd = new BodyDef();
