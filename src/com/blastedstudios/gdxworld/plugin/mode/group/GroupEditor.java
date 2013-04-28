@@ -123,7 +123,7 @@ class GroupEditor extends AbstractWindow {
 	}
 
 	public void touched(float x, float y) {
-		Vector2 offset = centerTable.getVertex().cpy().sub(x, y);
+		Vector2 offset = centerTable.getVertex().sub(x, y);
 		centerTable.setVertex(x,y);
 		for(String objectName : group.getCircles())
 			for(GDXCircle object : screen.getLevel().getCircles())

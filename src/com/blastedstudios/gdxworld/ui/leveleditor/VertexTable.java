@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class VertexTable extends Table {
 	private final TextField coordXLabel, coordYLabel;
-	private final Vector2 vertex;
 	
 	public VertexTable(final Vector2 vertex, final Skin skin, 
 			final VertexRemoveListener listener){
@@ -25,7 +24,6 @@ public class VertexTable extends Table {
 	 */
 	public VertexTable(final Vector2 vertex, final Skin skin, 
 			final VertexRemoveListener listener, int width){
-		this.vertex = vertex;
 		final Button deleteButton = new TextButton("Delete", skin);
 		coordXLabel = new TextField(vertex.x+"", skin);
 		coordYLabel = new TextField(vertex.y+"", skin);
@@ -41,7 +39,7 @@ public class VertexTable extends Table {
 	}
 	
 	public Vector2 getVertex(){
-		return vertex.set(convert(coordXLabel), convert(coordYLabel));
+		return new Vector2(convert(coordXLabel), convert(coordYLabel));
 	}
 	
 	public void setVertex(float x, float y){

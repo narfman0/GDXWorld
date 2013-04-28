@@ -21,7 +21,7 @@ class RevoluteWindow extends BaseJointWindow {
 	public RevoluteWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
 		super("Revolute Editor", skin, JointType.RevoluteJoint, mode, baseJoint);
 		this.joint = (RevoluteJoint) baseJoint;
-		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
+		anchorTable = new VertexTable(joint.getAnchor().cpy(), skin, null);
 		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);
 		referenceAngleField.setMessageText("<reference angle>");
 		lowerAngleField = new TextField(joint.getLowerAngle()+"", skin);
@@ -54,11 +54,12 @@ class RevoluteWindow extends BaseJointWindow {
 		row();
 		add(new Label("Enable Motor: ", skin));
 		add(enableMotorBox);
-		addControlTable();
+		row();
+		add(createControlTable()).colspan(2);
 		pack();
 	}
 	
-	@Override public GDXJoint generate(){
+	@Override public void apply(){
 		joint.setEnableLimit(enableLimitBox.isChecked());
 		joint.setEnableMotor(enableMotorBox.isChecked());
 		joint.setLowerAngle(Float.parseFloat(lowerAngleField.getText()));
@@ -66,10 +67,13 @@ class RevoluteWindow extends BaseJointWindow {
 		joint.setMotorSpeed(Float.parseFloat(motorSpeedField.getText()));
 		joint.setAnchor(anchorTable.getVertex());
 		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
-		return apply(joint);
 	}
 
 	@Override public void clicked(Vector2 pos) {
 		anchorTable.setVertex(pos.x, pos.y);
+	}
+
+	@Override public Vector2 getCenter() {
+		return anchorTable.getVertex();
 	}
 }

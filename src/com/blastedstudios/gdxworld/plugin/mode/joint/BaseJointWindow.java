@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -53,36 +54,55 @@ abstract class BaseJointWindow extends AbstractWindow {
 		setMovable(false);
 	}
 	
-	protected void addControlTable(){
-		final Button createButton = new TextButton("Create", skin);
+	protected Table createControlTable(){
+		Table controls = new Table();
+		final Button addButton = new TextButton("Add", skin);
+		final Button updateButton = new TextButton("Update", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
-		createButton.addListener(new ClickListener() {
+		final Button cancelButton = new TextButton("Cancel", skin);
+		addButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				mode.addJoint(generate());
+				apply();
+				if(mode.addJoint(joint))
+					mode.getJointWindow().removeBaseJointWindow();
+			}
+		});
+		updateButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				apply();
+				mode.addJoint(joint);
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				mode.removeJoint(joint);
+				mode.getJointWindow().removeBaseJointWindow();
 			}
 		});
-		row();
-		add(createButton);
-		add(deleteButton);
+		cancelButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				mode.getJointWindow().removeBaseJointWindow();
+			}
+		});
+		controls.add(addButton);
+		controls.add(updateButton);
+		controls.add(deleteButton);
+		controls.add(cancelButton);
+		return controls;
 	}
 	
 	/**
 	 * apply ui values to joint 
 	 */
-	protected GDXJoint apply(GDXJoint joint){
+	public void apply(){
 		joint.setBodyA(bodyAField.getText());
 		joint.setBodyB(bodyBField.getText());
 		joint.setCollideConnected(collideConnectedBox.isChecked());
 		joint.setName(nameField.getText());
 		joint.setJointType(jointType);
-		return joint;
 	}
 	
-	public abstract GDXJoint generate();
 	public abstract void clicked(Vector2 vector2);
+
+	abstract public Vector2 getCenter();
 }

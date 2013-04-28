@@ -32,23 +32,45 @@ public class JointMode extends AbstractMode {
 		GDXJoint joint = screen.getLevel().getClosestJoint(coordinates.x, coordinates.y, screen.getWorld());
 		if(joint != null && joint.getCenter().dst(coordinates.x, coordinates.y) < LevelEditorScreen.getNodeRadius())
 			jointWindow.setSelected(joint);
-		jointWindow.clicked(new Vector2(coordinates.x, coordinates.y));
+		jointWindow.clicked(coordinates);
+		return false;
+	}
+	
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		jointWindow.clicked(coordinates);
+		return false;
+	}
+	
+	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
+		super.touchUp(x, y, arg2, arg3);
+		jointWindow.clicked(coordinates);
 		return false;
 	}
 
-	public void addJoint(GDXJoint gdxJoint) {
-		if(gdxJoint instanceof GearJoint){
-			GearJoint gear = (GearJoint)gdxJoint;
+	/**
+	 * @return true if successful
+	 */
+	public boolean addJoint(GDXJoint joint){
+		if(joint instanceof GearJoint){
+			GearJoint gear = (GearJoint)joint;
 			gear.initialize(joints.get(gear.getJoint1()), joints.get(gear.getJoint2()));
 		}
 		//destroy previous and make new joint
-		if(joints.containsKey(gdxJoint.getName()))
-			screen.getWorld().destroyJoint(joints.remove(gdxJoint.getName()));
-		joints.put(gdxJoint.getName(), gdxJoint.attach(screen.getWorld()));
-		//add to level
-		if(!screen.getLevel().getJoints().contains(gdxJoint))
-			screen.getLevel().getJoints().add(gdxJoint);
-		Gdx.app.log("JointMode.addJoint", "Added joint " + gdxJoint.toString());
+		if(joints.containsKey(joint.getName()))
+			screen.getWorld().destroyJoint(joints.remove(joint.getName()));
+		try{
+			joints.put(joint.getName(), joint.attach(screen.getWorld()));
+			//add to level
+			if(!screen.getLevel().getJoints().contains(joint))
+				screen.getLevel().getJoints().add(joint);
+			Gdx.app.log("JointMode.addJoint", "Added joint " + joint.toString());
+			return true;
+		}catch(Exception e){
+			Gdx.app.error("JointMode.addJoint", "Failed to add joint " + joint.toString() +
+					", exception: " + e.getClass() + ": " + e.getMessage());
+			return false;
+		}
 	}
 
 	public void removeJoint(GDXJoint joint) {
@@ -82,9 +104,19 @@ public class JointMode extends AbstractMode {
 	}
 	
 	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
-		renderer.setColor(Color.GREEN);
-		if(!screen.isLive())
+		if(!screen.isLive()){
+			renderer.setColor(Color.GREEN);
 			for(GDXJoint object : screen.getLevel().getJoints())
 				renderer.circle(object.getCenter().x, object.getCenter().y, LevelEditorScreen.getNodeRadius(), 12);
-	};
+			if(jointWindow != null && jointWindow.getBaseWindow() != null){
+				renderer.setColor(new Color(0, .9f, 0, 1));//DARK_GREEN
+				Vector2 center = jointWindow.getBaseWindow().getCenter();
+				renderer.circle(center.x, center.y, LevelEditorScreen.getNodeRadius(), 12);
+			}
+		}
+	}
+	
+	public JointWindow getJointWindow(){
+		return jointWindow;
+	}
 }

@@ -20,7 +20,6 @@ import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 class JointWindow extends AbstractWindow {
 	private BaseJointWindow baseWindow;
 	private final Skin skin;
-	private GDXJoint joint;
 	private final JointMode mode;
 	private final LevelEditorScreen levelEditorScreen;
 	
@@ -34,7 +33,7 @@ class JointWindow extends AbstractWindow {
 		final Button newButton = new TextButton("New", skin);
 		newButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				createBaseWindow(JointType.values()[typeList.getSelectedIndex()]);
+				createBaseWindow(JointType.values()[typeList.getSelectedIndex()], null);
 			}
 		});
 		add(typeList);
@@ -44,7 +43,7 @@ class JointWindow extends AbstractWindow {
 		pack();
 	}
 	
-	private void createBaseWindow(JointType type){
+	private void createBaseWindow(JointType type, GDXJoint joint){
 		if(baseWindow != null)
 			baseWindow.remove();
 		switch(type){
@@ -74,11 +73,15 @@ class JointWindow extends AbstractWindow {
 	}
 
 	@Override public boolean remove(){
+		removeBaseJointWindow();
+		return super.remove();
+	}
+
+	public void removeBaseJointWindow() {
 		if(baseWindow != null){
 			baseWindow.remove();
 			baseWindow = null;
 		}
-		return super.remove();
 	}
 
 	public boolean contains(float x, float y){
@@ -86,8 +89,11 @@ class JointWindow extends AbstractWindow {
 	}
 
 	public void setSelected(GDXJoint joint) {
-		this.joint = joint;
 		if(baseWindow == null)
-			createBaseWindow(joint.getJointType());
+			createBaseWindow(joint.getJointType(), joint);
+	}
+
+	public BaseJointWindow getBaseWindow() {
+		return baseWindow;
 	}
 }

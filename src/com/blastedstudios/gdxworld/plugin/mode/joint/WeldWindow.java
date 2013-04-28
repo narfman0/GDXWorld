@@ -26,17 +26,21 @@ class WeldWindow extends BaseJointWindow {
 		row();
 		add(new Label("Reference Angle: ", skin));
 		add(referenceAngleField);
-		addControlTable();
+		row();
+		add(createControlTable()).colspan(2);
 		pack();
 	}
 	
-	@Override public GDXJoint generate(){
+	@Override public void apply(){
 		joint.setAnchor(anchorTable.getVertex());
 		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
-		return apply(joint);
 	}
 
 	@Override public void clicked(Vector2 pos) {
 		anchorTable.setVertex(pos.x, pos.y);
+	}
+
+	@Override public Vector2 getCenter() {
+		return anchorTable.getVertex();
 	}
 }

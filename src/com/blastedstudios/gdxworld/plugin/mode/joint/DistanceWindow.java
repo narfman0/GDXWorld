@@ -18,8 +18,8 @@ class DistanceWindow extends BaseJointWindow {
 	public DistanceWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
 		super("Distance Editor", skin, JointType.WeldJoint, mode, baseJoint);
 		this.joint = (DistanceJoint)baseJoint;
-		anchorATable = new VertexTable(joint.getAnchorA(), skin, null);
-		anchorBTable = new VertexTable(joint.getAnchorB(), skin, null);
+		anchorATable = new VertexTable(joint.getAnchorA().cpy(), skin, null);
+		anchorBTable = new VertexTable(joint.getAnchorB().cpy(), skin, null);
 		dampeningRatioField = new TextField(joint.getDampeningRatio()+"", skin);
 		dampeningRatioField.setMessageText("<dampening ratio>");
 		frequencyHzField = new TextField(joint.getFrequencyHz()+"", skin);
@@ -40,20 +40,24 @@ class DistanceWindow extends BaseJointWindow {
 		row();
 		add(new Label("Length: ", skin));
 		add(lengthField);
-		addControlTable();
+		row();
+		add(createControlTable()).colspan(2);
 		pack();
 	}
 	
-	@Override public GDXJoint generate(){
+	@Override public void apply(){
 		joint.setAnchorA(anchorATable.getVertex());
 		joint.setAnchorB(anchorBTable.getVertex());
 		joint.setDampeningRatio(Float.parseFloat(dampeningRatioField.getText()));
 		joint.setFrequencyHz(Float.parseFloat(frequencyHzField.getText()));
 		joint.setLength(Float.parseFloat(lengthField.getText()));
-		return apply(joint);
 	}
 
 	@Override public void clicked(Vector2 pos) {
 		anchorATable.setVertex(pos.x, pos.y);
+	}
+
+	@Override public Vector2 getCenter() {
+		return anchorATable.getVertex().sub(anchorBTable.getVertex()).div(2f);
 	}
 }
