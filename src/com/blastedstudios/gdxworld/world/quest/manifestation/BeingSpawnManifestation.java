@@ -16,7 +16,7 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	}
 
 	@Override public void execute() {
-		// This is more retrieving a spawn location, informative rather than executable
+		executor.beingSpawn(being, coordinates);
 	}
 
 	@Override public AbstractQuestManifestation clone() {

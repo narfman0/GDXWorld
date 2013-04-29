@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 
@@ -28,4 +29,9 @@ public interface IQuestManifestationExecutor {
 	 * @return Joint with the given name 
 	 */
 	public Joint getPhysicsJoint(String name);
+
+	/**
+	 * Being spawn manifestation spawns a being at a particular location
+	 */
+	public void beingSpawn(String being, Vector2 coordinates);
 }

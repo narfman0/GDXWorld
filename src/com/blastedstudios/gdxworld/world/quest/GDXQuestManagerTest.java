@@ -81,6 +81,9 @@ public class GDXQuestManagerTest {
 				}
 				return null;
 			}
+			@Override public void beingSpawn(String being, Vector2 coordinates) {
+				Gdx.app.log("QuestManifestationExecutor.beingSpawn","being: " + being);
+			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {
 			@Override public boolean isDead(String name) {
