@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.MainScreen;
+import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
@@ -44,11 +45,13 @@ public class WorldWindow extends AbstractWindow{
 		});
 		backButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				TempWorldScreen.clean();
 				game.setScreen(new MainScreen(game));
 			}
 		});
 		exitButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				TempWorldScreen.clean();
 				Gdx.app.exit();
 			}
 		});

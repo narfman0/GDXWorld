@@ -5,6 +5,7 @@ import java.io.File;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.blastedstudios.gdxworld.ui.MainScreen;
+import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXWorld;
@@ -18,6 +19,8 @@ public class GDXWorldEditor extends Game {
 			parseArgs(args);
 		if(loadFile != null && loadFile.canRead())
 			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
+		else if(TempWorldScreen.isTempFilePresent())
+			setScreen(new TempWorldScreen(this));
 		else
 			setScreen(new MainScreen(this));
 	}
