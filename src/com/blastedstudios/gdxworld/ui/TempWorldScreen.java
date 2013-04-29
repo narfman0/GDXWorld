@@ -35,7 +35,7 @@ public class TempWorldScreen extends AbstractScreen{
 		final Button noButton = new TextButton("No", skin);
 		noButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				getTempSaveFile().delete();
+				clean();
 				game.setScreen(new MainScreen(game));
 			}
 		});
@@ -78,7 +78,6 @@ public class TempWorldScreen extends AbstractScreen{
 	
 	private static void save(){
 		gdxWorld.save(getTempSaveFile());
-		getTempSaveFile().deleteOnExit();
 	}
 	
 	private static File getTempSaveFile(){

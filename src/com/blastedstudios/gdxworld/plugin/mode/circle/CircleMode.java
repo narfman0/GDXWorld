@@ -69,7 +69,7 @@ public class CircleMode extends AbstractMode {
 	}
 
 	public void removeCircle(GDXCircle circle) {
-		screen.getLevel().getShapes().remove(circle);
+		screen.getLevel().getCircles().remove(circle);
 		if(bodies.containsKey(circle))
 			screen.getWorld().destroyBody(bodies.remove(circle));
 	}
