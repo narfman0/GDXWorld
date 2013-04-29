@@ -32,7 +32,7 @@ public class WorldEditorScreen extends AbstractScreen {
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
 		camera.zoom += 3;
-		TempWorldScreen.start(gdxWorld);
+		TempWorldScreen.start(this.gdxWorld);
 	}
 
 	@Override public void render(float delta) {
