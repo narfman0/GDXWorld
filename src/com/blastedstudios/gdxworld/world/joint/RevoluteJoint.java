@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 public class RevoluteJoint extends GDXJoint {
 	private static final long serialVersionUID = 1L;
 	private boolean enableLimit, enableMotor;
-	private float lowerAngle, maxMotorTorque, motorSpeed, referenceAngle;
+	private float lowerAngle, upperAngle, maxMotorTorque, motorSpeed, referenceAngle;
 	private Vector2 anchor = new Vector2();
 
 	@Override public Joint attach(World world) {
@@ -17,6 +17,7 @@ public class RevoluteJoint extends GDXJoint {
 		def.enableLimit = enableLimit;
 		def.enableMotor = enableMotor;
 		def.lowerAngle = lowerAngle;
+		def.upperAngle = upperAngle;
 		def.maxMotorTorque = maxMotorTorque;
 		def.motorSpeed = motorSpeed;
 		def.referenceAngle = referenceAngle;
@@ -47,6 +48,14 @@ public class RevoluteJoint extends GDXJoint {
 
 	public void setLowerAngle(float lowerAngle) {
 		this.lowerAngle = lowerAngle;
+	}
+
+	public float getUpperAngle() {
+		return upperAngle;
+	}
+
+	public void setUpperAngle(float upperAngle) {
+		this.upperAngle = upperAngle;
 	}
 
 	public float getMaxMotorTorque() {
@@ -91,6 +100,7 @@ public class RevoluteJoint extends GDXJoint {
 		clone.setEnableLimit(enableLimit);
 		clone.setEnableMotor(enableMotor);
 		clone.setLowerAngle(lowerAngle);
+		clone.setUpperAngle(upperAngle);
 		clone.setMaxMotorTorque(maxMotorTorque);
 		clone.setMotorSpeed(motorSpeed);
 		clone.setReferenceAngle(referenceAngle);

@@ -13,8 +13,8 @@ import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
 
 class RevoluteWindow extends BaseJointWindow {
 	private final VertexTable anchorTable;
-	private final TextField referenceAngleField,
-		lowerAngleField, maxMotorTorqueField, motorSpeedField;
+	private final TextField referenceAngleField, lowerAngleField,
+		upperAngleField, maxMotorTorqueField, motorSpeedField;
 	private final CheckBox enableLimitBox, enableMotorBox;
 	private final RevoluteJoint joint;
 
@@ -26,6 +26,8 @@ class RevoluteWindow extends BaseJointWindow {
 		referenceAngleField.setMessageText("<reference angle>");
 		lowerAngleField = new TextField(joint.getLowerAngle()+"", skin);
 		lowerAngleField.setMessageText("<lower angle>");
+		upperAngleField = new TextField(joint.getUpperAngle()+"", skin);
+		upperAngleField.setMessageText("<upper angle>");
 		maxMotorTorqueField = new TextField(joint.getMaxMotorTorque()+"", skin);
 		maxMotorTorqueField.setMessageText("<max motor torque>");
 		motorSpeedField = new TextField(joint.getMotorSpeed()+"", skin);
@@ -42,6 +44,9 @@ class RevoluteWindow extends BaseJointWindow {
 		row();
 		add(new Label("Lower Angle: ", skin));
 		add(lowerAngleField);
+		row();
+		add(new Label("Upper Angle: ", skin));
+		add(upperAngleField);
 		row();
 		add(new Label("Max Motor Torque: ", skin));
 		add(maxMotorTorqueField);
@@ -64,6 +69,7 @@ class RevoluteWindow extends BaseJointWindow {
 		joint.setEnableLimit(enableLimitBox.isChecked());
 		joint.setEnableMotor(enableMotorBox.isChecked());
 		joint.setLowerAngle(Float.parseFloat(lowerAngleField.getText()));
+		joint.setUpperAngle(Float.parseFloat(upperAngleField.getText()));
 		joint.setMaxMotorTorque(Float.parseFloat(maxMotorTorqueField.getText()));
 		joint.setMotorSpeed(Float.parseFloat(motorSpeedField.getText()));
 		joint.setAnchor(anchorTable.getVertex());
