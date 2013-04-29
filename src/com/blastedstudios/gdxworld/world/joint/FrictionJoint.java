@@ -59,4 +59,8 @@ public class FrictionJoint extends GDXJoint {
 	@Override public void translate(Vector2 center) {
 		anchor.add(center);
 	}
+
+	@Override public void scl(float scalar) {
+		anchor.scl(scalar);
+	}
 }

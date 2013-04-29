@@ -100,4 +100,9 @@ public class WheelJoint extends GDXJoint {
 		anchor.add(center);
 		axis.add(center);
 	}
+
+	@Override public void scl(float scalar) {
+		anchor.scl(scalar);
+		axis.scl(scalar);
+	}
 }

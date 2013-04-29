@@ -80,4 +80,5 @@ public class GearJoint extends GDXJoint {
 	}
 
 	@Override public void translate(Vector2 center) {}
+	@Override public void scl(float scalar) {}
 }

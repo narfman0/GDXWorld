@@ -61,4 +61,8 @@ public class MouseJoint extends GDXJoint {
 	@Override public void translate(Vector2 center) {
 		center.add(center);
 	}
+
+	@Override public void scl(float scalar) {
+		center.scl(scalar);
+	}
 }

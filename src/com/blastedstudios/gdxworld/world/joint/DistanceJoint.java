@@ -79,4 +79,9 @@ public class DistanceJoint extends GDXJoint {
 		anchorA.add(center);
 		anchorB.add(center);
 	}
+
+	@Override public void scl(float scalar) {
+		anchorA.scl(scalar);
+		anchorB.scl(scalar);
+	}
 }

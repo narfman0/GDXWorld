@@ -100,4 +100,11 @@ public class PulleyJoint extends GDXJoint {
 		groundAnchorA.add(center);
 		groundAnchorB.add(center);
 	}
+
+	@Override public void scl(float scalar) {
+		anchorA.scl(scalar);
+		anchorB.scl(scalar);
+		groundAnchorA.scl(scalar);
+		groundAnchorB.scl(scalar);
+	}
 }
