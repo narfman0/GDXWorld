@@ -47,12 +47,12 @@ public class GDXQuestManagerTest {
 		level1.setName("level1");
 		quest1 = new GDXQuest();
 		quest1.setName("quest1");
-		quest1.setManifestation(new DialogManifestation("Quest 1 dialog", "Origin 1"));
+		quest1.setManifestation(new DialogManifestation("Quest 1 dialog", "Origin 1", "Type1"));
 		quest1.setTrigger(new AABBTrigger(1, 1, 3, 3));
 		level1.getQuests().add(quest1);
 		quest2 = new GDXQuest();
 		quest2.setName("quest2");
-		quest2.setManifestation(new DialogManifestation("Quest 2 dialog", "Origin 2"));
+		quest2.setManifestation(new DialogManifestation("Quest 2 dialog", "Origin 2", "Type2"));
 		quest2.setPrerequisites("quest1");
 		quest2.setTrigger(new AABBTrigger(4, 4, 6, 6));
 		level1.getQuests().add(quest2);
@@ -66,9 +66,9 @@ public class GDXQuestManagerTest {
 				}
 				return null;
 			}
-			@Override public void addDialog(String dialog, String origin) {
-				Gdx.app.log("QuestManifestationExecutor.addDialog", 
-						"Dialog received:" + dialog + " origin: " + origin);
+			@Override public void addDialog(String dialog, String origin, String type) {
+				Gdx.app.log("QuestManifestationExecutor.addDialog", "Dialog received:" +
+						 dialog + " origin: " + origin + "type: " + type);
 			}
 			@Override public void endLevel(boolean success) {
 				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);

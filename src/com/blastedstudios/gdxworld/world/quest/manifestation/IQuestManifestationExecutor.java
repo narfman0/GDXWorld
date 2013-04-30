@@ -12,7 +12,7 @@ public interface IQuestManifestationExecutor {
 	/**
 	 * Add dialog to related quest
 	 */
-	public void addDialog(String dialog, String origin);
+	public void addDialog(String dialog, String origin, String type);
 	
 	/**
 	 * @return named physics object, up to client. Could set user data
