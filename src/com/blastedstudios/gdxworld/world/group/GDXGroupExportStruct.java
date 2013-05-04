@@ -8,7 +8,6 @@ import java.util.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -37,11 +36,7 @@ public class GDXGroupExportStruct{
 		return this;
 	}
 	
-	public GDXGroup create(LevelEditorScreen screen){
-		screen.getLevel().getCircles().addAll(circles);
-		screen.getLevel().getPolygons().addAll(polygons);
-		screen.getLevel().getJoints().addAll(joints);
-		screen.loadLevel();
+	public GDXGroup create(){
 		List<String> circles = new ArrayList<>(), 
 				polygons = new ArrayList<>(), 
 				joints = new ArrayList<>();
@@ -62,27 +57,23 @@ public class GDXGroupExportStruct{
 			circle.getCenter().scl(scalar);
 			circle.setRadius(circle.getRadius()*scalar);
 		}
-		for(GDXPolygon polygon : polygons)
-			for(Vector2 vertex : polygon.getVertices())
-				vertex.scl(scalar);
+		for(GDXPolygon polygon : polygons){
+			polygon.scl(scalar);
+			polygon.getCenter().scl(scalar);
+		}
 		for(GDXJoint joint : joints)
 			joint.scl(scalar);
 	}
 	
 	public Map<String, Body> instantiate(World world, Vector2 location){
+		translate(location);
 		HashMap<String, Body> bodies = new HashMap<>();
-		for(GDXCircle circle : circles){
-			circle.getCenter().add(location);
+		for(GDXCircle circle : circles)
 			bodies.put(circle.getName(), circle.createFixture(world, false));
-		}
-		for(GDXPolygon polygon : polygons){
-			polygon.getCenter().add(location);
+		for(GDXPolygon polygon : polygons)
 			bodies.put(polygon.getName(), polygon.createFixture(world, false));
-		}
-		for(GDXJoint joint : joints){
-			joint.translate(location);
+		for(GDXJoint joint : joints)
 			joint.attach(world);
-		}
 		return bodies;
 	}
 }

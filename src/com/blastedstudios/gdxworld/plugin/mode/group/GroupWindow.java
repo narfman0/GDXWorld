@@ -56,7 +56,10 @@ class GroupWindow extends AbstractWindow {
 					File file = FileUtil.fileChooser(true, true);
 					if(file != null){
 						GDXGroupExportStruct struct = (GDXGroupExportStruct) FileUtil.getSerializer(file).load(file);
-						GDXGroup group = struct.create(screen);
+						screen.getLevel().getCircles().addAll(struct.circles);
+						screen.getLevel().getPolygons().addAll(struct.polygons);
+						screen.getLevel().getJoints().addAll(struct.joints);
+						GDXGroup group = struct.create();
 						groups.add(group);
 						groupTable.add(createGroupTable(group));
 					}

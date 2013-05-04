@@ -92,4 +92,9 @@ public class GDXPolygon extends GDXShape implements Serializable{
 			dimensions = PolygonUtils.getDimensions((Vector2[]) vertices.toArray());
 		return dimensions;
 	}
+	
+	public void scl(float scalar){
+		for(Vector2 vertex : vertices)
+			vertex.scl(scalar);
+	}
 }
