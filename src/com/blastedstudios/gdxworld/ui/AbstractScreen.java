@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.blastedstudios.gdxworld.util.Properties;
 
 public abstract class AbstractScreen implements Screen, InputProcessor{
 	private static final int GL_CLEAR = Gdx.graphics.isGL20Available() ? 
@@ -22,7 +23,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	public AbstractScreen(final Game game){
 		this.game = game;
 		if(skin == null)
-			skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
+			skin = new Skin(Gdx.files.internal(Properties.get("screen.skin","data/ui/uiskin.json")));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		Gdx.input.setInputProcessor(inputMultiplexer = new InputMultiplexer());
 		inputMultiplexer.addProcessor(this);
