@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
@@ -32,11 +33,12 @@ public class GDXRenderer {
 		this.drawShapes = drawShapes;
 		textureMap = new HashMap<String, Texture>();
 		batch = new SpriteBatch();
+		if(!Properties.getBool("renderer.blend.enabled", true))
+			batch.disableBlending();
 	}
 	
 	public void render(GDXLevel level, OrthographicCamera camera, Iterable<Entry<GDXShape,Body>> bodies){
 		batch.setProjectionMatrix(camera.combined);
-        batch.disableBlending();
         batch.begin();
         
 		if(drawBackground)
