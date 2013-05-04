@@ -21,6 +21,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXRenderer {
+	private final float GDX_SCALE = .085f;
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
 	private SpriteBatch batch;
@@ -51,9 +52,9 @@ public class GDXRenderer {
 		Texture texture = getTexture(shape.getName() + ".png");
 		if(texture != null && !shape.getName().equals("")){
 			Sprite sprite = new Sprite(texture);
-			sprite.setScale(1f/camera.zoom);
+			sprite.setScale(GDX_SCALE/camera.zoom);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
-			sprite.setPosition(body.getPosition().x-texture.getWidth()/2, body.getPosition().y-texture.getHeight()/2);
+			sprite.setPosition(body.getPosition().x - texture.getWidth()/2f, body.getPosition().y - texture.getHeight()/2f);
 			sprite.draw(batch);
 		}
 	}
