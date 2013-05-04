@@ -26,7 +26,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world;
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
-	private final GDXRenderer gdxRenderer = new GDXRenderer(true);
+	private final GDXRenderer gdxRenderer = new GDXRenderer(true, false);
 	private final ShapeRenderer renderer = new ShapeRenderer();
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
@@ -60,7 +60,7 @@ public class LevelEditorScreen extends AbstractScreen {
 			camera.apply(Gdx.gl10);
 		if(live)
 			world.step(delta, 4, 4);
-		gdxRenderer.render(gdxLevel, camera);
+		gdxRenderer.render(gdxLevel, camera, null);
 		debugRenderer.render(world, camera.combined);
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
