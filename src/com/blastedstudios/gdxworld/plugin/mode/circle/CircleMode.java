@@ -2,14 +2,17 @@ package com.blastedstudios.gdxworld.plugin.mode.circle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -17,6 +20,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
 @PluginImplementation
 public class CircleMode extends AbstractMode {
+	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final Map<GDXCircle, Body> bodies = new HashMap<>();
 	private CircleWindow circleWindow;
 	private GDXCircle lastTouched;
@@ -91,8 +95,16 @@ public class CircleMode extends AbstractMode {
 			addCircle(shape);
 	}
 	
-	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+		super.render(delta, camera, renderer, gdxRenderer);
 		if(circleWindow != null)
 			circleWindow.render(delta, camera, renderer);
+		if(screen.isLive()){
+			spriteBatch.setProjectionMatrix(camera.combined);
+			spriteBatch.begin();
+			for(Entry<GDXCircle,Body> entry : bodies.entrySet())
+				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
+			spriteBatch.end();
+		}
 	}
 }

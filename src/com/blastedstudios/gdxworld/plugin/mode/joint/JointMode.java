@@ -6,13 +6,14 @@ import java.util.Map;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.blastedstudios.gdxworld.plugin.mode.circle.CircleMode;
 import com.blastedstudios.gdxworld.plugin.mode.polygon.PolygonMode;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.PluginUtil.Dependency;
@@ -103,7 +104,7 @@ public class JointMode extends AbstractMode {
 		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
 	}
 	
-	@Override public void render(float delta, Camera camera, ShapeRenderer renderer){
+	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
 		if(!screen.isLive()){
 			renderer.setColor(Color.GREEN);
 			for(GDXJoint object : screen.getLevel().getJoints())

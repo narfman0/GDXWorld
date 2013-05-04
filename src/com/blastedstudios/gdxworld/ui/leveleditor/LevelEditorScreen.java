@@ -61,12 +61,12 @@ public class LevelEditorScreen extends AbstractScreen {
 		if(live)
 			world.step(delta, 4, 4);
 		gdxRenderer.render(gdxLevel, camera, null);
-		debugRenderer.render(world, camera.combined);
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
 		for(IMode child : modes)
-			child.render(delta, camera, renderer);
+			child.render(delta, camera, renderer, gdxRenderer);
 		renderer.end();
+		debugRenderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.DOWN))

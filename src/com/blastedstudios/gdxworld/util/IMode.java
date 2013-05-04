@@ -1,7 +1,8 @@
 package com.blastedstudios.gdxworld.util;
 
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 
@@ -16,5 +17,5 @@ public interface IMode extends Plugin {
 	public void loadLevel(GDXLevel level);
 	public void init(LevelEditorScreen screen);
 	public void start();
-	public void render(float delta, Camera camera, ShapeRenderer renderer);
+	public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer);
 }
