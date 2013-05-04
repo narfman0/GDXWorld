@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 import org.junit.Before;
@@ -147,7 +146,7 @@ public class GDXQuestManagerTest {
 		quest.setRepeatable(true);
 		quest.setName("Repeatable quest name");
 		GDXLevel level = new GDXLevel();
-		level.setQuests(Arrays.asList(quest));
+		level.getQuests().add(quest);
 		manager.setCurrentLevel(level);
 		assertTrue(manager.isActive(quest));
 		assertFalse(manager.isCompleted(quest));

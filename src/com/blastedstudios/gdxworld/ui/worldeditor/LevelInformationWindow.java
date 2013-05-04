@@ -1,6 +1,9 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +20,8 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class LevelInformationWindow extends AbstractWindow{
-	private final TextField coordXLabel, coordYLabel, levelNameLabel, prereqLabel;
+	private final TextField coordXLabel, coordYLabel, levelNameLabel;
+	private final Map<String,TextField> propertiesFields = new HashMap<>();
 	private final WorldEditorScreen worldEditorScreen;
 	private final GDXWorld gdxWorld;
 	private final GDXLevel gdxLevel;
@@ -31,8 +35,6 @@ public class LevelInformationWindow extends AbstractWindow{
 		levelNameLabel = new TextField(gdxLevel.getName(), skin);
 		coordXLabel = new TextField(gdxLevel.getCoordinates().x+"", skin);
 		coordYLabel = new TextField(gdxLevel.getCoordinates().y+"", skin);
-		prereqLabel = new TextField(gdxLevel.getPrerequisitesString(), skin);
-		prereqLabel.setMessageText("<level prerequisites>");
 		levelNameLabel.setMessageText("<new level name>");
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button editButton = new TextButton("Edit", skin);
@@ -67,9 +69,14 @@ public class LevelInformationWindow extends AbstractWindow{
 		add(coordXLabel);
 		add(coordYLabel);
 		row();
-		add(new Label("Prerequisites: ", skin));
-		add(prereqLabel);
-		row();
+		for(Entry<String,String> entry : gdxLevel.getProperties().entrySet()){
+			add(new Label(entry.getKey() + ": ", skin));
+			TextField field = new TextField(entry.getValue(), skin);
+			field.setMessageText("<" + entry.getKey().toLowerCase() + ">");
+			propertiesFields.put(entry.getKey(), field);
+			add(field);
+			row();
+		}
 		add(acceptButton);
 		add(editButton);
 		add(deleteButton);
@@ -84,7 +91,8 @@ public class LevelInformationWindow extends AbstractWindow{
 	private void addLevel(){
 		gdxLevel.setCoordinates(getCoordinates());
 		gdxLevel.setName(levelNameLabel.getText());
-		gdxLevel.setPrerequisitesString(prereqLabel.getText());
+		for(String key : gdxLevel.getProperties().keySet())
+			gdxLevel.getProperties().put(key, propertiesFields.get(key).getText());
 		if(!gdxWorld.contains(gdxLevel))
 			gdxWorld.add(gdxLevel);
 		worldEditorScreen.removeLevelInformationWindow();
