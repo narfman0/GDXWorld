@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world.group;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
+import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXGroupExportStruct{
 	public final String name;
@@ -65,15 +67,41 @@ public class GDXGroupExportStruct{
 			joint.scl(scalar);
 	}
 	
+	/**
+	 * @return map of instantiated bodies. Will convert names if collision
+	 */
 	public Map<String, Body> instantiate(World world, Vector2 location){
 		translate(location);
+		HashMap<String, Object> usedBodyNames = new HashMap<>();
+		HashMap<String, String> reverseBodyNames = new HashMap<>();
+		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
+			Body body = iter.next();
+			if(body.getUserData() instanceof String)
+				usedBodyNames.put((String)body.getUserData(), body);
+		}
 		HashMap<String, Body> bodies = new HashMap<>();
-		for(GDXCircle circle : circles)
-			bodies.put(circle.getName(), circle.createFixture(world, false));
-		for(GDXPolygon polygon : polygons)
-			bodies.put(polygon.getName(), polygon.createFixture(world, false));
-		for(GDXJoint joint : joints)
+		List<GDXShape> shapes = new ArrayList<>();
+		shapes.addAll(circles);
+		shapes.addAll(polygons);
+		for(GDXShape shape : shapes){
+			String name = shape.getName();
+			while(usedBodyNames.containsKey(name)){
+				if(name.contains("-")){
+					int count = Integer.parseInt(name.substring(name.indexOf('-')+1));
+					name = name.replace("-" + count, "-" + (count+1));
+				}else
+					name += "-1";
+			}
+			usedBodyNames.put(name, shape);
+			reverseBodyNames.put(shape.getName(), name);
+			shape.setName(name);
+			bodies.put(shape.getName(), shape.createFixture(world, false));
+		}
+		for(GDXJoint joint : joints){
+			joint.setBodyA(reverseBodyNames.get(joint.getBodyA()));
+			joint.setBodyB(reverseBodyNames.get(joint.getBodyB()));
 			joint.attach(world);
+		}
 		return bodies;
 	}
 }
