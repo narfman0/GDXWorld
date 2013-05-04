@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -92,7 +92,7 @@ public class WorldEditorScreen extends AbstractScreen {
 	
 	private void touched(int x, int y){
 		if(!worldWindow.contains(x,y) && (levelInfo == null || !levelInfo.contains(x, y))){
-			Vector2 coordinates = toWorldCoordinates(x,y);
+			Vector2 coordinates = GDXRenderer.toWorldCoordinates(camera, new Vector2(x,y));
 			if(levelInfo == null){
 				GDXLevel level = gdxWorld.getClosestLevel(coordinates.x,coordinates.y);
 				if(level == null || level.getCoordinates().dst(coordinates.x, coordinates.y) > getLevelRadius()){
@@ -105,12 +105,6 @@ public class WorldEditorScreen extends AbstractScreen {
 			}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
 				levelInfo.setCoordinates(coordinates.x, coordinates.y);
 		}
-	}
-	
-	private Vector2 toWorldCoordinates(int x, int y){
-		Vector3 coordinates = new Vector3(x,y,0);
-		camera.unproject(coordinates);
-		return new Vector2(coordinates.x,coordinates.y);
 	}
 	
 	private static float getLevelRadius(){
