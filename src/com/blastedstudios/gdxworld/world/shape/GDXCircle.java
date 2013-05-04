@@ -23,7 +23,6 @@ public class GDXCircle extends GDXShape {
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
 		Body body = PhysicsHelper.createCircle(world, radius, center, type);
-		body.setTransform(center, 0);
 		body.setUserData(name);
 		return body;
 	}
