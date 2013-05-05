@@ -64,7 +64,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 		return false;
 	}
 
-	@Override public boolean mouseMoved(int arg0, int arg1) {
+	@Override public boolean mouseMoved(int x, int y) {
 		return false;
 	}
 
@@ -72,15 +72,15 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 		return false;
 	}
 
-	@Override public boolean touchDown(int arg0, int arg1, int arg2, int arg3) {
+	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		return false;
 	}
 
-	@Override public boolean touchDragged(int arg0, int arg1, int arg2) {
+	@Override public boolean touchDragged(int x, int y, int ptr) {
 		return false;
 	}
 
-	@Override public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
+	@Override public boolean touchUp(int x, int y, int x1, int y1) {
 		return false;
 	}
 }
