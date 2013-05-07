@@ -52,7 +52,7 @@ public class GDXRenderer {
 	
 	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, SpriteBatch batch){
 		Texture texture = getTexture(shape.getName() + ".png");
-		if(texture != null && !shape.getName().equals("")){
+		if(texture != null && !shape.getName().equals("") && body != null){
 			Sprite sprite = new Sprite(texture);
 			sprite.setScale(GDX_SCALE);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
