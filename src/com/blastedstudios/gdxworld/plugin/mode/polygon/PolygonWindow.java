@@ -26,6 +26,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
 	private List<Vector2> vertices;
+	private final ShapeTable shapeTable;
 
 	public PolygonWindow(final Skin skin, final PolygonMode mode, 
 			final GDXPolygon polygon) {
@@ -68,15 +69,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<polygon name>");
 		nameField.setText(polygon.getName());
-		final TextField densityField = new TextField("", skin);
-		densityField.setMessageText("<density, calculates mass>");
-		densityField.setText(polygon.getDensity()+"");
-		final TextField frictionField = new TextField("", skin);
-		frictionField.setMessageText("<friction>");
-		frictionField.setText(polygon.getFriction()+"");
-		final TextField restitutionField = new TextField("", skin);
-		restitutionField.setMessageText("<restitution>");
-		restitutionField.setText(polygon.getRestitution()+"");
+		shapeTable = new ShapeTable(skin, polygon);
 		final Button clearButton = new TextButton("Clear vertices", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
@@ -99,9 +92,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 				polygon.setCenter(PolygonUtils.getCenter(vertices));
 				polygon.setVerticesAbsolute(vertices);
 				polygon.setBodyType(bodyType);
-				polygon.setDensity(Float.parseFloat(densityField.getText()));
-				polygon.setFriction(Float.parseFloat(frictionField.getText()));
-				polygon.setRestitution(Float.parseFloat(restitutionField.getText()));
+				shapeTable.apply(polygon);
 				if(mode.addPolygon(polygon))
 					mode.clean();
 			}
@@ -130,14 +121,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
-		add(new Label("Friction: ", skin));
-		add(frictionField);
-		row();
-		add(new Label("Density: ", skin));
-		add(densityField);
-		row();
-		add(new Label("Restitution: ", skin));
-		add(restitutionField);
+		add(shapeTable).colspan(2);
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);

@@ -103,7 +103,7 @@ public class CircleWindow extends AbstractWindow {
 		add(new Label("Center: ", skin));
 		add(centerTable);
 		row();
-		add(table = new CircleTable(skin, circle));
+		add(table = new CircleTable(skin, circle)).colspan(2);
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
