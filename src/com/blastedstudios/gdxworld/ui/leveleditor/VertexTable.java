@@ -38,6 +38,10 @@ public class VertexTable extends Table {
 			add(deleteButton);
 	}
 	
+	public boolean isCursorActive(){
+		return coordXLabel.getCursorPosition() != 0 || coordYLabel.getCursorPosition() != 0;
+	}
+	
 	public Vector2 getVertex(){
 		return new Vector2(convert(coordXLabel), convert(coordYLabel));
 	}

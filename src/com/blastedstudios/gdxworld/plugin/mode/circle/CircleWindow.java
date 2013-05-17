@@ -20,7 +20,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
 public class CircleWindow extends AbstractWindow {
 	private final VertexTable centerTable;
-	private final TextField radiusField;
+	private final CircleTable table;
 	
 	public CircleWindow(final Skin skin, final CircleMode mode, final GDXCircle circle) {
 		super("Circle Editor", skin);
@@ -59,18 +59,6 @@ public class CircleWindow extends AbstractWindow {
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<circle name>");
 		nameField.setText(circle.getName());
-		radiusField = new TextField("", skin);
-		radiusField.setMessageText("<radius>");
-		radiusField.setText(circle.getRadius()+"");
-		final TextField densityField = new TextField("", skin);
-		densityField.setMessageText("<density, calculates mass>");
-		densityField.setText(circle.getDensity()+"");
-		final TextField frictionField = new TextField("", skin);
-		frictionField.setMessageText("<friction>");
-		frictionField.setText(circle.getFriction()+"");
-		final TextField restitutionField = new TextField("", skin);
-		restitutionField.setMessageText("<restitution>");
-		restitutionField.setText(circle.getRestitution()+"");
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -84,11 +72,9 @@ public class CircleWindow extends AbstractWindow {
 				else if(dynamicBox.isChecked())
 					bodyType = BodyType.DynamicBody;
 				circle.setCenter(centerTable.getVertex());
-				circle.setRadius(getRadius());
+				circle.setName(nameField.getText());
 				circle.setBodyType(bodyType);
-				circle.setDensity(Float.parseFloat(densityField.getText()));
-				circle.setFriction(Float.parseFloat(frictionField.getText()));
-				circle.setRestitution(Float.parseFloat(restitutionField.getText()));
+				table.apply(circle);
 				mode.addCircle(circle);
 				mode.clean();
 			}
@@ -117,17 +103,7 @@ public class CircleWindow extends AbstractWindow {
 		add(new Label("Center: ", skin));
 		add(centerTable);
 		row();
-		add(new Label("Radius: ", skin));
-		add(radiusField);
-		row();
-		add(new Label("Friction: ", skin));
-		add(frictionField);
-		row();
-		add(new Label("Density: ", skin));
-		add(densityField);
-		row();
-		add(new Label("Restitution: ", skin));
-		add(restitutionField);
+		add(table = new CircleTable(skin, circle));
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
@@ -142,16 +118,8 @@ public class CircleWindow extends AbstractWindow {
 		centerTable.setVertex(center.x, center.y);
 	}
 	
-	private float getRadius(){
-		try{
-			return Float.parseFloat(radiusField.getText());
-		}catch(Exception e){
-			return 1f;
-		}
-	}
-
 	public void render(float delta, Camera camera, ShapeRenderer renderer){
 		renderer.setColor(new Color(.1f, 1, .1f, 1));
-		renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, getRadius());
+		renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, table.getRadius());
 	}
 }
