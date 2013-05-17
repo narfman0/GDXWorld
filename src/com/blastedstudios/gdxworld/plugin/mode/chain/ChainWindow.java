@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.chain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -117,8 +120,8 @@ public class ChainWindow extends AbstractWindow {
 	}
 	
 	private void createChain(GDXLevel level){
+		List<GDXShape> shapes = new ArrayList<>();
 		Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
-		GDXShape lastShape = null;
 		for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
 			Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
 			if(circleBox.isChecked()){
@@ -128,21 +131,19 @@ public class ChainWindow extends AbstractWindow {
 				circle.setRadius(circleTable.getRadius());
 				circleTable.apply(circle);
 				level.getCircles().add(circle);
-				if(lastShape != null)
-					level.getJoints().add(attach(lastShape, circle));
-				lastShape = circle;
+				shapes.add(circle);
 			}else if(rectangleBox.isChecked()){
 				GDXPolygon rectangle = new GDXPolygon();
 				rectangle.setBodyType(BodyType.DynamicBody);
 				rectangle.setCenter(coordinates);
 				rectangleTable.apply(rectangle);
 				level.getPolygons().add(rectangle);
-				if(lastShape != null)
-					level.getJoints().add(attach(lastShape, rectangle));
-				lastShape = rectangle;
+				shapes.add(rectangle);
 			}else
 				Gdx.app.log("ChainWindow.createChain", "Neither rectangle nor circle box selected!");
 		}
+		for(int i=1; i<shapes.size(); i++)
+			level.getJoints().add(attach(shapes.get(i-1), shapes.get(i)));
 	}
 	
 	private static RevoluteJoint attach(GDXShape lastShape, GDXShape shape){
