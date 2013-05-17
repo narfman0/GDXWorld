@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.mode.chain;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,11 +22,16 @@ import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
+import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class ChainWindow extends AbstractWindow {
 	private final VertexTable startTable, endTable;
 	private final TextField distanceField;
 	private final CircleTable circleTable;
+	private final RectangleTable rectangleTable;
+	private final Table shapeTable;
+	private final CheckBox circleBox, rectangleBox;
 	
 	public ChainWindow(final Skin skin, final GDXLevel level) {
 		super("Chain Editor", skin);
@@ -39,6 +46,30 @@ public class ChainWindow extends AbstractWindow {
 			}
 		});
 		
+		circleBox = new CheckBox("Circle", skin);
+		rectangleBox = new CheckBox("Rectangle", skin);
+		rectangleBox.setChecked(true);
+		circleBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				rectangleBox.setChecked(false);
+				circleBox.setChecked(true);
+				shapeTable.reset();
+				shapeTable.add(circleTable);
+			}
+		});
+		rectangleBox.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				circleBox.setChecked(false);
+				rectangleBox.setChecked(true);
+				shapeTable.reset();
+				shapeTable.add(rectangleTable);
+			}
+		});
+		shapeTable = new Table(skin);
+		circleTable = new CircleTable(skin, new GDXCircle());
+		rectangleTable = new RectangleTable(skin, new GDXPolygon());
+		shapeTable.add(rectangleTable);
+		
 		Table extraTable = new Table();
 		extraTable.add(new Label("Start: ", skin));
 		extraTable.add(startTable);
@@ -48,9 +79,12 @@ public class ChainWindow extends AbstractWindow {
 		extraTable.row();
 		extraTable.add(new Label("Frequency: ", skin));
 		extraTable.add(distanceField);
+		extraTable.row();
+		extraTable.add(circleBox);
+		extraTable.add(rectangleBox);
 		add(extraTable);
 		row();
-		add(circleTable = new CircleTable(skin, new GDXCircle()));
+		add(shapeTable).colspan(2);
 		row();
 		add(createButton);
 		setMovable(false);
@@ -83,24 +117,39 @@ public class ChainWindow extends AbstractWindow {
 	}
 	
 	private void createChain(GDXLevel level){
-		float radius = circleTable.getRadius();
 		Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
-		GDXCircle lastCircle = null;
+		GDXShape lastShape = null;
 		for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
 			Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
-			GDXCircle circle = new GDXCircle();
-			circle.setBodyType(BodyType.DynamicBody);
-			circle.setCenter(coordinates);
-			circle.setRadius(radius);
-			level.getCircles().add(circle);
-			if(lastCircle != null){
-				RevoluteJoint joint = new RevoluteJoint();
-				joint.setBodyA(lastCircle.getName());
-				joint.setBodyB(circle.getName());
-				joint.setAnchor(circle.getCenter().cpy().add(lastCircle.getCenter()).div(2));
-				level.getJoints().add(joint);
-			}
-			lastCircle = circle;
+			if(circleBox.isChecked()){
+				GDXCircle circle = new GDXCircle();
+				circle.setBodyType(BodyType.DynamicBody);
+				circle.setCenter(coordinates);
+				circle.setRadius(circleTable.getRadius());
+				circleTable.apply(circle);
+				level.getCircles().add(circle);
+				if(lastShape != null)
+					level.getJoints().add(attach(lastShape, circle));
+				lastShape = circle;
+			}else if(rectangleBox.isChecked()){
+				GDXPolygon rectangle = new GDXPolygon();
+				rectangle.setBodyType(BodyType.DynamicBody);
+				rectangle.setCenter(coordinates);
+				rectangleTable.apply(rectangle);
+				level.getPolygons().add(rectangle);
+				if(lastShape != null)
+					level.getJoints().add(attach(lastShape, rectangle));
+				lastShape = rectangle;
+			}else
+				Gdx.app.log("ChainWindow.createChain", "Neither rectangle nor circle box selected!");
 		}
+	}
+	
+	private static RevoluteJoint attach(GDXShape lastShape, GDXShape shape){
+		RevoluteJoint joint = new RevoluteJoint();
+		joint.setBodyA(lastShape.getName());
+		joint.setBodyB(shape.getName());
+		joint.setAnchor(shape.getCenter().cpy().add(lastShape.getCenter()).div(2));
+		return joint;
 	}
 }

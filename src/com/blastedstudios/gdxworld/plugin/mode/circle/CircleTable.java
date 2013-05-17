@@ -15,9 +15,8 @@ public class CircleTable extends Table {
 	private final ShapeTable shapeTable;
 
 	public CircleTable(Skin skin, GDXCircle circle){
-		radiusField = new TextField("", skin);
+		radiusField = new TextField(circle.getRadius()+"", skin);
 		radiusField.setMessageText("<radius>");
-		radiusField.setText(circle.getRadius()+"");
 		shapeTable = new ShapeTable(skin, circle);
 		
 		add(new Label("Radius: ", skin));
