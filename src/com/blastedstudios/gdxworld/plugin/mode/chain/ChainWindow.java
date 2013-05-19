@@ -29,8 +29,9 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class ChainWindow extends AbstractWindow {
+	private static int chainCount = 0;
 	private final VertexTable startTable, endTable;
-	private final TextField distanceField;
+	private final TextField distanceField, nameField;
 	private final CircleTable circleTable;
 	private final RectangleTable rectangleTable;
 	private final Table shapeTable;
@@ -40,6 +41,8 @@ public class ChainWindow extends AbstractWindow {
 		super("Chain Editor", skin);
 		startTable = new VertexTable(new Vector2(), skin, null);
 		endTable = new VertexTable(new Vector2(), skin, null);
+		nameField = new TextField("Chain-" + chainCount++, skin);
+		nameField.setMessageText("<chain name");
 		distanceField = new TextField(Properties.get("level.chain.distance", "1"), skin);
 		distanceField.setMessageText("<distance to next shape in chain");
 		final Button createButton = new TextButton("Create", skin);
@@ -74,6 +77,9 @@ public class ChainWindow extends AbstractWindow {
 		shapeTable.add(rectangleTable);
 		
 		Table extraTable = new Table();
+		extraTable.add(new Label("Name: ", skin));
+		extraTable.add(nameField);
+		extraTable.row();
 		extraTable.add(new Label("Start: ", skin));
 		extraTable.add(startTable);
 		extraTable.row();
@@ -142,15 +148,18 @@ public class ChainWindow extends AbstractWindow {
 			}else
 				Gdx.app.log("ChainWindow.createChain", "Neither rectangle nor circle box selected!");
 		}
+		for(int i=0; i<shapes.size(); i++)
+			shapes.get(i).setName(nameField.getText() + "-" + i);
 		for(int i=1; i<shapes.size(); i++)
-			level.getJoints().add(attach(shapes.get(i-1), shapes.get(i)));
+			level.getJoints().add(attach(shapes.get(i-1), shapes.get(i), i-1, nameField.getText()));
 	}
 	
-	private static RevoluteJoint attach(GDXShape lastShape, GDXShape shape){
+	private static RevoluteJoint attach(GDXShape lastShape, GDXShape shape, int count, String prefix){
 		RevoluteJoint joint = new RevoluteJoint();
 		joint.setBodyA(lastShape.getName());
 		joint.setBodyB(shape.getName());
 		joint.setAnchor(shape.getCenter().cpy().add(lastShape.getCenter()).div(2));
+		joint.setName(prefix + "-" + count);
 		return joint;
 	}
 }
