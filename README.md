@@ -221,6 +221,15 @@ import button and navigate to the file to load in the same group. Note that the
 names are not changed, so you may not currently load multiples of the same body
 without odd repercussions since the editor assumes unique names.
 
+### Chain
+Chain mode can string together multiple shapes connected by revolute joints to
+form long lines of dynamic objects. One may build bridges, tank tracks, ropes,
+or any similar such objects. All objects will share physical properties. First
+click the "start" point, then "end", then create should build a default chain.
+Note that currently, the start/end fields are populated by finding the carat
+position and changing whatever field's carat isn't at 0, so when selecting, it
+must be nonzero, and the other field must be 0.
+
 Serializers
 -----------
 
