@@ -67,7 +67,7 @@ public class WorldEditorScreen extends AbstractScreen {
 	}
 
 	@Override public boolean scrolled(int amount) {
-		camera.zoom = Math.max(1, camera.zoom + amount + amount*camera.zoom/8);
+		camera.zoom = Math.max(.01f, camera.zoom + amount*camera.zoom/4f);
 		Gdx.app.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
 	}
