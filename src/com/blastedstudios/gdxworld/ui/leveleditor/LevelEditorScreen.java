@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
+import com.blastedstudios.gdxworld.ui.MouseCameraScroller;
 import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -33,11 +34,13 @@ public class LevelEditorScreen extends AbstractScreen {
 	private boolean live;
 	private final Collection<IMode> modes = PluginUtil.getPluginsSorted(IMode.class);
 	private IMode mode;
-	
+        private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
+        
 	public LevelEditorScreen(final Game game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
+		inputMultiplexer.addProcessor(scroller);
 		for(IMode child : modes)
 			child.init(this);
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
@@ -82,21 +85,21 @@ public class LevelEditorScreen extends AbstractScreen {
 		Gdx.app.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
 		camera.unproject(coordinates);
-		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
-			mode.touchDown(x, y, x1, y1);
+		if(!levelWindow.contains(x,y) && !mode.contains(x,y) && y1 != 2)
+		    mode.touchDown(x, y, x1, y1);
 		return false;
 	}
 	
 	@Override public boolean touchUp(int x, int y, int x1, int y1){
-		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
-			mode.touchUp(x, y, x1, y1);
-		return false;
+	    if(!levelWindow.contains(x,y) && !mode.contains(x,y) && y1 != 2)
+		mode.touchUp(x, y, x1, y1);
+	    return false;
 	}
 
 	@Override public boolean touchDragged(int x, int y, int ptr) {
-		if(!levelWindow.contains(x,y) && !mode.contains(x,y))
-			mode.touchDragged(x, y, ptr);
-		return false;
+	    if(!levelWindow.contains(x,y) && !mode.contains(x,y))
+		mode.touchDragged(x, y, ptr);
+	    return false;
 	}
 
 	@Override public boolean scrolled(int amount) {
