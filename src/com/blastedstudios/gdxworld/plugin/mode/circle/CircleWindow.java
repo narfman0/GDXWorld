@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.mode.circle;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -119,7 +120,16 @@ public class CircleWindow extends AbstractWindow {
 	}
 	
 	public void render(float delta, Camera camera, ShapeRenderer renderer){
+
+                // This appears to be about the minimum size the radius can be
+	        // where you'll still get a closed figure (triangle).  Any
+	        // smaller and it's a line, too small and it throws an
+	        // exception.
+	        static final float MIN_RADIUS = 0.13f;
+
 		renderer.setColor(new Color(.1f, 1, .1f, 1));
-		renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, table.getRadius());
+		if(table.getRadius() >= MIN_RADIUS) {
+		    renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, table.getRadius());
+		}
 	}
 }
