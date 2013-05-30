@@ -16,7 +16,6 @@ public class MouseCameraScroller extends InputAdapter {
 	private boolean buttonHeld;
 
         private Vector3 screen0 = null;
-        private Vector3 world0 = null;
 
         private Vector3 cameraPosition0 = null;
 
