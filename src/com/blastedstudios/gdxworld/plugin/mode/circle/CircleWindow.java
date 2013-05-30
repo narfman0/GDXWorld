@@ -125,7 +125,7 @@ public class CircleWindow extends AbstractWindow {
 	        // where you'll still get a closed figure (triangle).  Any
 	        // smaller and it's a line, too small and it throws an
 	        // exception.
-	        static final float MIN_RADIUS = 0.13f;
+	        final float MIN_RADIUS = 0.13f;
 
 		renderer.setColor(new Color(.1f, 1, .1f, 1));
 		if(table.getRadius() >= MIN_RADIUS) {
