@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Simple input handler that moves an orthographic camera in the X,Y axis when
@@ -14,10 +15,10 @@ public class MouseCameraScroller extends InputAdapter {
 
 	private boolean buttonHeld;
 
-	private int x0;
-	private int y0;
-	private float cx0;
-	private float cy0;
+        private Vector3 screen0 = null;
+        private Vector3 world0 = null;
+
+        private Vector3 cameraPosition0 = null;
 
 	/**
 	 * Sole constructor, specifying the camers to control and the button that
@@ -33,43 +34,51 @@ public class MouseCameraScroller extends InputAdapter {
 		this.buttonHeld = false;
 		this.camera = camera;
 		this.button = button;
-		x0 = -1;
-		y0 = -1;
 	}
 
+        @Override
 	public boolean touchDown(int x, int y, int ptr, int buttonDown) {
 		if(buttonDown == button) {
 			buttonHeld = true;
-			x0 = x;
-			y0 = y;
-			cx0 = camera.position.x;
-			cy0 = camera.position.y;
+
+			screen0 = new Vector3(x, y, 0);
+			
+			cameraPosition0 = new Vector3(camera.position);
 		}
 		return buttonHeld;
 	}
 
+        @Override
 	public boolean touchUp(int x, int y, int ptr, int buttonDown) {
 		if(buttonDown == button) {
 			buttonHeld = false;
-			x0 = -1;
-			y0 = -1;
 		}
 		return buttonHeld;
 	}
 
+        @Override
 	public boolean touchDragged(int x, int y, int ptr) {
 		if(buttonHeld) {
-			if(x0 != -1 && y0 != -1) {
-				Gdx.app.debug("MouseCameraScroller.touchDragged", "X: " + x + "  Y: " + y);
-				int dx = (int)((x - x0) * camera.zoom/50f);
-				int dy = (int)((y - y0) * camera.zoom/50f);
-				camera.position.y = cy0 + dy;
-				camera.position.x = cx0 - dx;
-			}
+		    Gdx.app.debug("MouseCameraScroller.touchDragged", "X: " + x + "  Y: " + y);
+		    
+		    Vector3 world0 = new Vector3(screen0);
+		    camera.unproject(world0);
+
+		    Vector3 world = new Vector3(x, y, 0);
+		    camera.unproject(world);
+
+		    Vector3 delta = world.sub(world0);
+
+		    camera.position.set(cameraPosition0.tmp().sub(delta));
 		}
 		return buttonHeld;
 	}
 
+        /**
+         * Get the status of the camera scroller.
+	 * @return true if the scrollon button his held on the mouse, false
+	 * otherwise.
+         */
 	public boolean isScrolling() {
 		return buttonHeld;
 	}
