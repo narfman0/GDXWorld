@@ -68,7 +68,7 @@ public class MouseCameraScroller extends InputAdapter {
 
 		    Vector3 delta = world.sub(world0);
 
-		    camera.position.set(cameraPosition0.tmp().sub(delta));
+		    camera.position.set(cameraPosition0.cpy().sub(delta));
 		}
 		return buttonHeld;
 	}
