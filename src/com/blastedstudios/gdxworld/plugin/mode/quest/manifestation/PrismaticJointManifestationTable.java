@@ -5,19 +5,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
-import com.blastedstudios.gdxworld.world.quest.manifestation.RevoluteJointManifestation;
+import com.blastedstudios.gdxworld.world.quest.manifestation.PrismaticJointManifestation;
 
-public class RevoluteJointManifestationTable extends ManifestationTable {
-	public static final String BOX_TEXT = "Revolute Joint";
-	private final TextField maxMotorTorqueText, motorSpeedText, nameText;
+public class PrismaticJointManifestationTable extends ManifestationTable {
+	public static final String BOX_TEXT = "Prismatic Joint";
+	private final TextField maxMotorForceText, motorSpeedText, nameText;
 	private final CheckBox enableMotorBox;
 	
-	public RevoluteJointManifestationTable(Skin skin, RevoluteJointManifestation manifestation) {
+	public PrismaticJointManifestationTable(Skin skin, PrismaticJointManifestation manifestation) {
 		super(skin);
 		nameText = new TextField(manifestation.getName(), skin);
 		nameText.setMessageText("<name>");
-		maxMotorTorqueText = new TextField(manifestation.getMaxMotorTorque()+"", skin);
-		maxMotorTorqueText.setMessageText("<max motor torque>");
+		maxMotorForceText = new TextField(manifestation.getMaxMotorForce()+"", skin);
+		maxMotorForceText.setMessageText("<max motor force>");
 		motorSpeedText = new TextField(manifestation.getMotorSpeed()+"", skin);
 		motorSpeedText.setMessageText("<motor speed>");
 		enableMotorBox = new CheckBox("Enable Motor", skin);
@@ -28,7 +28,7 @@ public class RevoluteJointManifestationTable extends ManifestationTable {
 		add(enableMotorBox);
 		row();
 		add(new Label("Max Motor Torque: ", skin));
-		add(maxMotorTorqueText);
+		add(maxMotorForceText);
 		row();
 		add(new Label("Motor Speed: ", skin));
 		add(motorSpeedText);
@@ -36,7 +36,7 @@ public class RevoluteJointManifestationTable extends ManifestationTable {
 	}
 
 	@Override public AbstractQuestManifestation apply() {
-		return new RevoluteJointManifestation(nameText.getText(), enableMotorBox.isChecked(), 
-				Float.parseFloat(maxMotorTorqueText.getText()), Float.parseFloat(motorSpeedText.getText()));
+		return new PrismaticJointManifestation(nameText.getText(), enableMotorBox.isChecked(), 
+				Float.parseFloat(maxMotorForceText.getText()), Float.parseFloat(motorSpeedText.getText()));
 	}
 }

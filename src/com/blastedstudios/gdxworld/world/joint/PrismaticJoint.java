@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 public class PrismaticJoint extends GDXJoint {
 	private static final long serialVersionUID = 1L;
 	private boolean enableLimit, enableMotor;
-	private float lowerTranslation, maxMotorForce, motorSpeed, referenceAngle;
+	private float lowerTranslation, upperTranslation, maxMotorForce, motorSpeed, referenceAngle;
 	private Vector2 anchor = new Vector2(), axis = new Vector2();
 
 	@Override public Joint attach(World world) {
@@ -18,6 +18,7 @@ public class PrismaticJoint extends GDXJoint {
 		def.enableMotor = enableMotor;
 		def.motorSpeed = motorSpeed;
 		def.lowerTranslation = lowerTranslation;
+		def.upperTranslation = upperTranslation;
 		def.maxMotorForce = maxMotorForce;
 		def.motorSpeed = motorSpeed;
 		def.referenceAngle = referenceAngle;
@@ -90,6 +91,14 @@ public class PrismaticJoint extends GDXJoint {
 		this.axis = axis;
 	}
 
+	public float getUpperTranslation() {
+		return upperTranslation;
+	}
+
+	public void setUpperTranslation(float upperTranslation) {
+		this.upperTranslation = upperTranslation;
+	}
+
 	@Override public Vector2 getCenter() {
 		return anchor.cpy();
 	}
@@ -101,6 +110,7 @@ public class PrismaticJoint extends GDXJoint {
 		clone.setEnableLimit(enableLimit);
 		clone.setEnableMotor(enableMotor);
 		clone.setLowerTranslation(lowerTranslation);
+		clone.setUpperTranslation(upperTranslation);
 		clone.setMaxMotorForce(maxMotorForce);
 		clone.setMotorSpeed(motorSpeed);
 		clone.setReferenceAngle(referenceAngle);

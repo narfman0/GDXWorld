@@ -12,10 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
-import com.blastedstudios.gdxworld.world.joint.DistanceJoint;
-import com.blastedstudios.gdxworld.world.joint.GDXJoint;
-import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
-import com.blastedstudios.gdxworld.world.joint.WeldJoint;
+import com.blastedstudios.gdxworld.world.joint.*;
 
 class JointWindow extends AbstractWindow {
 	private BaseJointWindow baseWindow;
@@ -50,6 +47,10 @@ class JointWindow extends AbstractWindow {
 		case DistanceJoint:
 			DistanceJoint djoint = joint == null ? new DistanceJoint() : (DistanceJoint)joint;
 			baseWindow = new DistanceWindow(skin, mode, djoint);
+			break;
+		case PrismaticJoint:
+			PrismaticJoint pjoint = joint == null ? new PrismaticJoint() : (PrismaticJoint)joint;
+			baseWindow = new PrismaticWindow(skin, mode, pjoint);
 			break;
 		case WeldJoint:
 			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
