@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.mode.joint;
 
+import java.lang.reflect.Constructor;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
@@ -43,30 +45,15 @@ class JointWindow extends AbstractWindow {
 	private void createBaseWindow(JointType type, GDXJoint joint){
 		if(baseWindow != null)
 			baseWindow.remove();
-		switch(type){
-		case DistanceJoint:{
-			DistanceJoint djoint = joint == null ? new DistanceJoint() : (DistanceJoint)joint;
-			baseWindow = new DistanceWindow(skin, mode, djoint);
-			break;
-		}case GearJoint:{
-			GearJoint gjoint = joint == null ? new GearJoint() : (GearJoint)joint;
-			baseWindow = new GearWindow(skin, mode, gjoint);
-			break;
-		}case PrismaticJoint:{
-			PrismaticJoint pjoint = joint == null ? new PrismaticJoint() : (PrismaticJoint)joint;
-			baseWindow = new PrismaticWindow(skin, mode, pjoint);
-			break;
-		}case RevoluteJoint:{
-			RevoluteJoint rjoint = joint == null ? new RevoluteJoint() : (RevoluteJoint)joint;
-			baseWindow = new RevoluteWindow(skin, mode, rjoint);
-			break;
-		}case WeldJoint:{
-			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
-			baseWindow = new WeldWindow(skin, mode, wjoint);
-			break;
-		}default:
-			Gdx.app.log("JointWindow.newButton.clicked", "Joint not implemented: " + type);
-			break;
+		try{
+			Class<?> jointClass = Class.forName(GDXJoint.class.getPackage().getName() + "." + type.name());
+			GDXJoint gdxJoint = (joint == null ? (GDXJoint)jointClass.getConstructor().newInstance() : joint);
+			String windowClassName = BaseJointWindow.class.getPackage().getName() + "." + type.name().replace("Joint", "Window");
+			Class<?> windowClass = Class.forName(windowClassName);
+			Constructor<?> windowConstructor = windowClass.getConstructor(Skin.class, JointMode.class, gdxJoint.getClass());
+			baseWindow = (BaseJointWindow) windowConstructor.newInstance(skin, mode, gdxJoint);
+		}catch(Exception e){
+			Gdx.app.log("JointWindow.createBaseWindow", "Exception creating window for type: " + type + ", error: " + e.getMessage());
 		}
 		if(baseWindow != null)
 			levelEditorScreen.getStage().addActor(baseWindow);
