@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
-import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.WeldJoint;
 
 class WeldWindow extends BaseJointWindow {
@@ -15,9 +14,9 @@ class WeldWindow extends BaseJointWindow {
 	private final TextField referenceAngleField;
 	private final WeldJoint joint;
 
-	public WeldWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
-		super("Weld Editor", skin, JointType.WeldJoint, mode, baseJoint);
-		this.joint =  (WeldJoint)baseJoint;
+	public WeldWindow(Skin skin, JointMode mode, WeldJoint joint) {
+		super("Weld Editor", skin, JointType.WeldJoint, mode, joint);
+		this.joint = joint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);
 		referenceAngleField.setMessageText("<reference angle>");

@@ -44,23 +44,27 @@ class JointWindow extends AbstractWindow {
 		if(baseWindow != null)
 			baseWindow.remove();
 		switch(type){
-		case DistanceJoint:
+		case DistanceJoint:{
 			DistanceJoint djoint = joint == null ? new DistanceJoint() : (DistanceJoint)joint;
 			baseWindow = new DistanceWindow(skin, mode, djoint);
 			break;
-		case PrismaticJoint:
+		}case GearJoint:{
+			GearJoint gjoint = joint == null ? new GearJoint() : (GearJoint)joint;
+			baseWindow = new GearWindow(skin, mode, gjoint);
+			break;
+		}case PrismaticJoint:{
 			PrismaticJoint pjoint = joint == null ? new PrismaticJoint() : (PrismaticJoint)joint;
 			baseWindow = new PrismaticWindow(skin, mode, pjoint);
 			break;
-		case WeldJoint:
-			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
-			baseWindow = new WeldWindow(skin, mode, wjoint);
-			break;
-		case RevoluteJoint:
+		}case RevoluteJoint:{
 			RevoluteJoint rjoint = joint == null ? new RevoluteJoint() : (RevoluteJoint)joint;
 			baseWindow = new RevoluteWindow(skin, mode, rjoint);
 			break;
-		default:
+		}case WeldJoint:{
+			WeldJoint wjoint = joint == null ? new WeldJoint() : (WeldJoint)joint;
+			baseWindow = new WeldWindow(skin, mode, wjoint);
+			break;
+		}default:
 			Gdx.app.log("JointWindow.newButton.clicked", "Joint not implemented: " + type);
 			break;
 		}

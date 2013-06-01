@@ -8,16 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
 import com.blastedstudios.gdxworld.world.joint.DistanceJoint;
-import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 class DistanceWindow extends BaseJointWindow {
 	private final VertexTable anchorATable, anchorBTable;
 	private final TextField dampeningRatioField, frequencyHzField, lengthField;
 	private final DistanceJoint joint;
 
-	public DistanceWindow(Skin skin, JointMode mode, GDXJoint baseJoint) {
-		super("Distance Editor", skin, JointType.WeldJoint, mode, baseJoint);
-		this.joint = (DistanceJoint)baseJoint;
+	public DistanceWindow(Skin skin, JointMode mode, DistanceJoint joint) {
+		super("Distance Editor", skin, JointType.WeldJoint, mode, joint);
+		this.joint = joint;
 		anchorATable = new VertexTable(joint.getAnchorA().cpy(), skin, null);
 		anchorBTable = new VertexTable(joint.getAnchorB().cpy(), skin, null);
 		dampeningRatioField = new TextField(joint.getDampeningRatio()+"", skin);

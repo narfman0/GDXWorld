@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
-import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.PrismaticJoint;
 
 public class PrismaticWindow extends BaseJointWindow {
@@ -17,9 +16,9 @@ public class PrismaticWindow extends BaseJointWindow {
 	private final CheckBox enableLimitBox, enableMotorBox;
 	private final PrismaticJoint joint;
 	
-	public PrismaticWindow(Skin skin, JointMode mode, GDXJoint baseJoint){
-		super("Prismatic Editor", skin, JointType.PrismaticJoint, mode, baseJoint);
-		this.joint = (PrismaticJoint) baseJoint;
+	public PrismaticWindow(Skin skin, JointMode mode, PrismaticJoint joint){
+		super("Prismatic Editor", skin, JointType.PrismaticJoint, mode, joint);
+		this.joint = joint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		axisTable = new VertexTable(joint.getAxis(), skin, null);
 		maxMotorForceField = new TextField(joint.getMaxMotorForce()+"", skin);
