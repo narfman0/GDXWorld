@@ -7,17 +7,10 @@ import com.badlogic.gdx.physics.box2d.joints.GearJointDef;
 
 public class GearJoint extends GDXJoint {
 	private static final long serialVersionUID = -8241713847302164652L;
-	private String joint1, joint2;
+	private String joint1 = "", joint2 = "";
 	private transient Joint joint1J, joint2J;
 	private float ratio;
-	/**
-	 * Center is used for drawing
-	 */
-	private transient Vector2 center;
-	
-	public GearJoint(Vector2 center){
-		this.center = center;
-	}
+	private Vector2 center = new Vector2();
 	
 	/**
 	 * Since GearJoint depends on the other joints being created, there is
@@ -67,18 +60,28 @@ public class GearJoint extends GDXJoint {
 		this.joint2 = joint2;
 	}
 
+	public void setCenter(Vector2 center) {
+		this.center = center;
+	}
+
 	@Override public Vector2 getCenter() {
 		return center.cpy();
 	}
 
 	@Override public Object clone() {
-		GearJoint clone = new GearJoint(center.cpy());
+		GearJoint clone = new GearJoint();
 		clone.setJoint1(joint1);
 		clone.setJoint2(joint2);
 		clone.setRatio(ratio);
+		clone.setCenter(center);
 		return super.clone(clone);
 	}
 
-	@Override public void translate(Vector2 center) {}
-	@Override public void scl(float scalar) {}
+	@Override public void translate(Vector2 center) {
+		center.add(center);
+	}
+
+	@Override public void scl(float scalar) {
+		center.scl(scalar);
+	}
 }
