@@ -45,7 +45,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	public GDXLevel(){
 		properties = createProperties();
 	}
-	
+
 	public List<GDXCircle> getCircles() {
 		return circles;
 	}
@@ -327,14 +327,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		}
 	}
 	
-	private static HashMap<String,String> createProperties(){
-		HashMap<String,String> propertiesMap = new HashMap<>();
-		String propValue = Properties.get("level.properties", "");
-		String[] properties = propValue.contains(",") ?
-				propValue.split(",") : new String[]{propValue};
-		for(String property : properties)
-			if(!property.trim().equals(""))
-				propertiesMap.put(property, "");
-		return propertiesMap;
+	private Map<String, String> createProperties() {
+		return Properties.parseProperties("level.properties", "");
 	}
 }

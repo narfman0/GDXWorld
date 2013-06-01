@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.npc;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,24 +17,14 @@ import com.blastedstudios.gdxworld.world.GDXNPC;
 
 class NPCWindow extends AbstractWindow {
 	private final VertexTable coordinates;
+	private final HashMap<String, TextField> properties;
 	
 	public NPCWindow(final Skin skin, final NPCMode mode, final GDXNPC npc) {
 		super("NPC Editor", skin);
+		properties = new HashMap<>();
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<npc name>");
 		nameField.setText(npc.getName());
-		final TextField behaviorField = new TextField("", skin);
-		behaviorField.setMessageText("<behavior name>");
-		behaviorField.setText(npc.getBehavior());
-		final TextField pathField = new TextField("", skin);
-		pathField.setMessageText("<path name>");
-		pathField.setText(npc.getPath());
-		final TextField resourceField = new TextField("", skin);
-		resourceField.setMessageText("<resource>");
-		resourceField.setText(npc.getResource());
-		final TextField factionField = new TextField("", skin);
-		factionField.setMessageText("<faction>");
-		factionField.setText(npc.getFaction());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -40,11 +33,9 @@ class NPCWindow extends AbstractWindow {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				npc.setName(nameField.getText());
-				npc.setBehavior(behaviorField.getText());
 				npc.setCoordinates(coordinates.getVertex());
-				npc.setPath(pathField.getText());
-				npc.setResource(resourceField.getText());
-				npc.setFaction(factionField.getText());
+				for(String key : npc.getProperties().keySet())
+					npc.getProperties().put(key, properties.get(key).getText());
 				mode.addNPC(npc);
 				mode.clean();
 			}
@@ -63,18 +54,15 @@ class NPCWindow extends AbstractWindow {
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
-		add(new Label("Behavior: ", skin));
-		add(behaviorField);
-		row();
-		add(new Label("Path: ", skin));
-		add(pathField);
-		row();
-		add(new Label("Resource: ", skin));
-		add(resourceField);
-		row();
-		add(new Label("Faction: ", skin));
-		add(factionField);
-		row();
+		for(Entry<String,String> entry : npc.getProperties().entrySet()){
+			add(new Label(entry.getKey() + ": ", skin));
+			final TextField propertyField = new TextField("", skin);
+			propertyField.setMessageText("<" + entry.getKey() + ">");
+			propertyField.setText(entry.getValue());
+			properties.put(entry.getKey(), propertyField);
+			add(propertyField);
+			row();
+		}
 		add(new Label("Coordinates: ", skin));
 		add(coordinates).colspan(2);
 		row();
