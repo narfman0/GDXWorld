@@ -79,15 +79,6 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 		return joint;
 	}
 	
-	public float getDistance(float x, float y, World world){
-		Body[] bodies = getBodyAB(world);
-		if(bodies[0] == null || bodies[1] == null){
-			Gdx.app.error("GDXJoint.getDistance", "Body null! bodyA:" + bodyA + " bodyB:" + bodyB);
-			return Float.MAX_VALUE;
-		}
-		return Math.min(bodies[0].getPosition().dst(x,y), bodies[1].getPosition().dst(x, y));
-	}
-	
 	protected Body[] getBodyAB(World world){
 		Body[] bodies = new Body[2];
 		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){

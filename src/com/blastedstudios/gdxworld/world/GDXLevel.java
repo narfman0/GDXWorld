@@ -198,7 +198,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		GDXJoint closest = null;
 		float closestDistance = Float.MAX_VALUE;
 		for(GDXJoint path : getJoints()){
-			float distance = path.getDistance(x, y, world);
+			float distance = path.getCenter().dst2(x, y);
 			if(closest == null || closestDistance > distance){
 				closest = path;
 				closestDistance = distance;

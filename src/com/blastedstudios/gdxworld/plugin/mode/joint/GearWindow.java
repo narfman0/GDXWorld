@@ -14,7 +14,7 @@ public class GearWindow extends BaseJointWindow {
 	private final GearJoint joint;
 	
 	public GearWindow(Skin skin, JointMode mode, GearJoint joint){
-		super("Prismatic Editor", skin, JointType.PrismaticJoint, mode, joint);
+		super("Gear Editor", skin, JointType.GearJoint, mode, joint);
 		this.joint = joint;
 		centerTable = new VertexTable(joint.getCenter(), skin, null);
 		ratioField = new TextField(joint.getRatio()+"", skin);
