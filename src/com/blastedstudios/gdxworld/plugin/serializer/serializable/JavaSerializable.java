@@ -30,12 +30,12 @@ public class JavaSerializable implements ISerializer{
 		return object;
 	}
 
-	@Override public void save(File selectedFile, Object world) throws Exception {
+	@Override public void save(File selectedFile, Object object) throws Exception {
 		if(selectedFile == null)
 			Gdx.app.error("JavaSerializable.save", "Cannot write to null file");
 		else{
 			selectedFile.getParentFile().mkdirs();
-			write(selectedFile, this);
+			write(selectedFile, object);
 			Gdx.app.log("JavaSerializable.save", "Successfully saved non-split " + selectedFile);
 		}
 	}
