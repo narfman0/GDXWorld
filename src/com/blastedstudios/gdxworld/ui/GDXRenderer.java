@@ -107,7 +107,7 @@ public class GDXRenderer {
 					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
 					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
-							name + ", using empty");
+							name + ", using empty. Exception: " + e.getMessage());
 					textureMap.put(name, EMPTY);
 				}
 			}else{

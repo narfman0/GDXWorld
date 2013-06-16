@@ -2,7 +2,7 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -26,7 +26,7 @@ public class WorldEditorScreen extends AbstractScreen {
 	private final GDXWorld gdxWorld;
 	private File lastSavedFile;
 	
-	public WorldEditorScreen(final Game game, final GDXWorld gdxWorld, File lastSavedFile){
+	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
 		super(game);
 		this.lastSavedFile = lastSavedFile;
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;

@@ -2,27 +2,26 @@ package com.blastedstudios.gdxworld;
 
 import java.io.File;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
-public class GDXWorldEditor extends Game {
+public class GDXWorldEditor extends GDXGame {
 	private static File loadFile;
 	private static String[] args;
 	
 	@Override public void create () {
 		if(args != null)
 			parseArgs(args);
+		pushScreen(new MainScreen(this));
 		if(loadFile != null && loadFile.canRead())
-			setScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
+			pushScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
 		else if(TempWorldScreen.isTempFilePresent())
-			setScreen(new TempWorldScreen(this));
-		else
-			setScreen(new MainScreen(this));
+			pushScreen(new TempWorldScreen(this));
 	}
 	
 	public static void main (String[] argv) {

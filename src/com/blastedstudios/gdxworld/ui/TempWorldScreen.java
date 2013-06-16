@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -24,19 +24,21 @@ public class TempWorldScreen extends AbstractScreen{
 	private static Timer tempSaveTimer;
 	private static GDXWorld gdxWorld;
 
-	public TempWorldScreen(final Game game){
+	public TempWorldScreen(final GDXGame game){
 		super(game);
 		final Button yesButton = new TextButton("Yes", skin);
 		yesButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new WorldEditorScreen(game, GDXWorld.load(getTempSaveFile()), null));
+				game.popScreen();
+				game.pushScreen(new WorldEditorScreen(game, GDXWorld.load(getTempSaveFile()), null));
 			}
 		});
 		final Button noButton = new TextButton("No", skin);
 		noButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				clean();
-				game.setScreen(new MainScreen(game));
+				game.popScreen();
+				game.pushScreen(new MainScreen(game));
 			}
 		});
 		Window window = new Window("Temporary File Present", skin);

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
@@ -22,7 +21,7 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 public class LevelWindow extends AbstractWindow{
 	private final List<CheckBox> modeCheckBoxes = new ArrayList<>();
 	
-	public LevelWindow(final Game game, final Skin skin, 
+	public LevelWindow(final GDXGame game, final Skin skin, 
 			final GDXWorld world, final GDXLevel gdxLevel, 
 			final LevelEditorScreen levelEditorScreen, final File lastSaveFile){
 		super("Level Editor", skin);
@@ -60,7 +59,7 @@ public class LevelWindow extends AbstractWindow{
 		});
 		backButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new WorldEditorScreen(game, world, lastSaveFile));
+				game.popScreen();
 			}
 		});
 		add(clearButton);

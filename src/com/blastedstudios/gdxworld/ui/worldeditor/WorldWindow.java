@@ -2,7 +2,7 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.world.GDXWorld;
@@ -18,7 +17,7 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 public class WorldWindow extends AbstractWindow{
 	private File lastSavedFile;
 	
-	public WorldWindow(final Game game, final Skin skin, final GDXWorld gdxWorld, 
+	public WorldWindow(final GDXGame game, final Skin skin, final GDXWorld gdxWorld, 
 			File savedFile) {
 		super("World Editor", skin);
 		this.lastSavedFile = savedFile;
@@ -46,7 +45,7 @@ public class WorldWindow extends AbstractWindow{
 		backButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				TempWorldScreen.clean();
-				game.setScreen(new MainScreen(game));
+				game.popScreen();
 			}
 		});
 		exitButton.addListener(new ClickListener() {

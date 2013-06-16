@@ -1,6 +1,6 @@
 package com.blastedstudios.gdxworld.ui;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -17,10 +17,10 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 			GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT;
 	protected final Stage stage;
 	protected static Skin skin;
-	protected final Game game;
+	protected final GDXGame game;
 	protected final InputMultiplexer inputMultiplexer;
 	
-	public AbstractScreen(final Game game){
+	public AbstractScreen(final GDXGame game){
 		this.game = game;
 		if(skin == null)
 			skin = new Skin(Gdx.files.internal(Properties.get("screen.skin","data/ui/uiskin.json")));
@@ -47,10 +47,13 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 		stage.setViewport(width, height, false);
 	}
 	@Override public void dispose() {}
-	@Override public void hide() {}
 	@Override public void pause() {}
 	@Override public void resume() {}
-	@Override public void show() {}
+	@Override public void hide() {}
+	
+	@Override public void show() {
+		Gdx.input.setInputProcessor(inputMultiplexer);
+	}
 
 	@Override public boolean keyDown(int arg0) {
 		return false;

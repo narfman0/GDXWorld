@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -26,7 +26,7 @@ public class LevelInformationWindow extends AbstractWindow{
 	private final GDXWorld gdxWorld;
 	private final GDXLevel gdxLevel;
 	
-	public LevelInformationWindow(final Game game, final WorldEditorScreen worldEditorScreen, 
+	public LevelInformationWindow(final GDXGame game, final WorldEditorScreen worldEditorScreen, 
 			final Skin skin, final GDXWorld gdxWorld, final GDXLevel gdxLevel, final File lastSavedFile){
 		super("Level Info", skin);
 		this.gdxWorld = gdxWorld;
@@ -48,7 +48,7 @@ public class LevelInformationWindow extends AbstractWindow{
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				addLevel();
-				game.setScreen(new LevelEditorScreen(game, gdxWorld, gdxLevel, lastSavedFile));
+				game.pushScreen(new LevelEditorScreen(game, gdxWorld, gdxLevel, lastSavedFile));
 			}
 		});
 		deleteButton.addListener(new ClickListener() {

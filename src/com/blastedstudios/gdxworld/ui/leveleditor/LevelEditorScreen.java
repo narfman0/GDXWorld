@@ -3,7 +3,7 @@ package com.blastedstudios.gdxworld.ui.leveleditor;
 import java.io.File;
 import java.util.Collection;
 
-import com.badlogic.gdx.Game;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
@@ -36,7 +36,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private IMode mode;
         private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
         
-	public LevelEditorScreen(final Game game, final GDXWorld gdxWorld, 
+	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
 			final GDXLevel gdxLevel, final File lastSavedFile){
 		super(game);
 		this.gdxLevel = gdxLevel;
