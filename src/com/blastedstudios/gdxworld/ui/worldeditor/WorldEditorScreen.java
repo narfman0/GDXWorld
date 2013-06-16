@@ -24,11 +24,9 @@ public class WorldEditorScreen extends AbstractScreen {
 	private LevelInformationWindow levelInfo;
 	private AbstractWindow worldWindow;
 	private final GDXWorld gdxWorld;
-	private File lastSavedFile;
 	
 	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
 		super(game);
-		this.lastSavedFile = lastSavedFile;
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
 		camera.zoom += 3;
@@ -100,7 +98,7 @@ public class WorldEditorScreen extends AbstractScreen {
 					Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
 				}else
 					Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
-				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level, lastSavedFile);
+				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level);
 				stage.addActor(levelInfo);
 			}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
 				levelInfo.setCoordinates(coordinates.x, coordinates.y);

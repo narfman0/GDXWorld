@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class LevelWindow extends AbstractWindow{
 	
 	public LevelWindow(final GDXGame game, final Skin skin, 
 			final GDXWorld world, final GDXLevel gdxLevel, 
-			final LevelEditorScreen levelEditorScreen, final File lastSaveFile){
+			final LevelEditorScreen levelEditorScreen){
 		super("Level Editor", skin);
 		final Button clearButton = new TextButton("Clear", skin);
 		final Button backButton = new TextButton("Back", skin);

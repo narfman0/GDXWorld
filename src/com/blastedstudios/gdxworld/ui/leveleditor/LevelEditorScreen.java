@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
-import java.io.File;
 import java.util.Collection;
 
 import com.blastedstudios.gdxworld.util.GDXGame;
@@ -36,14 +35,13 @@ public class LevelEditorScreen extends AbstractScreen {
 	private IMode mode;
         private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
         
-	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
-			final GDXLevel gdxLevel, final File lastSavedFile){
+	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super(game);
 		this.gdxLevel = gdxLevel;
 		inputMultiplexer.addProcessor(scroller);
 		for(IMode child : modes)
 			child.init(this);
-		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this, lastSavedFile));
+		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this));
 		camera.zoom = 4;
 		loadLevel();
 	}
