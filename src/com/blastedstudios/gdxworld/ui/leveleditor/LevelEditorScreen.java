@@ -79,6 +79,15 @@ public class LevelEditorScreen extends AbstractScreen {
 		stage.draw();
 	}
 	
+	@Override public boolean keyDown(int key) {
+		switch(key){
+		case Keys.ESCAPE:
+			game.popScreen();
+			break;
+		}
+		return super.keyDown(key);
+	}
+	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		Gdx.app.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
