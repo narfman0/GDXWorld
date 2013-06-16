@@ -11,7 +11,10 @@ public class Properties {
 
 	static{
 		properties = new java.util.Properties();
-		load(FileUtil.find(Gdx.files.internal("data"),DEFAULT_PROPERTIES).read());
+		if(Gdx.files != null)
+			load(FileUtil.find(Gdx.files.internal("data"),DEFAULT_PROPERTIES).read());
+		else
+			System.err.println("Failed to load properties, null!");
 	}
 	
 	public static void load(InputStream stream){
