@@ -49,6 +49,8 @@ public class VertexTable extends Table {
 	public void setVertex(float x, float y){
 		coordXLabel.setText(x+"");
 		coordYLabel.setText(y+"");
+		coordXLabel.setCursorPosition(0);
+		coordYLabel.setCursorPosition(0);
 	}
 	
 	public interface VertexRemoveListener{

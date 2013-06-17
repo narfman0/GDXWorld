@@ -31,6 +31,9 @@ public class AABBTriggerTable extends TriggerTable{
 	}
 
 	@Override public void touched(Vector2 coordinates) {
-		llTable.setVertex(coordinates.x, coordinates.y);
+		if(llTable.isCursorActive())
+			llTable.setVertex(coordinates.x, coordinates.y);
+		if(urTable.isCursorActive())
+			urTable.setVertex(coordinates.x, coordinates.y);
 	}
 }
