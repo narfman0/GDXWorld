@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -100,7 +101,10 @@ public class ChainWindow extends AbstractWindow {
 		pack();
 	}
 
-	public void render(float delta, Camera camera, ShapeRenderer renderer){
+	public void render(float delta, Camera camera){
+		ShapeRenderer renderer = new ShapeRenderer();
+		renderer.setProjectionMatrix(camera.combined);
+		renderer.begin(ShapeType.Line);
 		renderer.setColor(Color.ORANGE);
 		float radius = circleTable.getRadius();
 		Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
@@ -108,6 +112,7 @@ public class ChainWindow extends AbstractWindow {
 			Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
 			renderer.circle(coordinates.x, coordinates.y, radius);
 		}
+		renderer.end();
 	}
 	
 	public void touched(float x, float y){

@@ -7,8 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -27,7 +25,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	private World world;
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 	private final GDXRenderer gdxRenderer = new GDXRenderer(true, false);
-	private final ShapeRenderer renderer = new ShapeRenderer();
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
@@ -62,11 +59,8 @@ public class LevelEditorScreen extends AbstractScreen {
 		if(live)
 			world.step(delta, 4, 4);
 		gdxRenderer.render(gdxLevel, camera, null);
-		renderer.setProjectionMatrix(camera.combined);
-		renderer.begin(ShapeType.Line);
 		for(IMode child : modes)
-			child.render(delta, camera, renderer, gdxRenderer);
-		renderer.end();
+			child.render(delta, camera, gdxRenderer);
 		debugRenderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;

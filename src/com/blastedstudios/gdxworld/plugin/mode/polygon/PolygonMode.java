@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
@@ -119,8 +120,12 @@ public class PolygonMode extends AbstractMode {
 			addPolygon(shape);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
 		if(!screen.isLive()){
+			ShapeRenderer renderer = new ShapeRenderer();
+			renderer.setProjectionMatrix(camera.combined);
+			renderer.begin(ShapeType.Line);
+			
 			//Draw set polygons
 			renderer.setColor(Color.GREEN);
 			for(GDXPolygon shape : screen.getLevel().getPolygons())
@@ -140,6 +145,7 @@ public class PolygonMode extends AbstractMode {
 						renderer.line(vertex.x, vertex.y, last.x, last.y);
 					}
 				}
+			renderer.end();
 		}else{
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();

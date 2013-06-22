@@ -10,7 +10,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
@@ -95,10 +94,9 @@ public class CircleMode extends AbstractMode {
 			addCircle(shape);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
-		super.render(delta, camera, renderer, gdxRenderer);
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
 		if(circleWindow != null)
-			circleWindow.render(delta, camera, renderer);
+			circleWindow.render(delta, camera);
 		if(screen.isLive()){
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();

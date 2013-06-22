@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
@@ -80,13 +81,17 @@ public class NPCMode extends AbstractMode {
 			addNPC(npc);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
+		ShapeRenderer renderer = new ShapeRenderer();
+		renderer.setProjectionMatrix(camera.combined);
 		renderer.setColor(Color.PINK);
+		renderer.begin(ShapeType.Line);
 		if(!screen.isLive())
 			for(GDXNPC object : screen.getLevel().getNpcs())
 				renderer.circle(object.getCoordinates().x, object.getCoordinates().y, LevelEditorScreen.getNodeRadius(), 12);
 		renderer.setColor(new Color(.9f, 0.5f, 0.5f, 1));
 		if(npcWindow != null)
 			renderer.circle(npcWindow.getCoordinates().x, npcWindow.getCoordinates().y, LevelEditorScreen.getNodeRadius());
+		renderer.end();
 	};
 }

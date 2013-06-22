@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.plugin.mode.circle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -118,17 +119,18 @@ public class CircleWindow extends AbstractWindow {
 		centerTable.setVertex(center.x, center.y);
 	}
 	
-	public void render(float delta, Camera camera, ShapeRenderer renderer){
-
-                // This appears to be about the minimum size the radius can be
-	        // where you'll still get a closed figure (triangle).  Any
-	        // smaller and it's a line, too small and it throws an
-	        // exception.
-	        final float MIN_RADIUS = 0.13f;
-
+	public void render(float delta, Camera camera){
+        // This appears to be about the minimum size the radius can be
+        // where you'll still get a closed figure (triangle).  Any
+        // smaller and it's a line, too small and it throws an
+        // exception.
+        final float MIN_RADIUS = 0.13f;
+		ShapeRenderer renderer = new ShapeRenderer();
+		renderer.begin(ShapeType.Line);
+		renderer.setProjectionMatrix(camera.combined);
 		renderer.setColor(new Color(.1f, 1, .1f, 1));
-		if(table.getRadius() >= MIN_RADIUS) {
+		if(table.getRadius() >= MIN_RADIUS)
 		    renderer.circle(centerTable.getVertex().x, centerTable.getVertex().y, table.getRadius());
-		}
+		renderer.end();
 	}
 }
