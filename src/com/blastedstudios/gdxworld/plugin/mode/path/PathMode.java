@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
@@ -61,8 +62,9 @@ public class PathMode extends AbstractMode {
 		for(GDXPath npc : level.getPaths())
 			addPath(npc);
 	}
-	
-	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+
+	@Override public void render(SpriteBatch batch, float delta, OrthographicCamera camera, 
+			ShapeRenderer renderer, GDXRenderer gdxRenderer){
 		if(!screen.isLive()){
 			for(GDXPath object : screen.getLevel().getPaths())
 				renderNodeList(object.getNodes(), renderer, Color.GRAY);

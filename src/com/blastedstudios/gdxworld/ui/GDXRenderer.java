@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.util.FileUtil;
-import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
@@ -25,29 +24,22 @@ public class GDXRenderer {
 	private final float GDX_SCALE = .05f;
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
-	private SpriteBatch batch;
 	private static final Texture EMPTY = new Texture(1,1,Format.RGBA4444);
 	
 	public GDXRenderer(boolean drawBackground, boolean drawShapes){
 		this.drawBackground = drawBackground;
 		this.drawShapes = drawShapes;
 		textureMap = new HashMap<String, Texture>();
-		batch = new SpriteBatch();
-		if(!Properties.getBool("renderer.blend.enabled", true))
-			batch.disableBlending();
 	}
 	
-	public void render(GDXLevel level, OrthographicCamera camera, Iterable<Entry<GDXShape,Body>> bodies){
-		batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        
+	public void render(SpriteBatch batch, GDXLevel level, OrthographicCamera camera, 
+			Iterable<Entry<GDXShape,Body>> bodies){
 		if(drawBackground)
 			for(GDXBackground background : level.getBackgrounds())
-				drawBackground(background, batch);
+				drawBackground(background, batch, camera);
 		if(drawShapes)
 			for(Entry<GDXShape,Body> entry : bodies)
 				drawShape(camera, entry.getKey(), entry.getValue(), batch);
-		batch.end();
 	}
 	
 	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, SpriteBatch batch){
@@ -61,7 +53,7 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawBackground(GDXBackground background, SpriteBatch batch){
+	public void drawBackground(GDXBackground background, SpriteBatch batch, Camera camera){
 		Texture texture = getTexture(background.getTexture());
 		if(texture != null){
 			//Disabling parallax for now

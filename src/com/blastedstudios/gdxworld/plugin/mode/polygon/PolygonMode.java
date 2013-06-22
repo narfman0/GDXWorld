@@ -118,8 +118,9 @@ public class PolygonMode extends AbstractMode {
 		for(GDXPolygon shape : level.getPolygons())
 			addPolygon(shape);
 	}
-	
-	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+
+	@Override public void render(SpriteBatch batch, float delta, OrthographicCamera camera, 
+			ShapeRenderer renderer, GDXRenderer gdxRenderer){
 		if(!screen.isLive()){
 			//Draw set polygons
 			renderer.setColor(Color.GREEN);
@@ -140,12 +141,8 @@ public class PolygonMode extends AbstractMode {
 						renderer.line(vertex.x, vertex.y, last.x, last.y);
 					}
 				}
-		}else{
-			spriteBatch.setProjectionMatrix(camera.combined);
-			spriteBatch.begin();
+		}else
 			for(Entry<GDXPolygon,Body> entry : bodies.entrySet())
 				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
-			spriteBatch.end();
-		}
 	};
 }

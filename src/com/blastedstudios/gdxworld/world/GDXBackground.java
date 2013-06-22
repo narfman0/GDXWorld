@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -69,5 +70,11 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 
 	@Override public int compareTo(GDXBackground o) {
 		return -((Float)depth).compareTo(o.depth);
+	}
+	
+	public static class BackgroundDepthComparator implements Comparator<GDXBackground>{
+		@Override public int compare(GDXBackground o1, GDXBackground o2) {
+			return ((Float)o1.depth).compareTo(o2.depth);
+		}
 	}
 }
