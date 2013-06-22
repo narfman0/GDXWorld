@@ -8,7 +8,6 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -104,9 +103,8 @@ public class JointMode extends AbstractMode {
 		super.start();
 		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
 	}
-
-	@Override public void render(SpriteBatch batch, float delta, OrthographicCamera camera, 
-			ShapeRenderer renderer, GDXRenderer gdxRenderer){
+	
+	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
 		if(!screen.isLive()){
 			renderer.setColor(Color.GREEN);
 			for(GDXJoint object : screen.getLevel().getJoints())

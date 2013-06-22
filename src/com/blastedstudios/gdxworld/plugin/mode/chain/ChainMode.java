@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.chain;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
@@ -43,8 +42,8 @@ public class ChainMode extends AbstractMode {
 		return false;
 	}
 
-	@Override public void render(SpriteBatch batch, float delta, OrthographicCamera camera, 
-			ShapeRenderer renderer, GDXRenderer gdxRenderer){
+	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+		super.render(delta, camera, renderer, gdxRenderer);
 		if(window != null)
 			window.render(delta, camera, renderer);
 	}

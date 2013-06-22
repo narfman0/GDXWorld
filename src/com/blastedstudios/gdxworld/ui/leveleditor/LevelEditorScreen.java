@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -29,13 +28,12 @@ public class LevelEditorScreen extends AbstractScreen {
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 	private final GDXRenderer gdxRenderer = new GDXRenderer(true, false);
 	private final ShapeRenderer renderer = new ShapeRenderer();
-	private final SpriteBatch batch;
 	private LevelWindow levelWindow;
 	private GDXLevel gdxLevel;
 	private boolean live;
 	private final Collection<IMode> modes = PluginUtil.getPluginsSorted(IMode.class);
 	private IMode mode;
-    private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
+        private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super(game);
@@ -45,7 +43,6 @@ public class LevelEditorScreen extends AbstractScreen {
 			child.init(this);
 		stage.addActor(levelWindow = new LevelWindow(game, skin, gdxWorld, gdxLevel, this));
 		camera.zoom = 4;
-		batch = new SpriteBatch();
 		loadLevel();
 	}
 	
@@ -64,15 +61,12 @@ public class LevelEditorScreen extends AbstractScreen {
 			camera.apply(Gdx.gl10);
 		if(live)
 			world.step(delta, 4, 4);
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		gdxRenderer.render(batch, gdxLevel, camera, null);
+		gdxRenderer.render(gdxLevel, camera, null);
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
 		for(IMode child : modes)
-			child.render(batch, delta, camera, renderer, gdxRenderer);
+			child.render(delta, camera, renderer, gdxRenderer);
 		renderer.end();
-		batch.end();
 		debugRenderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;

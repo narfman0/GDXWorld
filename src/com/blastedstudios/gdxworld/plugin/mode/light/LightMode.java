@@ -6,7 +6,6 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
@@ -70,9 +69,9 @@ public class LightMode extends AbstractMode {
 		if(screen.isLive())
 			rayHandler = level.createLights(screen.getWorld()).rayHandler;
 	}
-
-	@Override public void render(SpriteBatch batch, float delta, OrthographicCamera camera, 
-			ShapeRenderer renderer, GDXRenderer gdxRenderer){
+	
+	@Override public void render(float delta, OrthographicCamera camera, ShapeRenderer renderer, GDXRenderer gdxRenderer){
+		super.render(delta, camera, renderer, gdxRenderer);
 		if(rayHandler != null){
 			rayHandler.setCombinedMatrix(camera.combined);
 			rayHandler.updateAndRender();
