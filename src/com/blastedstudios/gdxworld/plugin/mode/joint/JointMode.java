@@ -105,9 +105,8 @@ public class JointMode extends AbstractMode {
 		screen.getStage().addActor(jointWindow = new JointWindow(screen.getSkin(), screen, this));
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(!screen.isLive()){
-			ShapeRenderer renderer = new ShapeRenderer();
 			renderer.setProjectionMatrix(camera.combined);
 			renderer.begin(ShapeType.Line);
 			renderer.setColor(Color.GREEN);

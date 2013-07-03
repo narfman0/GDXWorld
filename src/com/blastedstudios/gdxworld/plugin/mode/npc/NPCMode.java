@@ -81,8 +81,7 @@ public class NPCMode extends AbstractMode {
 			addNPC(npc);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
-		ShapeRenderer renderer = new ShapeRenderer();
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.setColor(Color.PINK);
 		renderer.begin(ShapeType.Line);

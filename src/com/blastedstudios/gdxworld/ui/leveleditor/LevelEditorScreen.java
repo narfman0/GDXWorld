@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -30,7 +31,8 @@ public class LevelEditorScreen extends AbstractScreen {
 	private boolean live;
 	private final Collection<IMode> modes = PluginUtil.getPluginsSorted(IMode.class);
 	private IMode mode;
-        private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
+	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
+	private final ShapeRenderer renderer = new ShapeRenderer();
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
 		super(game);
@@ -60,7 +62,7 @@ public class LevelEditorScreen extends AbstractScreen {
 			world.step(delta, 4, 4);
 		gdxRenderer.render(gdxLevel, camera, null);
 		for(IMode child : modes)
-			child.render(delta, camera, gdxRenderer);
+			child.render(delta, camera, gdxRenderer, renderer);
 		debugRenderer.render(world, camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP))
 			camera.position.y+=camera.zoom;

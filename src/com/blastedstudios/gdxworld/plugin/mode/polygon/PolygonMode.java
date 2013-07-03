@@ -120,9 +120,8 @@ public class PolygonMode extends AbstractMode {
 			addPolygon(shape);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(!screen.isLive()){
-			ShapeRenderer renderer = new ShapeRenderer();
 			renderer.setProjectionMatrix(camera.combined);
 			renderer.begin(ShapeType.Line);
 			

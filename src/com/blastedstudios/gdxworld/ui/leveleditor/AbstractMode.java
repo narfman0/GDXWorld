@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.ui.leveleditor;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
@@ -49,6 +50,6 @@ public abstract class AbstractMode implements IMode{
 	}
 	
 	public void start(){};
-	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer){};
+	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){};
 	public void clean() {}
 }
