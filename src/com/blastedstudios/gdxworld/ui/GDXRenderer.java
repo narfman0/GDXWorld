@@ -65,7 +65,7 @@ public class GDXRenderer {
 		Texture texture = getTexture(background.getTexture());
 		if(texture != null){
 			float depth = Math.max(background.getDepth(), .001f);
-			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f);
+			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());
 			Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
 			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
 					texture.getHeight()*background.getScale());
@@ -108,6 +108,7 @@ public class GDXRenderer {
 				}catch(Exception e){
 					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
 							name + ", using empty. Exception: " + e.getMessage());
+					e.printStackTrace();
 					textureMap.put(name, EMPTY);
 				}
 			}else{
