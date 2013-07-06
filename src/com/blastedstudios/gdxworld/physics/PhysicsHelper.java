@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -25,11 +27,17 @@ public class PhysicsHelper {
 	}
 	
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, float density){
+		return createCircle(world, radius, position, type, density, (short)1, (short)-1, (short)0);
+	}
+	
+	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, 
+			float density, short maskBits, short categoryBits, short groupIndex){
 		BodyDef def = new BodyDef();
 		def.type = type;
 		Body body = world.createBody(def);
 		CIRCLE_SHAPE.setRadius(radius);
-		body.createFixture(CIRCLE_SHAPE, density);
+		Fixture fixture = body.createFixture(CIRCLE_SHAPE, density);
+		setFilterData(fixture, maskBits, categoryBits, groupIndex);
 		body.setTransform(position, 0);
 		return body;
 	}
@@ -39,13 +47,27 @@ public class PhysicsHelper {
 	}
 
 	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type, float density){
+		return createRectangle(world, width, height, position, type, density, (short)1, (short)-1, (short)0);
+	}
+
+	public static Body createRectangle(World world, float width, float height, Vector2 position, 
+			BodyType type, float density, short maskBits, short categoryBits, short groupIndex){
 		BodyDef def = new BodyDef();
 		def.type = type;
 		Body body = world.createBody(def);
 		POLYGON_SHAPE.setAsBox(width, height);
-		body.createFixture(POLYGON_SHAPE, density);
+		Fixture fixture = body.createFixture(POLYGON_SHAPE, density);
+		setFilterData(fixture, maskBits, categoryBits, groupIndex);
 		body.setTransform(position, 0);
 		return body;
+	}
+	
+	public static void setFilterData(Fixture fixture, short maskBits, short categoryBits, short groupIndex){
+		Filter filter = fixture.getFilterData();
+		filter.categoryBits = categoryBits;
+		filter.maskBits = maskBits;
+		filter.groupIndex = groupIndex;
+		fixture.setFilterData(filter);
 	}
 	
 	public static Body createFixture(World world, FixtureDef fixtureDef, BodyType type,
