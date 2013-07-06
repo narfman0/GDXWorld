@@ -21,7 +21,7 @@ public class PhysicsHelper {
 	public static final CircleShape CIRCLE_SHAPE = new CircleShape();
 
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type){
-		return createCircle(world, radius, position, type);
+		return createCircle(world, radius, position, type, 1);
 	}
 	
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, float density){
@@ -35,7 +35,7 @@ public class PhysicsHelper {
 	}
 	
 	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type){
-		return createRectangle(world, width, height, position, type);
+		return createRectangle(world, width, height, position, type, 1);
 	}
 
 	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type, float density){
