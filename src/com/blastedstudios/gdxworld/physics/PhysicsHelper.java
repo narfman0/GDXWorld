@@ -29,6 +29,16 @@ public class PhysicsHelper {
 		body.setTransform(position, 0);
 		return body;
 	}
+
+	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type){
+		BodyDef def = new BodyDef();
+		def.type = type;
+		Body body = world.createBody(def);
+		POLYGON_SHAPE.setAsBox(width, height);
+		body.createFixture(POLYGON_SHAPE, 1);
+		body.setTransform(position, 0);
+		return body;
+	}
 	
 	public static Body createFixture(World world, FixtureDef fixtureDef, BodyType type,
 			List<Vector2> nodes, Shape shape) {
