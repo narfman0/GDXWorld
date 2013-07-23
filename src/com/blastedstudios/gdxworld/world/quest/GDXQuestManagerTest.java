@@ -114,20 +114,21 @@ public class GDXQuestManagerTest {
 				return false;
 			}
 		};
-		manager = new GDXQuestManager(provider, executor);
+		manager = new GDXQuestManager();
+		manager.initialize(provider, executor);
 	}
 
 	@Test public void testActive() {
 		manager.setCurrentLevel(level1);
-		manager.tick(1);
+		manager.tick();
 		assertFalse(manager.isActive(quest2));
 		assertTrue(manager.isActive(quest1));
 		playerPosition.set(2,2);
-		manager.tick(1);
+		manager.tick();
 		assertTrue(manager.isCompleted(quest1));
 		assertTrue(manager.isActive(quest2));
 		playerPosition.set(5,5);
-		manager.tick(1);
+		manager.tick();
 		assertTrue(manager.isCompleted(quest2));
 	}
 
@@ -151,12 +152,12 @@ public class GDXQuestManagerTest {
 		assertTrue(manager.isActive(quest));
 		assertFalse(manager.isCompleted(quest));
 		assertEquals(0, count, 1e-6);
-		manager.tick(1);
+		manager.tick();
 		assertTrue(manager.isCompleted(quest));
 		assertTrue(manager.isActive(quest));
 		assertEquals(1, count, 1e-6);
 		playerPosition.set(2,2);
-		manager.tick(1);
+		manager.tick();
 		assertTrue(manager.isCompleted(quest));
 		assertTrue(manager.isActive(quest));
 		assertEquals(2, count, 1e-6);

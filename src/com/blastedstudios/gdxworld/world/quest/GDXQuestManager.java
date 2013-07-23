@@ -22,13 +22,13 @@ import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationP
  */
 public class GDXQuestManager implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private transient final IQuestTriggerInformationProvider provider;
-	private transient final IQuestManifestationExecutor executor;
+	private transient IQuestTriggerInformationProvider provider;
+	private transient IQuestManifestationExecutor executor;
 	private transient GDXLevel currentLevel;
 	private transient Map<String, GDXQuest> currentLevelQuestMap = new HashMap<>();
 	private Map<String, List<QuestStatus>> levelQuestStatusMap = new HashMap<>();
 
-	public GDXQuestManager(IQuestTriggerInformationProvider provider,
+	public void initialize(IQuestTriggerInformationProvider provider,
 			IQuestManifestationExecutor executor){
 		this.provider = provider;
 		this.executor = executor;
@@ -52,7 +52,7 @@ public class GDXQuestManager implements Serializable{
 		}
 	}
 	
-	public void tick(float delta){
+	public void tick(){
 		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
 		if(statuses == null){
 			Gdx.app.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
