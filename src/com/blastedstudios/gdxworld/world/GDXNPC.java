@@ -49,7 +49,7 @@ public class GDXNPC implements  Cloneable,Serializable{
 	}
 	
 	@Override public String toString(){
-		return "[GDXNPC: " + name + coordinates + "]";
+		return "[GDXNPC name:" + name + " coordinates:" + coordinates + "]";
 	}
 	
 	@Override public Object clone(){

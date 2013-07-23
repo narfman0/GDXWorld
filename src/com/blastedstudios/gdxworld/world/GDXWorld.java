@@ -89,7 +89,7 @@ public class GDXWorld implements Serializable{
 	}
 
 	@Override public String toString(){
-		return "[GDXWorld]";
+		return "[GDXWorld level#:" + levels.size() + "]";
 	}
 	
 	public static Collection<ISerializer> getSerializers(){

@@ -39,7 +39,7 @@ public class QuestStatus implements Comparable<QuestStatus>, Serializable{
 	}
 	
 	@Override public String toString(){
-		return "[QuestStatus: level:" + levelName + " quest:" + questName + 
+		return "[QuestStatus levelName:" + levelName + " questName:" + questName + 
 				" completed:" + completed + "]";
 	}
 	

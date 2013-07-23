@@ -1,9 +1,9 @@
 package com.blastedstudios.gdxworld.world.quest;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +25,8 @@ public class GDXQuestManager implements Serializable{
 	private transient final IQuestTriggerInformationProvider provider;
 	private transient final IQuestManifestationExecutor executor;
 	private transient GDXLevel currentLevel;
-	private transient Map<String,GDXQuest> currentLevelQuestMap = new HashMap<String, GDXQuest>();
-	private Map<String, List<QuestStatus>> levelQuestStatusMap = new HashMap<String, List<QuestStatus>>();
+	private transient Map<String, GDXQuest> currentLevelQuestMap = new HashMap<>();
+	private Map<String, List<QuestStatus>> levelQuestStatusMap = new HashMap<>();
 
 	public GDXQuestManager(IQuestTriggerInformationProvider provider,
 			IQuestManifestationExecutor executor){
@@ -36,9 +36,9 @@ public class GDXQuestManager implements Serializable{
 
 	public void setCurrentLevel(GDXLevel currentLevel) {
 		this.currentLevel = currentLevel;
-		Gdx.app.log("GDXQuestManager.setCurrentLevel", "set level: " + currentLevel.getName());
+		Gdx.app.log("GDXQuestManager.setCurrentLevel", "set level: " + currentLevel);
 		if(!levelQuestStatusMap.containsKey(currentLevel.getName())){
-			List<QuestStatus> statuses = new ArrayList<QuestStatus>();
+			List<QuestStatus> statuses = new LinkedList<>();
 			for(GDXQuest quest : currentLevel.getQuests())
 				statuses.add(new QuestStatus(currentLevel.getName(), quest.getName()));
 			Collections.sort(statuses, new QuestStatus.CompletionComparator());
@@ -53,25 +53,25 @@ public class GDXQuestManager implements Serializable{
 	}
 	
 	public void tick(float delta){
-		if(!levelQuestStatusMap.containsKey(currentLevel.getName())){
-			Gdx.app.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel.getName());
+		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
+		if(statuses == null){
+			Gdx.app.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
 			return;
 		}
 		boolean statusChanged = false;	//can't sort while looping through map
-		for(QuestStatus status : levelQuestStatusMap.get(currentLevel.getName())){
+		for(QuestStatus status : statuses){
 			GDXQuest quest = currentLevelQuestMap.get(status.questName);
 			if(!status.isCompleted() || quest.isRepeatable()){
 				if(isActive(quest) && quest.getTrigger().activate()){
 					status.setCompleted(statusChanged = true);
 					quest.getManifestation().execute();
-					Gdx.app.log("GDXQuestManager.tick", "Quest manifested: " + quest.getName());
+					Gdx.app.log("GDXQuestManager.tick", "Quest manifested: " + quest);
 				}
 			}else
 				break;
 		}
 		if(statusChanged)
-			Collections.sort(levelQuestStatusMap.get(currentLevel.getName()), 
-					new QuestStatus.CompletionComparator());
+			Collections.sort(statuses, new QuestStatus.CompletionComparator());
 	}
 	
 	/**

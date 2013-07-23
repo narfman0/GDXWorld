@@ -72,7 +72,7 @@ public abstract class GDXShape implements Cloneable,Serializable{
 	public abstract float getDistance(float x, float y);
 
 	@Override public String toString(){
-		return "[GDXShape: " + name + "]";
+		return "[GDXShape name:" + name + "]";
 	}
 
 	public abstract Object clone();

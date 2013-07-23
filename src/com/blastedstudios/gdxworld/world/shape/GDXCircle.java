@@ -46,7 +46,7 @@ public class GDXCircle extends GDXShape {
 	}
 	
 	@Override public String toString(){
-		return "[GDXCircle: name " + name + " radius " + radius + " center " + center + "]";
+		return "[GDXCircle name:" + name + " radius:" + radius + " center:" + center + "]";
 	}
 
 	@Override public Vector2 getDimensions() {

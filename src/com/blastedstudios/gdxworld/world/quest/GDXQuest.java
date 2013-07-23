@@ -75,7 +75,7 @@ public class GDXQuest implements Serializable, Cloneable{
 	}
 	
 	@Override public String toString(){
-		return "[GDXQuest: name:" + name + " prereq:" + prerequisites + 
+		return "[GDXQuest name:" + name + " prereq:" + prerequisites + 
 				" manifestation:" + manifestation + " trigger:" + trigger + "]";
 	}
 }
