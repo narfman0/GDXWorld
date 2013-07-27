@@ -12,6 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 
+/**
+ * Represents a route defined as a set of points. 
+ * 
+ * This may be used for the default path NPCs take when not in combat, certain
+ * predefined paths for cutscenes, etc. 
+ */
 public class GDXPath implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;

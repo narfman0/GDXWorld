@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.Properties;
 
 /**
- * Represents an item that is rendered in the background. THis will not be
+ * Represents an item that is rendered in the background. This will not be
  * loaded in to the physics engine, and may be at different depths to emulate
  * parallax scrolling.
  */

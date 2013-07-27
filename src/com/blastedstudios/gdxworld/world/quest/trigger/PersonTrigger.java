@@ -1,5 +1,9 @@
 package com.blastedstudios.gdxworld.world.quest.trigger;
 
+/**
+ * Tracks the distance between two beings. Triggers when distance is below a
+ * certain threshold. 
+ */
 public class PersonTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final PersonTrigger DEFAULT = new PersonTrigger("Origin", "Target", 1); 

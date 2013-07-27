@@ -2,6 +2,10 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Trigger for when player enters a certain rectangle, identified by the
+ * lower left and the upper right coordinates of the rectangle
+ */
 public class AABBTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final AABBTrigger DEFAULT = new AABBTrigger(0,0,1,1);

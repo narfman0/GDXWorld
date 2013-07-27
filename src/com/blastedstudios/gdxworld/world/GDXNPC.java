@@ -7,6 +7,17 @@ import java.util.Map.Entry;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.Properties;
 
+/**
+ * Represents an NPC at a given location. Has configurable properties for
+ * different use cases that can be given at startup. The properties are
+ * defined in npc.properties.
+ * 
+ * Example properties that may be desirable: 
+ * behavior - string representing which behavior tree this NPC will follow
+ * faction - defines how this NPC is aligned with what factions, in what way
+ * level - high level property defining how powerful a character tends to be
+ * hp/attack/defense - properties defining other characteristics of the NPC
+ */
 public class GDXNPC implements  Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;

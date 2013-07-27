@@ -12,6 +12,10 @@ import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ISerializer;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 
+/**
+ * Represents the high level world, or campaign, that hold the levels
+ * containing all the gameplay. 
+ */
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<GDXLevel> levels;

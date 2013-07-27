@@ -11,6 +11,10 @@ import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.physics.box2d.World;
 
+/**
+ * Joints connect shapes in unique ways. 
+ * See http://www.box2d.org/manual.html chapter 8 for more details.
+ */
 public abstract class GDXJoint implements Cloneable,Serializable {
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;

@@ -1,5 +1,9 @@
 package com.blastedstudios.gdxworld.world.quest.trigger;
 
+/**
+ * Measures distance from player to a named object, and when that distance is
+ * below the given threshold, triggers
+ */
 public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final ObjectDistanceTrigger DEFAULT = new ObjectDistanceTrigger("Target", 1, false); 

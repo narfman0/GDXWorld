@@ -3,6 +3,9 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
+/**
+ * Trigger for when a player presses a particular key
+ */
 public class InputTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final InputTrigger DEFAULT = new InputTrigger();

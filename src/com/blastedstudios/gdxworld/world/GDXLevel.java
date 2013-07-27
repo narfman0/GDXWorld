@@ -25,6 +25,11 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
+/**
+ * Representing a particular area in a world, the level contains a list of all
+ * the relevant objects like what physics is like and how the player interacts
+ * with that environment.
+ */
 public class GDXLevel implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;

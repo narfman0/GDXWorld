@@ -1,5 +1,9 @@
 package com.blastedstudios.gdxworld.world.quest.trigger;
 
+/**
+ * Trigger that activates immediately. Could be used for simple things like
+ * defining player start location or other trivial things
+ */
 public class ActivateTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final ActivateTrigger DEFAULT = new ActivateTrigger();

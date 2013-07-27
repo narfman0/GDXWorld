@@ -13,8 +13,28 @@ public class GDXQuest implements Serializable, Cloneable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;
 	private String name = "Quest-"+count++, prerequisites = "";
+	/**
+	 * Quest may be repeatable within the course of gameplay. This may manifest
+	 * in several ways. One example:
+	 * A level designer wishes the player to go up an elevator. This may be 
+	 * accomplished by a when the player is within a certain distance of a
+	 * switch in the elevator (AABB trigger) and hits the action button (action
+	 * required checkbox). If he wants to go back down, there may be another 
+	 * quest doing the reverse. Both would be repeatable, as the player can go
+	 * up or down ad infinitum. 
+	 */
 	private boolean repeatable;
+	/**
+	 * A trigger is what may activate a quest. After triggering, the quest
+	 * manifestation should execute. A trigger might be a distance from an
+	 * object, if the player hits a button, a being dies, etc.
+	 */ 
 	private AbstractQuestTrigger trigger = new AABBTrigger(0, 0, 1, 1);
+	/**
+	 * A manifestation defines what happens as a result of a trigger. A 
+	 * manifestation may be that an enemy is spawned, a door is unlocked,
+	 * an impulse is applied on an object, etc.
+	 */
 	private AbstractQuestManifestation manifestation = (AbstractQuestManifestation) DialogManifestation.DEFAULT.clone();
 	
 	public GDXQuest initialize(IQuestTriggerInformationProvider provider,
@@ -63,7 +83,7 @@ public class GDXQuest implements Serializable, Cloneable{
 	public void setManifestation(AbstractQuestManifestation manifestation) {
 		this.manifestation = manifestation;
 	}
-	
+
 	@Override public Object clone(){
 		GDXQuest quest = new GDXQuest();
 		quest.setName(name);

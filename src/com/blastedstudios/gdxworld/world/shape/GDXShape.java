@@ -7,6 +7,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 
+/**
+ * Represent a physical object in the world. These objects interact
+ * intelligently with each other given their properties and may be used to
+ * populate a world the player can touch, run on, jump, and otherwise interact
+ * with. 
+ */
 public abstract class GDXShape implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	protected String name;

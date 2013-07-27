@@ -1,5 +1,9 @@
 package com.blastedstudios.gdxworld.world.quest.trigger;
 
+/**
+ * Trigger monitoring when a particular named being is killed. Returns true
+ * if being with name is dead.
+ */
 public class KillTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final KillTrigger DEFAULT = new KillTrigger("Name");
