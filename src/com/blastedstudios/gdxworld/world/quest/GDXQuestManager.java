@@ -25,7 +25,7 @@ public class GDXQuestManager implements Serializable{
 	private transient IQuestTriggerInformationProvider provider;
 	private transient IQuestManifestationExecutor executor;
 	private transient GDXLevel currentLevel;
-	private transient Map<String, GDXQuest> currentLevelQuestMap = new HashMap<>();
+	private transient Map<String, GDXQuest> currentLevelQuestMap;
 	private Map<String, List<QuestStatus>> levelQuestStatusMap = new HashMap<>();
 
 	public void initialize(IQuestTriggerInformationProvider provider,
@@ -44,7 +44,7 @@ public class GDXQuestManager implements Serializable{
 			Collections.sort(statuses, new QuestStatus.CompletionComparator());
 			levelQuestStatusMap.put(currentLevel.getName(), statuses);
 		}
-		currentLevelQuestMap.clear();
+		currentLevelQuestMap = new HashMap<>();
 		for(GDXQuest quest : currentLevel.getQuests()){
 			GDXQuest dupe = (GDXQuest) quest.clone();
 			dupe.initialize(provider, executor);
