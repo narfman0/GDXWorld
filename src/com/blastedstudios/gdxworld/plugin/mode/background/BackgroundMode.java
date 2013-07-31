@@ -54,6 +54,7 @@ public class BackgroundMode extends AbstractMode {
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
 		shift();
+		lastTouched = null;
 		return false;
 	}
 	
