@@ -28,6 +28,7 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		torqueText.setMessageText("<torque>");
 		impulseTable = new VertexTable(manifestation.getImpulse(), skin, null);
 		bodyTypeList = new List(BodyType.values(), skin);
+		bodyTypeList.setSelectedIndex(manifestation.getType().getValue());
 		add(new Label("Name", skin));
 		add(nameText);
 		row();
