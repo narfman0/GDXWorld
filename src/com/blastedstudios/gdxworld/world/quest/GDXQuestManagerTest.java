@@ -25,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.world.GDXLevel;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
@@ -65,9 +66,10 @@ public class GDXQuestManagerTest {
 				}
 				return null;
 			}
-			@Override public void addDialog(String dialog, String origin, String type) {
+			@Override public CompletionEnum addDialog(String dialog, String origin, String type) {
 				Gdx.app.log("QuestManifestationExecutor.addDialog", "Dialog received:" +
 						 dialog + " origin: " + origin + "type: " + type);
+				return CompletionEnum.EXECUTING;
 			}
 			@Override public void endLevel(boolean success) {
 				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);
@@ -125,10 +127,14 @@ public class GDXQuestManagerTest {
 		assertTrue(manager.isActive(quest1));
 		playerPosition.set(2,2);
 		manager.tick();
+		assertFalse(manager.isCompleted(quest1));
+		manager.setStatus(quest1.getName(), CompletionEnum.COMPLETED);
 		assertTrue(manager.isCompleted(quest1));
 		assertTrue(manager.isActive(quest2));
 		playerPosition.set(5,5);
 		manager.tick();
+		assertFalse(manager.isCompleted(quest2));
+		manager.setStatus(quest2.getName(), CompletionEnum.COMPLETED);
 		assertTrue(manager.isCompleted(quest2));
 	}
 
@@ -138,8 +144,9 @@ public class GDXQuestManagerTest {
 		quest.setManifestation(new AbstractQuestManifestation() {
 			private static final long serialVersionUID = 1L;
 			@Override public String toString() {return "";}
-			@Override public void execute() {
+			@Override public CompletionEnum execute() {
 				count++;
+				return CompletionEnum.COMPLETED;
 			}
 			@Override public AbstractQuestManifestation clone() {return this;}
 		});

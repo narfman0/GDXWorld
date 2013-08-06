@@ -6,18 +6,18 @@ import java.util.Comparator;
 public class QuestStatus implements Comparable<QuestStatus>, Serializable{
 	private static final long serialVersionUID = 1L;
 	public final String levelName, questName;
-	private boolean completed;
+	private CompletionEnum completed = CompletionEnum.NOT_STARTED;
 	
 	public QuestStatus(String levelName, String questName){
 		this.levelName = levelName;
 		this.questName = questName;
 	}
 
-	public boolean isCompleted() {
+	public CompletionEnum getCompleted() {
 		return completed;
 	}
 
-	public void setCompleted(boolean completed) {
+	public void setCompleted(CompletionEnum completed) {
 		this.completed = completed;
 	}
 	
@@ -48,12 +48,14 @@ public class QuestStatus implements Comparable<QuestStatus>, Serializable{
 	 */
 	public static class CompletionComparator implements Comparator<QuestStatus>{
 		@Override public int compare(QuestStatus s1, QuestStatus s2) {
-			if(s1.completed && !s2.completed)
-				return 1;
-			if(!s1.completed && s2.completed)
-				return -1;
+			if(s1.completed.compareTo(s2.completed) != 0)
+				return s1.completed.compareTo(s2.completed);
 			return s1.levelName.compareTo(s2.levelName);
 		}
 		
+	}
+	
+	public enum CompletionEnum{
+		NOT_STARTED, EXECUTING, COMPLETED;
 	}
 }

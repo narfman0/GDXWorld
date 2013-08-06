@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
+
 public class EndLevelManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static EndLevelManifestation DEFAULT = new EndLevelManifestation(true);
@@ -11,8 +13,9 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 		this.success = success;
 	}
 	
-	@Override public void execute() {
+	@Override public CompletionEnum execute() {
 		executor.endLevel(success);
+		return CompletionEnum.COMPLETED;
 	}
 
 	public boolean isSuccess() {

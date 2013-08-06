@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
+
 public class DialogManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
 	public static DialogManifestation DEFAULT = new DialogManifestation("Dialog","Origin","Type");
@@ -50,8 +52,8 @@ public class DialogManifestation extends AbstractQuestManifestation{
 		this.type = type;
 	}
 
-	@Override public void execute() {
-		executor.addDialog(dialog, origin, type);
+	@Override public CompletionEnum execute() {
+		return executor.addDialog(dialog, origin, type);
 	}
 
 	@Override public AbstractQuestManifestation clone() {

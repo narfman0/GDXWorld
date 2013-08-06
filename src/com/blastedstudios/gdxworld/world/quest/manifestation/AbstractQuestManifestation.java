@@ -2,6 +2,8 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import java.io.Serializable;
 
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
+
 /**
  * Once a quest has been triggered, there will be some sort of way it manifests
  * itself. The manifestor could be an action against an object, dialog, or 
@@ -14,7 +16,7 @@ public abstract class AbstractQuestManifestation implements Cloneable,Serializab
 	/**
 	 * Executes the manifestation after the trigger has been flipped
 	 */
-	public abstract void execute();
+	public abstract CompletionEnum execute();
 
 	public IQuestManifestationExecutor getExecutor() {
 		return executor;

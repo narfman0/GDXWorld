@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 public class PhysicsManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
@@ -33,11 +34,12 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 		this.torque = torque;
 	}
 
-	@Override public void execute() {
+	@Override public CompletionEnum execute() {
 		Body body = executor.getPhysicsObject(name); 
 		body.applyLinearImpulse(impulse, body.getPosition(),true);
 		body.setType(type);
 		body.applyTorque(torque,true);
+		return CompletionEnum.COMPLETED;
 	}
 
 	public String getName() {

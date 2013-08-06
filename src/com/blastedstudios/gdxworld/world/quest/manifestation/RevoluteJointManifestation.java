@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 public class RevoluteJointManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
@@ -19,11 +20,12 @@ public class RevoluteJointManifestation extends AbstractQuestManifestation {
 		this.motorSpeed = motorSpeed;
 	}
 
-	@Override public void execute() {
+	@Override public CompletionEnum execute() {
 		RevoluteJoint joint = ((RevoluteJoint)executor.getPhysicsJoint(name));
 		joint.enableMotor(enableMotor);
 		joint.setMaxMotorTorque(maxMotorTorque);
 		joint.setMotorSpeed(motorSpeed);
+		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {

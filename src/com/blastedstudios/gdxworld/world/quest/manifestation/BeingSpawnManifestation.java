@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
@@ -15,8 +16,9 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 		this.being = being;
 	}
 
-	@Override public void execute() {
+	@Override public CompletionEnum execute() {
 		executor.beingSpawn(being, coordinates);
+		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {

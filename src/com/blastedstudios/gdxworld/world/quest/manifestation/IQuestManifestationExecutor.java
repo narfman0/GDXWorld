@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 /**
  * Interface client must implement to be able to execute/run the given
@@ -12,7 +13,7 @@ public interface IQuestManifestationExecutor {
 	/**
 	 * Add dialog to related quest
 	 */
-	public void addDialog(String dialog, String origin, String type);
+	public CompletionEnum addDialog(String dialog, String origin, String type);
 	
 	/**
 	 * @return named physics object, up to client. Could set user data

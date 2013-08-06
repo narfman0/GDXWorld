@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.world.GDXLevel;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 
@@ -61,11 +62,11 @@ public class GDXQuestManager implements Serializable{
 		boolean statusChanged = false;	//can't sort while looping through map
 		for(QuestStatus status : statuses){
 			GDXQuest quest = currentLevelQuestMap.get(status.questName);
-			if(!status.isCompleted() || quest.isRepeatable()){
+			if(status.getCompleted() == CompletionEnum.NOT_STARTED || quest.isRepeatable()){
 				if(isActive(quest) && quest.getTrigger().activate()){
-					status.setCompleted(statusChanged = true);
-					quest.getManifestation().execute();
+					status.setCompleted(quest.getManifestation().execute());
 					Gdx.app.log("GDXQuestManager.tick", "Quest manifested: " + quest);
+					statusChanged = true;
 				}
 			}else
 				break;
@@ -85,15 +86,25 @@ public class GDXQuestManager implements Serializable{
 		if(!quest.getPrerequisites().trim().equals(""))
 			for(String prereq : quest.getPrerequisites().split(",")){
 				List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
-				if(statuses.contains(new QuestStatus(currentLevel.getName(), prereq.trim())))
-					return false;
+				for(QuestStatus status : statuses)
+					if(status.levelName.equals(currentLevel.getName()) && prereq.trim().equals(status.questName) &&
+							status.getCompleted() != CompletionEnum.COMPLETED)
+						return false;
 			}
 		return true;
 	}
 	
 	public boolean isCompleted(GDXQuest quest){
 		QuestStatus representative = new QuestStatus(currentLevel.getName(), quest.getName());
-		representative.setCompleted(true);
+		representative.setCompleted(CompletionEnum.COMPLETED);
 		return levelQuestStatusMap.get(currentLevel.getName()).contains(representative);
+	}
+	
+	public void setStatus(String questName, CompletionEnum completed){
+		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
+		for(QuestStatus status : statuses)
+			if(status.questName.equals(questName))
+				status.setCompleted(completed);
+		Collections.sort(statuses, new QuestStatus.CompletionComparator());
 	}
 }

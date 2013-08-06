@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 public class PrismaticJointManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
@@ -19,11 +20,12 @@ public class PrismaticJointManifestation extends AbstractQuestManifestation {
 		this.motorSpeed = motorSpeed;
 	}
 
-	@Override public void execute() {
+	@Override public CompletionEnum execute() {
 		PrismaticJoint joint = ((PrismaticJoint)executor.getPhysicsJoint(name));
 		joint.enableMotor(enableMotor);
 		joint.setMaxMotorForce(maxMotorForce);
 		joint.setMotorSpeed(motorSpeed);
+		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
