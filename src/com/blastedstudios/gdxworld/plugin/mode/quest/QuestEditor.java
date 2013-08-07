@@ -100,7 +100,7 @@ class QuestEditor extends AbstractWindow {
 		for(IQuestComponent tableClass : arrayList){
 			try {
 				final CheckBox box = new CheckBox(tableClass.getBoxText(), skin);
-				final Object defaultValue = tableClass.getDefault();
+				final Object defaultValue = tableClass.getDefault().clone();
 				checkBoxes.add(box);
 				if(tableClass.getClass().getSimpleName().startsWith(current.getClass().getSimpleName()))
 					box.setChecked(true);

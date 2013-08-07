@@ -2,7 +2,9 @@ package com.blastedstudios.gdxworld.world.quest.trigger;
 
 import java.io.Serializable;
 
-public abstract class AbstractQuestTrigger implements Cloneable,Serializable{
+import com.blastedstudios.gdxworld.world.quest.ICloneable;
+
+public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private transient IQuestTriggerInformationProvider provider;
 

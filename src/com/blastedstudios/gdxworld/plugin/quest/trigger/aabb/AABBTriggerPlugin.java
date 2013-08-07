@@ -5,6 +5,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.blastedstudios.gdxworld.plugin.mode.quest.IQuestComponent.IQuestComponentTrigger;
+import com.blastedstudios.gdxworld.world.quest.ICloneable;
 
 @PluginImplementation
 public class AABBTriggerPlugin implements IQuestComponentTrigger{
@@ -12,7 +13,7 @@ public class AABBTriggerPlugin implements IQuestComponentTrigger{
 		return "AABB";
 	}
 
-	@Override public Object getDefault() {
+	@Override public ICloneable getDefault() {
 		return AABBTrigger.DEFAULT;
 	}
 

@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 
 import java.io.Serializable;
 
+import com.blastedstudios.gdxworld.world.quest.ICloneable;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 /**
@@ -9,7 +10,7 @@ import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
  * itself. The manifestor could be an action against an object, dialog, or 
  * similar. 
  */
-public abstract class AbstractQuestManifestation implements Cloneable,Serializable{
+public abstract class AbstractQuestManifestation implements ICloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	protected transient IQuestManifestationExecutor executor;
 	
