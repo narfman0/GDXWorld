@@ -2,10 +2,10 @@ package com.blastedstudios.gdxworld.world.quest;
 
 import java.io.Serializable;
 
+import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
+import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
-import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
-import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 

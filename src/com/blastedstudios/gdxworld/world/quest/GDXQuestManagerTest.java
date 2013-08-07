@@ -24,13 +24,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Clipboard;
+import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
+import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
+import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
-import com.blastedstudios.gdxworld.world.quest.manifestation.DialogManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
-import com.blastedstudios.gdxworld.world.quest.trigger.AABBTrigger;
-import com.blastedstudios.gdxworld.world.quest.trigger.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 
 public class GDXQuestManagerTest {

@@ -27,6 +27,7 @@ public class XMLSerializer implements ISerializer {
 		this.extension = extension;
 		xStream.alias("Vector2", com.badlogic.gdx.math.Vector2.class);
 		xStream.aliasPackage("world", "com.blastedstudios.gdxworld.world");
+		xStream.aliasPackage("plugin", "com.blastedstudios.gdxworld.plugin");
 	}
 	
 	@Override public Object load(File selectedFile) throws Exception {
