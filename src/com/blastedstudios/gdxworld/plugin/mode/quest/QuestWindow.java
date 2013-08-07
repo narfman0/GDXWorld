@@ -40,7 +40,8 @@ class QuestWindow extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				quests.clear();
 				questTable.clear();
-				editor.remove();
+				if(editor != null)
+					editor.remove();
 			}
 		});
 		addButton.addListener(new ClickListener() {
