@@ -1,12 +1,9 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.revolutejoint;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
-@PluginImplementation
 public class RevoluteJointManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static final RevoluteJointManifestation DEFAULT = new RevoluteJointManifestation();

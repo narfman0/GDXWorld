@@ -1,12 +1,9 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.beingspawn;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
-@PluginImplementation
 public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "Name");

@@ -1,11 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
-@PluginImplementation
 public class DialogManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
 	public static DialogManifestation DEFAULT = new DialogManifestation("Dialog","Origin","Type");

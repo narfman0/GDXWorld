@@ -1,14 +1,11 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.physics;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
-@PluginImplementation
 public class PhysicsManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
 	public static PhysicsManifestation DEFAULT = new PhysicsManifestation("Name",new Vector2(),BodyType.StaticBody,0);
