@@ -17,10 +17,6 @@ public class AABBTriggerPlugin implements IQuestComponentTrigger{
 		return AABBTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return AABBTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new AABBTriggerTable(skin, (AABBTrigger) object);
 	}

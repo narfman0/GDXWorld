@@ -17,10 +17,6 @@ public class InputTriggerPlugin implements IQuestComponentTrigger{
 		return InputTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return InputTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new InputTriggerTable(skin, (InputTrigger) object);
 	}

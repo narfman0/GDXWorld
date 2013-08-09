@@ -17,10 +17,6 @@ public class ActivateTriggerPlugin implements IQuestComponentTrigger{
 		return ActivateTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return ActivateTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new ActivateTriggerTable(skin, (ActivateTrigger) object);
 	}

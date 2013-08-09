@@ -17,10 +17,6 @@ public class PersonTriggerPlugin implements IQuestComponentTrigger{
 		return PersonTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return PersonTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new PersonTriggerTable(skin, (PersonTrigger) object);
 	}

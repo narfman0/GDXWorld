@@ -125,7 +125,7 @@ class QuestEditor extends AbstractWindow {
 		if(manifestationTable != null)
 			manifestationTable.remove();
 		for(IQuestComponentManifestation plugin : PluginUtil.getPlugins(IQuestComponentManifestation.class))
-			if(manifestation.getClass() == plugin.getComponentClass())
+			if(manifestation.getClass() == plugin.getDefault().getClass())
 				manifestationTable = (ManifestationTable) plugin.createTable(skin, manifestation);
 		parentManifestationTable.clear();
 		parentManifestationTable.add(manifestationTable);
@@ -136,7 +136,7 @@ class QuestEditor extends AbstractWindow {
 		if(triggerTable != null)
 			triggerTable.remove();
 		for(IQuestComponentTrigger plugin : PluginUtil.getPlugins(IQuestComponentTrigger.class))
-			if(trigger.getClass() == plugin.getComponentClass())
+			if(trigger.getClass() == plugin.getDefault().getClass())
 				triggerTable = (TriggerTable) plugin.createTable(skin, trigger);
 		parentTriggerTable.clear();
 		parentTriggerTable.add(triggerTable);

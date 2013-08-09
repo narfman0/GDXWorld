@@ -17,10 +17,6 @@ public class ObjectDistanceTriggerPlugin implements IQuestComponentTrigger{
 		return ObjectDistanceTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return ObjectDistanceTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new ObjectDistanceTriggerTable(skin, (ObjectDistanceTrigger) object);
 	}

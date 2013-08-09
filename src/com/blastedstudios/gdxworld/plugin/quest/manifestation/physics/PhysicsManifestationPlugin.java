@@ -17,10 +17,6 @@ public class PhysicsManifestationPlugin implements IQuestComponentManifestation{
 		return PhysicsManifestation.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return PhysicsManifestation.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new PhysicsManifestationTable(skin, (PhysicsManifestation) object);
 	}

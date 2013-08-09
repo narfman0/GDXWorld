@@ -17,10 +17,6 @@ public class TimeTriggerPlugin implements IQuestComponentTrigger{
 		return TimeTrigger.DEFAULT;
 	}
 
-	@Override public Class<?> getComponentClass() {
-		return TimeTrigger.class;
-	}
-
 	@Override public Table createTable(Skin skin, Object object) {
 		return new TimeTriggerTable(skin, (TimeTrigger) object);
 	}
