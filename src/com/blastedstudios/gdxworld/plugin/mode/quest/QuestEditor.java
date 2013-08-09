@@ -67,7 +67,13 @@ class QuestEditor extends AbstractWindow {
 		final List<IQuestComponent> triggerPlugins = new ArrayList<IQuestComponent>(
 				PluginUtil.getPlugins(IQuestComponentTrigger.class));
 		manifestationBoxes = new SelectBox(extractList(manifestationPlugins), skin);
+		for(IQuestComponent component : manifestationPlugins)
+			if(component.getDefault().getClass() == quest.getManifestation().getClass())
+				manifestationBoxes.setSelection(component.getBoxText());
 		triggerBoxes = new SelectBox(extractList(triggerPlugins), skin);
+		for(IQuestComponent component : triggerPlugins)
+			if(component.getDefault().getClass() == quest.getTrigger().getClass())
+				triggerBoxes.setSelection(component.getBoxText());
 		manifestationBoxes.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				createManifestationTable(skin, extractFromSelection(manifestationBoxes.getSelection(), manifestationPlugins).getDefault());
