@@ -76,13 +76,13 @@ class QuestEditor extends AbstractWindow {
 				triggerBoxes.setSelection(component.getBoxText());
 		manifestationBoxes.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				createManifestationTable(skin, extractFromSelection(manifestationBoxes.getSelection(), manifestationPlugins).getDefault());
+				createManifestationTable(skin, extractFromSelection(manifestationBoxes.getSelection(), manifestationPlugins).getDefault().clone());
 				pack();
 			}
 		});
 		triggerBoxes.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				createTriggerTable(skin, extractFromSelection(triggerBoxes.getSelection(), triggerPlugins).getDefault());
+				createTriggerTable(skin, extractFromSelection(triggerBoxes.getSelection(), triggerPlugins).getDefault().clone());
 				pack();
 			}
 		});
