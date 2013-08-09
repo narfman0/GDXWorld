@@ -17,10 +17,6 @@ public class EndLevelManifestationPlugin implements IQuestComponentManifestation
 		return EndLevelManifestation.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return EndLevelManifestationTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return EndLevelManifestation.class;
 	}

@@ -17,10 +17,6 @@ public class KillTriggerPlugin implements IQuestComponentTrigger{
 		return KillTrigger.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return KillTriggerTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return KillTrigger.class;
 	}

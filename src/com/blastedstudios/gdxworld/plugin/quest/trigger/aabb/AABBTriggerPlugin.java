@@ -17,10 +17,6 @@ public class AABBTriggerPlugin implements IQuestComponentTrigger{
 		return AABBTrigger.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return AABBTriggerTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return AABBTrigger.class;
 	}

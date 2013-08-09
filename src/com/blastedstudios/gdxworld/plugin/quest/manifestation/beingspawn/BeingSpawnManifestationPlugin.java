@@ -17,10 +17,6 @@ public class BeingSpawnManifestationPlugin implements IQuestComponentManifestati
 		return BeingSpawnManifestation.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return BeingSpawnManifestationTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return BeingSpawnManifestation.class;
 	}

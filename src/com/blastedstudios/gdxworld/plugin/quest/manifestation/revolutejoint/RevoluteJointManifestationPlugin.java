@@ -17,10 +17,6 @@ public class RevoluteJointManifestationPlugin implements IQuestComponentManifest
 		return RevoluteJointManifestation.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return RevoluteJointManifestationTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return RevoluteJointManifestation.class;
 	}

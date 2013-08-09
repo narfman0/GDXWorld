@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.blastedstudios.gdxworld.world.quest.ICloneable;
 
 public interface IQuestComponent extends Plugin{
-	public Class<? extends Table> getTableClass();
 	public Class<?> getComponentClass();
 	public String getBoxText();
 	public ICloneable getDefault();

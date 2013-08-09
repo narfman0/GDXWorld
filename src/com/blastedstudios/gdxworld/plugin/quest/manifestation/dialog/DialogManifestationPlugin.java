@@ -17,10 +17,6 @@ public class DialogManifestationPlugin implements IQuestComponentManifestation{
 		return DialogManifestation.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return DialogManifestationTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return DialogManifestation.class;
 	}

@@ -17,10 +17,6 @@ public class PrismaticJointManifestationPlugin implements IQuestComponentManifes
 		return PrismaticJointManifestation.DEFAULT;
 	}
 
-	@Override public Class<? extends Table> getTableClass() {
-		return PrismaticJointManifestationTable.class;
-	}
-
 	@Override public Class<?> getComponentClass() {
 		return PrismaticJointManifestation.class;
 	}
