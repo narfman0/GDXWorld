@@ -1,5 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.quest;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
@@ -34,8 +37,7 @@ class QuestWindow extends AbstractWindow {
 		//scrollPane.setFlickScroll(false);
 		Button clearButton = new TextButton("Clear", skin);
 		Button addButton = new TextButton("Add", skin);
-		for(GDXQuest quest : quests)
-			questTree.add(new Node(createQuestTable(quest)));
+		populateQuestTable();
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				quests.clear();
@@ -60,15 +62,48 @@ class QuestWindow extends AbstractWindow {
 		setWidth(400);
 	}
 	
+	private void populateQuestTable(){
+		questTree.clear();
+		HashMap<String, Node> questRootMap = new HashMap<>();
+		LinkedList<GDXQuest> unpopulated = new LinkedList<>(quests);
+		boolean changed = true;
+		while(changed){
+			changed = false;
+			for(Iterator<GDXQuest> questIter = unpopulated.iterator(); questIter.hasNext(); questIter.hasNext()){
+				GDXQuest quest = questIter.next();
+				boolean prereqsSatisfied = true;
+				String prereqQuest = null;
+				for(String prereq : quest.getPrerequisites().split(","))
+					if(!prereq.isEmpty()){
+						if(!questRootMap.containsKey(prereq))
+							prereqsSatisfied = false;
+						else
+							prereqQuest = prereq;
+					}
+				if(prereqsSatisfied){
+					questIter.remove();
+					Node toInsert;
+					if(prereqQuest == null)
+						questTree.add(toInsert = new Node(createQuestTable(quest)));
+					else
+						questRootMap.get(prereqQuest).add(toInsert = new Node(createQuestTable(quest)));
+					toInsert.setExpanded(true);
+					questRootMap.put(quest.getName(), toInsert);
+					changed = true;
+				}
+			}
+		}
+		for(GDXQuest quest : unpopulated)
+			questTree.add(new Node(createQuestTable(quest)));
+	}
+	
 	private QuestTable createQuestTable(GDXQuest quest){
 		return new QuestTable(skin, quest, this);
 	}
 	
 	public void removeQuest(GDXQuest quest) {
 		quests.remove(quest);
-		questTree.clear();
-		for(GDXQuest addQuest : quests)
-			questTree.add(new Node(createQuestTable(addQuest)));
+		populateQuestTable();
 	}
 	
 	public void editQuest(GDXQuest quest, QuestTable table) {
