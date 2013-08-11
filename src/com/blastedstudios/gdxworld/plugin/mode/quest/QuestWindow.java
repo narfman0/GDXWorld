@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
@@ -17,7 +18,7 @@ import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
 class QuestWindow extends AbstractWindow {
 	private final Skin skin;
-	private final Table questTable;
+	private final Tree questTree;
 	private final List<GDXQuest> quests;
 	private final LevelEditorScreen screen;
 	private QuestEditor editor;
@@ -28,18 +29,17 @@ class QuestWindow extends AbstractWindow {
 		this.skin = skin;
 		this.quests = quests;
 		this.screen = screen;
-		questTable = new Table(skin);
-		ScrollPane scrollPane = new ScrollPane(questTable);
+		questTree = new Tree(skin);
+		ScrollPane scrollPane = new ScrollPane(questTree);
+		//scrollPane.setFlickScroll(false);
 		Button clearButton = new TextButton("Clear", skin);
 		Button addButton = new TextButton("Add", skin);
-		for(GDXQuest quest : quests){
-			questTable.add(createQuestTable(quest));
-			questTable.row();
-		}
+		for(GDXQuest quest : quests)
+			questTree.add(new Node(createQuestTable(quest)));
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				quests.clear();
-				questTable.clear();
+				questTree.clear();
 				if(editor != null)
 					editor.remove();
 			}
@@ -48,7 +48,7 @@ class QuestWindow extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				GDXQuest quest = new GDXQuest();
 				quests.add(quest);
-				questTable.add(createQuestTable(quest));
+				questTree.add(new Node(createQuestTable(quest)));
 			}
 		});
 		add(scrollPane).colspan(3);
@@ -66,11 +66,9 @@ class QuestWindow extends AbstractWindow {
 	
 	public void removeQuest(GDXQuest quest) {
 		quests.remove(quest);
-		questTable.clear();
-		for(GDXQuest addQuest : quests){
-			questTable.add(createQuestTable(addQuest));
-			questTable.row();
-		}
+		questTree.clear();
+		for(GDXQuest addQuest : quests)
+			questTree.add(new Node(createQuestTable(addQuest)));
 	}
 	
 	public void editQuest(GDXQuest quest, QuestTable table) {
