@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Iterator;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
@@ -59,11 +58,11 @@ public class GDXQuestManagerTest {
 		
 		IQuestManifestationExecutor executor = new IQuestManifestationExecutor() {
 			@Override public Body getPhysicsObject(String name) {
-				for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-					Body body = iter.next();
+				Array<Body> bodyArray = new Array<>(world.getBodyCount());
+				world.getBodies(bodyArray);
+				for(Body body : bodyArray)
 					if(body.getUserData().equals(name))
 						return body;
-				}
 				return null;
 			}
 			@Override public CompletionEnum addDialog(String dialog, String origin, String type) {
@@ -75,11 +74,11 @@ public class GDXQuestManagerTest {
 				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);
 			}
 			@Override public Joint getPhysicsJoint(String name) {
-				for(Iterator<Joint> iter = world.getJoints(); iter.hasNext();){
-					Joint joint = iter.next();
+				Array<Joint> joints = new Array<>(world.getJointCount());
+				world.getJoints(joints);
+				for(Joint joint : joints)
 					if(joint.getUserData().equals(name))
 						return joint;
-				}
 				return null;
 			}
 			@Override public void beingSpawn(String being, Vector2 coordinates) {
@@ -95,8 +94,9 @@ public class GDXQuestManagerTest {
 			}
 			@Override public boolean isNear(String origin, String target, float distance) {
 				Body originBody = null, targetBody = null;
-				for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-					Body body = iter.next();
+				Array<Body> bodyArray = new Array<>(world.getBodyCount());
+				world.getBodies(bodyArray);
+				for(Body body : bodyArray){
 					if(body.getUserData().equals(origin))
 						originBody = body;
 					if(body.getUserData().equals(target))
@@ -105,11 +105,11 @@ public class GDXQuestManagerTest {
 				return originBody.getPosition().dst(targetBody.getPosition()) < distance;
 			}
 			@Override public Body getPhysicsObject(String name) {
-				for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-					Body body = iter.next();
+				Array<Body> bodyArray = new Array<>(world.getBodyCount());
+				world.getBodies(bodyArray);
+				for(Body body : bodyArray)
 					if(body.getUserData().equals(name))
 						return body;
-				}
 				return null;
 			}
 			@Override public boolean isAction() {

@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.physics;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Array;
 import com.blastedstudios.gdxworld.math.decomposers.Clipper;
 import com.blastedstudios.gdxworld.math.decomposers.Clipper.Polygonizer;
 
@@ -98,8 +98,9 @@ public class PhysicsHelper {
 	public static Body closestBody(World world, float x, float y){
 		Body body = null;
 		float closestDistance = Float.MAX_VALUE;
-		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-			Body worldBody = iter.next();
+		Array<Body> bodyArray = new Array<>(world.getBodyCount());
+		world.getBodies(bodyArray);
+		for(Body worldBody : bodyArray){
 			float distance = worldBody.getPosition().dst2(x,y);
 			if(body == null || closestDistance > distance){
 				body = worldBody;

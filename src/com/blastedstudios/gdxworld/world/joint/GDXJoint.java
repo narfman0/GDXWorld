@@ -1,7 +1,6 @@
 package com.blastedstudios.gdxworld.world.joint;
 
 import java.io.Serializable;
-import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Joints connect shapes in unique ways. 
@@ -85,8 +85,9 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 	
 	protected Body[] getBodyAB(World world){
 		Body[] bodies = new Body[2];
-		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-			Body body = iter.next();
+		Array<Body> bodyArray = new Array<>(world.getBodyCount());
+		world.getBodies(bodyArray);
+		for(Body body : bodyArray){
 			if(this.bodyA.equals(body.getUserData()))
 				bodies[0] = body;
 			else if(this.bodyB.equals(body.getUserData()))

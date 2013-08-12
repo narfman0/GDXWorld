@@ -2,13 +2,13 @@ package com.blastedstudios.gdxworld.world.group;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -74,11 +74,11 @@ public class GDXGroupExportStruct{
 		translate(location);
 		HashMap<String, Object> usedBodyNames = new HashMap<>();
 		HashMap<String, String> reverseBodyNames = new HashMap<>();
-		for(Iterator<Body> iter = world.getBodies(); iter.hasNext();){
-			Body body = iter.next();
+		Array<Body> bodyArray = new Array<>(world.getBodyCount());
+		world.getBodies(bodyArray);
+		for(Body body : bodyArray)
 			if(body.getUserData() instanceof String)
 				usedBodyNames.put((String)body.getUserData(), body);
-		}
 		HashMap<String, Body> bodies = new HashMap<>();
 		List<GDXShape> shapes = new ArrayList<>();
 		shapes.addAll(circles);
