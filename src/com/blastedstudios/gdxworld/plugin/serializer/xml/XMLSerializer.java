@@ -45,8 +45,10 @@ public class XMLSerializer implements ISerializer {
 	}
 
 	@Override public void save(File selectedFile, Object object) throws Exception {
-		if(selectedFile == null)
+		if(selectedFile == null){
 			Gdx.app.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
+			return;
+		}
 		selectedFile.getParentFile().mkdirs();
 		if(FileUtil.getExtension(selectedFile) != null && !FileUtil.getExtension(selectedFile).equals(extension))
 			selectedFile = new File(selectedFile.getAbsolutePath() + "." + extension);

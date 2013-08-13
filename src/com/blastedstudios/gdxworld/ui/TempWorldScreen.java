@@ -66,7 +66,7 @@ public class TempWorldScreen extends AbstractScreen{
 		return getTempSaveFile().exists();
 	}
 	
-	public static void start(GDXWorld gdxWorld){
+	public synchronized static void start(GDXWorld gdxWorld){
 		TempWorldScreen.gdxWorld = gdxWorld;
 		if(tempSaveTimer != null)
 			clean();

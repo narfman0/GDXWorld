@@ -89,7 +89,7 @@ public class GDXPolygon extends GDXShape implements Serializable{
 
 	@Override public Vector2 getDimensions() {
 		if(dimensions == null)
-			dimensions = PolygonUtils.getDimensions((Vector2[]) vertices.toArray());
+			dimensions = PolygonUtils.getDimensions(vertices.toArray(new Vector2[vertices.size()]));
 		return dimensions;
 	}
 	

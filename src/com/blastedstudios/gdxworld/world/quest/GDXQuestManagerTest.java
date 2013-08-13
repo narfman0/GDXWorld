@@ -41,6 +41,7 @@ public class GDXQuestManagerTest {
 	
 	@Before public void setUp() throws Exception {
 		Gdx.app = nullApplicaton;
+		world = new World(new Vector2(), true);
 		playerPosition = new Vector2();
 		level1 = new GDXLevel();
 		level1.setName("level1");
