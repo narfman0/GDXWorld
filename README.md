@@ -230,6 +230,13 @@ Note that currently, the start/end fields are populated by finding the carat
 position and changing whatever field's carat isn't at 0, so when selecting, it
 must be nonzero, and the other field must be 0.
 
+### Particle
+Particle mode is a simple mode through which a level designer may add particles
+at level creation. It is intended to be a two step process, firstly, creating
+the particles at startup, secondly, adding a mechanism in the Quest mode to
+remove/add other particles dynamically. These particles will be available to
+each level and are to be handled by the client.
+
 Serializers
 -----------
 
@@ -265,6 +272,6 @@ Designed to be managed from eclipse, preferably in Fedora 16+ with the egit
 plugin, but should work under any environment. To run, navigate to
 GDXWorldEditor, right click, Run As, Java Application. 
 
-Uses libGDX nightly snapshot from 2013Aug11
-Uses box2dlights from 11 Jul 2013
-Refer to LICENSE for (admittedly lacking) licensing information
+Uses libGDX nightly snapshot from 2013Aug11  
+Uses box2dlights from 11 Jul 2013  
+Refer to LICENSE for (admittedly lacking) licensing information  

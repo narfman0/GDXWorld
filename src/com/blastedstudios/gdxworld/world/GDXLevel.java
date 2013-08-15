@@ -44,6 +44,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private final List<GDXBackground> backgrounds = new ArrayList<>();
 	private final List<GDXLight> lights = new ArrayList<>();
 	private final List<GDXGroup> groups = new ArrayList<>();
+	private List<GDXParticle> particles = new ArrayList<>();
 	private Map<String,String> properties;
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	
@@ -138,6 +139,16 @@ public class GDXLevel implements Cloneable,Serializable{
 	public List<GDXGroup> getGroups() {
 		return groups;
 	}
+	
+	private Map<String, String> createProperties() {
+		return Properties.parseProperties("level.properties", "");
+	}
+
+	public List<GDXParticle> getParticles() {
+		if(particles == null)
+			particles = new ArrayList<>();
+		return particles;
+	}
 
 	public Map<String,String> getProperties() {
 		if(properties == null)
@@ -204,6 +215,19 @@ public class GDXLevel implements Cloneable,Serializable{
 		float closestDistance = Float.MAX_VALUE;
 		for(GDXJoint path : getJoints()){
 			float distance = path.getCenter().dst2(x, y);
+			if(closest == null || closestDistance > distance){
+				closest = path;
+				closestDistance = distance;
+			}
+		}
+		return closest;
+	}
+
+	public GDXParticle getClosestParticle(float x, float y) {
+		GDXParticle closest = null;
+		float closestDistance = Float.MAX_VALUE;
+		for(GDXParticle path : particles){
+			float distance = path.getPosition().dst2(x, y);
 			if(closest == null || closestDistance > distance){
 				closest = path;
 				closestDistance = distance;
@@ -288,6 +312,8 @@ public class GDXLevel implements Cloneable,Serializable{
 		level.setLightAmbient(lightAmbient);
 		for(GDXGroup group : groups)
 			level.getGroups().add((GDXGroup) group.clone());
+		for(GDXParticle particle : particles)
+			level.getParticles().add((GDXParticle) particle.clone());
 		level.getProperties().putAll(properties);
 		return level;
 	}
@@ -307,6 +333,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 		groups.clear();
 		properties.clear();
+		particles.clear();
 	}
 
 	public class CreateLevelReturnStruct{
@@ -330,9 +357,5 @@ public class GDXLevel implements Cloneable,Serializable{
 			this.rayHandler = rayHandler;
 			this.lights = lights;
 		}
-	}
-	
-	private Map<String, String> createProperties() {
-		return Properties.parseProperties("level.properties", "");
 	}
 }

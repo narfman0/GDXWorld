@@ -19,7 +19,7 @@ import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
-public class PathWindow extends AbstractWindow implements VertexRemoveListener {
+class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
 	private final Skin skin;
 	private final List<Vector2> nodes;
