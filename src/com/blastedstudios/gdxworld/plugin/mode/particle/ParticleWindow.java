@@ -16,7 +16,8 @@ class ParticleWindow extends AbstractWindow {
 	public ParticleWindow(final ParticleMode mode, final Skin skin, final GDXParticle particle) {
 		super("Particle Window", skin);
 		particleTable = new ParticleTable(skin, particle.getPosition(), particle.getName(),
-				particle.getEffectFile(), particle.getImagesDir(), particle.getDuration());
+				particle.getEffectFile(), particle.getImagesDir(), particle.getDuration(),
+				particle.getEmitterName());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -27,6 +28,7 @@ class ParticleWindow extends AbstractWindow {
 				particle.setDuration(Integer.parseInt(particleTable.durationField.getText()));
 				particle.setEffectFile(particleTable.effectFileField.getText());
 				particle.setImagesDir(particleTable.imagesDirField.getText());
+				particle.setEmitterName(particleTable.emitterNameField.getText());
 				mode.addParticle(particle);
 				mode.clean();
 			}

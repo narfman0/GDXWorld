@@ -42,5 +42,5 @@ public interface IQuestManifestationExecutor {
 	 */
 	public void particle(String name, String effectFile, String imagesDir,
 			int duration, Vector2 position,
-			ParticleManifestationTypeEnum modificationType);
+			ParticleManifestationTypeEnum modificationType, String emitterName);
 }

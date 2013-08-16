@@ -88,7 +88,7 @@ public class GDXQuestManagerTest {
 			}
 			@Override public void particle(String name, String effectFile,
 					String imagesDir, int duration, Vector2 position,
-					ParticleManifestationTypeEnum modificationType) {
+					ParticleManifestationTypeEnum modificationType, String emitterName) {
 				Gdx.app.log("QuestManifestationExecutor.particle","name: " + name);
 			}
 		};

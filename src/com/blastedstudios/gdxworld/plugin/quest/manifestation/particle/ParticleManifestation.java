@@ -7,7 +7,8 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class ParticleManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static ParticleManifestation DEFAULT = new ParticleManifestation();
-	private String name = "Particle", effectFile = "data/particle.p", imagesDir = "data";
+	private String name = "Particle", effectFile = "data/particles/particle.p", 
+			imagesDir = "data/particles", emitterName = "";
 	private int duration = 1;
 	private Vector2 position = new Vector2();
 	private ParticleManifestationTypeEnum modificationType = ParticleManifestationTypeEnum.CREATE;
@@ -15,23 +16,25 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 	public ParticleManifestation(){}
 	
 	public ParticleManifestation(String name, String effectFile, String imagesDir,
-			int duration, Vector2 position, ParticleManifestationTypeEnum modificationType){
+			int duration, Vector2 position, ParticleManifestationTypeEnum modificationType,
+			String emitterName){
 		this.name = name;
 		this.effectFile = effectFile;
 		this.imagesDir = imagesDir;
 		this.duration = duration;
 		this.position = position;
 		this.modificationType = modificationType;
+		this.emitterName = emitterName;
 	}
 	
 	@Override public CompletionEnum execute() {
-		executor.particle(name, effectFile, imagesDir, duration, position, modificationType);
+		executor.particle(name, effectFile, imagesDir, duration, position, modificationType, emitterName);
 		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
 		return new ParticleManifestation(name, effectFile, imagesDir, duration,
-				position.cpy(), modificationType);
+				position.cpy(), modificationType, emitterName);
 	}
 
 	@Override public String toString() {
@@ -84,5 +87,13 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 
 	public void setModificationType(ParticleManifestationTypeEnum modificationType) {
 		this.modificationType = modificationType;
+	}
+
+	public String getEmitterName() {
+		return emitterName;
+	}
+
+	public void setEmitterName(String emitterName) {
+		this.emitterName = emitterName;
 	}
 }
