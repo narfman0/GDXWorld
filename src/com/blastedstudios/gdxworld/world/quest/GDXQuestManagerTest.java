@@ -24,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
+import com.blastedstudios.gdxworld.plugin.quest.manifestation.particle.ParticleManifestationTypeEnum;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -84,6 +85,11 @@ public class GDXQuestManagerTest {
 			}
 			@Override public void beingSpawn(String being, Vector2 coordinates) {
 				Gdx.app.log("QuestManifestationExecutor.beingSpawn","being: " + being);
+			}
+			@Override public void particle(String name, String effectFile,
+					String imagesDir, int duration, Vector2 position,
+					ParticleManifestationTypeEnum modificationType) {
+				Gdx.app.log("QuestManifestationExecutor.particle","name: " + name);
 			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {

@@ -3,42 +3,30 @@ package com.blastedstudios.gdxworld.plugin.mode.particle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.world.GDXParticle;
 
 class ParticleWindow extends AbstractWindow {
-	private final VertexTable positionTable;
-	private final TextField nameField, effectFileField, imagesDirField, durationField;
+	private final ParticleTable particleTable;
 	
 	public ParticleWindow(final ParticleMode mode, final Skin skin, final GDXParticle particle) {
 		super("Particle Window", skin);
-		positionTable = new VertexTable(particle.getPosition(), skin, null);
-		nameField = new TextField(particle.getName(), skin);
-		nameField.setMessageText("<name of particle>");
-		effectFileField = new TextField(particle.getEffectFile(), skin);
-		effectFileField.setMessageText("<effect file path e.g. data/part.p>");
-		imagesDirField = new TextField(particle.getImagesDir(), skin);
-		imagesDirField.setMessageText("<images path e.g. data/textures>");
-		durationField = new TextField(particle.getDuration()+"", skin);
-		durationField.setMessageText("<duration of particles>");
-		
+		particleTable = new ParticleTable(skin, particle.getPosition(), particle.getName(),
+				particle.getEffectFile(), particle.getImagesDir(), particle.getDuration());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				particle.setName(nameField.getText());
-				particle.setPosition(positionTable.getVertex());
-				particle.setDuration(Integer.parseInt(durationField.getText()));
-				particle.setEffectFile(effectFileField.getText());
-				particle.setImagesDir(imagesDirField.getText());
+				particle.setName(particleTable.nameField.getText());
+				particle.setPosition(particleTable.positionTable.getVertex());
+				particle.setDuration(Integer.parseInt(particleTable.durationField.getText()));
+				particle.setEffectFile(particleTable.effectFileField.getText());
+				particle.setImagesDir(particleTable.imagesDirField.getText());
 				mode.addParticle(particle);
 				mode.clean();
 			}
@@ -55,34 +43,21 @@ class ParticleWindow extends AbstractWindow {
 			}
 		});
 		
-		add(new Label("Name:", skin));
-		add(nameField);
-		row();
-		add(new Label("Position:", skin));
-		add(positionTable);
-		row();
-		add(new Label("Effect File:", skin));
-		add(effectFileField);
-		row();
-		add(new Label("Images Path:", skin));
-		add(imagesDirField);
-		row();
-		add(new Label("Duration:", skin));
-		add(durationField);
+		add(particleTable);
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
 		controlTable.add(cancelButton);
 		controlTable.add(deleteButton);
-		add(controlTable).colspan(2);
+		add(controlTable);
 		pack();
 	}
 
 	public Vector2 getPosition() {
-		return positionTable.getVertex();
+		return particleTable.positionTable.getVertex();
 	}
 	
 	public void setPosition(float x, float y){
-		positionTable.setVertex(x, y);
+		particleTable.positionTable.setVertex(x, y);
 	}
 }
