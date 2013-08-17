@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 
 public class GDXParticle implements Cloneable,Serializable{
@@ -93,11 +92,6 @@ public class GDXParticle implements Cloneable,Serializable{
 		effect.setPosition(position.x, position.y);
 		if(duration != -1)
 			effect.setDuration(duration);
-		if(!emitterName.isEmpty()){
-			ParticleEmitter emitter = effect.findEmitter(emitterName);
-			effect.getEmitters().clear();
-			effect.getEmitters().add(emitter);
-		}
 		return effect;
 	}
 }
