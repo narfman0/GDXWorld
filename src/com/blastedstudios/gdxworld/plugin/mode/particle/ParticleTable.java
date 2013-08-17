@@ -11,9 +11,12 @@ public class ParticleTable extends Table {
 	public final VertexTable positionTable;
 	public final TextField nameField, effectFileField, imagesDirField, durationField,
 		emitterNameField;
+	final Skin skin;
 
-	public ParticleTable(final Skin skin, final Vector2 position, String name, 
+	public ParticleTable(final Skin skin, boolean showPaths, boolean showModifiers, 
+			final Vector2 position, String name, 
 			String effectFile, String imagesDir, int duration, String emitterName){
+		this.skin = skin;
 		positionTable = new VertexTable(position, skin, null);
 		nameField = new TextField(name, skin);
 		nameField.setMessageText("<name of particle>");
@@ -25,32 +28,30 @@ public class ParticleTable extends Table {
 		durationField.setMessageText("<duration of particles>");
 		emitterNameField = new TextField(emitterName, skin);
 		emitterNameField.setMessageText("<emitter name e.g. smoke>");
-
-		add(new Label("Name:", skin));
-		add(nameField);
-		row();
-		add(new Label("Position:", skin));
-		add(positionTable);
-		row();
-		add(new Label("Effect File:", skin));
-		add(effectFileField);
-		row();
-		add(new Label("Images Path:", skin));
-		add(imagesDirField);
-		row();
-		add(new Label("Duration:", skin));
-		add(durationField);
-		row();
-		add(new Label("Emitter Name:", skin));
-		add(emitterNameField);
+		addComponents(showPaths, showModifiers);
 	}
 	
-	public void setComponentsVisible(boolean visible){
-		positionTable.setVisible(visible);
-		nameField.setVisible(visible);
-		effectFileField.setVisible(visible);
-		imagesDirField.setVisible(visible);
-		durationField.setVisible(visible);
-		emitterNameField.setVisible(visible);
+	public void addComponents(boolean showPaths, boolean showModifiers){
+		add(new Label("Name:", skin));
+		add(nameField);
+		if(showModifiers){
+			row();
+			add(new Label("Position:", skin));
+			add(positionTable);
+			row();
+			add(new Label("Duration:", skin));
+			add(durationField);
+			row();
+			add(new Label("Emitter Name:", skin));
+			add(emitterNameField);
+		}
+		if(showPaths){
+			row();
+			add(new Label("Effect File:", skin));
+			add(effectFileField);
+			row();
+			add(new Label("Images Path:", skin));
+			add(imagesDirField);
+		}
 	}
 }

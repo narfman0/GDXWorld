@@ -15,7 +15,8 @@ class ParticleWindow extends AbstractWindow {
 	
 	public ParticleWindow(final ParticleMode mode, final Skin skin, final GDXParticle particle) {
 		super("Particle Window", skin);
-		particleTable = new ParticleTable(skin, particle.getPosition(), particle.getName(),
+		particleTable = new ParticleTable(skin, true, true,
+				particle.getPosition(), particle.getName(),
 				particle.getEffectFile(), particle.getImagesDir(), particle.getDuration(),
 				particle.getEmitterName());
 		final Button acceptButton = new TextButton("Accept", skin);

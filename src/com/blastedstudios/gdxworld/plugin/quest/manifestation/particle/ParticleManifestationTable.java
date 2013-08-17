@@ -19,21 +19,20 @@ public class ParticleManifestationTable extends ManifestationTable {
 		modificationTypeList.setSelectedIndex(manifestation.getModificationType().ordinal());
 		modificationTypeList.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				if(modificationTypeList.getSelectedIndex() == ParticleManifestationTypeEnum.CREATE.ordinal())
-					particleTable.setComponentsVisible(true);
-				else if(modificationTypeList.getSelectedIndex() == ParticleManifestationTypeEnum.MODIFY.ordinal()){
-					particleTable.setComponentsVisible(true);
-					particleTable.effectFileField.setVisible(false);
-					particleTable.imagesDirField.setVisible(false);
-				}else if(modificationTypeList.getSelectedIndex() == ParticleManifestationTypeEnum.REMOVE.ordinal()){
-					particleTable.setComponentsVisible(false);
-					particleTable.nameField.setVisible(true);
-				}
+				particleTable.clear();
+				ParticleManifestationTypeEnum type = ParticleManifestationTypeEnum.values()[
+				            modificationTypeList.getSelectedIndex()];
+				boolean showPaths = type == ParticleManifestationTypeEnum.CREATE;
+				boolean showModifiers = type != ParticleManifestationTypeEnum.REMOVE;
+				particleTable.addComponents(showPaths, showModifiers);
 			}
 		});
-		particleTable = new ParticleTable(skin, manifestation.getPosition(), manifestation.getName(),
-				manifestation.getEffectFile(), manifestation.getImagesDir(), manifestation.getDuration(),
-				manifestation.getEmitterName());
+		boolean showPaths = manifestation.getModificationType() == ParticleManifestationTypeEnum.CREATE;
+		boolean showModifiers = manifestation.getModificationType() != ParticleManifestationTypeEnum.REMOVE;
+		particleTable = new ParticleTable(skin, showPaths, showModifiers,
+				manifestation.getPosition(), manifestation.getName(), 
+				manifestation.getEffectFile(), manifestation.getImagesDir(), 
+				manifestation.getDuration(), manifestation.getEmitterName());
 		add(modificationTypeList);
 		row();
 		add(particleTable);
