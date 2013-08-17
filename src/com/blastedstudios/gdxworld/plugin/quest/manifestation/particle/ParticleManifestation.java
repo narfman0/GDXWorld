@@ -9,7 +9,7 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 	public static ParticleManifestation DEFAULT = new ParticleManifestation();
 	private String name = "Particle", effectFile = "data/particles/particle.p", 
 			imagesDir = "data/particles", emitterName = "";
-	private int duration = 1;
+	private int duration = -1;
 	private Vector2 position = new Vector2();
 	private ParticleManifestationTypeEnum modificationType = ParticleManifestationTypeEnum.CREATE;
 	

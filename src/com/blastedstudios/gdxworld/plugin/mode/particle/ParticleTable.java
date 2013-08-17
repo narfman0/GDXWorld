@@ -44,4 +44,13 @@ public class ParticleTable extends Table {
 		add(new Label("Emitter Name:", skin));
 		add(emitterNameField);
 	}
+	
+	public void setComponentsVisible(boolean visible){
+		positionTable.setVisible(visible);
+		nameField.setVisible(visible);
+		effectFileField.setVisible(visible);
+		imagesDirField.setVisible(visible);
+		durationField.setVisible(visible);
+		emitterNameField.setVisible(visible);
+	}
 }

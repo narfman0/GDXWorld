@@ -17,6 +17,18 @@ public class GDXParticle implements Cloneable,Serializable{
 	private int duration = -1;
 	private Vector2 position = new Vector2();
 	
+	public GDXParticle(){}
+	
+	public GDXParticle(String name, String effectFile, String imagesDir,
+			int duration, Vector2 position, String emitterName) {
+		this.name = name;
+		this.effectFile = effectFile;
+		this.imagesDir = imagesDir;
+		this.emitterName = emitterName;
+		this.duration = duration;
+		this.position = position;
+	}
+	
 	public String getEffectFile() {
 		return effectFile;
 	}
