@@ -32,7 +32,8 @@ public class ParticleManifestationTable extends ManifestationTable {
 		particleTable = new ParticleTable(skin, showPaths, showModifiers,
 				manifestation.getPosition(), manifestation.getName(), 
 				manifestation.getEffectFile(), manifestation.getImagesDir(), 
-				manifestation.getDuration(), manifestation.getEmitterName());
+				manifestation.getDuration(), manifestation.getEmitterName(),
+				manifestation.getAttachedBody());
 		add(modificationTypeList);
 		row();
 		add(particleTable);
@@ -45,7 +46,8 @@ public class ParticleManifestationTable extends ManifestationTable {
 				Integer.parseInt(particleTable.durationField.getText()),
 				particleTable.positionTable.getVertex(), 
 				ParticleManifestationTypeEnum.valueOf(modificationTypeList.getSelection()),
-				particleTable.emitterNameField.getText());
+				particleTable.emitterNameField.getText(),
+				particleTable.attachedBodyField.getText());
 	}
 
 	@Override public void touched(Vector2 coordinates) {

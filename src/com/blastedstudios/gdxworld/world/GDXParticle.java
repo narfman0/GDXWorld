@@ -10,7 +10,7 @@ public class GDXParticle implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;
 	private String name = "Particle-" + count++, effectFile = "data/particles/particle.p",
-			imagesDir = "data/particles", emitterName = "";
+			imagesDir = "data/particles", emitterName = "", attachedBody = "";
 	/**
 	 * Duration of particles, -1 means it is continuous
 	 */
@@ -20,13 +20,14 @@ public class GDXParticle implements Cloneable,Serializable{
 	public GDXParticle(){}
 	
 	public GDXParticle(String name, String effectFile, String imagesDir,
-			int duration, Vector2 position, String emitterName) {
+			int duration, Vector2 position, String emitterName, String attachedBody) {
 		this.name = name;
 		this.effectFile = effectFile;
 		this.imagesDir = imagesDir;
 		this.emitterName = emitterName;
 		this.duration = duration;
 		this.position = position;
+		this.attachedBody = attachedBody;
 	}
 	
 	public String getEffectFile() {
@@ -80,11 +81,19 @@ public class GDXParticle implements Cloneable,Serializable{
 	public void setEmitterName(String emitterName) {
 		this.emitterName = emitterName;
 	}
+
+	public String getAttachedBody() {
+		return attachedBody;
+	}
+
+	public void setAttachedBody(String attachedBody) {
+		this.attachedBody = attachedBody;
+	}
 	
 	@Override public String toString(){
 		return "[GDXParticle name:" + name + " position:" + position + " effectFile:" + 
 				effectFile + " imagesDir:" + imagesDir + " duration:" + duration + 
-				" effectName:" + emitterName + "]";
+				" effectName:" + emitterName + " attachedBody:" + attachedBody + "]";
 	}
 	
 	@Override public Object clone(){
@@ -95,6 +104,7 @@ public class GDXParticle implements Cloneable,Serializable{
 		clone.setEffectFile(effectFile);
 		clone.setImagesDir(imagesDir);
 		clone.setEmitterName(emitterName);
+		clone.setAttachedBody(attachedBody);
 		return clone;
 	}
 	

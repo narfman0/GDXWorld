@@ -10,12 +10,12 @@ import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 public class ParticleTable extends Table {
 	public final VertexTable positionTable;
 	public final TextField nameField, effectFileField, imagesDirField, durationField,
-		emitterNameField;
-	final Skin skin;
+		emitterNameField, attachedBodyField;
+	private final Skin skin;
 
 	public ParticleTable(final Skin skin, boolean showPaths, boolean showModifiers, 
-			final Vector2 position, String name, 
-			String effectFile, String imagesDir, int duration, String emitterName){
+			final Vector2 position, String name, String effectFile, 
+			String imagesDir, int duration, String emitterName, String attachedBody){
 		this.skin = skin;
 		positionTable = new VertexTable(position, skin, null);
 		nameField = new TextField(name, skin);
@@ -28,6 +28,8 @@ public class ParticleTable extends Table {
 		durationField.setMessageText("<duration of particles>");
 		emitterNameField = new TextField(emitterName, skin);
 		emitterNameField.setMessageText("<emitter name e.g. smoke>");
+		attachedBodyField = new TextField(attachedBody, skin);
+		attachedBodyField.setMessageText("<attached body>");
 		addComponents(showPaths, showModifiers);
 	}
 	
@@ -44,6 +46,9 @@ public class ParticleTable extends Table {
 			row();
 			add(new Label("Emitter Name:", skin));
 			add(emitterNameField);
+			row();
+			add(new Label("Attached Body:", skin));
+			add(attachedBodyField);
 		}
 		if(showPaths){
 			row();

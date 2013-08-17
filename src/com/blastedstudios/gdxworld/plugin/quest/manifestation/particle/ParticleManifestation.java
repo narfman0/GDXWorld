@@ -8,7 +8,7 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static ParticleManifestation DEFAULT = new ParticleManifestation();
 	private String name = "Particle", effectFile = "data/particles/particle.p", 
-			imagesDir = "data/particles", emitterName = "";
+			imagesDir = "data/particles", emitterName = "", attachedBody = "";
 	private int duration = -1;
 	private Vector2 position = new Vector2();
 	private ParticleManifestationTypeEnum modificationType = ParticleManifestationTypeEnum.CREATE;
@@ -17,7 +17,7 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 	
 	public ParticleManifestation(String name, String effectFile, String imagesDir,
 			int duration, Vector2 position, ParticleManifestationTypeEnum modificationType,
-			String emitterName){
+			String emitterName, String attachedBody){
 		this.name = name;
 		this.effectFile = effectFile;
 		this.imagesDir = imagesDir;
@@ -25,16 +25,18 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 		this.position = position;
 		this.modificationType = modificationType;
 		this.emitterName = emitterName;
+		this.attachedBody = attachedBody;
 	}
 	
 	@Override public CompletionEnum execute() {
-		executor.particle(name, effectFile, imagesDir, duration, position, modificationType, emitterName);
+		executor.particle(name, effectFile, imagesDir, duration, position, modificationType, 
+				emitterName, attachedBody);
 		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
 		return new ParticleManifestation(name, effectFile, imagesDir, duration,
-				position.cpy(), modificationType, emitterName);
+				position.cpy(), modificationType, emitterName, attachedBody);
 	}
 
 	@Override public String toString() {
@@ -95,5 +97,13 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 
 	public void setEmitterName(String emitterName) {
 		this.emitterName = emitterName;
+	}
+
+	public String getAttachedBody() {
+		return attachedBody;
+	}
+
+	public void setAttachedBody(String attachedBody) {
+		this.attachedBody = attachedBody;
 	}
 }

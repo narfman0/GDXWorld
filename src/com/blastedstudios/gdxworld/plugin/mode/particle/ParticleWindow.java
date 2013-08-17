@@ -18,7 +18,7 @@ class ParticleWindow extends AbstractWindow {
 		particleTable = new ParticleTable(skin, true, true,
 				particle.getPosition(), particle.getName(),
 				particle.getEffectFile(), particle.getImagesDir(), particle.getDuration(),
-				particle.getEmitterName());
+				particle.getEmitterName(), particle.getAttachedBody());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
@@ -30,6 +30,7 @@ class ParticleWindow extends AbstractWindow {
 				particle.setEffectFile(particleTable.effectFileField.getText());
 				particle.setImagesDir(particleTable.imagesDirField.getText());
 				particle.setEmitterName(particleTable.emitterNameField.getText());
+				particle.setAttachedBody(particleTable.attachedBodyField.getText());
 				mode.addParticle(particle);
 				mode.clean();
 			}
