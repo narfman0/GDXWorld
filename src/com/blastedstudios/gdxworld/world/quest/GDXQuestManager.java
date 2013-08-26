@@ -66,6 +66,8 @@ public class GDXQuestManager implements Serializable{
 				if(isActive(quest) && quest.getTrigger().activate()){
 					status.setCompleted(quest.getManifestation().execute());
 					Gdx.app.log("GDXQuestManager.tick", "Quest manifested: " + quest);
+					if(quest.isRepeatable())
+						quest.getTrigger().initialize();
 					statusChanged = true;
 				}
 			}else

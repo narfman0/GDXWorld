@@ -6,24 +6,24 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 
 public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
-	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "Name");
+	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "player", "");
 	private Vector2 coordinates = new Vector2();
-	private String being = "";
+	private String being = "", path = "";
 	
 	public BeingSpawnManifestation(){}
 	
-	public BeingSpawnManifestation(Vector2 coordinates, String being){
+	public BeingSpawnManifestation(Vector2 coordinates, String being, String path){
 		this.coordinates = coordinates;
 		this.being = being;
 	}
 
 	@Override public CompletionEnum execute() {
-		executor.beingSpawn(being, coordinates);
+		executor.beingSpawn(being, coordinates, path);
 		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
-		return new BeingSpawnManifestation(coordinates.cpy(), being);
+		return new BeingSpawnManifestation(coordinates.cpy(), being, path);
 	}
 
 	@Override public String toString() {
@@ -44,6 +44,14 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 
 	public void setBeing(String being) {
 		this.being = being;
+	}
+
+	public String getPath() {
+		return path == null ? "" : path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

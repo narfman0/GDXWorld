@@ -35,7 +35,7 @@ public interface IQuestManifestationExecutor {
 	/**
 	 * Being spawn manifestation spawns a being at a particular location
 	 */
-	public void beingSpawn(String being, Vector2 coordinates);
+	public void beingSpawn(String being, Vector2 coordinates, String path);
 
 	/**
 	 * Create, modify, or remove a particle effect

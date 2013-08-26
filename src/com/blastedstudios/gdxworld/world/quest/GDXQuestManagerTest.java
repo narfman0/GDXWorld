@@ -83,7 +83,7 @@ public class GDXQuestManagerTest {
 						return joint;
 				return null;
 			}
-			@Override public void beingSpawn(String being, Vector2 coordinates) {
+			@Override public void beingSpawn(String being, Vector2 coordinates, String path) {
 				Gdx.app.log("QuestManifestationExecutor.beingSpawn","being: " + being);
 			}
 			@Override public void particle(String name, String effectFile,
