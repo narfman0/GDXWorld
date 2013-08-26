@@ -4,6 +4,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.xeoh.plugins.base.Plugin;
@@ -24,7 +27,8 @@ public class PluginUtil {
 	}
 	
 	public static <T extends Plugin> Collection<T> getPlugins(Class<T> theInterface){
-		Collection<T> plugins = pluginManager.getPlugins(theInterface);
+		List<T> plugins = new LinkedList<>(pluginManager.getPlugins(theInterface));
+		Collections.sort(plugins, new Sorter<T>());
 		for(T plugin : plugins)
 			Gdx.app.debug("PluginUtil.getPlugins", "Retrieved: " + plugin.getClass().getCanonicalName());
 		return plugins;
@@ -67,11 +71,18 @@ public class PluginUtil {
 			if(dependenciesSatisfied)
 				i--;
 		}
+		Collections.sort(activePlugins, new Sorter<T>());
 		return activePlugins;
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Dependency {
 		Class<? extends Plugin>[] classes();
+	}
+	
+	private static class Sorter<T> implements Comparator<T>{
+		@Override public int compare(T o1, T o2) {
+			return o1.getClass().getSimpleName().compareTo(o2.getClass().getSimpleName());
+		}
 	}
 }
