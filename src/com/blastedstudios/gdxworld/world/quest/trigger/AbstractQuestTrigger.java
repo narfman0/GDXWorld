@@ -13,7 +13,7 @@ public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	 * @return true if the trigger has been flipped
 	 */
 	public abstract boolean activate();
-	public void initialize(){}
+	public void reinitialize(){}
 
 	public IQuestTriggerInformationProvider getProvider() {
 		return provider;

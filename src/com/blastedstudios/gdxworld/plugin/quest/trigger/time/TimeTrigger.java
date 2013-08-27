@@ -14,6 +14,8 @@ public class TimeTrigger extends AbstractQuestTrigger {
 	}
 
 	@Override public boolean activate() {
+		if(initiated == -1L)
+			reinitialize();
 		if(System.currentTimeMillis() - initiated > time)
 			return true;
 		return false;
@@ -35,7 +37,7 @@ public class TimeTrigger extends AbstractQuestTrigger {
 		this.time = time;
 	}
 	
-	@Override public void initialize() {
+	@Override public void reinitialize() {
 		initiated = System.currentTimeMillis();
 	}
 }
