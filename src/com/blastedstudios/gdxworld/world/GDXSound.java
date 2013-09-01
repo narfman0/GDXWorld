@@ -47,10 +47,6 @@ public class GDXSound implements Cloneable,Serializable{
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-
-	public enum SoundAction{
-		LOOP, PAUSE, PLAY, RESUME, STOP
-	}
 	
 	@Override public Object clone(){
 		GDXSound clone = new GDXSound();

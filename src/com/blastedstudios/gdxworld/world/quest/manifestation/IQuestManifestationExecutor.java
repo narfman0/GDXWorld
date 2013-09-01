@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.particle.ParticleManifestationTypeEnum;
+import com.blastedstudios.gdxworld.plugin.quest.manifestation.sound.SoundManifestationEnum;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 /**
@@ -45,4 +46,10 @@ public interface IQuestManifestationExecutor {
 			int duration, Vector2 position,
 			ParticleManifestationTypeEnum modificationType, String emitterName, 
 			String attachedBody);
+
+	/**
+	 * Play, pause, etc a sound according to manifestationType
+	 */
+	public void sound(SoundManifestationEnum manifestationType, String name,
+			String filename, float volume, float pan, float pitch);
 }

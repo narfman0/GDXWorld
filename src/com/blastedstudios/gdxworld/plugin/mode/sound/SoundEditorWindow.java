@@ -14,7 +14,8 @@ public class SoundEditorWindow extends AbstractWindow {
 	
 	public SoundEditorWindow(Skin skin, final GDXSound sound) {
 		super("Sound Editor", skin);
-		soundTable = new SoundTable(skin, sound);
+		soundTable = new SoundTable(skin, sound.getName(), sound.getFilename(), sound.getVolume(),
+				sound.getPan(), sound.getPitch());
 		applyButton = new TextButton("Apply", skin);
 		applyButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {

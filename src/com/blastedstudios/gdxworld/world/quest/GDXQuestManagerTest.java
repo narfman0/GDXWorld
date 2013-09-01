@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.particle.ParticleManifestationTypeEnum;
+import com.blastedstudios.gdxworld.plugin.quest.manifestation.sound.SoundManifestationEnum;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -91,6 +92,12 @@ public class GDXQuestManagerTest {
 					ParticleManifestationTypeEnum modificationType, String emitterName,
 					String attachedBody) {
 				Gdx.app.log("QuestManifestationExecutor.particle","name: " + name);
+			}
+			@Override
+			public void sound(SoundManifestationEnum manifestationType,
+					String name, String filename, float volume, float pan,
+					float pitch) {
+				Gdx.app.log("QuestManifestationExecutor.sound","name: " + name);
 			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {
