@@ -92,4 +92,8 @@ public class ParticleMode extends AbstractMode {
 			renderer.circle(particleWindow.getPosition().x, particleWindow.getPosition().y, LevelEditorScreen.getNodeRadius());
 		renderer.end();
 	};
+
+	@Override public int getLoadPriority() {
+		return 40;
+	}
 }

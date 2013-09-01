@@ -86,4 +86,8 @@ public class PathMode extends AbstractMode {
 			}
 		}
 	}
+
+	@Override public int getLoadPriority() {
+		return 50;
+	}
 }

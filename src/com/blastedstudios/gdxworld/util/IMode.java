@@ -15,6 +15,7 @@ public interface IMode extends Plugin {
 	public boolean contains(float x, float y);
 	public void clean();
 	public void loadLevel(GDXLevel level);
+	public int getLoadPriority();
 	public void init(LevelEditorScreen screen);
 	public void start();
 	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer);

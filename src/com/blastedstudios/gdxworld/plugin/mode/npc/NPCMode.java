@@ -93,4 +93,8 @@ public class NPCMode extends AbstractMode {
 			renderer.circle(npcWindow.getCoordinates().x, npcWindow.getCoordinates().y, LevelEditorScreen.getNodeRadius());
 		renderer.end();
 	};
+
+	@Override public int getLoadPriority() {
+		return 90;
+	}
 }

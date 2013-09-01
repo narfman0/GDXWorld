@@ -124,4 +124,8 @@ public class JointMode extends AbstractMode {
 	public JointWindow getJointWindow(){
 		return jointWindow;
 	}
+
+	@Override public int getLoadPriority() {
+		return 110;
+	}
 }

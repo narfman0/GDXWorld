@@ -56,4 +56,8 @@ public class QuestMode extends AbstractMode {
 		questWindow.touched(coordinates);
 		return false;
 	}
+
+	@Override public int getLoadPriority() {
+		return 80;
+	}
 }

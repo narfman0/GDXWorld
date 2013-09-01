@@ -64,4 +64,8 @@ public class GroupMode extends AbstractMode implements IMode {
 		window.touched(coordinates.x, coordinates.y);
 		return false;
 	}
+
+	@Override public int getLoadPriority() {
+		return 100;
+	}
 }

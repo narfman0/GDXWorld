@@ -58,4 +58,8 @@ public class LiveMode extends AbstractMode {
 		super.start();
 		screen.setLive(true);
 	}
+
+	@Override public int getLoadPriority() {
+		return 120;
+	}
 }

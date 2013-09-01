@@ -93,4 +93,8 @@ public class BackgroundMode extends AbstractMode {
 		for(GDXBackground background : level.getBackgrounds())
 			addBackground(background);
 	}
+
+	@Override public int getLoadPriority() {
+		return 20;
+	}
 }

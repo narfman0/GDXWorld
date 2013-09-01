@@ -83,4 +83,8 @@ public class LightMode extends AbstractMode {
 				GDXLight.convert(screen.getLevel().getLightAmbient()), this, screen);
 		screen.getStage().addActor(lightWindow);
 	}
+
+	@Override public int getLoadPriority() {
+		return 30;
+	}
 }

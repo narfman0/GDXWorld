@@ -1,6 +1,8 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
@@ -16,6 +18,7 @@ import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.MouseCameraScroller;
 import com.blastedstudios.gdxworld.util.IMode;
+import com.blastedstudios.gdxworld.util.LoadPriorityComparator;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -49,7 +52,9 @@ public class LevelEditorScreen extends AbstractScreen {
 		if(world != null)
 			world.dispose();
 		world = new World(new Vector2(0,live ? -10 : 0), true);
-		for(IMode child : modes)
+		LinkedList<IMode> loadSorted = new LinkedList<>(modes);
+		Collections.sort(loadSorted, new LoadPriorityComparator());
+		for(IMode child : loadSorted)
 			child.loadLevel(gdxLevel);
 	}
 	

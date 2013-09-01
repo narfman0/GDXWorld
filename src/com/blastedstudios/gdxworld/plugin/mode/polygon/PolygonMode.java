@@ -153,4 +153,8 @@ public class PolygonMode extends AbstractMode {
 			spriteBatch.end();
 		}
 	};
+
+	@Override public int getLoadPriority() {
+		return 10;
+	}
 }

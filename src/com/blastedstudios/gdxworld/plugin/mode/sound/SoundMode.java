@@ -38,4 +38,8 @@ public class SoundMode extends AbstractMode {
 		for(GDXSound npc : level.getSounds())
 			addSound(npc);
 	}
+
+	@Override public int getLoadPriority() {
+		return 60;
+	}
 }

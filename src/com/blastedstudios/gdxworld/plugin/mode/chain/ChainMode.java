@@ -46,4 +46,8 @@ public class ChainMode extends AbstractMode {
 		if(window != null)
 			window.render(delta, camera);
 	}
+
+	@Override public int getLoadPriority() {
+		return 70;
+	}
 }
