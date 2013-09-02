@@ -44,7 +44,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private final List<GDXBackground> backgrounds = new ArrayList<>();
 	private final List<GDXLight> lights = new ArrayList<>();
 	private final List<GDXGroup> groups = new ArrayList<>();
-	private final List<GDXParticle> particles = new ArrayList<>();
+	private List<GDXParticle> particles = new ArrayList<>();
 	private List<GDXSound> sounds = new ArrayList<>();
 	private Map<String,String> properties;
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
@@ -152,6 +152,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	}
 
 	public List<GDXParticle> getParticles() {
+		if(particles == null)
+			particles = new ArrayList<>();
 		return particles;
 	}
 

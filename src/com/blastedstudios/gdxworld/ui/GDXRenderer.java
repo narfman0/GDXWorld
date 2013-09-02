@@ -22,6 +22,8 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXRenderer {
+	private static final Format PREFERRED_FORMAT = Format.valueOf(Properties.get("texture.format", "RGBA8888"));
+	private static final boolean USE_MIP_MAPS = Properties.getBool("texture.useMipMaps", true);
 	private final float GDX_SCALE = .05f;
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
@@ -103,7 +105,7 @@ public class GDXRenderer {
 			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
 			if(file != null){
 				try{
-					textureMap.put(name, new Texture(file));
+					textureMap.put(name, new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS));
 					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
 					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
