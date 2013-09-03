@@ -109,4 +109,8 @@ public class GDXQuestManager implements Serializable{
 				status.setCompleted(completed);
 		Collections.sort(statuses, new QuestStatus.CompletionComparator());
 	}
+	
+	public List<QuestStatus> getQuestStatuses(){
+		return levelQuestStatusMap.get(currentLevel.getName());
+	}
 }
