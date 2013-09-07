@@ -105,6 +105,15 @@ public class WorldEditorScreen extends AbstractScreen {
 		}
 	}
 	
+	@Override public boolean keyDown(int key) {
+		switch(key){
+		case Keys.ESCAPE:
+			game.popScreen();
+			break;
+		}
+		return super.keyDown(key);
+	}
+	
 	private static float getLevelRadius(){
 		return Properties.getFloat("world.editor.node.radius", 1f);
 	}
