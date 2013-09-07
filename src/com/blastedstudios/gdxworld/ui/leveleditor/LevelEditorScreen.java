@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,6 +28,8 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 public class LevelEditorScreen extends AbstractScreen {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world;
+	private final GDXWorld gdxWorld;
+	private final File selectedFile;
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 	private final GDXRenderer gdxRenderer = new GDXRenderer(true, false);
 	private LevelWindow levelWindow;
@@ -37,9 +40,12 @@ public class LevelEditorScreen extends AbstractScreen {
 	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
 	private final ShapeRenderer renderer = new ShapeRenderer();
         
-	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
-		super(game);
+	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
+			final File selectedFile, final GDXLevel gdxLevel){
+		super(game, "data/ui/uiskin.json");
 		this.gdxLevel = gdxLevel;
+		this.gdxWorld = gdxWorld;
+		this.selectedFile = selectedFile;
 		inputMultiplexer.addProcessor(scroller);
 		for(IMode child : modes)
 			child.init(this);
@@ -77,6 +83,8 @@ public class LevelEditorScreen extends AbstractScreen {
 			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
+		if(Gdx.input.isKeyPressed(Keys.S) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT))
+			gdxWorld.save(selectedFile);
 		stage.draw();
 	}
 	

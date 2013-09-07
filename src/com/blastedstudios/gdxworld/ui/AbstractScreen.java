@@ -9,21 +9,19 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.blastedstudios.gdxworld.util.Properties;
 
 public abstract class AbstractScreen implements Screen, InputProcessor{
 	private static final int GL_CLEAR = Gdx.graphics.isGL20Available() ? 
 			GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT : 
 			GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT;
 	protected final Stage stage;
-	protected static Skin skin;
+	protected Skin skin;
 	protected final GDXGame game;
 	protected final InputMultiplexer inputMultiplexer;
 	
-	public AbstractScreen(final GDXGame game){
+	public AbstractScreen(final GDXGame game, final String skinPath){
 		this.game = game;
-		if(skin == null)
-			skin = new Skin(Gdx.files.internal(Properties.get("screen.skin","data/ui/uiskin.json")));
+		skin = new Skin(Gdx.files.internal(skinPath));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		Gdx.input.setInputProcessor(inputMultiplexer = new InputMultiplexer());
 		inputMultiplexer.addProcessor(this);

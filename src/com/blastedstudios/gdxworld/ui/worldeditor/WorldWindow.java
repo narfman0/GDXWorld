@@ -68,4 +68,8 @@ public class WorldWindow extends AbstractWindow{
 		setY(Gdx.graphics.getHeight() - getHeight());
 		setMovable(false);
 	}
+	
+	public File getSavedFile(){
+		return lastSavedFile;
+	}
 }

@@ -25,7 +25,7 @@ public class TempWorldScreen extends AbstractScreen{
 	private static GDXWorld gdxWorld;
 
 	public TempWorldScreen(final GDXGame game){
-		super(game);
+		super(game, "data/ui/uiskin.json");
 		final Button yesButton = new TextButton("Yes", skin);
 		yesButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
-import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -22,11 +21,11 @@ public class WorldEditorScreen extends AbstractScreen {
 	private final ShapeRenderer renderer = new ShapeRenderer();
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private LevelInformationWindow levelInfo;
-	private AbstractWindow worldWindow;
+	private WorldWindow worldWindow;
 	private final GDXWorld gdxWorld;
 	
 	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
-		super(game);
+		super(game, "data/ui/uiskin.json");
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
 		camera.zoom += 3;
@@ -98,7 +97,8 @@ public class WorldEditorScreen extends AbstractScreen {
 					Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
 				}else
 					Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
-				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, level);
+				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, 
+						worldWindow.getSavedFile(), level);
 				stage.addActor(levelInfo);
 			}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
 				levelInfo.setCoordinates(coordinates.x, coordinates.y);

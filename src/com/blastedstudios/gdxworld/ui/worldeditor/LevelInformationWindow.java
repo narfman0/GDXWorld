@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,7 +27,7 @@ public class LevelInformationWindow extends AbstractWindow{
 	private final GDXLevel gdxLevel;
 	
 	public LevelInformationWindow(final GDXGame game, final WorldEditorScreen worldEditorScreen, 
-			final Skin skin, final GDXWorld gdxWorld, final GDXLevel gdxLevel){
+			final Skin skin, final GDXWorld gdxWorld, final File selectedFile, final GDXLevel gdxLevel){
 		super("Level Info", skin);
 		this.gdxWorld = gdxWorld;
 		this.gdxLevel = gdxLevel;
@@ -47,7 +48,7 @@ public class LevelInformationWindow extends AbstractWindow{
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				addLevel();
-				game.pushScreen(new LevelEditorScreen(game, gdxWorld, gdxLevel));
+				game.pushScreen(new LevelEditorScreen(game, gdxWorld, selectedFile, gdxLevel));
 			}
 		});
 		deleteButton.addListener(new ClickListener() {
