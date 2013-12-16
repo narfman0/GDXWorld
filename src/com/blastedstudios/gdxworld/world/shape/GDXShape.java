@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public abstract class GDXShape implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	protected String name;
+	private String resource = "";
 	protected float density = 1f, friction = .5f, restitution = .3f;
 	protected BodyType bodyType = BodyType.StaticBody;
 	protected Vector2 center = new Vector2();
@@ -67,6 +68,16 @@ public abstract class GDXShape implements Cloneable,Serializable{
 	public void setCenter(Vector2 center) {
 		this.center = center;
 	}
+
+	public String getResource() {
+		if(resource == null)
+			resource = "";
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
 	
 	public abstract Vector2 getDimensions();
 	
@@ -90,6 +101,7 @@ public abstract class GDXShape implements Cloneable,Serializable{
 		clone.setFriction(friction);
 		clone.setName(name);
 		clone.setRestitution(restitution);
+		clone.setResource(resource);
 		return clone;
 	}
 }

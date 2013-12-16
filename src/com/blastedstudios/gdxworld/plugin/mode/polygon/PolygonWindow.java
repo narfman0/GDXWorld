@@ -69,6 +69,9 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<polygon name>");
 		nameField.setText(polygon.getName());
+		final TextField resourceField = new TextField("", skin);
+		resourceField.setMessageText("<resource name>");
+		resourceField.setText(polygon.getResource());
 		shapeTable = new ShapeTable(skin, polygon);
 		final Button clearButton = new TextButton("Clear vertices", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
@@ -84,6 +87,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				polygon.setName(nameField.getText());
+				polygon.setResource(resourceField.getText());
 				BodyType bodyType = BodyType.StaticBody;
 				if(kinematicBox.isChecked())
 					bodyType = BodyType.KinematicBody;
@@ -120,6 +124,9 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		row();
 		add(new Label("Name: ", skin));
 		add(nameField);
+		row();
+		add(new Label("Resource: ", skin));
+		add(resourceField);
 		row();
 		add(shapeTable).colspan(2);
 		row();
