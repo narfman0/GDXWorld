@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -105,7 +106,9 @@ public class GDXRenderer {
 			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
 			if(file != null){
 				try{
-					textureMap.put(name, new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS));
+					Texture texture = new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS);
+					texture.setWrap(TextureWrap.MirroredRepeat, TextureWrap.MirroredRepeat);
+					textureMap.put(name, texture);
 					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
 					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
