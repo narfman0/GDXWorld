@@ -25,6 +25,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 public class GDXRenderer {
 	private static final Format PREFERRED_FORMAT = Format.valueOf(Properties.get("texture.format", "RGBA8888"));
 	private static final boolean USE_MIP_MAPS = Properties.getBool("texture.useMipMaps", true);
+	private static final TextureWrap TEXTURE_WRAP = TextureWrap.valueOf(Properties.get("texture.wrap", "Repeat"));
 	private final float GDX_SCALE = .05f;
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
@@ -107,7 +108,7 @@ public class GDXRenderer {
 			if(file != null){
 				try{
 					Texture texture = new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS);
-					texture.setWrap(TextureWrap.MirroredRepeat, TextureWrap.MirroredRepeat);
+					texture.setWrap(TEXTURE_WRAP, TEXTURE_WRAP);
 					textureMap.put(name, texture);
 					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
