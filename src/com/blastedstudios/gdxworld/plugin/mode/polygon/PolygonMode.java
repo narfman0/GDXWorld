@@ -19,6 +19,7 @@ import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.TiledMeshRenderer;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
@@ -26,10 +27,11 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 public class PolygonMode extends AbstractMode {
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
+	private TiledMeshRenderer tiledMeshRenderer;
 	private PolygonWindow polygonWindow;
 	private Vector2 lastTouchedVertex;
 	private GDXPolygon lastTouchedPolygon;
-
+	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
@@ -82,6 +84,7 @@ public class PolygonMode extends AbstractMode {
 			lastTouchedVertex.set(coordinates);
 			polygonWindow.repopulate();
 		}
+		tiledMeshRenderer = null;
 	}
 
 	public boolean addPolygon(GDXPolygon polygon){
@@ -94,6 +97,7 @@ public class PolygonMode extends AbstractMode {
 				screen.getLevel().getPolygons().add(polygon);
 			bodies.put(polygon, body);
 		}
+		tiledMeshRenderer = null;
 		return body != null;
 	}
 
@@ -101,6 +105,7 @@ public class PolygonMode extends AbstractMode {
 		Gdx.app.log("PolygonMode.removePolygon", polygon.toString());
 		screen.getWorld().destroyBody(bodies.remove(polygon));
 		screen.getLevel().getPolygons().remove(polygon);
+		tiledMeshRenderer = null;
 	}
 
 	@Override public boolean contains(float x, float y) {
@@ -111,6 +116,7 @@ public class PolygonMode extends AbstractMode {
 		if(polygonWindow != null)
 			polygonWindow.remove();
 		polygonWindow = null;
+		tiledMeshRenderer = null;
 	}
 
 	@Override public void loadLevel(GDXLevel level) {
@@ -121,6 +127,9 @@ public class PolygonMode extends AbstractMode {
 	}
 	
 	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+		if(tiledMeshRenderer == null)
+			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
+		tiledMeshRenderer.render(camera);
 		if(!screen.isLive()){
 			renderer.setProjectionMatrix(camera.combined);
 			renderer.begin(ShapeType.Line);
