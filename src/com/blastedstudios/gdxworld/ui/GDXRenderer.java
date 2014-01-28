@@ -80,10 +80,7 @@ public class GDXRenderer {
 	 * Convert from world coordinates to parallax screen coordinates
 	 */
 	public static Vector2 toParallax(float depth, Vector2 world, Camera camera){
-		Vector2 camOffset = new Vector2();
-		if(depth != 1)
-			camOffset = world.cpy().sub(new Vector2(camera.position.x,camera.position.y)).div(depth);
-		return world.cpy().add(camOffset);
+		return world.cpy().add(new Vector2(camera.position.x, camera.position.y).scl(1f-(1f/depth)));
 	}
 
 	public boolean isDrawBackground() {
