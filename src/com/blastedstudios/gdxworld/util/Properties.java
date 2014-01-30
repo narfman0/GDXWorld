@@ -1,7 +1,8 @@
 package com.blastedstudios.gdxworld.util;
 
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.badlogic.gdx.Gdx;
 
@@ -67,8 +68,8 @@ public class Properties {
 		return properties.setProperty(key, value);
 	}
 	
-	public static HashMap<String,String> parseProperties(String key, String defaultValue){
-		HashMap<String,String> propertiesMap = new HashMap<>();
+	public static Map<String,String> parseProperties(String key, String defaultValue){
+		TreeMap<String,String> propertiesMap = new TreeMap<>();
 		String propValue = Properties.get(key, defaultValue);
 		String[] properties = propValue.contains(",") ?
 				propValue.split(",") : new String[]{propValue};
