@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -61,17 +62,18 @@ public class BackgroundMode extends AbstractMode {
 	private void shift(){
 		if(lastTouched != null){
 			Gdx.app.debug("BackgroundMode.touchUp", lastTouched.toString() + " to " + coordinates);
-			lastTouched.getCoordinates().set(coordinates);
+			Vector2 world = GDXRenderer.fromParallax(lastTouched.getDepth(), coordinates, camera);
+			lastTouched.getCoordinates().set(world);
 			if(backgroundWindow != null)
-				backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
+				backgroundWindow.setCenter(new Vector2(world.x, world.y));
 		}
 	}
 	
 	private GDXBackground getClosest(float x, float y){
 		for(GDXBackground background : screen.getLevel().getBackgrounds()){
 			Texture tex = screen.getGDXRenderer().getTexture(background.getTexture());
-			if(tex != null && PolygonUtils.aabbCollide(x,y,
-				background.getCoordinates().x, background.getCoordinates().y,
+			Vector2 world = GDXRenderer.toParallax(background.getDepth(), background.getCoordinates(), camera);
+			if(tex != null && PolygonUtils.aabbCollide(x,y, world.x, world.y,
 				tex.getWidth()*background.getScale(), tex.getHeight()*background.getScale()))
 				return background;
 		}

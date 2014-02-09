@@ -30,7 +30,6 @@ public class GDXRenderer {
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
 	private SpriteBatch batch;
-	private static final Texture EMPTY = new Texture(1,1,Format.RGBA4444);
 	
 	public GDXRenderer(boolean drawBackground, boolean drawShapes){
 		this.drawBackground = drawBackground;
@@ -82,6 +81,10 @@ public class GDXRenderer {
 	public static Vector2 toParallax(float depth, Vector2 world, Camera camera){
 		return world.cpy().add(new Vector2(camera.position.x, camera.position.y).scl(1f-(1f/depth)));
 	}
+	
+	public static Vector2 fromParallax(float depth, Vector2 parallax, Camera camera){
+		return new Vector2(-camera.position.x, -camera.position.y).scl(1f-(1f/depth)).add(parallax);
+	}
 
 	public boolean isDrawBackground() {
 		return drawBackground;
@@ -101,6 +104,7 @@ public class GDXRenderer {
 	
 	public Texture getTexture(String name){
 		if(!textureMap.containsKey(name)){
+			final Texture EMPTY = new Texture(1,1,Format.RGBA4444);
 			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
 			if(file != null){
 				try{
