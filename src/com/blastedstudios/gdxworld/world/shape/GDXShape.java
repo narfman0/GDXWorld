@@ -87,6 +87,8 @@ public abstract class GDXShape implements Cloneable,Serializable{
 	public abstract Body createFixture(World world, boolean overrideStatic);
 	
 	public abstract float getDistance(float x, float y);
+	
+	public abstract boolean isRepeatable();
 
 	@Override public String toString(){
 		return "[GDXShape name:" + name + "]";

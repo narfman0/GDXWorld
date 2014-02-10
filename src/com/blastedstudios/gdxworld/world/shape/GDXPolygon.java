@@ -15,6 +15,7 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 public class GDXPolygon extends GDXShape implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;
+	private boolean repeatable;
 	/**
 	 * Coordinates for vertices relative to center. To convert to world 
 	 * coordinates, use the absolute version, e.g. getVerticesAbsolute
@@ -45,6 +46,14 @@ public class GDXPolygon extends GDXShape implements Serializable{
 
 	public void setVerticesAbsolute(List<Vector2> vertices) {
 		this.vertices = PolygonUtils.getCenterVertices(vertices, center);
+	}
+
+	public boolean isRepeatable() {
+		return repeatable;
+	}
+
+	public void setRepeatable(boolean repeatable) {
+		this.repeatable = repeatable;
 	}
 	
 	/**

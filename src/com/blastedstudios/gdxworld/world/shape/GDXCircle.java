@@ -52,4 +52,8 @@ public class GDXCircle extends GDXShape {
 	@Override public Vector2 getDimensions() {
 		return new Vector2(radius*2,radius*2);
 	}
+
+	@Override public boolean isRepeatable() {
+		return false;
+	}
 }

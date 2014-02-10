@@ -72,6 +72,8 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		final TextField resourceField = new TextField("", skin);
 		resourceField.setMessageText("<resource name>");
 		resourceField.setText(polygon.getResource());
+		final CheckBox repeatableCheckbox = new CheckBox("Repeatable", skin);
+		repeatableCheckbox.setChecked(polygon.isRepeatable());
 		shapeTable = new ShapeTable(skin, polygon);
 		final Button clearButton = new TextButton("Clear vertices", skin);
 		final Button acceptButton = new TextButton("Accept", skin);
@@ -87,6 +89,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				polygon.setName(nameField.getText());
+				polygon.setRepeatable(repeatableCheckbox.isChecked());
 				polygon.setResource(resourceField.getText());
 				BodyType bodyType = BodyType.StaticBody;
 				if(kinematicBox.isChecked())
@@ -120,22 +123,23 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		bodyTypeTable.add(staticBox);
 		bodyTypeTable.add(kinematicBox);
 		bodyTypeTable.add(dynamicBox);
-		add(bodyTypeTable).colspan(2);
+		add(bodyTypeTable).colspan(3);
 		row();
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
 		add(new Label("Resource: ", skin));
 		add(resourceField);
+		add(repeatableCheckbox);
 		row();
-		add(shapeTable).colspan(2);
+		add(shapeTable).colspan(3);
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
 		controlTable.add(clearButton);
 		controlTable.add(deleteButton);
 		controlTable.add(cancelButton);
-		add(controlTable).colspan(2);
+		add(controlTable).colspan(3);
 		setMovable(false);
 		setHeight(400);
 		setWidth(400);
