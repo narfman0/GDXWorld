@@ -26,6 +26,7 @@ public class GDXRenderer {
 	private static final Format PREFERRED_FORMAT = Format.valueOf(Properties.get("texture.format", "RGBA8888"));
 	private static final boolean USE_MIP_MAPS = Properties.getBool("texture.useMipMaps", true);
 	private static final TextureWrap TEXTURE_WRAP = TextureWrap.valueOf(Properties.get("texture.wrap", "Repeat"));
+	private static final float SHAPE_SCALE = Properties.getFloat("renderer.shape.scale", .02f);
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap;
 	private SpriteBatch batch;
@@ -56,7 +57,7 @@ public class GDXRenderer {
 		Texture texture = getTexture(shape.getResource());
 		if(!shape.isRepeatable() && texture != null && !shape.getResource().equals("") && body != null){
 			Sprite sprite = new Sprite(texture);
-			sprite.setScale(camera.zoom);
+			sprite.setScale(SHAPE_SCALE);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
 			sprite.setPosition(body.getPosition().x - texture.getWidth()/2f, body.getPosition().y - texture.getHeight()/2f);
 			sprite.draw(batch);
