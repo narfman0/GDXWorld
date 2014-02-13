@@ -1,6 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.mode.background;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
@@ -17,7 +19,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 @PluginImplementation
 public class BackgroundMode extends AbstractMode {
 	private BackgroundWindow backgroundWindow;
-	private GDXBackground lastTouched;
+	private BackgroundChooserWindow backgroundChooserWindow;
 	
 	public void addBackground(GDXBackground background) {
 		Gdx.app.log("BackgroundMode.addBackground", background.toString());
@@ -35,15 +37,23 @@ public class BackgroundMode extends AbstractMode {
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
 		Gdx.app.debug("BackgroundMode.touchDown", "x="+x+ " y="+y);
-		GDXBackground background = getClosest(coordinates.x, coordinates.y);
-		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || background == null)
-			background = new GDXBackground();
+		if(backgroundWindow == null && backgroundChooserWindow == null){
+			List<GDXBackground> backgrounds = getOverlappingBackgrounds(coordinates.x, coordinates.y);
+			if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || backgrounds.isEmpty())
+				touchBegin(new GDXBackground());
+			else if(backgrounds.size() == 1)
+				touchBegin(backgrounds.get(0));
+			else
+				screen.getStage().addActor(backgroundChooserWindow = new BackgroundChooserWindow(
+						screen.getSkin(), this, backgrounds));
+		}
+		return false;
+	}
+	
+	void touchBegin(GDXBackground background){
 		if(backgroundWindow == null)
 			screen.getStage().addActor(backgroundWindow = new BackgroundWindow(screen.getSkin(), this, background));
 		backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
-		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
-			lastTouched = background;
-		return false;
 	}
 	
 	@Override public boolean touchDragged(int x, int y, int ptr){
@@ -55,29 +65,31 @@ public class BackgroundMode extends AbstractMode {
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
 		shift();
-		lastTouched = null;
 		return false;
 	}
 	
 	private void shift(){
-		if(lastTouched != null){
-			Gdx.app.debug("BackgroundMode.touchUp", lastTouched.toString() + " to " + coordinates);
-			Vector2 world = GDXRenderer.fromParallax(lastTouched.getDepth(), coordinates, camera);
-			lastTouched.getCoordinates().set(world);
+		if(backgroundWindow != null){
+			GDXBackground background = backgroundWindow.background;
+			Gdx.app.debug("BackgroundMode.touchUp", background.toString() + " to " + coordinates);
+			Vector2 world = GDXRenderer.fromParallax(background.getDepth(), coordinates, camera);
+			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+				background.getCoordinates().set(world);
 			if(backgroundWindow != null)
 				backgroundWindow.setCenter(new Vector2(world.x, world.y));
 		}
 	}
 	
-	private GDXBackground getClosest(float x, float y){
+	private List<GDXBackground> getOverlappingBackgrounds(float x, float y){
+		List<GDXBackground> backgrounds = new LinkedList<>();
 		for(GDXBackground background : screen.getLevel().getBackgrounds()){
 			Texture tex = screen.getGDXRenderer().getTexture(background.getTexture());
 			Vector2 world = GDXRenderer.toParallax(background.getDepth(), background.getCoordinates(), camera);
 			if(tex != null && PolygonUtils.aabbCollide(x,y, world.x, world.y,
 				tex.getWidth()*background.getScale(), tex.getHeight()*background.getScale()))
-				return background;
+				backgrounds.add(background);
 		}
-		return null;
+		return backgrounds;
 	}
 	
 	@Override public boolean contains(float x, float y) {
@@ -87,7 +99,10 @@ public class BackgroundMode extends AbstractMode {
 	@Override public void clean() {
 		if(backgroundWindow != null)
 			backgroundWindow.remove();
+		if(backgroundChooserWindow != null)
+			backgroundChooserWindow.remove();
 		backgroundWindow = null;
+		backgroundChooserWindow = null;
 	}
 
 	@Override public void loadLevel(GDXLevel level) {

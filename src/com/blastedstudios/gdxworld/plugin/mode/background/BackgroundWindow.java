@@ -15,9 +15,11 @@ import com.blastedstudios.gdxworld.world.GDXBackground;
 
 class BackgroundWindow extends AbstractWindow {
 	private final VertexTable centerTable;
+	final GDXBackground background;
 	
 	public BackgroundWindow(final Skin skin, final BackgroundMode mode, final GDXBackground background) {
 		super("Background Editor", skin);
+		this.background = background;
 		centerTable = new VertexTable(background.getCoordinates(), skin, null);
 		final TextField textureField = new TextField("", skin);
 		textureField.setMessageText("<background texture>");
