@@ -15,7 +15,8 @@ import com.blastedstudios.gdxworld.world.GDXBackground;
 
 class BackgroundWindow extends AbstractWindow {
 	private final VertexTable centerTable;
-	final GDXBackground background;
+	private final GDXBackground background;
+	private final TextField depthField;
 	
 	public BackgroundWindow(final Skin skin, final BackgroundMode mode, final GDXBackground background) {
 		super("Background Editor", skin);
@@ -24,7 +25,7 @@ class BackgroundWindow extends AbstractWindow {
 		final TextField textureField = new TextField("", skin);
 		textureField.setMessageText("<background texture>");
 		textureField.setText(background.getTexture());
-		final TextField depthField = new TextField("", skin);
+		depthField = new TextField("", skin);
 		depthField.setMessageText("<depth>");
 		depthField.setText(background.getDepth()+"");
 		final TextField scaleField = new TextField("", skin);
@@ -80,5 +81,13 @@ class BackgroundWindow extends AbstractWindow {
 
 	public void setCenter(Vector2 center) {
 		centerTable.setVertex(center.x, center.y);
+	}
+
+	public GDXBackground getGDXBackground() {
+		return background;
+	}
+	
+	public float getDepth(){
+		return Float.parseFloat(depthField.getText());
 	}
 }

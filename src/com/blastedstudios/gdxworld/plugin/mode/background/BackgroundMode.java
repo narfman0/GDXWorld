@@ -53,7 +53,6 @@ public class BackgroundMode extends AbstractMode {
 	void touchBegin(GDXBackground background){
 		if(backgroundWindow == null)
 			screen.getStage().addActor(backgroundWindow = new BackgroundWindow(screen.getSkin(), this, background));
-		backgroundWindow.setCenter(new Vector2(coordinates.x, coordinates.y));
 	}
 	
 	@Override public boolean touchDragged(int x, int y, int ptr){
@@ -70,9 +69,9 @@ public class BackgroundMode extends AbstractMode {
 	
 	private void shift(){
 		if(backgroundWindow != null){
-			GDXBackground background = backgroundWindow.background;
+			GDXBackground background = backgroundWindow.getGDXBackground();
 			Gdx.app.debug("BackgroundMode.touchUp", background.toString() + " to " + coordinates);
-			Vector2 world = GDXRenderer.fromParallax(background.getDepth(), coordinates, camera);
+			Vector2 world = GDXRenderer.fromParallax(backgroundWindow.getDepth(), coordinates, camera);
 			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
 				background.getCoordinates().set(world);
 			if(backgroundWindow != null)
