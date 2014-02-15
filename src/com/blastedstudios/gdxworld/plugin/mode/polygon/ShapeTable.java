@@ -7,19 +7,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class ShapeTable extends Table {
-	private final TextField densityField, frictionField, restitutionField;
+	private final TextField densityField, frictionField, restitutionField, resourceField;
 
 	public ShapeTable(Skin skin, GDXShape shape){
-		densityField = new TextField("", skin);
+		resourceField = new TextField(shape.getResource(), skin);
+		resourceField.setMessageText("<resource name>");
+		densityField = new TextField(shape.getDensity()+"", skin);
 		densityField.setMessageText("<density, calculates mass>");
-		densityField.setText(shape.getDensity()+"");
-		frictionField = new TextField("", skin);
+		frictionField = new TextField(shape.getFriction()+"", skin);
 		frictionField.setMessageText("<friction>");
-		frictionField.setText(shape.getFriction()+"");
-		restitutionField = new TextField("", skin);
+		restitutionField = new TextField(shape.getRestitution()+"", skin);
 		restitutionField.setMessageText("<restitution>");
-		restitutionField.setText(shape.getRestitution()+"");
-		
+
+		add(new Label("Resource: ", skin));
+		add(resourceField);
+		row();
 		add(new Label("Friction: ", skin));
 		add(frictionField);
 		row();
@@ -34,6 +36,7 @@ public class ShapeTable extends Table {
 	public GDXShape apply(GDXShape shape){
 		shape.setDensity(Float.parseFloat(densityField.getText()));
 		shape.setFriction(Float.parseFloat(frictionField.getText()));
+		shape.setResource(resourceField.getText());
 		shape.setRestitution(Float.parseFloat(restitutionField.getText()));
 		return shape;
 	}

@@ -32,7 +32,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 public class ChainWindow extends AbstractWindow {
 	private static int chainCount = 0;
 	private final VertexTable startTable, endTable;
-	private final TextField distanceField, nameField;
+	private final TextField distanceField, nameField, resourceField;
 	private final CircleTable circleTable;
 	private final RectangleTable rectangleTable;
 	private final Table shapeTable;
@@ -43,9 +43,11 @@ public class ChainWindow extends AbstractWindow {
 		startTable = new VertexTable(new Vector2(), skin, null);
 		endTable = new VertexTable(new Vector2(), skin, null);
 		nameField = new TextField("Chain-" + chainCount++, skin);
-		nameField.setMessageText("<chain name");
+		nameField.setMessageText("<chain name>");
 		distanceField = new TextField(Properties.get("level.chain.distance", "1"), skin);
 		distanceField.setMessageText("<distance to next shape in chain");
+		resourceField = new TextField("chain.png", skin);
+		resourceField.setMessageText("<resource>");
 		final Button createButton = new TextButton("Create", skin);
 		createButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -140,6 +142,7 @@ public class ChainWindow extends AbstractWindow {
 				circle.setBodyType(BodyType.DynamicBody);
 				circle.setCenter(coordinates);
 				circle.setRadius(circleTable.getRadius());
+				circle.setResource(resourceField.getText());
 				circleTable.apply(circle);
 				level.getCircles().add(circle);
 				shapes.add(circle);
@@ -147,6 +150,7 @@ public class ChainWindow extends AbstractWindow {
 				GDXPolygon rectangle = new GDXPolygon();
 				rectangle.setBodyType(BodyType.DynamicBody);
 				rectangle.setCenter(coordinates);
+				rectangle.setResource(resourceField.getText());
 				rectangleTable.apply(rectangle);
 				level.getPolygons().add(rectangle);
 				shapes.add(rectangle);
