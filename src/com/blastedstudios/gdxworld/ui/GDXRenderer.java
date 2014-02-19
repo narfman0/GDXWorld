@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXBackground;
@@ -25,16 +27,17 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 public class GDXRenderer {
 	private static final Format PREFERRED_FORMAT = Format.valueOf(Properties.get("texture.format", "RGBA8888"));
 	private static final boolean USE_MIP_MAPS = Properties.getBool("texture.useMipMaps", true);
+	private static final boolean USE_DEPTH_BLUR = Properties.getBool("texture.useDepthBlur", true);
 	private static final TextureWrap TEXTURE_WRAP = TextureWrap.valueOf(Properties.get("texture.wrap", "Repeat"));
 	private static final float SHAPE_SCALE = Properties.getFloat("renderer.shape.scale", .02f);
 	private boolean drawBackground, drawShapes;
-	private Map<String, Texture> textureMap;
+	private Map<String, Texture> textureMap = new HashMap<>();
+	private Map<String, Map<Float,Texture>> textureBlurMap = new HashMap<>();
 	private SpriteBatch batch;
 	
 	public GDXRenderer(boolean drawBackground, boolean drawShapes){
 		this.drawBackground = drawBackground;
 		this.drawShapes = drawShapes;
-		textureMap = new HashMap<String, Texture>();
 		batch = new SpriteBatch();
 		if(!Properties.getBool("renderer.blend.enabled", true))
 			batch.disableBlending();
@@ -65,7 +68,9 @@ public class GDXRenderer {
 	}
 	
 	public void drawBackground(Camera camera, GDXBackground background, SpriteBatch batch){
-		Texture texture = getTexture(background.getTexture());
+		Texture texture = background.getDepth() == 1f || !USE_DEPTH_BLUR? 
+				getTexture(background.getTexture()) :
+				getBlurTexture(background.getTexture(), background.getDepth());
 		if(texture != null){
 			float depth = Math.max(background.getDepth(), .001f);
 			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());
@@ -102,10 +107,22 @@ public class GDXRenderer {
 		this.drawShapes = drawShapes;
 	}
 	
+	public Texture getBlurTexture(String name, float depth){
+		Map<Float,Texture> texMap = textureBlurMap.get(name);
+		if(texMap == null)
+			textureBlurMap.put(name, texMap = new HashMap<>());
+		Texture texture = texMap.get(depth);
+		if(texture == null){
+			int blurRadius = (int) Math.ceil(Math.sqrt(depth));
+			texMap.put(depth, texture = new Texture(BlurUtil.blur(new Pixmap(getTextureFile(name)), blurRadius, 2, true)));
+		}
+		return texture;
+	}
+	
 	public Texture getTexture(String name){
 		if(!textureMap.containsKey(name)){
 			final Texture EMPTY = new Texture(1,1,Format.RGBA4444);
-			FileHandle file = FileUtil.find(Gdx.files.internal("data"), name);
+			FileHandle file = getTextureFile(name);
 			if(file != null){
 				try{
 					Texture texture = new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS);
@@ -124,6 +141,10 @@ public class GDXRenderer {
 			}
 		}
 		return textureMap.get(name);
+	}
+	
+	private static FileHandle getTextureFile(String name){
+		return FileUtil.find(Gdx.files.internal("data"), name);
 	}
 	
 	public static Vector2 toWorldCoordinates(Camera cam, Vector2 screen){
