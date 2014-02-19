@@ -106,10 +106,22 @@ public class LevelInformationWindow extends AbstractWindow{
 		coordXLabel.setText(x+"");
 		coordYLabel.setText(y+"");
 	}
+
+    /**
+     * Trys to parse a float from a string; returns 0 if fails.
+     */
+        private static float tryParseFloat(String floatString) {
+	    try {
+		return Float.parseFloat(floatString);
+	    } catch (Exception e) {
+		// user its fumbling around with input.
+	    }
+	    return 0;
+        }
 	
 	public Vector2 getCoordinates(){
 		return new Vector2(
-				Float.parseFloat(coordXLabel.getText()), 
-				Float.parseFloat(coordYLabel.getText()));
+				tryParseFloat(coordXLabel.getText()), 
+				tryParseFloat(coordYLabel.getText()));
 	}
 }
