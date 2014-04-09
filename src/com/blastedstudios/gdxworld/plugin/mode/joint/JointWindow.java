@@ -1,7 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.mode.joint;
 
-import java.lang.reflect.Constructor;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
 import com.blastedstudios.gdxworld.world.joint.*;
 
@@ -42,21 +41,17 @@ class JointWindow extends AbstractWindow {
 		pack();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createBaseWindow(JointType type, GDXJoint joint){
 		if(baseWindow != null)
 			baseWindow.remove();
-		try{
-			Class<?> jointClass = Class.forName(GDXJoint.class.getPackage().getName() + "." + type.name());
-			GDXJoint gdxJoint = (joint == null ? (GDXJoint)jointClass.getConstructor().newInstance() : joint);
-			String windowClassName = BaseJointWindow.class.getPackage().getName() + "." + type.name().replace("Joint", "Window");
-			Class<?> windowClass = Class.forName(windowClassName);
-			Constructor<?> windowConstructor = windowClass.getConstructor(Skin.class, JointMode.class, gdxJoint.getClass());
-			baseWindow = (BaseJointWindow) windowConstructor.newInstance(skin, mode, gdxJoint);
-		}catch(Exception e){
-			Gdx.app.log("JointWindow.createBaseWindow", "Exception creating window for type: " + type + ", error: " + e.getMessage());
-		}
+		for(IJointWindow<GDXJoint> window : PluginUtil.getPlugins(IJointWindow.class))
+			if(window.getJointType() == type)
+				baseWindow = window.createJointWindow(skin, mode, window.createJoint(joint));
 		if(baseWindow != null)
 			levelEditorScreen.getStage().addActor(baseWindow);
+		else
+			Gdx.app.log("JointWindow.createBaseWindow", "Failed to create base window for joint type: " + type);
 	}
 
 	public void clicked(Vector2 pos) {

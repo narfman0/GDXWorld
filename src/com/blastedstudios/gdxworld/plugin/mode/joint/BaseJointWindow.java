@@ -15,7 +15,7 @@ import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
-abstract class BaseJointWindow extends AbstractWindow {
+public abstract class BaseJointWindow extends AbstractWindow {
 	private final TextField nameField, bodyAField, bodyBField;
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;
