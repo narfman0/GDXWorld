@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.joint;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,7 +27,7 @@ public class PrismaticWindow extends BaseJointWindow  {
 		this.joint = joint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		axisTable = new VertexTable(joint.getAxis(), skin, null);
-		Button axisSelectButton = new TextButton("+", skin);
+		TextButton axisSelectButton = new TextButton("+", skin);
 		axisSelectButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(axisWindow != null)
@@ -38,9 +37,10 @@ public class PrismaticWindow extends BaseJointWindow  {
 						axis.nor();
 						axisTable.setVertex(axis.x, axis.y);
 						axisWindow.remove();
+						axisWindow = null;
 					}
 				};
-				axisWindow = new AxisCalculatorWindow(skin, joint.getAxis(), receiver);
+				axisWindow = new AxisCalculatorWindow(skin, joint.getAxis(), receiver, true);
 				mode.getScreen().getStage().addActor(axisWindow);
 			}
 		});
@@ -99,7 +99,8 @@ public class PrismaticWindow extends BaseJointWindow  {
 
 	@Override public boolean clicked(Vector2 pos) {
 		if(!super.clicked(pos))
-			anchorTable.setVertex(pos.x, pos.y);
+			if(axisWindow == null || !axisWindow.clicked(pos))
+				anchorTable.setVertex(pos.x, pos.y);
 		return true;
 	}
 
