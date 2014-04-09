@@ -2,25 +2,48 @@ package com.blastedstudios.gdxworld.plugin.mode.joint;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.util.AxisCalculatorWindow;
+import com.blastedstudios.gdxworld.util.AxisCalculatorWindow.IAxisReceiver;
 import com.blastedstudios.gdxworld.world.joint.PrismaticJoint;
 
-public class PrismaticWindow extends BaseJointWindow {
+public class PrismaticWindow extends BaseJointWindow  {
 	private final VertexTable anchorTable, axisTable;
 	private final TextField lowerTranslationField, upperTranslationField,
 		maxMotorForceField, motorSpeedField;
 	private final CheckBox enableLimitBox, enableMotorBox;
 	private final PrismaticJoint joint;
+	private AxisCalculatorWindow axisWindow;
 	
-	public PrismaticWindow(Skin skin, JointMode mode, PrismaticJoint joint){
+	public PrismaticWindow(final Skin skin, final JointMode mode, final PrismaticJoint joint){
 		super("Prismatic Editor", skin, JointType.PrismaticJoint, mode, joint);
 		this.joint = joint;
 		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
 		axisTable = new VertexTable(joint.getAxis(), skin, null);
+		Button axisSelectButton = new TextButton("+", skin);
+		axisSelectButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				if(axisWindow != null)
+					axisWindow.remove();
+				IAxisReceiver receiver = new IAxisReceiver() {
+					@Override public void setAxis(Vector2 axis) {
+						axis.nor();
+						axisTable.setVertex(axis.x, axis.y);
+						axisWindow.remove();
+					}
+				};
+				axisWindow = new AxisCalculatorWindow(skin, joint.getAxis(), receiver);
+				mode.getScreen().getStage().addActor(axisWindow);
+			}
+		});
 		maxMotorForceField = new TextField(joint.getMaxMotorForce()+"", skin);
 		maxMotorForceField.setMessageText("<max motor torque>");
 		lowerTranslationField = new TextField(joint.getLowerTranslation()+"", skin);
@@ -38,6 +61,7 @@ public class PrismaticWindow extends BaseJointWindow {
 		row();
 		add(new Label("Axis: ", skin));
 		add(axisTable);
+		add(axisSelectButton);
 		row();
 		add(new Label("Max Motor Force: ", skin));
 		add(maxMotorForceField);
@@ -81,5 +105,11 @@ public class PrismaticWindow extends BaseJointWindow {
 
 	@Override public Vector2 getCenter() {
 		return anchorTable.getVertex();
+	}
+	
+	@Override public boolean remove(){
+		if(axisWindow != null)
+			axisWindow.remove();
+		return super.remove();
 	}
 }
