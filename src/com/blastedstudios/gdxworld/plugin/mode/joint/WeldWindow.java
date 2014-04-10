@@ -36,8 +36,10 @@ class WeldWindow extends BaseJointWindow {
 		joint.setReferenceAngle(Float.parseFloat(referenceAngleField.getText()));
 	}
 
-	@Override public void clicked(Vector2 pos) {
-		anchorTable.setVertex(pos.x, pos.y);
+	@Override public boolean clicked(Vector2 pos) {
+		if(!super.clicked(pos))
+			anchorTable.setVertex(pos.x, pos.y);
+		return true;
 	}
 
 	@Override public Vector2 getCenter() {

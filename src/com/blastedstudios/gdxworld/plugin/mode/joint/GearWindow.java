@@ -47,8 +47,10 @@ public class GearWindow extends BaseJointWindow {
 		joint.setJoint2(joint2Field.getText());
 	}
 
-	@Override public void clicked(Vector2 pos) {
-		centerTable.setVertex(pos.x, pos.y);
+	@Override public boolean clicked(Vector2 pos) {
+		if(!super.clicked(pos))
+			centerTable.setVertex(pos.x, pos.y);
+		return true;
 	}
 
 	@Override public Vector2 getCenter() {

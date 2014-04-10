@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 abstract class BaseJointWindow extends AbstractWindow {
@@ -102,7 +101,12 @@ abstract class BaseJointWindow extends AbstractWindow {
 		joint.setJointType(jointType);
 	}
 	
-	public abstract void clicked(Vector2 vector2);
+	/**
+	 * @return true if event was consumed
+	 */
+	public boolean clicked(Vector2 vector2){
+		return false;
+	}
 
 	abstract public Vector2 getCenter();
 }

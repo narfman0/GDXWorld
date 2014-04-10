@@ -53,8 +53,10 @@ class DistanceWindow extends BaseJointWindow {
 		joint.setLength(Float.parseFloat(lengthField.getText()));
 	}
 
-	@Override public void clicked(Vector2 pos) {
-		anchorATable.setVertex(pos.x, pos.y);
+	@Override public boolean clicked(Vector2 pos) {
+		if(!super.clicked(pos))
+			anchorATable.setVertex(pos.x, pos.y);
+		return true;
 	}
 
 	@Override public Vector2 getCenter() {
