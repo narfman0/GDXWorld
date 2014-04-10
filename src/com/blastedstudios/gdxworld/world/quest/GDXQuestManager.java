@@ -70,6 +70,14 @@ public class GDXQuestManager implements Serializable{
 						quest.getTrigger().reinitialize();
 					statusChanged = true;
 				}
+			}else if(status.getCompleted() == CompletionEnum.EXECUTING){
+				CompletionEnum completeStatus = quest.getManifestation().tick();
+				if(completeStatus != CompletionEnum.EXECUTING){
+					status.setCompleted(completeStatus);
+					if(quest.isRepeatable())
+						quest.getTrigger().reinitialize();
+					statusChanged = true;
+				}
 			}else
 				break;
 		}
