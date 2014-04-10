@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.platform;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -45,7 +44,6 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 	}
 	
 	@Override public CompletionEnum execute() {
-		Gdx.app.log("PlatformManifestation.execute", "Executed");
 		PrismaticJoint joint = (PrismaticJoint)executor.getPhysicsJoint(this.joint);
 		joint.enableMotor(true);
 		joint.setMaxMotorForce(maxMotorForceB);
@@ -56,23 +54,19 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 	@Override public CompletionEnum tick(){
 		PrismaticJoint joint = (PrismaticJoint)executor.getPhysicsJoint(this.joint);
 		if(joint.isMotorEnabled() && towardA && executor.getPhysicsObject(name).getWorldCenter().dst(pointA) < TURN_DISTANCE){
-			Gdx.app.log("PlatformManifestation.tick", "Turning to B");
 			towardA = false;
 			joint.setMaxMotorForce(maxMotorForceB);
 			joint.setMotorSpeed(motorSpeedB);
 			joint.enableMotor(false);
 			timeChangeDirection = System.currentTimeMillis() + waitDuration;
 		}else if(joint.isMotorEnabled() && executor.getPhysicsObject(name).getWorldCenter().dst(pointB) < TURN_DISTANCE){
-			Gdx.app.log("PlatformManifestation.tick", "Turning to A");
 			towardA = true;
 			joint.setMaxMotorForce(maxMotorForceA);
 			joint.setMotorSpeed(motorSpeedA);
 			joint.enableMotor(false);
 			timeChangeDirection = System.currentTimeMillis() + waitDuration;
-		}else if(!joint.isMotorEnabled() && System.currentTimeMillis() > timeChangeDirection){
-			Gdx.app.log("PlatformManifestation.tick", "Enabling motor");
+		}else if(!joint.isMotorEnabled() && System.currentTimeMillis() > timeChangeDirection)
 			joint.enableMotor(true);
-		}
 		return CompletionEnum.EXECUTING;
 	}
 
