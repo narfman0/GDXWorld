@@ -45,6 +45,10 @@ public abstract class AbstractMode implements IMode{
 		this.screen = screen;
 	}
 	
+	public LevelEditorScreen getScreen(){
+		return screen;
+	}
+	
 	public boolean contains(float x, float y) {
 		return false;
 	}
