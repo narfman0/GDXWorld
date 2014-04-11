@@ -121,6 +121,10 @@ public class GDXQuestManager implements Serializable{
 	}
 	
 	public List<QuestStatus> getQuestStatuses(){
-		return levelQuestStatusMap.get(currentLevel.getName());
+		return getQuestStatuses(currentLevel);
+	}
+	
+	public List<QuestStatus> getQuestStatuses(GDXLevel level){
+		return levelQuestStatusMap.get(level.getName());
 	}
 }
