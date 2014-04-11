@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
@@ -38,7 +39,8 @@ public class GDXQuestManager implements Serializable{
 	public void setCurrentLevel(GDXLevel currentLevel) {
 		this.currentLevel = currentLevel;
 		Gdx.app.log("GDXQuestManager.setCurrentLevel", "set level: " + currentLevel);
-		if(!levelQuestStatusMap.containsKey(currentLevel.getName())){
+		if(!levelQuestStatusMap.containsKey(currentLevel.getName()) || 
+				!Properties.getBool("quest.status.restore", false)){
 			List<QuestStatus> statuses = new LinkedList<>();
 			for(GDXQuest quest : currentLevel.getQuests())
 				statuses.add(new QuestStatus(currentLevel.getName(), quest.getName()));
