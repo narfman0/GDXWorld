@@ -59,7 +59,7 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 			joint.setMotorSpeed(motorSpeedB);
 			joint.enableMotor(false);
 			timeChangeDirection = System.currentTimeMillis() + waitDuration;
-		}else if(joint.isMotorEnabled() && executor.getPhysicsObject(name).getWorldCenter().dst(pointB) < TURN_DISTANCE){
+		}else if(joint.isMotorEnabled() && !towardA && executor.getPhysicsObject(name).getWorldCenter().dst(pointB) < TURN_DISTANCE){
 			towardA = true;
 			joint.setMaxMotorForce(maxMotorForceA);
 			joint.setMotorSpeed(motorSpeedA);
