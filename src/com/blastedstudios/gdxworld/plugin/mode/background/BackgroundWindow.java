@@ -21,7 +21,7 @@ class BackgroundWindow extends AbstractWindow {
 	public BackgroundWindow(final Skin skin, final BackgroundMode mode, final GDXBackground background) {
 		super("Background Editor", skin);
 		this.background = background;
-		centerTable = new VertexTable(background.getCoordinates(), skin, null);
+		centerTable = new VertexTable(background.getCoordinates(), skin);
 		final TextField textureField = new TextField("", skin);
 		textureField.setMessageText("<background texture>");
 		textureField.setText(background.getTexture());

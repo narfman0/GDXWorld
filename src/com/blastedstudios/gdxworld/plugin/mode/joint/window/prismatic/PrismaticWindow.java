@@ -27,8 +27,8 @@ public class PrismaticWindow extends BaseJointWindow  {
 	public PrismaticWindow(final Skin skin, final JointMode mode, final PrismaticJoint joint){
 		super("Prismatic Editor", skin, JointType.PrismaticJoint, mode, joint);
 		this.joint = joint;
-		anchorTable = new VertexTable(joint.getAnchor(), skin, null);
-		axisTable = new VertexTable(joint.getAxis(), skin, null);
+		anchorTable = new VertexTable(joint.getAnchor(), skin);
+		axisTable = new VertexTable(joint.getAxis(), skin);
 		TextButton axisSelectButton = new TextButton("+", skin);
 		axisSelectButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {

@@ -17,7 +17,7 @@ public class ParticleTable extends Table {
 			final Vector2 position, String name, String effectFile, 
 			String imagesDir, int duration, String emitterName, String attachedBody){
 		this.skin = skin;
-		positionTable = new VertexTable(position, skin, null);
+		positionTable = new VertexTable(position, skin);
 		nameField = new TextField(name, skin);
 		nameField.setMessageText("<name of particle>");
 		effectFileField = new TextField(effectFile, skin);

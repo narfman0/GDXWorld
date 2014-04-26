@@ -28,7 +28,7 @@ class NPCWindow extends AbstractWindow {
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
-		coordinates = new VertexTable(npc.getCoordinates().cpy(), skin, null);
+		coordinates = new VertexTable(npc.getCoordinates().cpy(), skin);
 		coordinates.setVertex(npc.getCoordinates().x, npc.getCoordinates().y);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {

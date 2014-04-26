@@ -18,8 +18,8 @@ class DistanceWindow extends BaseJointWindow {
 	public DistanceWindow(Skin skin, JointMode mode, DistanceJoint joint) {
 		super("Distance Editor", skin, JointType.WeldJoint, mode, joint);
 		this.joint = joint;
-		anchorATable = new VertexTable(joint.getAnchorA().cpy(), skin, null);
-		anchorBTable = new VertexTable(joint.getAnchorB().cpy(), skin, null);
+		anchorATable = new VertexTable(joint.getAnchorA().cpy(), skin);
+		anchorBTable = new VertexTable(joint.getAnchorB().cpy(), skin);
 		dampeningRatioField = new TextField(joint.getDampeningRatio()+"", skin);
 		dampeningRatioField.setMessageText("<dampening ratio>");
 		frequencyHzField = new TextField(joint.getFrequencyHz()+"", skin);

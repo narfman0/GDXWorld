@@ -21,7 +21,7 @@ class RevoluteWindow extends BaseJointWindow {
 	public RevoluteWindow(Skin skin, JointMode mode, RevoluteJoint joint) {
 		super("Revolute Editor", skin, JointType.RevoluteJoint, mode, joint);
 		this.joint = joint;
-		anchorTable = new VertexTable(joint.getAnchor().cpy(), skin, null);
+		anchorTable = new VertexTable(joint.getAnchor().cpy(), skin);
 		referenceAngleField = new TextField(joint.getReferenceAngle()+"", skin);
 		referenceAngleField.setMessageText("<reference angle>");
 		lowerAngleField = new TextField(joint.getLowerAngle()+"", skin);

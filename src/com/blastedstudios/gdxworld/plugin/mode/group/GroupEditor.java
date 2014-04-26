@@ -45,7 +45,7 @@ class GroupEditor extends AbstractWindow {
 		polygonsField = new TextField("", skin);
 		polygonsField.setMessageText("<polygons list>");
 		polygonsField.setText(toField(group.getPolygons()));
-		centerTable = new VertexTable(group.getCenter(), skin, null);
+		centerTable = new VertexTable(group.getCenter(), skin);
 		final Button acceptButton = new TextButton("Accept", skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {

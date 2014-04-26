@@ -63,7 +63,7 @@ public class CircleWindow extends AbstractWindow {
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
-		centerTable = new VertexTable(circle.getCenter().cpy(), skin, null);
+		centerTable = new VertexTable(circle.getCenter().cpy(), skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				circle.setName(nameField.getText());

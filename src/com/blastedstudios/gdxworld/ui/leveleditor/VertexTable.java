@@ -12,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class VertexTable extends Table {
 	private final TextField coordXLabel, coordYLabel;
+
+	public VertexTable(final Vector2 vertex, final Skin skin){
+		this(vertex, skin, null, 150);
+	}
 	
 	public VertexTable(final Vector2 vertex, final Skin skin, 
 			final VertexRemoveListener listener){

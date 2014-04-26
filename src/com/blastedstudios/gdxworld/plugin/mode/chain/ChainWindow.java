@@ -40,8 +40,8 @@ public class ChainWindow extends AbstractWindow {
 	
 	public ChainWindow(final Skin skin, final GDXLevel level) {
 		super("Chain Editor", skin);
-		startTable = new VertexTable(new Vector2(), skin, null);
-		endTable = new VertexTable(new Vector2(), skin, null);
+		startTable = new VertexTable(new Vector2(), skin);
+		endTable = new VertexTable(new Vector2(), skin);
 		nameField = new TextField("Chain-" + chainCount++, skin);
 		nameField.setMessageText("<chain name>");
 		distanceField = new TextField(Properties.get("level.chain.distance", "1"), skin);
