@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -60,6 +61,21 @@ public class PhysicsHelper {
 		setFilterData(fixture, maskBits, categoryBits, groupIndex);
 		body.setTransform(position, 0);
 		return body;
+	}
+	
+	public static Body createEdge(World world, BodyType type, float x1, float y1, 
+			float x2, float y2, float density) {
+		synchronized(world){
+			BodyDef def = new BodyDef();
+			def.type = type;
+			Body box = world.createBody(def);
+			EdgeShape boxShape = new EdgeShape();		
+			boxShape.set(new Vector2(0, 0), new Vector2(x2 - x1, y2 - y1));
+			/*Fixture fixture = */box.createFixture(boxShape, density);
+			box.setTransform(x1, y1, 0);
+			boxShape.dispose();
+			return box;
+		}
 	}
 	
 	public static void setFilterData(Fixture fixture, short maskBits, short categoryBits, short groupIndex){
