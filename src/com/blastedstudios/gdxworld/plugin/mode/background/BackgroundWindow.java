@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.plugin.mode.background;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,14 +15,22 @@ import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 
 class BackgroundWindow extends AbstractWindow {
-	private final VertexTable centerTable;
+	private final VertexTable centerTable, scissorPosition, scissorDimension;
 	private final GDXBackground background;
 	private final TextField depthField;
+	private final CheckBox scissor;
+	private VertexTable selected = null;
 	
 	public BackgroundWindow(final Skin skin, final BackgroundMode mode, final GDXBackground background) {
 		super("Background Editor", skin);
 		this.background = background;
 		centerTable = new VertexTable(background.getCoordinates(), skin);
+		Button centerButton = new TextButton("+", skin);
+		centerButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				selected = centerTable;
+			}
+		});
 		final TextField textureField = new TextField("", skin);
 		textureField.setMessageText("<background texture>");
 		textureField.setText(background.getTexture());
@@ -31,6 +40,16 @@ class BackgroundWindow extends AbstractWindow {
 		final TextField scaleField = new TextField("", skin);
 		scaleField.setMessageText("<scale>");
 		scaleField.setText(background.getScale()+"");
+		scissor = new CheckBox("Use Scissor", skin);
+		scissor.setChecked(background.isScissor());
+		scissorPosition = new VertexTable(background.getScissorPosition(), skin);
+		Button scissorPositionButton = new TextButton("+", skin);
+		scissorPositionButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				selected = scissorPosition;
+			}
+		});
+		scissorDimension = new VertexTable(background.getScissorDimensions(), skin);
 		
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
@@ -41,6 +60,9 @@ class BackgroundWindow extends AbstractWindow {
 				background.setCoordinates(centerTable.getVertex());
 				background.setDepth(Float.parseFloat(depthField.getText()));
 				background.setScale(Float.parseFloat(scaleField.getText()));
+				background.setScissor(scissor.isChecked());
+				background.setScissorDimensions(scissorDimension.getVertex());
+				background.setScissorPosition(scissorPosition.getVertex());
 				mode.addBackground(background);
 				mode.clean();
 			}
@@ -68,19 +90,37 @@ class BackgroundWindow extends AbstractWindow {
 		row();
 		add(new Label("Center: ", skin));
 		add(centerTable);
+		add(centerButton);
+		row();
+		add(scissor);
+		row();
+		add(new Label("Scissor Position: ", skin));
+		add(scissorPosition);
+		add(scissorPositionButton);
+		row();
+		add(new Label("Scissor Dimensions: ", skin));
+		add(scissorDimension);
 		row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);
 		controlTable.add(deleteButton);
 		controlTable.add(cancelButton);
-		add(controlTable).colspan(2);
+		add(controlTable).colspan(3);
 		setMovable(false);
-		setHeight(400);
-		setWidth(400);
+		pack();
 	}
 
 	public void setCenter(Vector2 center) {
 		centerTable.setVertex(center.x, center.y);
+	}
+	
+	public boolean clicked(Vector2 pos){
+		if(selected != null){
+			selected.setVertex(pos.x, pos.y);
+			selected = null;
+			return true;
+		}
+		return false;
 	}
 
 	public GDXBackground getGDXBackground() {

@@ -47,6 +47,8 @@ public class BackgroundMode extends AbstractMode {
 				screen.getStage().addActor(backgroundChooserWindow = new BackgroundChooserWindow(
 						screen.getSkin(), this, backgrounds));
 		}
+		if(backgroundWindow != null)
+			backgroundWindow.clicked(coordinates);
 		return false;
 	}
 	
@@ -58,12 +60,16 @@ public class BackgroundMode extends AbstractMode {
 	@Override public boolean touchDragged(int x, int y, int ptr){
 		super.touchDragged(x, y, ptr);
 		shift();
+		if(backgroundWindow != null)
+			backgroundWindow.clicked(coordinates);
 		return false;
 	}
 	
 	@Override public boolean touchUp(int x, int y, int arg2, int arg3){
 		super.touchUp(x, y, arg2, arg3);
 		shift();
+		if(backgroundWindow != null)
+			backgroundWindow.clicked(coordinates);
 		return false;
 	}
 	
@@ -72,10 +78,11 @@ public class BackgroundMode extends AbstractMode {
 			GDXBackground background = backgroundWindow.getGDXBackground();
 			Gdx.app.debug("BackgroundMode.touchUp", background.toString() + " to " + coordinates);
 			Vector2 world = GDXRenderer.fromParallax(backgroundWindow.getDepth(), coordinates, camera);
-			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT))
+			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
 				background.getCoordinates().set(world);
-			if(backgroundWindow != null)
-				backgroundWindow.setCenter(new Vector2(world.x, world.y));
+				if(backgroundWindow != null)
+					backgroundWindow.setCenter(new Vector2(world.x, world.y));
+			}
 		}
 	}
 	

@@ -14,9 +14,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -75,8 +77,19 @@ public class GDXRenderer {
 			float depth = Math.max(background.getDepth(), .001f);
 			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());
 			Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
+			if(background.isScissor()){
+				Rectangle scissors = new Rectangle();
+				Rectangle clipBounds = new Rectangle(background.getScissorPosition().x, background.getScissorPosition().y,
+						background.getScissorDimensions().x, background.getScissorDimensions().y);
+				ScissorStack.calculateScissors(camera, camera.combined, clipBounds, scissors);
+				ScissorStack.pushScissors(scissors);
+			}
 			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
 					texture.getHeight()*background.getScale());
+			if(background.isScissor()){
+				batch.flush();
+				ScissorStack.popScissors();
+			}
 		}
 	}
 	

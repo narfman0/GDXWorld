@@ -14,6 +14,8 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 	private static final long serialVersionUID = 1L;
 	private Vector2 coordinates = new Vector2();
 	private String texture = "";
+	private boolean scissor = false;
+	private Vector2 scissorPosition = new Vector2(), scissorDimensions = new Vector2();
 	/**
 	 * The distance as a ratio from the camera. 0 is on the camera, 0-1 is 
 	 * foreground, 1 is the mid-ground (normal distance where physics objects
@@ -60,6 +62,9 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 		background.setDepth(depth);
 		background.setTexture(texture);
 		background.setScale(scale);
+		background.setScissor(scissor);
+		background.setScissorDimensions(scissorDimensions.cpy());
+		background.setScissorPosition(scissorPosition.cpy());
 		return background;
 	}
 	@Override public String toString(){
@@ -69,5 +74,33 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 
 	@Override public int compareTo(GDXBackground o) {
 		return -((Float)depth).compareTo(o.depth);
+	}
+
+	public boolean isScissor() {
+		return scissor;
+	}
+
+	public void setScissor(boolean scissor) {
+		this.scissor = scissor;
+	}
+
+	public Vector2 getScissorPosition() {
+		if(scissorPosition == null)
+			return scissorPosition = new Vector2();
+		return scissorPosition;
+	}
+
+	public void setScissorPosition(Vector2 scissorPosition) {
+		this.scissorPosition = scissorPosition;
+	}
+
+	public Vector2 getScissorDimensions() {
+		if(scissorDimensions == null)
+			return scissorDimensions = new Vector2();
+		return scissorDimensions;
+	}
+
+	public void setScissorDimensions(Vector2 scissorDimensions) {
+		this.scissorDimensions = scissorDimensions;
 	}
 }
