@@ -77,16 +77,19 @@ public class GDXRenderer {
 			float depth = Math.max(background.getDepth(), .001f);
 			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());
 			Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
-			if(background.isScissor()){
+			//Need the following boolean in case of failed pushScissors. This may
+			//happen if we zoom far out to the point where the scissord area is 0
+			boolean scissorCheck = background.isScissor();
+			if(scissorCheck){
 				Rectangle scissors = new Rectangle();
 				Rectangle clipBounds = new Rectangle(background.getScissorPosition().x, background.getScissorPosition().y,
 						background.getScissorDimensions().x, background.getScissorDimensions().y);
 				ScissorStack.calculateScissors(camera, camera.combined, clipBounds, scissors);
-				ScissorStack.pushScissors(scissors);
+				scissorCheck = ScissorStack.pushScissors(scissors);
 			}
 			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
 					texture.getHeight()*background.getScale());
-			if(background.isScissor()){
+			if(scissorCheck){
 				batch.flush();
 				ScissorStack.popScissors();
 			}
