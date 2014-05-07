@@ -1,18 +1,12 @@
 package com.blastedstudios.gdxworld.plugin.mode.tile;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-
-public class Tile {
-	private List<Vector2> vertices;
-	private Texture texture;
+public class Tile extends Actor {
+	private TextureRegion texture;
 	
-	public Tile() {
-		vertices = new ArrayList<Vector2>();
+	public Tile(TextureRegion texture) {
+		this.texture = texture;
 	}
-	
-	
 }
