@@ -1,65 +1,53 @@
 package com.blastedstudios.gdxworld.plugin.mode.tile;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.TiledMeshRenderer;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 @PluginImplementation
 public class TileMode extends AbstractMode {
-	private PaletteWindow palette;
-	private Set<TextureRegion> tilePalette = new HashSet<>();
+	private final SpriteBatch spriteBatch = new SpriteBatch();
+	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
+	private PaletteWindow paletteWindow;
+	private Set<Tile> tilePalette = new HashSet<>();
 	private TileWindow tileWindow;
 	private TiledMeshRenderer tiledMeshRenderer;
 	private float tileSize = 10;
 	
 	public void start() {
-		screen.getStage().addActor(palette = new PaletteWindow(screen.getSkin(), this));
+		screen.getStage().addActor(paletteWindow = new PaletteWindow(screen.getSkin(), this));
 	}
 	
 	@Override public void clean() {
 		if(tileWindow != null)
 			tileWindow.remove();
 		tileWindow = null;
+		if(paletteWindow != null)
+			paletteWindow.remove();
+		paletteWindow = null;
 		tiledMeshRenderer = null;
 	}
-	
-	/**
-	 * Loads a png file containing a spritesheet and creates a set of tiles that can
-	 * be added to the world
-	 */
-	public boolean loadPalette(final String paletteFilePath, final int margin, final int spacing, final int tilesize) {
-		Gdx.app.log("TileMode.loadPalette", "Loading palette file " + paletteFilePath);
-		Texture texture = new Texture(Gdx.files.absolute(paletteFilePath));
-		tilePalette.addAll(split(texture, margin, spacing, tilesize));
-		return false;
-	}
-	
-	private List<TextureRegion> split(Texture texture, int margin, int spacing, int tilesize) {
-		List<TextureRegion> tiles = new ArrayList<>();
-		int stopWidth = texture.getWidth() - tilesize;
-		int stopHeight = texture.getHeight() - tilesize;
-		
-		for(int y = margin; y <= stopHeight; y += tilesize + spacing) {
-			for(int x = margin; x <= stopWidth; x += tilesize + spacing) {
-				tiles.add(new TextureRegion(texture, x, y, tilesize, tilesize));
-			}
-		}
-		return tiles;
-	}
-	
+
 	@Override
 	public int getLoadPriority() {
 		return 10;
@@ -81,4 +69,29 @@ public class TileMode extends AbstractMode {
 //		}
 		return false;
 	}
+	
+	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+		if(tiledMeshRenderer == null)
+			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
+		tiledMeshRenderer.render(camera);
+		if(!screen.isLive()){
+			renderer.setProjectionMatrix(camera.combined);
+			renderer.begin(ShapeType.Line);
+			
+			//Draw set polygons
+			renderer.setColor(Color.GREEN);
+			for(GDXPolygon shape : screen.getLevel().getPolygons())
+				for(Vector2 vertex : shape.getVerticesAbsolute())
+					renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
+			//Draw currently selected polygon/nodes
+			renderer.setColor(new Color(0, .8f, 0, 1));
+			renderer.end();
+		}else{
+			spriteBatch.setProjectionMatrix(camera.combined);
+			spriteBatch.begin();
+			for(Entry<GDXPolygon, Body> entry : bodies.entrySet())
+				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
+			spriteBatch.end();
+		}
+	};
 }
