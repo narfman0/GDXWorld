@@ -29,16 +29,16 @@ public class TileMode extends AbstractMode {
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
 	private PaletteWindow paletteWindow;
-	private Set<Tile> tilePalette = new HashSet<>();
+	private Set<PaletteTile> tilePalette = new HashSet<>();
 	private TileWindow tileWindow;
 	private TiledMeshRenderer tiledMeshRenderer;
-	private float tileSize = 10;
 	
 	public void start() {
 		screen.getStage().addActor(paletteWindow = new PaletteWindow(screen.getSkin(), this));
 	}
 	
-	@Override public void clean() {
+	@Override
+	public void clean() {
 		if(tileWindow != null)
 			tileWindow.remove();
 		tileWindow = null;
@@ -46,11 +46,6 @@ public class TileMode extends AbstractMode {
 			paletteWindow.remove();
 		paletteWindow = null;
 		tiledMeshRenderer = null;
-	}
-
-	@Override
-	public int getLoadPriority() {
-		return 10;
 	}
 	
 	@Override
@@ -60,9 +55,9 @@ public class TileMode extends AbstractMode {
 		GDXPolygon tilePolygon = new GDXPolygon();
 		List<Vector2> vertices = new ArrayList<Vector2>();
 		vertices.add(new Vector2(x, y));
-		vertices.add(new Vector2(x + tileSize, y));
-		vertices.add(new Vector2(x, y + tileSize));
-		vertices.add(new Vector2(x + tileSize, y + tileSize));
+		vertices.add(new Vector2(x + paletteWindow.getTilesize(), y));
+		vertices.add(new Vector2(x, y + paletteWindow.getTilesize()));
+		vertices.add(new Vector2(x + paletteWindow.getTilesize(), y + paletteWindow.getTilesize()));
 		tilePolygon.setVertices(vertices);
 //		if(tileWindow == null) {
 //			screen.getStage().addActor(tileWindow = new TileWindow(screen.getSkin(), this, tilePolygon));
@@ -70,7 +65,8 @@ public class TileMode extends AbstractMode {
 		return false;
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	@Override
+	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(tiledMeshRenderer == null)
 			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
 		tiledMeshRenderer.render(camera);
@@ -94,4 +90,8 @@ public class TileMode extends AbstractMode {
 			spriteBatch.end();
 		}
 	};
+	
+	@Override public int getLoadPriority() {
+		return 10;
+	}
 }

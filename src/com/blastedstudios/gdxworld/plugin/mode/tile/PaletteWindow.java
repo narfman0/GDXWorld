@@ -2,16 +2,16 @@ package com.blastedstudios.gdxworld.plugin.mode.tile;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -23,7 +23,8 @@ import com.blastedstudios.gdxworld.util.Properties;
 
 public class PaletteWindow extends AbstractWindow {
 	private final TileMode tileMode;
-	private final Set<Tile> tiles;
+	private final List<PaletteTile> tiles;
+	private ScrollPane palette;
 	private Table tileTable;
 	private String paletteFilePath;
 	private TextField tilesetFileField;
@@ -35,11 +36,12 @@ public class PaletteWindow extends AbstractWindow {
 	private int tilesize;
 	
 	public PaletteWindow(final Skin skin, final TileMode tileMode) {
-		super("Palette Editor", skin);
+		super("Palette", skin);
 		this.tileMode = tileMode;
+		
+		tiles = new ArrayList<PaletteTile>();
 		paletteFilePath = Properties.get("tilemode.tilesetFile");
-		tiles = new HashSet<Tile>();
-		tileTable = new Table();
+		
 		final Button load = new TextButton("Load", skin);
 		load.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -55,6 +57,7 @@ public class PaletteWindow extends AbstractWindow {
 					return;
 				paletteFilePath = pFile.getAbsolutePath();
 				tilesetFileField.setText(getFilename(paletteFilePath));
+				Properties.set("tilemode.tilesetFile", tilesetFileField.getText());
 			}
 		});
 		final Button clear = new TextButton("Clear", skin);
@@ -63,14 +66,13 @@ public class PaletteWindow extends AbstractWindow {
 				
 			}
 		});
-		
 		tilesetFileField = new TextField(getFilename(paletteFilePath), skin);
 		tilesetFileField.setDisabled(true);
-		marginField = new TextField("0", skin);
-		spacingField = new TextField("1", skin);
-		tilesizeField = new TextField("70", skin);
+		marginField = new TextField("2", skin);
+		spacingField = new TextField("2", skin);
+		tilesizeField = new TextField("21", skin);
 		
-		Table table = new Table();
+		final Table table = new Table();
 		table.add(select);
 		table.add(tilesetFileField);
 		table.row();
@@ -87,12 +89,26 @@ public class PaletteWindow extends AbstractWindow {
 		table.row();
 		add(table);
 		row();
-		add(tileTable);
+		tileTable = new Table();
+		palette = new ScrollPane(tileTable, skin);
+		palette.setScrollingDisabled(false, false);
+		palette.setSize(10 * tilesize, 20 * tilesize);
+		palette.setFlickScroll(false);
+		add(palette).fill().expand().maxHeight(600);
 		row();
-		setMovable(false);
+		validate();
 		pack();
 	}
 
+	public int getTilesize() {
+		return tilesize;
+	}
+	
+	public void clean() {
+		tiles.clear();
+		tileTable.clear();
+	}
+	
 	private String getFilename(String filepath) {
 		if(filepath.equals("") || filepath == null)
 			return "";
@@ -116,41 +132,36 @@ public class PaletteWindow extends AbstractWindow {
 		return true;
 	}
 	
-	private List<Tile> split(Texture texture, int margin, int spacing, int tilesize) {
-		List<Tile> tiles = new ArrayList<>();
+	private List<PaletteTile> split(Texture texture, int margin, int spacing, int tilesize) {
+		List<PaletteTile> tiles = new ArrayList<>();
 		int stopWidth = texture.getWidth() - tilesize - margin;
 		int stopHeight = texture.getHeight() - tilesize - margin;
 		
 		for(int y = margin; y <= stopHeight; y += tilesize + spacing) {
 			for(int x = margin; x <= stopWidth; x += tilesize + spacing) {
-				tiles.add(new Tile(new TextureRegion(texture, x, y, tilesize, tilesize)));
+				tiles.add(new PaletteTile(new TextureRegion(texture, x, y, tilesize, tilesize), tilesize));
 			}
 		}
 		return tiles;
 		
 	}
 	
-	/**
-	 * Loads a png file containing a spritesheet and creates a set of tiles that can
-	 * be added to the world
-	 */
 	private void loadPalette(final String paletteFilePath, final int margin, final int spacing, final int tilesize) {
 		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + paletteFilePath);
-		Texture texture = new Texture(Gdx.files.absolute(paletteFilePath));
-		tiles.clear();
+		FileHandle fh = Gdx.files.absolute(paletteFilePath);
+		if(!fh.exists()) {
+			Gdx.app.error("PaletteWindow.loadPalette", "File " + paletteFilePath + " not found.");
+			return;
+		}
+		Texture texture = new Texture(fh);
+		clean();
 		tiles.addAll(split(texture, margin, spacing, tilesize));
-		reloadPalette();
+		for(int i=0; i < tiles.size(); i++) {
+			tileTable.add(tiles.get(i));
+			if(i % 10 == 0)
+				tileTable.row();
+		}
+		palette.setSize(10 * tilesize, 20 * tilesize);
 		pack();
-	}
-	
-	/**
-	 * Clears old tiles and loads last loaded tile set into palette window
-	 */
-	private void reloadPalette() {
-		tileTable.remove();
-		tileTable = new Table();
-		for(Tile tile : tiles)
-			tileTable.add(tile);
-		add(tileTable);
 	}
 }
