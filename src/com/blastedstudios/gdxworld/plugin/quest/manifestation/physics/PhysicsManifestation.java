@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -37,6 +38,10 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 
 	@Override public CompletionEnum execute() {
 		Body body = executor.getPhysicsObject(name); 
+		if(body == null){
+			Gdx.app.error("PhysicsManifestation.execute", "Can't find physics object " + name);
+			return CompletionEnum.COMPLETED;
+		}
 		body.applyLinearImpulse(impulse, body.getPosition(),true);
 		body.setType(type);
 		body.applyTorque(torque,true);
