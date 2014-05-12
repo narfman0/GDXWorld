@@ -24,13 +24,14 @@ import com.blastedstudios.gdxworld.util.Properties;
 public class PaletteWindow extends AbstractWindow {
 	private final TileMode tileMode;
 	private final List<PaletteTile> tiles;
-	private ScrollPane palette;
-	private Table tileTable;
+	private final ScrollPane palette;
+	private final Table tileTable;
+	private final TextField tilesetFileField;
+	private final TextField marginField;
+	private final TextField spacingField;
+	private final TextField tilesizeField;
 	private String paletteFilePath;
-	private TextField tilesetFileField;
-	private TextField marginField;
-	private TextField spacingField;
-	private TextField tilesizeField;
+	private PaletteTile activeTile;
 	private int margin;
 	private int spacing;
 	private int tilesize;
@@ -92,7 +93,6 @@ public class PaletteWindow extends AbstractWindow {
 		tileTable = new Table();
 		palette = new ScrollPane(tileTable, skin);
 		palette.setScrollingDisabled(false, false);
-		palette.setSize(10 * tilesize, 20 * tilesize);
 		palette.setFlickScroll(false);
 		add(palette).fill().expand().maxHeight(600);
 		row();
@@ -109,7 +109,7 @@ public class PaletteWindow extends AbstractWindow {
 		tileTable.clear();
 	}
 	
-	private String getFilename(String filepath) {
+	private String getFilename(final String filepath) {
 		if(filepath.equals("") || filepath == null)
 			return "";
 		String[] filename = filepath.split("/");
@@ -132,28 +132,34 @@ public class PaletteWindow extends AbstractWindow {
 		return true;
 	}
 	
-	private List<PaletteTile> split(Texture texture, int margin, int spacing, int tilesize) {
+	/** Parses texture and returns list of PaletteTiles */
+	private List<PaletteTile> split(final Texture texture, final int margin, final int spacing, final int tilesize) {
 		List<PaletteTile> tiles = new ArrayList<>();
 		int stopWidth = texture.getWidth() - tilesize - margin;
 		int stopHeight = texture.getHeight() - tilesize - margin;
 		
 		for(int y = margin; y <= stopHeight; y += tilesize + spacing) {
 			for(int x = margin; x <= stopWidth; x += tilesize + spacing) {
-				tiles.add(new PaletteTile(new TextureRegion(texture, x, y, tilesize, tilesize), tilesize));
+				final PaletteTile tile = new PaletteTile(new TextureRegion(texture, x, y, tilesize, tilesize), tilesize);
+				tile.addListener(new ClickListener() {
+					@Override public void clicked(final InputEvent event, final float x, final float y) {
+						tileMode.setActiveTile(tile);
+					}
+				});
+				tiles.add(tile);
 			}
 		}
 		return tiles;
-		
 	}
 	
 	private void loadPalette(final String paletteFilePath, final int margin, final int spacing, final int tilesize) {
 		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + paletteFilePath);
-		FileHandle fh = Gdx.files.absolute(paletteFilePath);
-		if(!fh.exists()) {
+		FileHandle file = Gdx.files.absolute(paletteFilePath);
+		if(!file.exists()) {
 			Gdx.app.error("PaletteWindow.loadPalette", "File " + paletteFilePath + " not found.");
 			return;
 		}
-		Texture texture = new Texture(fh);
+		Texture texture = new Texture(file);
 		clean();
 		tiles.addAll(split(texture, margin, spacing, tilesize));
 		for(int i=0; i < tiles.size(); i++) {

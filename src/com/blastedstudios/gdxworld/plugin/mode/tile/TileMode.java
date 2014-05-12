@@ -32,9 +32,14 @@ public class TileMode extends AbstractMode {
 	private Set<PaletteTile> tilePalette = new HashSet<>();
 	private TileWindow tileWindow;
 	private TiledMeshRenderer tiledMeshRenderer;
+	private PaletteTile activeTile;
 	
 	public void start() {
 		screen.getStage().addActor(paletteWindow = new PaletteWindow(screen.getSkin(), this));
+	}
+	
+	public void setActiveTile(final PaletteTile tile) {
+		activeTile = tile;
 	}
 	
 	@Override
@@ -49,7 +54,7 @@ public class TileMode extends AbstractMode {
 	}
 	
 	@Override
-	public boolean touchDown(int x, int y, int x1, int y1) {
+	public boolean touchDown(final int x, final int y, final int x1, final int y1) {
 		super.touchDown(x, y, x1, y1);
 		Gdx.app.log("TileMode.touchDown", "x="+x+ " y="+y);
 		GDXPolygon tilePolygon = new GDXPolygon();
@@ -59,6 +64,7 @@ public class TileMode extends AbstractMode {
 		vertices.add(new Vector2(x, y + paletteWindow.getTilesize()));
 		vertices.add(new Vector2(x + paletteWindow.getTilesize(), y + paletteWindow.getTilesize()));
 		tilePolygon.setVertices(vertices);
+		
 //		if(tileWindow == null) {
 //			screen.getStage().addActor(tileWindow = new TileWindow(screen.getSkin(), this, tilePolygon));
 //		}
@@ -66,7 +72,7 @@ public class TileMode extends AbstractMode {
 	}
 	
 	@Override
-	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	public void render(final float delta, final OrthographicCamera camera, final GDXRenderer gdxRenderer, final ShapeRenderer renderer) {
 		if(tiledMeshRenderer == null)
 			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
 		tiledMeshRenderer.render(camera);
@@ -82,7 +88,7 @@ public class TileMode extends AbstractMode {
 			//Draw currently selected polygon/nodes
 			renderer.setColor(new Color(0, .8f, 0, 1));
 			renderer.end();
-		}else{
+		} else {
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();
 			for(Entry<GDXPolygon, Body> entry : bodies.entrySet())

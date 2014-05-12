@@ -7,7 +7,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 public class TileWindow extends AbstractWindow {
 	private PaletteTile tile;
 	
-	public TileWindow(Skin skin, TileMode tileMode, GDXPolygon tilePolygon) {
+	public TileWindow(final Skin skin, final TileMode tileMode, final GDXPolygon tilePolygon) {
 		super("Tile Editor", skin);
 		this.tile = tile;
 	}

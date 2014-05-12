@@ -3,17 +3,14 @@ package com.blastedstudios.gdxworld.plugin.mode.tile;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-public class PaletteTile extends Table {
-	
-	private Sprite sprite;
-	
-	/** in pixels */
+public class PaletteTile extends ImageButton {
 	private int tilesize;
 
-	public PaletteTile(TextureRegion texture, int tilesize) {
-		this.sprite = new Sprite(texture);
+	public PaletteTile(final TextureRegion texture, final int tilesize) {
+		super(new SpriteDrawable(new Sprite(texture)));
 		this.tilesize = tilesize;
 	}
 	
@@ -28,9 +25,8 @@ public class PaletteTile extends Table {
 	};
 	
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(final SpriteBatch batch, final float parentAlpha) {
+		this.setPosition(getX(), getY());
 		super.draw(batch, parentAlpha);
-		sprite.setPosition(getX(), getY());
-		sprite.draw(batch);
 	}
 }
