@@ -49,6 +49,7 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 		joint.enableMotor(true);
 		joint.setMaxMotorForce(maxMotorForceB);
 		joint.setMotorSpeed(motorSpeedB);
+		executor.getPhysicsObject(name).setType(BodyType.DynamicBody);
 		return CompletionEnum.EXECUTING;
 	}
 	
