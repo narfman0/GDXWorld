@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.world.quest.manifestation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.particle.ParticleManifestationTypeEnum;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.sound.SoundManifestationEnum;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
@@ -37,6 +38,11 @@ public interface IQuestManifestationExecutor {
 	 * Being spawn manifestation spawns a being at a particular location
 	 */
 	public void beingSpawn(String being, Vector2 coordinates, String path);
+	
+	/**
+	 * @return Physics world for direct joint/body access/manipulation
+	 */
+	public World getWorld();
 
 	/**
 	 * Create, modify, or remove a particle effect

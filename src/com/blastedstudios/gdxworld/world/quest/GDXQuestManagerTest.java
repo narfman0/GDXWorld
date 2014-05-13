@@ -93,11 +93,13 @@ public class GDXQuestManagerTest {
 					String attachedBody) {
 				Gdx.app.log("QuestManifestationExecutor.particle","name: " + name);
 			}
-			@Override
-			public void sound(SoundManifestationEnum manifestationType,
+			@Override public void sound(SoundManifestationEnum manifestationType,
 					String name, String filename, float volume, float pan,
 					float pitch) {
 				Gdx.app.log("QuestManifestationExecutor.sound","name: " + name);
+			}
+			@Override public World getWorld() {
+				return world;
 			}
 		};
 		IQuestTriggerInformationProvider provider = new IQuestTriggerInformationProvider() {
