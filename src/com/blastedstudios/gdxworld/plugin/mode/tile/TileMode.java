@@ -27,9 +27,9 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 @PluginImplementation
 public class TileMode extends AbstractMode {
 	private final SpriteBatch spriteBatch = new SpriteBatch();
-	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
 	private PaletteWindow paletteWindow;
 	private Set<PaletteTile> tilePalette = new HashSet<>();
+	private List<GDXTile> worldTiles = new ArrayList<>();
 	private TileWindow tileWindow;
 	private TiledMeshRenderer tiledMeshRenderer;
 	private PaletteTile activeTile;
@@ -49,7 +49,6 @@ public class TileMode extends AbstractMode {
 		tileWindow = null;
 		if(paletteWindow != null)
 			paletteWindow.remove();
-		paletteWindow = null;
 		tiledMeshRenderer = null;
 	}
 	
@@ -57,17 +56,10 @@ public class TileMode extends AbstractMode {
 	public boolean touchDown(final int x, final int y, final int x1, final int y1) {
 		super.touchDown(x, y, x1, y1);
 		Gdx.app.log("TileMode.touchDown", "x="+x+ " y="+y);
-		GDXPolygon tilePolygon = new GDXPolygon();
-		List<Vector2> vertices = new ArrayList<Vector2>();
-		vertices.add(new Vector2(x, y));
-		vertices.add(new Vector2(x + paletteWindow.getTilesize(), y));
-		vertices.add(new Vector2(x, y + paletteWindow.getTilesize()));
-		vertices.add(new Vector2(x + paletteWindow.getTilesize(), y + paletteWindow.getTilesize()));
-		tilePolygon.setVertices(vertices);
-		
-//		if(tileWindow == null) {
-//			screen.getStage().addActor(tileWindow = new TileWindow(screen.getSkin(), this, tilePolygon));
-//		}
+		if(activeTile != null) {
+			GDXTile wTile = new GDXTile(coordinates.x, coordinates.y, activeTile.getSprite());
+			worldTiles.add(wTile);
+		}
 		return false;
 	}
 	
@@ -76,28 +68,18 @@ public class TileMode extends AbstractMode {
 		if(tiledMeshRenderer == null)
 			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
 		tiledMeshRenderer.render(camera);
-		if(!screen.isLive()){
-			renderer.setProjectionMatrix(camera.combined);
-			renderer.begin(ShapeType.Line);
-			
-			//Draw set polygons
-			renderer.setColor(Color.GREEN);
-			for(GDXPolygon shape : screen.getLevel().getPolygons())
-				for(Vector2 vertex : shape.getVerticesAbsolute())
-					renderer.circle(vertex.x, vertex.y, LevelEditorScreen.getNodeRadius(), 10);
-			//Draw currently selected polygon/nodes
-			renderer.setColor(new Color(0, .8f, 0, 1));
-			renderer.end();
-		} else {
-			spriteBatch.setProjectionMatrix(camera.combined);
-			spriteBatch.begin();
-			for(Entry<GDXPolygon, Body> entry : bodies.entrySet())
-				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
-			spriteBatch.end();
-		}
+		spriteBatch.setProjectionMatrix(camera.combined);
+		spriteBatch.begin();
+		for(GDXTile tile : worldTiles)
+			gdxRenderer.drawTile(camera, tile, spriteBatch);
+		spriteBatch.end();
 	};
 	
 	@Override public int getLoadPriority() {
 		return 10;
+	}
+	
+	@Override public boolean contains(float x, float y){
+		return super.contains(x, y) || (paletteWindow != null && paletteWindow.contains(x, y));
 	}
 }

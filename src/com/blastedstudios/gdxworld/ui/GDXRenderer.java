@@ -14,11 +14,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.blastedstudios.gdxworld.plugin.mode.tile.GDXTile;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -56,6 +58,13 @@ public class GDXRenderer {
 			for(Entry<GDXShape,Body> entry : bodies)
 				drawShape(camera, entry.getKey(), entry.getValue(), batch);
 		batch.end();
+	}
+	
+	public void drawTile(OrthographicCamera camera, GDXTile tile, SpriteBatch batch) {
+		Sprite sprite = tile.updateAndGetSprite();
+		if(sprite != null) {
+			sprite.draw(batch);
+		}
 	}
 	
 	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, SpriteBatch batch){

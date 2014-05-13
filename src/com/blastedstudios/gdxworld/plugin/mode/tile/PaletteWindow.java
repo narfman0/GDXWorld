@@ -7,6 +7,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -94,7 +95,7 @@ public class PaletteWindow extends AbstractWindow {
 		palette = new ScrollPane(tileTable, skin);
 		palette.setScrollingDisabled(false, false);
 		palette.setFlickScroll(false);
-		add(palette).fill().expand().maxHeight(600);
+		add(palette).fill().expand().maxHeight(600).maxWidth(250);
 		row();
 		validate();
 		pack();
@@ -140,7 +141,7 @@ public class PaletteWindow extends AbstractWindow {
 		
 		for(int y = margin; y <= stopHeight; y += tilesize + spacing) {
 			for(int x = margin; x <= stopWidth; x += tilesize + spacing) {
-				final PaletteTile tile = new PaletteTile(new TextureRegion(texture, x, y, tilesize, tilesize), tilesize);
+				final PaletteTile tile = new PaletteTile(new Sprite(new TextureRegion(texture, x, y, tilesize, tilesize)), tilesize);
 				tile.addListener(new ClickListener() {
 					@Override public void clicked(final InputEvent event, final float x, final float y) {
 						tileMode.setActiveTile(tile);
@@ -159,15 +160,13 @@ public class PaletteWindow extends AbstractWindow {
 			Gdx.app.error("PaletteWindow.loadPalette", "File " + paletteFilePath + " not found.");
 			return;
 		}
-		Texture texture = new Texture(file);
 		clean();
-		tiles.addAll(split(texture, margin, spacing, tilesize));
-		for(int i=0; i < tiles.size(); i++) {
-			tileTable.add(tiles.get(i));
+		tiles.addAll(split(new Texture(file), margin, spacing, tilesize));
+		for(int i=1; i < tiles.size(); i++) {
 			if(i % 10 == 0)
 				tileTable.row();
+			tileTable.add(tiles.get(i));
 		}
-		palette.setSize(10 * tilesize, 20 * tilesize);
 		pack();
 	}
 }
