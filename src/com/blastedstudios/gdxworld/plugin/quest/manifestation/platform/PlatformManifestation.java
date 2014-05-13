@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.platform;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
@@ -58,15 +59,19 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 			joint.setMaxMotorForce(maxMotorForceB);
 			joint.setMotorSpeed(motorSpeedB);
 			joint.enableMotor(false);
+			executor.getPhysicsObject(name).setType(BodyType.StaticBody);
 			timeChangeDirection = System.currentTimeMillis() + waitDuration;
 		}else if(joint.isMotorEnabled() && !towardA && executor.getPhysicsObject(name).getWorldCenter().dst(pointB) < TURN_DISTANCE){
 			towardA = true;
 			joint.setMaxMotorForce(maxMotorForceA);
 			joint.setMotorSpeed(motorSpeedA);
 			joint.enableMotor(false);
+			executor.getPhysicsObject(name).setType(BodyType.StaticBody);
 			timeChangeDirection = System.currentTimeMillis() + waitDuration;
-		}else if(!joint.isMotorEnabled() && System.currentTimeMillis() > timeChangeDirection)
+		}else if(!joint.isMotorEnabled() && System.currentTimeMillis() > timeChangeDirection){
 			joint.enableMotor(true);
+			executor.getPhysicsObject(name).setType(BodyType.DynamicBody);
+		}
 		return CompletionEnum.EXECUTING;
 	}
 
