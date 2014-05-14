@@ -15,16 +15,16 @@ import com.blastedstudios.gdxworld.physics.PhysicsHelper;
 public class GDXPolygon extends GDXShape implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;
-	protected boolean repeatable;
+	private boolean repeatable;
 	/**
 	 * Coordinates for vertices relative to center. To convert to world 
 	 * coordinates, use the absolute version, e.g. getVerticesAbsolute
 	 */
-	protected List<Vector2> vertices = new ArrayList<Vector2>();
+	private List<Vector2> vertices = new ArrayList<Vector2>();
 	/**
 	 * Dimensions of poly after getting aabb's max/min x/y. Cached for performance
 	 */
-	protected transient Vector2 dimensions;
+	private transient Vector2 dimensions;
 	
 	public GDXPolygon(){
 		name = "Polygon-" + count++;

@@ -32,7 +32,6 @@ public class PaletteWindow extends AbstractWindow {
 	private final TextField spacingField;
 	private final TextField tilesizeField;
 	private String paletteFilePath;
-	private PaletteTile activeTile;
 	private int margin;
 	private int spacing;
 	private int tilesize;
@@ -60,12 +59,6 @@ public class PaletteWindow extends AbstractWindow {
 				paletteFilePath = pFile.getAbsolutePath();
 				tilesetFileField.setText(getFilename(paletteFilePath));
 				Properties.set("tilemode.tilesetFile", tilesetFileField.getText());
-			}
-		});
-		final Button clear = new TextButton("Clear", skin);
-		clear.addListener(new ClickListener() {
-			@Override public void clicked(InputEvent event, float x, float y) {
-				
 			}
 		});
 		tilesetFileField = new TextField(getFilename(paletteFilePath), skin);
@@ -101,22 +94,6 @@ public class PaletteWindow extends AbstractWindow {
 		pack();
 	}
 
-	public int getTilesize() {
-		return tilesize;
-	}
-	
-	public void clean() {
-		tiles.clear();
-		tileTable.clear();
-	}
-	
-	private String getFilename(final String filepath) {
-		if(filepath.equals("") || filepath == null)
-			return "";
-		String[] filename = filepath.split("/");
-		return filename[filename.length-1];
-	}
-
 	private boolean validateInput() {
 		try {
 			margin = Integer.parseInt(marginField.getText());
@@ -131,6 +108,23 @@ public class PaletteWindow extends AbstractWindow {
 		}
 		Gdx.app.log("PaletteWindow.validateInput", "Valid input");
 		return true;
+	}
+	
+	private void loadPalette(final String paletteFilePath, final int margin, final int spacing, final int tilesize) {
+		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + paletteFilePath);
+		FileHandle file = Gdx.files.absolute(paletteFilePath);
+		if(!file.exists()) {
+			Gdx.app.error("PaletteWindow.loadPalette", "File " + paletteFilePath + " not found.");
+			return;
+		}
+		clean();
+		tiles.addAll(split(new Texture(file), margin, spacing, tilesize));
+		for(int i=1; i < tiles.size(); i++) {
+			if(i % 10 == 0)
+				tileTable.row();
+			tileTable.add(tiles.get(i));
+		}
+		pack();
 	}
 	
 	/** Parses texture and returns list of PaletteTiles */
@@ -153,20 +147,19 @@ public class PaletteWindow extends AbstractWindow {
 		return tiles;
 	}
 	
-	private void loadPalette(final String paletteFilePath, final int margin, final int spacing, final int tilesize) {
-		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + paletteFilePath);
-		FileHandle file = Gdx.files.absolute(paletteFilePath);
-		if(!file.exists()) {
-			Gdx.app.error("PaletteWindow.loadPalette", "File " + paletteFilePath + " not found.");
-			return;
-		}
-		clean();
-		tiles.addAll(split(new Texture(file), margin, spacing, tilesize));
-		for(int i=1; i < tiles.size(); i++) {
-			if(i % 10 == 0)
-				tileTable.row();
-			tileTable.add(tiles.get(i));
-		}
-		pack();
+	public int getTilesize() {
+		return tilesize;
+	}
+	
+	public void clean() {
+		tiles.clear();
+		tileTable.clear();
+	}
+	
+	private String getFilename(final String filepath) {
+		if(filepath.equals("") || filepath == null)
+			return "";
+		String[] filename = filepath.split("/");
+		return filename[filename.length-1];
 	}
 }

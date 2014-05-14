@@ -11,15 +11,16 @@ import java.util.Map;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.util.Properties;
-import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -35,6 +36,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private static int count = 0;
 	private String name = "Level-" + count++;
 	private Vector2 coordinates = new Vector2();
+	private final List<GDXTile> tiles = new ArrayList<>();
 	private final List<GDXCircle> circles = new ArrayList<>();
 	private final List<GDXPolygon> polygons = new ArrayList<>();
 	private final List<GDXNPC> npcs = new ArrayList<>();
@@ -66,6 +68,14 @@ public class GDXLevel implements Cloneable,Serializable{
 		shapes.addAll(circles);
 		shapes.addAll(polygons);
 		return Collections.unmodifiableList(shapes);
+	}
+	
+	public Collection<GDXTile> getTiles() {
+		return tiles;
+	}
+	
+	public void addTile(GDXTile tile) {
+		tiles.add(tile);
 	}
 
 	public String getName() {
@@ -300,6 +310,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	@Override public Object clone(){
 		GDXLevel level = new GDXLevel();
 		level.setCoordinates(coordinates.cpy());
+		for(GDXTile tile : tiles)
+			level.getTiles().add(tile.clone());
 		for(GDXJoint joint : joints)
 			level.getJoints().add((GDXJoint) joint.clone());
 		for(GDXCircle circle : circles)
