@@ -356,6 +356,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		sounds.clear();
 		properties.clear();
 		particles.clear();
+		tiles.clear();
 	}
 
 	public class CreateLevelReturnStruct{
