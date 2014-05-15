@@ -57,12 +57,15 @@ public class GDXRenderer {
 		if(drawShapes)
 			for(Entry<GDXShape,Body> entry : bodies)
 				drawShape(camera, entry.getKey(), entry.getValue(), batch);
+		
 		batch.end();
 	}
 	
 	public void drawTile(OrthographicCamera camera, GDXTile tile, SpriteBatch batch) {
-		Sprite sprite = tile.updateAndGetSprite();
-		if(sprite != null) {
+		Texture texture = getTexture(tile.getResource());
+		if(texture != null) {
+			Sprite sprite = new Sprite(new TextureRegion(texture, tile.getX(), tile.getY(), tile.getTilesize(), tile.getTilesize()));
+			sprite.setPosition(tile.getPosition().x, tile.getPosition().y);
 			sprite.draw(batch);
 		}
 	}

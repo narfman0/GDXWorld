@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import box2dLight.Light;
 import box2dLight.RayHandler;
@@ -36,7 +37,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private static int count = 0;
 	private String name = "Level-" + count++;
 	private Vector2 coordinates = new Vector2();
-	private final List<GDXTile> tiles = new ArrayList<>();
+	private final Map<Vector2, GDXTile> tiles = new HashMap<>();
 	private final List<GDXCircle> circles = new ArrayList<>();
 	private final List<GDXPolygon> polygons = new ArrayList<>();
 	private final List<GDXNPC> npcs = new ArrayList<>();
@@ -70,14 +71,10 @@ public class GDXLevel implements Cloneable,Serializable{
 		return Collections.unmodifiableList(shapes);
 	}
 	
-	public Collection<GDXTile> getTiles() {
+	public Map<Vector2, GDXTile> getTiles() {
 		return tiles;
 	}
 	
-	public void addTile(GDXTile tile) {
-		tiles.add(tile);
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -310,8 +307,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	@Override public Object clone(){
 		GDXLevel level = new GDXLevel();
 		level.setCoordinates(coordinates.cpy());
-		for(GDXTile tile : tiles)
-			level.getTiles().add(tile.clone());
+		for(Entry<Vector2, GDXTile> entry : getTiles().entrySet())
+			level.getTiles().put(entry.getKey(), entry.getValue().clone());
 		for(GDXJoint joint : joints)
 			level.getJoints().add((GDXJoint) joint.clone());
 		for(GDXCircle circle : circles)
