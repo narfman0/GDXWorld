@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -125,18 +126,20 @@ class GroupEditor extends AbstractWindow {
 	public void touched(float x, float y) {
 		Vector2 offset = centerTable.getVertex().sub(x, y);
 		centerTable.setVertex(x,y);
-		for(String objectName : group.getCircles())
-			for(GDXCircle object : screen.getLevel().getCircles())
-				if(object.getName().equals(objectName))
-					object.setCenter(object.getCenter().sub(offset));
-		for(String objectName : group.getPolygons())
-			for(GDXPolygon object : screen.getLevel().getPolygons())
-				if(object.getName().equals(objectName))
-					object.setCenter(object.getCenter().sub(offset));
-		for(String objectName : group.getJoints())
-			for(GDXJoint object : screen.getLevel().getJoints())
-				if(object.getName().equals(objectName))
-					object.translate(offset.cpy().scl(-1f));
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
+			for(String objectName : group.getCircles())
+				for(GDXCircle object : screen.getLevel().getCircles())
+					if(object.getName().equals(objectName))
+						object.setCenter(object.getCenter().sub(offset));
+			for(String objectName : group.getPolygons())
+				for(GDXPolygon object : screen.getLevel().getPolygons())
+					if(object.getName().equals(objectName))
+						object.setCenter(object.getCenter().sub(offset));
+			for(String objectName : group.getJoints())
+				for(GDXJoint object : screen.getLevel().getJoints())
+					if(object.getName().equals(objectName))
+						object.translate(offset.cpy().scl(-1f));
+		}
 		screen.loadLevel();
 	}
 }
