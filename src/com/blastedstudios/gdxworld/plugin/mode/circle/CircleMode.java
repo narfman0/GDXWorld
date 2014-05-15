@@ -20,10 +20,14 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
 @PluginImplementation
 public class CircleMode extends AbstractMode {
-	private final SpriteBatch spriteBatch = new SpriteBatch();
+	private final SpriteBatch spriteBatch;
 	private final Map<GDXCircle, Body> bodies = new HashMap<>();
 	private CircleWindow circleWindow;
 	private GDXCircle lastTouched;
+	
+	public CircleMode(){
+		spriteBatch = new SpriteBatch();
+	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);

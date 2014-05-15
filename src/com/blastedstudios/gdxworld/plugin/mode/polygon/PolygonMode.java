@@ -25,12 +25,16 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 @PluginImplementation
 public class PolygonMode extends AbstractMode {
-	private final SpriteBatch spriteBatch = new SpriteBatch();
+	private final SpriteBatch spriteBatch;
 	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
 	private TiledMeshRenderer tiledMeshRenderer;
 	private PolygonWindow polygonWindow;
 	private Vector2 lastTouchedVertex;
 	private GDXPolygon lastTouchedPolygon;
+	
+	public PolygonMode(){
+		spriteBatch = new SpriteBatch();
+	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
