@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.mode.tile;
 
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
@@ -20,7 +21,7 @@ import com.blastedstudios.gdxworld.world.GDXTile;
 
 @PluginImplementation
 public class TileMode extends AbstractMode {
-	private static int DEFAULT_TILESIZE = 21;
+	private static final int DEFAULT_TILESIZE = 21;
 	private static int tilesize = DEFAULT_TILESIZE;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private PaletteWindow paletteWindow;
@@ -40,8 +41,17 @@ public class TileMode extends AbstractMode {
 	
 	@Override public void loadLevel(GDXLevel level) {
 		super.loadLevel(level);
-		for(Entry<Vector2, GDXTile> entry : level.getTiles().entrySet())
-			screen.getLevel().getTiles().put(entry.getKey(), entry.getValue());
+		
+		Iterator<Entry<Vector2, GDXTile>> it = level.getTiles().entrySet().iterator();
+		if(it.hasNext()) {
+			Entry<Vector2, GDXTile> first = it.next();
+			tilesize = first.getValue().getTilesize();
+			screen.getLevel().getTiles().put(first.getKey(), first.getValue());
+			 while(it.hasNext()) {
+				Entry<Vector2, GDXTile> entry = it.next();
+				screen.getLevel().getTiles().put(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 	
 	@Override
@@ -118,6 +128,10 @@ public class TileMode extends AbstractMode {
 
 		
 	};
+	
+	public void setTileSize(int newTilesize) {
+		tilesize = newTilesize;
+	}
 	
 	/** Aligns position to nearest tile position */
 	private static float getOffset(float position) {

@@ -23,6 +23,7 @@ import com.blastedstudios.gdxworld.util.Properties;
 
 public class PaletteWindow extends AbstractWindow {
 	private static final int DEFAULT_SPACING = 2, DEFAULT_MARGIN = 2, DEFAULT_TILESIZE = 21;
+	private static final String DEFAULT_TILESET = "spritesheet.png";
 	private final TileMode tileMode;
 	private final List<PaletteTile> tiles;
 	private final ScrollPane palette;
@@ -39,9 +40,12 @@ public class PaletteWindow extends AbstractWindow {
 	public PaletteWindow(final Skin skin, final TileMode tileMode) {
 		super("Palette", skin);
 		this.tileMode = tileMode;
-		
 		tiles = new ArrayList<PaletteTile>();
-		tilesetFile = Properties.get("tilemode.tilesetFile", "");
+		
+		tilesetFileField = new TextField(Properties.get("tilemode.tileset", DEFAULT_TILESET), skin);
+		marginField = new TextField(String.valueOf(Properties.getInt("tilemode.margin", DEFAULT_MARGIN)), skin);
+		spacingField = new TextField(String.valueOf(Properties.getInt("tilemode.spacing", DEFAULT_SPACING)), skin);
+		tilesizeField = new TextField(String.valueOf(Properties.getInt("tilemode.tilesize", DEFAULT_TILESIZE)), skin);
 		
 		final Button load = new TextButton("Load", skin);
 		load.addListener(new ClickListener() {
@@ -50,10 +54,6 @@ public class PaletteWindow extends AbstractWindow {
 					loadPalette(tilesetFile, margin, spacing, tilesize);
 			}
 		});
-		tilesetFileField = new TextField(tilesetFile, skin);
-		marginField = new TextField(String.valueOf(DEFAULT_MARGIN), skin);
-		spacingField = new TextField(String.valueOf(DEFAULT_SPACING), skin);
-		tilesizeField = new TextField(String.valueOf(DEFAULT_TILESIZE), skin);
 		
 		final Table table = new Table();
 		table.add(new Label("Tileset:", skin));
@@ -85,11 +85,15 @@ public class PaletteWindow extends AbstractWindow {
 	}
 
 	private boolean validateInput() {
+		tilesetFile = tilesetFileField.getText();
+		Properties.set("tilemode.tileset", tilesetFile);
 		try {
-			tilesetFile = tilesetFileField.getText();
 			margin = Integer.parseInt(marginField.getText());
 			spacing = Integer.parseInt(spacingField.getText());
 			tilesize = Integer.parseInt(tilesizeField.getText());
+			Properties.set("tilemode.spacing", spacingField.getText());
+			Properties.set("tilemode.margin", marginField.getText());
+			Properties.set("tilemode.tilesize", tilesizeField.getText());
 		} catch(NumberFormatException nfe) {
 			Gdx.app.log("PaletteWindow.validateInput", "Invalid input");
 			margin = 0;
@@ -110,11 +114,14 @@ public class PaletteWindow extends AbstractWindow {
 		}
 		clean();
 		tiles.addAll(split(new Texture(file), margin, spacing, tilesize));
-		for(int i=0; i < tiles.size(); i++) {
-			tiles.get(i).setResource(tilesetFile);
-			if(i % 10 == 0)
-				tileTable.row();
-			tileTable.add(tiles.get(i));
+		if(!tiles.isEmpty()) {
+			tileMode.setTileSize(tilesize);
+			for(int i=0; i < tiles.size(); i++) {
+				tiles.get(i).setResource(tilesetFile);
+				if(i % 10 == 0)
+					tileTable.row();
+				tileTable.add(tiles.get(i));
+			}
 		}
 		pack();
 	}
