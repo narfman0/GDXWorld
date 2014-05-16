@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -78,9 +79,12 @@ public class TileMode extends AbstractMode {
 	
 	private void paint(){
 		Gdx.app.log("TileMode.paint", "x=" + coordinates.x + " y=" + coordinates.y);
-		if(activeTile != null) {
-			GDXTile tile = new GDXTile(getOffset(coordinates.x), getOffset(coordinates.y), activeTile.getResource(), activeTile.getResX(), activeTile.getResY(), activeTile.getTileSize());
-			screen.getLevel().getTiles().put(new Vector2(getOffset(coordinates.x), getOffset(coordinates.y)), tile);
+		Vector2 tileCoordinates = new Vector2(getOffset(coordinates.x), getOffset(coordinates.y));
+		if(Gdx.input.isButtonPressed(Buttons.RIGHT))//right mouse click remove tile
+			screen.getLevel().getTiles().remove(tileCoordinates);
+		else if(activeTile != null) {
+			GDXTile tile = new GDXTile(tileCoordinates.x, tileCoordinates.y, activeTile.getResource(), activeTile.getResX(), activeTile.getResY(), activeTile.getTileSize());
+			screen.getLevel().getTiles().put(tileCoordinates, tile);
 		}
 	}
 	
