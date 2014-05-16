@@ -64,15 +64,24 @@ public class TileMode extends AbstractMode {
 		paletteWindow = null;
 	}
 	
-	@Override
-	public boolean touchDown(final int x, final int y, final int x1, final int y1) {
+	@Override public boolean touchDown(final int x, final int y, final int x1, final int y1) {
 		super.touchDown(x, y, x1, y1);
-		Gdx.app.log("TileMode.touchDown", "x=" + coordinates.x + " y=" + coordinates.y);
+		paint();
+		return false;
+	}
+
+	@Override public boolean touchDragged(int x, int y, int ptr){
+		super.touchDragged(x, y, ptr);
+		paint();
+		return false;
+	}
+	
+	private void paint(){
+		Gdx.app.log("TileMode.paint", "x=" + coordinates.x + " y=" + coordinates.y);
 		if(activeTile != null) {
 			GDXTile tile = new GDXTile(getOffset(coordinates.x), getOffset(coordinates.y), activeTile.getResource(), activeTile.getResX(), activeTile.getResY(), activeTile.getTileSize());
 			screen.getLevel().getTiles().put(new Vector2(getOffset(coordinates.x), getOffset(coordinates.y)), tile);
 		}
-		return false;
 	}
 	
 	@Override

@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -37,7 +36,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private static int count = 0;
 	private String name = "Level-" + count++;
 	private Vector2 coordinates = new Vector2();
-	private final Map<Vector2, GDXTile> tiles = new HashMap<>();
+	private Map<Vector2, GDXTile> tiles = new HashMap<>();
 	private final List<GDXCircle> circles = new ArrayList<>();
 	private final List<GDXPolygon> polygons = new ArrayList<>();
 	private final List<GDXNPC> npcs = new ArrayList<>();
@@ -72,6 +71,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	}
 	
 	public Map<Vector2, GDXTile> getTiles() {
+		if(tiles == null)//for now creating new, for upconversion of old worlds pre-tile
+			tiles = new HashMap<>();
 		return tiles;
 	}
 	
