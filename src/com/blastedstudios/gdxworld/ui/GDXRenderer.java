@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -24,6 +25,7 @@ import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
+import com.blastedstudios.gdxworld.world.GDXTile;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXRenderer {
@@ -55,7 +57,17 @@ public class GDXRenderer {
 		if(drawShapes)
 			for(Entry<GDXShape,Body> entry : bodies)
 				drawShape(camera, entry.getKey(), entry.getValue(), batch);
+		
 		batch.end();
+	}
+	
+	public void drawTile(OrthographicCamera camera, GDXTile tile, SpriteBatch batch) {
+		Texture texture = getTexture(tile.getResource());
+		if(texture != null) {
+			Sprite sprite = new Sprite(new TextureRegion(texture, tile.getX(), tile.getY(), tile.getTilesize(), tile.getTilesize()));
+			sprite.setPosition(tile.getPosition().x, tile.getPosition().y);
+			sprite.draw(batch);
+		}
 	}
 	
 	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, SpriteBatch batch){

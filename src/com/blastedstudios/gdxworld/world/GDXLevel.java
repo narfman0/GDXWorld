@@ -7,19 +7,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import box2dLight.Light;
 import box2dLight.RayHandler;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.util.Properties;
-import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
+import com.blastedstudios.gdxworld.world.light.GDXLight;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -35,6 +37,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private static int count = 0;
 	private String name = "Level-" + count++;
 	private Vector2 coordinates = new Vector2();
+	private final Map<Vector2, GDXTile> tiles = new HashMap<>();
 	private final List<GDXCircle> circles = new ArrayList<>();
 	private final List<GDXPolygon> polygons = new ArrayList<>();
 	private final List<GDXNPC> npcs = new ArrayList<>();
@@ -67,7 +70,11 @@ public class GDXLevel implements Cloneable,Serializable{
 		shapes.addAll(polygons);
 		return Collections.unmodifiableList(shapes);
 	}
-
+	
+	public Map<Vector2, GDXTile> getTiles() {
+		return tiles;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -300,6 +307,8 @@ public class GDXLevel implements Cloneable,Serializable{
 	@Override public Object clone(){
 		GDXLevel level = new GDXLevel();
 		level.setCoordinates(coordinates.cpy());
+		for(Entry<Vector2, GDXTile> entry : getTiles().entrySet())
+			level.getTiles().put(entry.getKey(), entry.getValue().clone());
 		for(GDXJoint joint : joints)
 			level.getJoints().add((GDXJoint) joint.clone());
 		for(GDXCircle circle : circles)
@@ -344,6 +353,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		sounds.clear();
 		properties.clear();
 		particles.clear();
+		tiles.clear();
 	}
 
 	public class CreateLevelReturnStruct{
