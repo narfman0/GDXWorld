@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.endlevel;
 
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -15,8 +16,10 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 	}
 	
 	@Override public CompletionEnum execute() {
-		executor.endLevel(success);
-		return CompletionEnum.COMPLETED;
+		for(IEndLevelHandler handler : PluginUtil.getPlugins(IEndLevelHandler.class))
+			if(handler.endLevel(success) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
+		return CompletionEnum.EXECUTING;
 	}
 
 	public boolean isSuccess() {

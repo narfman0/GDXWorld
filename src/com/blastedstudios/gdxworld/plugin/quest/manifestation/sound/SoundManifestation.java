@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.sound;
 
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -23,8 +24,10 @@ public class SoundManifestation extends AbstractQuestManifestation{
 	}
 	
 	@Override public CompletionEnum execute() {
-		executor.sound(manifestationType, name, filename, volume, pan, pitch);
-		return CompletionEnum.COMPLETED;
+		for(ISoundHandler handler : PluginUtil.getPlugins(ISoundHandler.class))
+			if(handler.sound(manifestationType, name, filename, volume, pan, pitch) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
+		return CompletionEnum.EXECUTING;
 	}
 
 	@Override public SoundManifestation clone() {

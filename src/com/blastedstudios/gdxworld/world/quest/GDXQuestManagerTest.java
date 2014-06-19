@@ -24,8 +24,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
-import com.blastedstudios.gdxworld.plugin.quest.manifestation.particle.ParticleManifestationTypeEnum;
-import com.blastedstudios.gdxworld.plugin.quest.manifestation.sound.SoundManifestationEnum;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -68,14 +66,6 @@ public class GDXQuestManagerTest {
 						return body;
 				return null;
 			}
-			@Override public CompletionEnum addDialog(String dialog, String origin, String type) {
-				Gdx.app.log("QuestManifestationExecutor.addDialog", "Dialog received:" +
-						 dialog + " origin: " + origin + "type: " + type);
-				return CompletionEnum.EXECUTING;
-			}
-			@Override public void endLevel(boolean success) {
-				Gdx.app.log("QuestManifestationExecutor.endLevel","success: " + success);
-			}
 			@Override public Joint getPhysicsJoint(String name) {
 				Array<Joint> joints = new Array<>(world.getJointCount());
 				world.getJoints(joints);
@@ -83,20 +73,6 @@ public class GDXQuestManagerTest {
 					if(joint.getUserData().equals(name))
 						return joint;
 				return null;
-			}
-			@Override public void beingSpawn(String being, Vector2 coordinates, String path) {
-				Gdx.app.log("QuestManifestationExecutor.beingSpawn","being: " + being);
-			}
-			@Override public void particle(String name, String effectFile,
-					String imagesDir, int duration, Vector2 position,
-					ParticleManifestationTypeEnum modificationType, String emitterName,
-					String attachedBody) {
-				Gdx.app.log("QuestManifestationExecutor.particle","name: " + name);
-			}
-			@Override public void sound(SoundManifestationEnum manifestationType,
-					String name, String filename, float volume, float pan,
-					float pitch) {
-				Gdx.app.log("QuestManifestationExecutor.sound","name: " + name);
 			}
 			@Override public World getWorld() {
 				return world;

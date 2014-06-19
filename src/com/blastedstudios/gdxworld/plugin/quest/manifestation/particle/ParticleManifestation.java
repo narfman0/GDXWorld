@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.particle;
 
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -29,9 +30,11 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 	}
 	
 	@Override public CompletionEnum execute() {
-		executor.particle(name, effectFile, imagesDir, duration, position, modificationType, 
-				emitterName, attachedBody);
-		return CompletionEnum.COMPLETED;
+		for(IParticleHandler handler : PluginUtil.getPlugins(IParticleHandler.class))
+			if(handler.particle(name, effectFile, imagesDir, duration, position, modificationType, 
+					emitterName, attachedBody) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
+		return CompletionEnum.EXECUTING;
 	}
 
 	@Override public AbstractQuestManifestation clone() {

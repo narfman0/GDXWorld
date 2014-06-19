@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.beingspawn;
 
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -18,7 +19,9 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	}
 
 	@Override public CompletionEnum execute() {
-		executor.beingSpawn(being, coordinates, path);
+		for(IBeingSpawnHandler handler : PluginUtil.getPlugins(IBeingSpawnHandler.class))
+			if(handler.beingSpawn(being, coordinates, path) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
 		return CompletionEnum.COMPLETED;
 	}
 

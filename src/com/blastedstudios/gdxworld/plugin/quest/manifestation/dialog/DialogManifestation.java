@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog;
 
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -54,7 +55,10 @@ public class DialogManifestation extends AbstractQuestManifestation{
 	}
 
 	@Override public CompletionEnum execute() {
-		return executor.addDialog(dialog, origin, type);
+		for(IDialogHandler handler : PluginUtil.getPlugins(IDialogHandler.class))
+			if(handler.addDialog(dialog, origin, type) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
+		return CompletionEnum.EXECUTING;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
