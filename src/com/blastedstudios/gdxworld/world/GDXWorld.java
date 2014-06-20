@@ -2,8 +2,9 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ISerializer;
 import com.blastedstudios.gdxworld.util.PluginUtil;
+import com.blastedstudios.gdxworld.util.Properties;
 
 /**
  * Represents the high level world, or campaign, that hold the levels
@@ -18,11 +20,8 @@ import com.blastedstudios.gdxworld.util.PluginUtil;
  */
 public class GDXWorld implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private List<GDXLevel> levels;
-
-	public GDXWorld(){
-		levels = new ArrayList<GDXLevel>();
-	}
+	private List<GDXLevel> levels = new LinkedList<GDXLevel>();
+	private HashMap<String, String> worldProperties = createWorldProperties();
 
 	public void add(GDXLevel level){
 		levels.add(level);
@@ -43,7 +42,7 @@ public class GDXWorld implements Serializable{
 	public List<GDXLevel> getLevels(){
 		return levels;
 	}
-
+	
 	/**
 	 * Serialize this into filesystem
 	 * @param selectedFile location to save world
@@ -98,5 +97,18 @@ public class GDXWorld implements Serializable{
 	
 	public static Collection<ISerializer> getSerializers(){
 		return PluginUtil.getPlugins(ISerializer.class);
+	}
+	
+	private HashMap<String, String> createWorldProperties(){
+		worldProperties = new HashMap<String, String>();
+		for(String property : Properties.get("world.properties", "background").split(","))
+			worldProperties.put(property, "");
+		return worldProperties;
+	}
+	
+	public HashMap<String, String> getWorldProperties() {
+		if(worldProperties == null)
+			worldProperties = createWorldProperties();
+		return worldProperties;
 	}
 }

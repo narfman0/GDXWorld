@@ -22,12 +22,14 @@ public class WorldEditorScreen extends AbstractScreen {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private LevelInformationWindow levelInfo;
 	private WorldWindow worldWindow;
+	private PropertiesWindow propertiesWindow;
 	private final GDXWorld gdxWorld;
 	
 	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
 		super(game, "data/ui/uiskin.json");
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
-		stage.addActor(worldWindow = new WorldWindow(game, skin, this.gdxWorld, lastSavedFile));
+		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
+		stage.addActor(propertiesWindow = new PropertiesWindow(game, skin, gdxWorld.getWorldProperties()));
 		camera.zoom += 3;
 		TempWorldScreen.start(this.gdxWorld);
 	}
@@ -88,7 +90,8 @@ public class WorldEditorScreen extends AbstractScreen {
 	}
 	
 	private void touched(int x, int y){
-		if(!worldWindow.contains(x,y) && (levelInfo == null || !levelInfo.contains(x, y))){
+		if(!worldWindow.contains(x,y) && !propertiesWindow.contains(x,y) && 
+				(levelInfo == null || !levelInfo.contains(x, y))){
 			Vector2 coordinates = GDXRenderer.toWorldCoordinates(camera, new Vector2(x,y));
 			if(levelInfo == null){
 				GDXLevel level = gdxWorld.getClosestLevel(coordinates.x,coordinates.y);
