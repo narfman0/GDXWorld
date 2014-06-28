@@ -15,7 +15,8 @@ public class BackgroundChooserWindow extends AbstractWindow{
 	public BackgroundChooserWindow(final Skin skin, final BackgroundMode mode, 
 			final java.util.List<GDXBackground> backgrounds) {
 		super("Background Chooser", skin);
-		final List backgroundList = new List(backgrounds.toArray(), skin);
+		final List<GDXBackground> backgroundList = new List<GDXBackground>(skin);
+		backgroundList.setItems(backgrounds.toArray(new GDXBackground[backgrounds.size()]));
 
 		final Button selectButton = new TextButton("Select", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);

@@ -39,11 +39,12 @@ public class LightWindow extends AbstractWindow {
 		super("Light Editor", skin);
 		this.skin = skin;
 		lightTables = new HashMap<>();
-		final List lightTypes = new List(LightType.values(), skin);
+		final List<LightType> lightTypes = new List<LightType>(skin);
+		lightTypes.setItems(LightType.values());
 		final Button newButton = new TextButton("New", skin);
 		newButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				addLightTable(LightType.values()[lightTypes.getSelectedIndex()], null);
+				addLightTable(lightTypes.getSelected(), null);
 			}
 		});
 		for(GDXLight light : screen.getLevel().getLights())

@@ -62,7 +62,7 @@ public class DistanceJoint extends GDXJoint {
 	}
 
 	@Override public Vector2 getCenter() {
-		return anchorA.cpy().add(anchorB).div(2);
+		return anchorA.cpy().add(anchorB).scl(.5f);
 	}
 
 	@Override public Object clone() {

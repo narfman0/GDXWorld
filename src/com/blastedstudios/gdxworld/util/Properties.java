@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 public class Properties {
 	private static final String DEFAULT_PROPERTIES = "gdxworld.properties";
@@ -13,9 +14,15 @@ public class Properties {
 	static{
 		properties = new java.util.Properties();
 		if(Gdx.files != null)
-			load(FileUtil.find(Gdx.files.internal("data"),DEFAULT_PROPERTIES).read());
-		else
-			System.err.println("Failed to load properties, null!");
+			load(FileUtil.find(Gdx.files.internal("data"), DEFAULT_PROPERTIES).read());
+		else{
+			System.out.println("Failed to load properties, trying manually");
+			FileHandle handle = new FileHandle("data");
+			if(handle.exists())
+				load(FileUtil.find(handle, DEFAULT_PROPERTIES).read());
+			else
+				System.err.println("Failed to load properties!");
+		}
 	}
 	
 	public static void load(InputStream stream){

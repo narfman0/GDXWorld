@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.math.EarClippingTriangulator;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
@@ -73,7 +73,7 @@ public class TiledMeshRenderer {
 		shader.setUniformi("u_texture", 0);
 		for(MaskTextureStruct struct : maskTextures){
 			struct.texture.bind();
-			struct.mesh.render(shader, GL10.GL_TRIANGLES);
+			struct.mesh.render(shader, GL20.GL_TRIANGLES);
 		}
 		shader.end();
 	}

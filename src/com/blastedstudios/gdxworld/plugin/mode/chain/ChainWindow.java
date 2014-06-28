@@ -167,7 +167,7 @@ public class ChainWindow extends AbstractWindow {
 		RevoluteJoint joint = new RevoluteJoint();
 		joint.setBodyA(lastShape.getName());
 		joint.setBodyB(shape.getName());
-		joint.setAnchor(shape.getCenter().cpy().add(lastShape.getCenter()).div(2));
+		joint.setAnchor(shape.getCenter().cpy().add(lastShape.getCenter()).scl(.5f));
 		joint.setName(prefix + "-" + count);
 		return joint;
 	}

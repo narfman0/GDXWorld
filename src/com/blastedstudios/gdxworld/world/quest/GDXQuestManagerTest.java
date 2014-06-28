@@ -167,7 +167,6 @@ public class GDXQuestManagerTest {
 		@Override public void setLogLevel(int logLevel) {}
 		@Override public void removeLifecycleListener(LifecycleListener listener) {}
 		@Override public void postRunnable(Runnable runnable) {}
-		@Override public void log(String tag, String message, Exception exception) {}
 		@Override public void log(String tag, String message) {}
 		@Override public int getVersion() {return 0;}
 		@Override public ApplicationType getType() {return null;}
@@ -187,5 +186,7 @@ public class GDXQuestManagerTest {
 		@Override public void debug(String tag, String message, Throwable exception) {}
 		@Override public void debug(String tag, String message) {}
 		@Override public void addLifecycleListener(LifecycleListener listener) {}
+		@Override public void log(String tag, String message, Throwable exception) {}
+		@Override public int getLogLevel() {return 0;}
 	};
 }

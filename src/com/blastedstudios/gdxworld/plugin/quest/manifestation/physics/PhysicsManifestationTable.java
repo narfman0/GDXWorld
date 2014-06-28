@@ -12,7 +12,7 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class PhysicsManifestationTable extends ManifestationTable {
 	private final TextField torqueText, nameText;
 	private final VertexTable impulseTable;
-	private final List bodyTypeList;
+	private final List<BodyType> bodyTypeList;
 	private final PhysicsManifestation manifestation;
 	
 	public PhysicsManifestationTable(Skin skin, PhysicsManifestation manifestation) {
@@ -23,7 +23,8 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		torqueText = new TextField(manifestation.getTorque()+"", skin);
 		torqueText.setMessageText("<torque>");
 		impulseTable = new VertexTable(manifestation.getImpulse(), skin, null);
-		bodyTypeList = new List(BodyType.values(), skin);
+		bodyTypeList = new List<BodyType>(skin);
+		bodyTypeList.setItems(BodyType.values());
 		bodyTypeList.setSelectedIndex(manifestation.getType().getValue());
 		add(new Label("Name", skin));
 		add(nameText);
@@ -42,7 +43,7 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		manifestation.setTorque(Float.parseFloat(torqueText.getText()));
 		manifestation.setName(nameText.getText());
 		manifestation.setImpulse(impulseTable.getVertex());
-		manifestation.setType(BodyType.values()[bodyTypeList.getSelectedIndex()]);
+		manifestation.setType(bodyTypeList.getSelected());
 		return manifestation;
 	}
 }

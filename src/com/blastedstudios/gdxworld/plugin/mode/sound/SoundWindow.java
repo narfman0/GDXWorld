@@ -59,8 +59,8 @@ public class SoundWindow extends AbstractWindow {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				if(editor != null)
 					editor.remove();
-				if(soundTree.getSelection().size > 0){
-					editor = new SoundEditorWindow(skin, ((SoundNode)soundTree.getSelection().get(0)).sound);
+				if(!soundTree.getSelection().isEmpty()){
+					editor = new SoundEditorWindow(skin, ((SoundNode)soundTree.getSelection().first()).sound);
 					screen.getStage().addActor(editor);
 				}
 			}

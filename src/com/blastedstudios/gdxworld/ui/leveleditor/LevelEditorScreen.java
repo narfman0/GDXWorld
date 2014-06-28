@@ -67,8 +67,6 @@ public class LevelEditorScreen extends AbstractScreen {
 	@Override public void render(float delta) {
 		super.render(delta);
 		camera.update();
-		if(!Gdx.graphics.isGL20Available())
-			camera.apply(Gdx.gl10);
 		if(live)
 			world.step(delta, 4, 4);
 		gdxRenderer.render(gdxLevel, camera, null);

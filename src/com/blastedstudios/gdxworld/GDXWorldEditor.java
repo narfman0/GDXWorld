@@ -1,8 +1,12 @@
 package com.blastedstudios.gdxworld;
 
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
@@ -26,7 +30,30 @@ public class GDXWorldEditor extends GDXGame {
 	
 	public static void main (String[] argv) {
 		args = argv;
-		new LwjglApplication(new GDXWorldEditor(), "GDX World Editor", 1280, 1024, true);
+		new LwjglApplication(new GDXWorldEditor(), generateConfiguration("GDX World Editor"));
+	}
+	
+	public static LwjglApplicationConfiguration generateConfiguration(String title){
+		boolean fullscreen = Properties.getBool("graphics.fullscreen", false);
+		Dimension dimension = getDimension(fullscreen);
+		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+		cfg.title = title;
+	    cfg.width = dimension.width;
+	    cfg.height = dimension.height;
+	    cfg.fullscreen = fullscreen;
+	    cfg.vSyncEnabled = Properties.getBool("graphics.vsync", true);
+	    return cfg;
+	}
+	
+	private static Dimension getDimension(boolean fullscreen){
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int width = Properties.getInt("graphics.width", gd.getDisplayMode().getWidth());
+		int height = Properties.getInt("graphics.height", gd.getDisplayMode().getHeight());
+		if(!fullscreen){
+			width = width < 1800 ? 800 : 1680;
+			height = height < 1080 ? 600 : 1000;
+		}
+		return new Dimension(width, height);
 	}
 	
 	private void parseArgs(String[] argv){

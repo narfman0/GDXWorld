@@ -28,7 +28,7 @@ class QuestEditor extends AbstractWindow {
 	private ManifestationTable manifestationTable;
 	private TriggerTable triggerTable;
 	private final Table parentManifestationTable, parentTriggerTable;
-	private final SelectBox manifestationBoxes, triggerBoxes;
+	private final SelectBox<String> manifestationBoxes, triggerBoxes;
 	
 	public QuestEditor(final GDXQuest quest, final Skin skin, final QuestTable questTable) {
 		super("Quest Editor", skin);
@@ -67,23 +67,25 @@ class QuestEditor extends AbstractWindow {
 				PluginUtil.getPlugins(IQuestComponentManifestation.class));
 		final List<IQuestComponent> triggerPlugins = new ArrayList<IQuestComponent>(
 				PluginUtil.getPlugins(IQuestComponentTrigger.class));
-		manifestationBoxes = new SelectBox(extractList(manifestationPlugins), skin);
+		manifestationBoxes = new SelectBox<String>(skin);
+		manifestationBoxes.setItems(extractList(manifestationPlugins));
 		for(IQuestComponent component : manifestationPlugins)
 			if(component.getDefault().getClass() == quest.getManifestation().getClass())
-				manifestationBoxes.setSelection(component.getBoxText());
-		triggerBoxes = new SelectBox(extractList(triggerPlugins), skin);
+				manifestationBoxes.setSelected(component.getBoxText());
+		triggerBoxes = new SelectBox<String>(skin);
+		triggerBoxes.setItems(extractList(triggerPlugins));
 		for(IQuestComponent component : triggerPlugins)
 			if(component.getDefault().getClass() == quest.getTrigger().getClass())
-				triggerBoxes.setSelection(component.getBoxText());
+				triggerBoxes.setSelected(component.getBoxText());
 		manifestationBoxes.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				createManifestationTable(skin, extractFromSelection(manifestationBoxes.getSelection(), manifestationPlugins).getDefault().clone());
+				createManifestationTable(skin, extractFromSelection(manifestationBoxes.getSelection().first(), manifestationPlugins).getDefault().clone());
 				pack();
 			}
 		});
 		triggerBoxes.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				createTriggerTable(skin, extractFromSelection(triggerBoxes.getSelection(), triggerPlugins).getDefault().clone());
+				createTriggerTable(skin, extractFromSelection(triggerBoxes.getSelection().first(), triggerPlugins).getDefault().clone());
 				pack();
 			}
 		});

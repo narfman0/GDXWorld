@@ -1,7 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.mode.tile;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
@@ -28,7 +28,7 @@ public class PaletteTile extends ImageButton {
 	};
 	
 	@Override
-	public void draw(final SpriteBatch batch, final float parentAlpha) {
+	public void draw(final Batch batch, final float parentAlpha) {
 		this.setPosition(getX(), getY());
 		super.draw(batch, parentAlpha);
 	}

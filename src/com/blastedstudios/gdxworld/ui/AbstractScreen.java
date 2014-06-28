@@ -5,15 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractScreen implements Screen, InputProcessor{
-	private static final int GL_CLEAR = Gdx.graphics.isGL20Available() ? 
-			GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT : 
-			GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT;
+	private static final int GL_CLEAR = GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT;
 	protected final Stage stage;
 	protected Skin skin;
 	protected final GDXGame game;
@@ -22,7 +20,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	public AbstractScreen(final GDXGame game, final String skinPath){
 		this.game = game;
 		skin = new Skin(Gdx.files.internal(skinPath));
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(inputMultiplexer = new InputMultiplexer());
 		inputMultiplexer.addProcessor(this);
 		inputMultiplexer.addProcessor(stage);
@@ -42,7 +40,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	}
 	
 	@Override public void resize(int width, int height) {
-		stage.setViewport(width, height, false);
+		stage.getViewport().update(width, height);
 	}
 	@Override public void dispose() {}
 	@Override public void pause() {}

@@ -11,11 +11,12 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 
 public class ParticleManifestationTable extends ManifestationTable {
 	private final ParticleTable particleTable;
-	private final List modificationTypeList;
+	private final List<ParticleManifestationTypeEnum> modificationTypeList;
 	
 	public ParticleManifestationTable(Skin skin, ParticleManifestation manifestation) {
 		super(skin);
-		modificationTypeList = new List(ParticleManifestationTypeEnum.values(), skin);
+		modificationTypeList = new List<ParticleManifestationTypeEnum>(skin);
+		modificationTypeList.setItems(ParticleManifestationTypeEnum.values());
 		modificationTypeList.setSelectedIndex(manifestation.getModificationType().ordinal());
 		modificationTypeList.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
@@ -45,7 +46,7 @@ public class ParticleManifestationTable extends ManifestationTable {
 				particleTable.imagesDirField.getText(), 
 				Integer.parseInt(particleTable.durationField.getText()),
 				particleTable.positionTable.getVertex(), 
-				ParticleManifestationTypeEnum.valueOf(modificationTypeList.getSelection()),
+				modificationTypeList.getSelected(),
 				particleTable.emitterNameField.getText(),
 				particleTable.attachedBodyField.getText());
 	}

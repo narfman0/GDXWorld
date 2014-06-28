@@ -38,7 +38,7 @@ public class PolygonUtils {
 		Vector2 center = new Vector2();
 		for(Vector2 vertex : vertices)
 			center.add(vertex);
-		center.div(vertices.size());
+		center.scl(1f/(float)vertices.size());
 		return center;
 	}
 	

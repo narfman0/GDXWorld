@@ -27,11 +27,12 @@ class JointWindow extends AbstractWindow {
 		this.skin = skin;
 		this.mode = mode;
 		this.levelEditorScreen = levelEditorScreen;
-		final List typeList = new List(JointType.values(), skin);
+		final List<JointType> typeList = new List<JointType>(skin);
+		typeList.setItems(JointType.values());
 		final Button newButton = new TextButton("New", skin);
 		newButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				createBaseWindow(JointType.values()[typeList.getSelectedIndex()], null);
+				createBaseWindow(typeList.getSelected(), null);
 			}
 		});
 		add(typeList);

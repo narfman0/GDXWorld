@@ -61,6 +61,6 @@ class DistanceWindow extends BaseJointWindow {
 	}
 
 	@Override public Vector2 getCenter() {
-		return anchorATable.getVertex().sub(anchorBTable.getVertex()).div(2f);
+		return anchorATable.getVertex().sub(anchorBTable.getVertex()).scl(.5f);
 	}
 }

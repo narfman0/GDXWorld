@@ -29,7 +29,7 @@ public class WorldEditorScreen extends AbstractScreen {
 		super(game, "data/ui/uiskin.json");
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
-		stage.addActor(propertiesWindow = new PropertiesWindow(game, skin, gdxWorld.getWorldProperties()));
+		stage.addActor(propertiesWindow = new PropertiesWindow(game, skin, this.gdxWorld.getWorldProperties()));
 		camera.zoom += 3;
 		TempWorldScreen.start(this.gdxWorld);
 	}
@@ -37,8 +37,6 @@ public class WorldEditorScreen extends AbstractScreen {
 	@Override public void render(float delta) {
 		super.render(delta);
 		camera.update();
-		if(!Gdx.graphics.isGL20Available())
-			camera.apply(Gdx.gl10);
 		renderer.setColor(Color.WHITE);
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
