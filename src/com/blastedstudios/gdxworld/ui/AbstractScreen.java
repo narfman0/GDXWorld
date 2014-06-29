@@ -17,13 +17,17 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	protected final GDXGame game;
 	protected final InputMultiplexer inputMultiplexer;
 	
-	public AbstractScreen(final GDXGame game, final String skinPath){
+	public AbstractScreen(final GDXGame game, final Skin skin){
 		this.game = game;
-		skin = new Skin(Gdx.files.internal(skinPath));
+		this.skin = skin;
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(inputMultiplexer = new InputMultiplexer());
 		inputMultiplexer.addProcessor(this);
 		inputMultiplexer.addProcessor(stage);
+	}
+	
+	public AbstractScreen(final GDXGame game, final String skinPath){
+		this(game, new Skin(Gdx.files.internal(skinPath)));
 	}
 
 	@Override public void render(float delta) {
