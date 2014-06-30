@@ -20,45 +20,50 @@ import com.blastedstudios.gdxworld.math.decomposers.Clipper;
 import com.blastedstudios.gdxworld.math.decomposers.Clipper.Polygonizer;
 
 public class PhysicsHelper {
-	public static final PolygonShape POLYGON_SHAPE = new PolygonShape();
-	public static final CircleShape CIRCLE_SHAPE = new CircleShape();
-
-	public static Body createCircle(World world, float radius, Vector2 position, BodyType type){
-		return createCircle(world, radius, position, type, 1);
-	}
-	
-	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, float density){
-		return createCircle(world, radius, position, type, density, (short)1, (short)-1, (short)0);
-	}
-	
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, 
-			float density, short maskBits, short categoryBits, short groupIndex){
+			float friction, float restitution, float density){
+		return createCircle(world, radius, position, type, friction, restitution, 
+				density, (short)1, (short)-1, (short)0);
+	}
+	
+	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, float friction, 
+			float restitution, float density, short maskBits, short categoryBits, short groupIndex){
 		BodyDef def = new BodyDef();
 		def.type = type;
 		Body body = world.createBody(def);
-		CIRCLE_SHAPE.setRadius(radius);
-		Fixture fixture = body.createFixture(CIRCLE_SHAPE, density);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(radius);
+		shape.setPosition(position);
+		FixtureDef fd = new FixtureDef();
+		fd.shape = shape;
+		fd.density = density;
+		fd.friction = friction;
+		fd.restitution = restitution;
+		Fixture fixture = body.createFixture(fd);
 		setFilterData(fixture, maskBits, categoryBits, groupIndex);
-		body.setTransform(position, 0);
 		return body;
 	}
 	
-	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type){
-		return createRectangle(world, width, height, position, type, 1);
-	}
-
-	public static Body createRectangle(World world, float width, float height, Vector2 position, BodyType type, float density){
-		return createRectangle(world, width, height, position, type, density, (short)1, (short)-1, (short)0);
+	public static Body createRectangle(World world, float width, float height, Vector2 position, 
+			BodyType type, float friction, float restitution, float density){
+		return createRectangle(world, width, height, position, type, friction, restitution, 
+				density, (short)1, (short)-1, (short)0);
 	}
 
 	public static Body createRectangle(World world, float width, float height, Vector2 position, 
-			BodyType type, float density, short maskBits, short categoryBits, short groupIndex){
+			BodyType type, float friction, float restitution, float density,
+			short maskBits, short categoryBits, short groupIndex){
 		BodyDef def = new BodyDef();
 		def.type = type;
 		Body body = world.createBody(def);
-		POLYGON_SHAPE.setAsBox(width, height);
-		Fixture fixture = body.createFixture(POLYGON_SHAPE, density);
-		setFilterData(fixture, maskBits, categoryBits, groupIndex);
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(width, height);
+		FixtureDef fd = new FixtureDef();
+		fd.shape = shape;
+		fd.density = density;
+		fd.friction = friction;
+		fd.restitution = restitution;
+		setFilterData(body.createFixture(fd), maskBits, categoryBits, groupIndex);
 		body.setTransform(position, 0);
 		return body;
 	}

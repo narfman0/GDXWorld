@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.physics.PhysicsHelper;
@@ -65,8 +66,7 @@ public class GDXPolygon extends GDXShape implements Serializable{
 		fd.friction = friction;
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
-		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, 
-				PhysicsHelper.POLYGON_SHAPE);
+		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, new PolygonShape());
 		if(body != null){
 			body.setTransform(center, 0);
 			body.setUserData(name);
