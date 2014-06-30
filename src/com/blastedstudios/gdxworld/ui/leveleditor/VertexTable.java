@@ -69,6 +69,8 @@ public class VertexTable extends Table {
 	}
 	
 	private float convert(TextField field){
+		if(field.getText().equals(""))
+			return 0f;
 		return Float.parseFloat(field.getText());
 	}
 	
