@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world.group;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,5 +104,15 @@ public class GDXGroupExportStruct{
 			joint.attach(world);
 		}
 		return bodies;
+	}
+	
+	public GDXShape getShape(String name){
+		LinkedList<GDXShape> shapes = new LinkedList<>();
+		shapes.addAll(polygons);
+		shapes.addAll(circles);
+		for(GDXShape shape : shapes)
+			if(shape.getName().equals(name))
+				return shape;
+		return null;
 	}
 }
