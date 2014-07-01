@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -37,31 +37,23 @@ public class GDXRenderer {
 	private boolean drawBackground, drawShapes;
 	private Map<String, Texture> textureMap = new HashMap<>();
 	private Map<String, Map<Float,Texture>> textureBlurMap = new HashMap<>();
-	private SpriteBatch batch;
 	
 	public GDXRenderer(boolean drawBackground, boolean drawShapes){
 		this.drawBackground = drawBackground;
 		this.drawShapes = drawShapes;
-		batch = new SpriteBatch();
-		if(!Properties.getBool("renderer.blend.enabled", true))
-			batch.disableBlending();
 	}
 	
-	public void render(GDXLevel level, OrthographicCamera camera, Iterable<Entry<GDXShape,Body>> bodies){
-		batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        
+	public void render(Batch batch, GDXLevel level, OrthographicCamera camera, 
+			Iterable<Entry<GDXShape,Body>> bodies){
 		if(drawBackground)
 			for(GDXBackground background : level.getBackgrounds())
 				drawBackground(camera, background, batch);
 		if(drawShapes)
 			for(Entry<GDXShape,Body> entry : bodies)
 				drawShape(camera, entry.getKey(), entry.getValue(), batch);
-		
-		batch.end();
 	}
 	
-	public void drawTile(OrthographicCamera camera, GDXTile tile, SpriteBatch batch) {
+	public void drawTile(OrthographicCamera camera, GDXTile tile, Batch batch) {
 		Texture texture = getTexture(tile.getResource());
 		if(texture != null) {
 			Sprite sprite = new Sprite(new TextureRegion(texture, tile.getX(), tile.getY(), tile.getTilesize(), tile.getTilesize()));
@@ -70,18 +62,24 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, SpriteBatch batch){
+	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
+		drawShape(camera, shape, body, batch, 1f);
+	}
+	
+	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
 		Texture texture = getTexture(shape.getResource());
 		if(!shape.isRepeatable() && texture != null && !shape.getResource().equals("") && body != null){
 			Sprite sprite = new Sprite(texture);
 			sprite.setScale(SHAPE_SCALE);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
 			sprite.setPosition(body.getPosition().x - texture.getWidth()/2f, body.getPosition().y - texture.getHeight()/2f);
+			if(alpha != 1f)
+				sprite.setAlpha(alpha);
 			sprite.draw(batch);
 		}
 	}
 	
-	public void drawBackground(Camera camera, GDXBackground background, SpriteBatch batch){
+	public void drawBackground(Camera camera, GDXBackground background, Batch batch){
 		Texture texture = background.getDepth() == 1f || !USE_DEPTH_BLUR? 
 				getTexture(background.getTexture()) :
 				getBlurTexture(background.getTexture(), background.getDepth());

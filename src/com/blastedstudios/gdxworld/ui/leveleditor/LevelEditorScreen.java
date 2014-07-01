@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -39,6 +40,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private IMode mode;
 	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
 	private final ShapeRenderer renderer = new ShapeRenderer();
+	private final SpriteBatch spriteBatch = new SpriteBatch();
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
 			final File selectedFile, final GDXLevel gdxLevel){
@@ -69,7 +71,10 @@ public class LevelEditorScreen extends AbstractScreen {
 		camera.update();
 		if(live)
 			world.step(delta, 4, 4);
-		gdxRenderer.render(gdxLevel, camera, null);
+		spriteBatch.setProjectionMatrix(camera.combined);
+		spriteBatch.begin();
+		gdxRenderer.render(spriteBatch, gdxLevel, camera, null);
+		spriteBatch.end();
 		for(IMode child : modes)
 			child.render(delta, camera, gdxRenderer, renderer);
 		debugRenderer.render(world, camera.combined);
