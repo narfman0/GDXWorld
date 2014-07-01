@@ -92,7 +92,7 @@ public class PhysicsHelper {
 	}
 	
 	public static Body createFixture(World world, FixtureDef fixtureDef, BodyType type,
-			List<Vector2> nodes, Shape shape) {
+			List<Vector2> nodes, Shape shape, short maskBits, short categoryBits, short groupIndex) {
 		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, 
 				nodes.toArray(new Vector2[nodes.size()]));
 		if(verts == null){
@@ -108,7 +108,8 @@ public class PhysicsHelper {
 			if(shape instanceof PolygonShape)
 				((PolygonShape)shape).set(vertSet);
 			fixtureDef.shape = shape;
-			body.createFixture(fixtureDef);
+			Fixture fixture = body.createFixture(fixtureDef);
+			setFilterData(fixture, maskBits, categoryBits, groupIndex);
 		}
 		return body;
 	}

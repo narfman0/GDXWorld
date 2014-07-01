@@ -17,7 +17,8 @@ public class GDXCircle extends GDXShape {
 
 	@Override public Body createFixture(World world, boolean overrideStatic) {
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
-		Body body = PhysicsHelper.createCircle(world, radius, center, type, friction, restitution, density);
+		Body body = PhysicsHelper.createCircle(world, radius, center, type, friction, restitution, density,
+				getFilter().maskBits, getFilter().categoryBits, getFilter().groupIndex);
 		body.setUserData(name);
 		return body;
 	}

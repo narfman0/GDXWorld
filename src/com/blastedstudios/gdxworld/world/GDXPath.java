@@ -50,7 +50,8 @@ public class GDXPath implements Cloneable,Serializable{
 	}
 
 	public Body createFixture(World world, FixtureDef fixtureDef, BodyType type) {
-		return PhysicsHelper.createFixture(world, fixtureDef, type, nodes, new PolygonShape());
+		return PhysicsHelper.createFixture(world, fixtureDef, type, nodes, new PolygonShape(), 
+				(short)-1, (short)1, (short)0);
 	}
 	
 	@Override public Object clone(){

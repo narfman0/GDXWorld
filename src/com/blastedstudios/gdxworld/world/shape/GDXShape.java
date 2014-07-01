@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -20,6 +21,7 @@ public abstract class GDXShape implements Cloneable,Serializable{
 	protected float density = 1f, friction = .5f, restitution = .3f;
 	protected BodyType bodyType = BodyType.StaticBody;
 	protected Vector2 center = new Vector2();
+	protected Filter filter = new Filter();
 
 	public String getName() {
 		return name;
@@ -78,6 +80,16 @@ public abstract class GDXShape implements Cloneable,Serializable{
 	public void setResource(String resource) {
 		this.resource = resource;
 	}
+
+	public Filter getFilter() {
+		if(filter == null)
+			filter = new Filter();
+		return filter;
+	}
+
+	public void setFilter(Filter filter) {
+		this.filter = filter;
+	}
 	
 	public abstract Vector2 getDimensions();
 	
@@ -104,6 +116,11 @@ public abstract class GDXShape implements Cloneable,Serializable{
 		clone.setName(name);
 		clone.setRestitution(restitution);
 		clone.setResource(resource);
+		Filter filter = new Filter();
+		filter.categoryBits = clone.filter.categoryBits;
+		filter.groupIndex = clone.filter.groupIndex;
+		filter.maskBits = clone.filter.maskBits;
+		clone.setFilter(filter);
 		return clone;
 	}
 }

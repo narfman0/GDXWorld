@@ -66,7 +66,8 @@ public class GDXPolygon extends GDXShape implements Serializable{
 		fd.friction = friction;
 		fd.restitution = restitution;
 		BodyType type = overrideStatic ? BodyType.StaticBody : bodyType;
-		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, new PolygonShape());
+		Body body = PhysicsHelper.createFixture(world, fd, type, vertices, new PolygonShape(), 
+				getFilter().maskBits, getFilter().categoryBits, getFilter().groupIndex);
 		if(body != null){
 			body.setTransform(center, 0);
 			body.setUserData(name);
