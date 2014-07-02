@@ -64,12 +64,28 @@ public class Properties {
 		return Boolean.parseBoolean(get(key, defaultVal+""));
 	}
 	
+	public static short getShort(String key){
+		return Short.parseShort(get(key));
+	}
+	
+	public static short getShort(String key, short defaultVal){
+		return Short.parseShort(get(key,defaultVal+""));
+	}
+	
 	public static int getInt(String key){
 		return Integer.parseInt(get(key));
 	}
 	
 	public static int getInt(String key, int defaultVal){
 		return Integer.parseInt(get(key,defaultVal+""));
+	}
+	
+	public static long getLong(String key){
+		return Long.parseLong(get(key));
+	}
+	
+	public static long getLong(String key, long defaultVal){
+		return Long.parseLong(get(key,defaultVal+""));
 	}
 
 	public static float getFloat(String key) {
