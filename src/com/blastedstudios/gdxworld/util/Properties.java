@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.util;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,6 +29,14 @@ public class Properties {
 	public static void load(InputStream stream){
 		try {
 			properties.load(stream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void store(OutputStream stream, String comments){
+		try {
+			properties.store(stream, comments);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
