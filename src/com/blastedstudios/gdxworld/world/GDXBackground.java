@@ -21,8 +21,8 @@ public class GDXBackground implements Cloneable,Serializable,Comparable<GDXBackg
 	 * foreground, 1 is the mid-ground (normal distance where physics objects
 	 * are located), 1+ is the background (and subject to parallax scrolling)
 	 */
-	private float depth = Properties.getFloat("background.depth.default"), 
-			scale = Properties.getFloat("background.scale.default");
+	private float depth = Properties.getFloat("background.depth.default", 1), 
+			scale = Properties.getFloat("background.scale.default", 1);
 	
 	public String getTexture() {
 		return texture;
