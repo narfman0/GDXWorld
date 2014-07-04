@@ -43,6 +43,10 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 		return skin;
 	}
 	
+	public GDXGame getGame(){
+		return game;
+	}
+	
 	@Override public void resize(int width, int height) {
 		stage.getViewport().update(width, height);
 	}
