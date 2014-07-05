@@ -57,6 +57,10 @@ public class PolygonMode extends AbstractMode {
 		}else if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && PolygonUtils.getClosestNode(coordinates.x, 
 				coordinates.y, polygonWindow.getVertices()).dst(coordinates) < LevelEditorScreen.getNodeRadius()){
 			lastTouchedVertex = PolygonUtils.getClosestNode(coordinates.x, coordinates.y, polygonWindow.getVertices());
+		}else if((Gdx.input.isKeyPressed(Keys.DEL) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) && PolygonUtils.getClosestNode(coordinates.x, 
+				coordinates.y, polygonWindow.getVertices()).dst(coordinates) < LevelEditorScreen.getNodeRadius()){
+			lastTouchedVertex = PolygonUtils.getClosestNode(coordinates.x, coordinates.y, polygonWindow.getVertices());
+			polygonWindow.remove(lastTouchedVertex);
 		}else
 			polygonWindow.add(new Vector2(coordinates.x, coordinates.y));
 		return false;
