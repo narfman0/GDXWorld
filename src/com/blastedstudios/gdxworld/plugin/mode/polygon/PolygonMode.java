@@ -162,6 +162,11 @@ public class PolygonMode extends AbstractMode {
 					}
 				}
 			renderer.end();
+			spriteBatch.setProjectionMatrix(camera.combined);
+			spriteBatch.begin();
+			for(Entry<GDXPolygon,Body> entry : bodies.entrySet())
+				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch, .5f);
+			spriteBatch.end();
 		}else{
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();

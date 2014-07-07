@@ -102,13 +102,11 @@ public class CircleMode extends AbstractMode {
 	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(circleWindow != null)
 			circleWindow.render(delta, camera);
-		if(screen.isLive()){
-			spriteBatch.setProjectionMatrix(camera.combined);
-			spriteBatch.begin();
-			for(Entry<GDXCircle,Body> entry : bodies.entrySet())
-				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
-			spriteBatch.end();
-		}
+		spriteBatch.setProjectionMatrix(camera.combined);
+		spriteBatch.begin();
+		for(Entry<GDXCircle,Body> entry : bodies.entrySet())
+			gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch, screen.isLive() ? 1f : .5f);
+		spriteBatch.end();
 	}
 
 	@Override public int getLoadPriority() {
