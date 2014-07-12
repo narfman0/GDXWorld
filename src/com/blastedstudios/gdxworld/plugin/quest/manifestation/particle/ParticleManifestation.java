@@ -8,8 +8,8 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class ParticleManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
 	public static ParticleManifestation DEFAULT = new ParticleManifestation();
-	private String name = "Particle", effectFile = "data/particles/particle.p", 
-			imagesDir = "data/particles", emitterName = "", attachedBody = "";
+	private String name = "Particle", effectFile = "particles/particle.p", 
+			imagesDir = "particles", emitterName = "", attachedBody = "";
 	private int duration = -1;
 	private Vector2 position = new Vector2();
 	private ParticleManifestationTypeEnum modificationType = ParticleManifestationTypeEnum.CREATE;

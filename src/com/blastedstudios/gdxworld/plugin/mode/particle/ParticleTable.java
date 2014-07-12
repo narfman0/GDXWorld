@@ -21,9 +21,9 @@ public class ParticleTable extends Table {
 		nameField = new TextField(name, skin);
 		nameField.setMessageText("<name of particle>");
 		effectFileField = new TextField(effectFile, skin);
-		effectFileField.setMessageText("<effect file path e.g. data/part.p>");
+		effectFileField.setMessageText("<effect file path e.g. part.p>");
 		imagesDirField = new TextField(imagesDir, skin);
-		imagesDirField.setMessageText("<images path e.g. data/textures>");
+		imagesDirField.setMessageText("<images path e.g. textures>");
 		durationField = new TextField(duration+"", skin);
 		durationField.setMessageText("<duration of particles>");
 		emitterNameField = new TextField(emitterName, skin);

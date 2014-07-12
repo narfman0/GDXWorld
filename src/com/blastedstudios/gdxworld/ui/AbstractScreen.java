@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui;
 
+import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -27,7 +28,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	}
 	
 	public AbstractScreen(final GDXGame game, final String skinPath){
-		this(game, new Skin(Gdx.files.internal(skinPath)));
+		this(game, new Skin(FileUtil.find(Gdx.files.internal("."), skinPath)));
 	}
 
 	@Override public void render(float delta) {

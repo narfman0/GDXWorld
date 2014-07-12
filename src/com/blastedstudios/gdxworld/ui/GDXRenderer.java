@@ -170,7 +170,7 @@ public class GDXRenderer {
 	}
 	
 	private static FileHandle getTextureFile(String name){
-		return FileUtil.find(Gdx.files.internal("data"), name);
+		return FileUtil.find(Gdx.files.internal("."), name);
 	}
 	
 	public static Vector2 toWorldCoordinates(Camera cam, Vector2 screen){

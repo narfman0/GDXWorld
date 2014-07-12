@@ -14,15 +14,14 @@ public class Properties {
 
 	static{
 		properties = new java.util.Properties();
-		if(Gdx.files != null)
-			load(FileUtil.find(Gdx.files.internal("data"), DEFAULT_PROPERTIES).read());
-		else{
-			System.out.println("Failed to load properties, trying manually");
-			FileHandle handle = new FileHandle("data");
-			if(handle.exists())
-				load(FileUtil.find(handle, DEFAULT_PROPERTIES).read());
-			else
-				System.err.println("Failed to load properties!");
+		if(Gdx.files != null){
+			FileHandle handle = FileUtil.find(Gdx.files.internal("."), DEFAULT_PROPERTIES); 
+			if(handle != null)
+				load(handle.read());
+			else 
+				Gdx.app.error("Properties.<init>", "Failed to load properties, file not found!");
+		}else{
+			System.err.println("Failed to load properties, Gdx.files null!");
 		}
 	}
 	
