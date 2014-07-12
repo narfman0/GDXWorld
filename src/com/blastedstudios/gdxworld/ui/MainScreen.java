@@ -1,17 +1,16 @@
 package com.blastedstudios.gdxworld.ui;
 
-import java.io.File;
-
-import javax.swing.JFileChooser;
-
-import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
+import com.blastedstudios.gdxworld.util.GDXGame;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class MainScreen extends AbstractScreen{
@@ -27,14 +26,12 @@ public class MainScreen extends AbstractScreen{
 		});
 		loadButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				final JFileChooser fc = new JFileChooser();
-				fc.showOpenDialog(null);
-				if(fc.getSelectedFile() != null && fc.getSelectedFile().canRead()){
-					File file = fc.getSelectedFile();
-					game.pushScreen(new WorldEditorScreen(game, GDXWorld.load(file), file));
-				}else
-					Gdx.app.error("MainScreen.loadButton ClickListener", 
-							"Selected file null or not readable");
+				IFileChooserHandler handler = new IFileChooserHandler() {
+					@Override public void handle(FileHandle handle) {
+						game.pushScreen(new WorldEditorScreen(game, GDXWorld.load(handle.file()), handle.file()));
+					}
+				};
+				FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 			}
 		});
 		exitButton.addListener(new ClickListener() {

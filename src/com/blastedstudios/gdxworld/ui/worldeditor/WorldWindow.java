@@ -2,8 +2,8 @@ package com.blastedstudios.gdxworld.ui.worldeditor;
 
 import java.io.File;
 
-import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
-import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.GDXGame;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldWindow extends AbstractWindow{
@@ -38,8 +40,13 @@ public class WorldWindow extends AbstractWindow{
 		});
 		saveAsButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				gdxWorld.save(lastSavedFile = FileUtil.fileChooser(false, true));
-				saveButton.setDisabled(false);
+				IFileChooserHandler handler = new IFileChooserHandler() {
+					@Override public void handle(FileHandle handle) {
+						gdxWorld.save(lastSavedFile = handle.file());
+						saveButton.setDisabled(false);
+					}
+				};
+				FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 			}
 		});
 		backButton.addListener(new ClickListener() {

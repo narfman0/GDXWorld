@@ -1,12 +1,11 @@
 package com.blastedstudios.gdxworld.plugin.serializer.serializable;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.filechooser.FileFilter;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 

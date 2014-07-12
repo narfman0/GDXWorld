@@ -1,8 +1,7 @@
 package com.blastedstudios.gdxworld.util;
 
 import java.io.File;
-
-import javax.swing.filechooser.FileFilter;
+import java.io.FileFilter;
 
 import net.xeoh.plugins.base.Plugin;
 

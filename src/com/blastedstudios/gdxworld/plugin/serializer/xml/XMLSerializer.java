@@ -1,9 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.serializer.xml;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
-
-import javax.swing.filechooser.FileFilter;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 

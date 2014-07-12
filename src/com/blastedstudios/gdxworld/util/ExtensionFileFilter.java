@@ -1,10 +1,9 @@
 package com.blastedstudios.gdxworld.util;
 
 import java.io.File;
+import java.io.FileFilter;
 
-import javax.swing.filechooser.FileFilter;
-
-public class ExtensionFileFilter extends FileFilter{
+public class ExtensionFileFilter implements FileFilter{
 	private String extension, name;
 
 	public ExtensionFileFilter(String extension, String name){
@@ -20,7 +19,7 @@ public class ExtensionFileFilter extends FileFilter{
 		return FileUtil.getExtension(f).equals(extension);
 	}
 
-	@Override public String getDescription() {
+	public String getDescription() {
 		return name + " (*." + extension + ")";
 	}
 	

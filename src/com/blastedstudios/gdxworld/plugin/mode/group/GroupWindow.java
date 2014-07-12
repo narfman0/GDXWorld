@@ -1,9 +1,9 @@
 package com.blastedstudios.gdxworld.plugin.mode.group;
 
-import java.io.File;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.group.GDXGroupExportStruct;
 
@@ -53,16 +55,22 @@ class GroupWindow extends AbstractWindow {
 		importButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				try {
-					File file = FileUtil.fileChooser(true, true);
-					if(file != null){
-						GDXGroupExportStruct struct = (GDXGroupExportStruct) FileUtil.getSerializer(file).load(file);
-						screen.getLevel().getCircles().addAll(struct.circles);
-						screen.getLevel().getPolygons().addAll(struct.polygons);
-						screen.getLevel().getJoints().addAll(struct.joints);
-						GDXGroup group = struct.create();
-						groups.add(group);
-						groupTable.add(createGroupTable(group));
-					}
+					IFileChooserHandler handler = new IFileChooserHandler() {
+						@Override public void handle(FileHandle handle) {
+							try{
+								GDXGroupExportStruct struct = (GDXGroupExportStruct) FileUtil.getSerializer(handle.file()).load(handle.file());
+								screen.getLevel().getCircles().addAll(struct.circles);
+								screen.getLevel().getPolygons().addAll(struct.polygons);
+								screen.getLevel().getJoints().addAll(struct.joints);
+								GDXGroup group = struct.create();
+								groups.add(group);
+								groupTable.add(createGroupTable(group));
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}
+					};
+					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
 					Gdx.app.error("GroupWindow.importButton Listener", 
 							"Import group failed: " + e.getClass() + ": " + e.getMessage());

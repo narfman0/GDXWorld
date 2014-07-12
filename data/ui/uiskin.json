@@ -50,5 +50,15 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 	default: { minus: tree-minus, plus: tree-plus, selection: default-select-selection }
+},
+com.blastedstudios.gdxworld.util.ui.TreeFileChooser$Style: {
+    "default": {
+        "treeStyle": "default",
+        "scrollPaneStyle": "default",
+        "labelStyle": "default",
+        "selectButtonStyle": "default",
+        "cancelButtonStyle": "default",
+        "background": "default"
+    }
 }
 }

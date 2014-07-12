@@ -1,11 +1,11 @@
 package com.blastedstudios.gdxworld.plugin.mode.group;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,6 +18,8 @@ import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
+import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.group.GDXGroupExportStruct;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
@@ -64,14 +66,20 @@ class GroupEditor extends AbstractWindow {
 		final Button exportButton = new TextButton("Export", skin);
 		exportButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				GDXGroup group = new GDXGroup();
+				final GDXGroup group = new GDXGroup();
 				apply(group);
 				try {
-					File file = FileUtil.fileChooser(false, true);
-					if(file != null){
-						GDXGroupExportStruct struct = group.exportGroup(screen.getLevel());
-						FileUtil.getSerializer(file).save(file, struct);
-					}
+					IFileChooserHandler handler = new IFileChooserHandler() {
+						@Override public void handle(FileHandle handle) {
+							GDXGroupExportStruct struct = group.exportGroup(screen.getLevel());
+							try {
+								FileUtil.getSerializer(handle.file()).save(handle.file(), struct);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					};
+					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
 					Gdx.app.error("GroupEditor.exportButton Listener", 
 							"Export group failed: " + e.getMessage());
