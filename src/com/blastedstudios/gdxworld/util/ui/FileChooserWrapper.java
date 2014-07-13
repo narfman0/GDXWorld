@@ -26,7 +26,7 @@ public class FileChooserWrapper {
 			}
 		};
 		fc = new TreeFileChooser(skin, listener);
-		fc.add(Gdx.files.internal("."));
+		fc.add(Gdx.files.internal(""));
 		fc.add(Gdx.files.external("/"));
 		fc.setWidth(300f);
 		fc.setHeight(500f);

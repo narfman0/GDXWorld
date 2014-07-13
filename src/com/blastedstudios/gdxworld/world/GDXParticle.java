@@ -111,7 +111,7 @@ public class GDXParticle implements Cloneable,Serializable{
 	
 	public ParticleEffect createEffect(){
 		ParticleEffect effect = new ParticleEffect();
-		effect.load(FileUtil.find(Gdx.files.internal("."), effectFile), FileUtil.find(Gdx.files.internal("."), imagesDir));
+		effect.load(FileUtil.find(Gdx.files.internal(""), effectFile), FileUtil.find(Gdx.files.internal(""), imagesDir));
 		effect.setPosition(position.x, position.y);
 		if(duration != -1)
 			effect.setDuration(duration);

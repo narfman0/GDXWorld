@@ -16,11 +16,12 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
 public class GDXGroupExportStruct{
-	public final String name;
-	public final List<GDXCircle> circles;
-	public final List<GDXPolygon> polygons;
-	public final List<GDXJoint> joints;
-
+	public String name;
+	public List<GDXCircle> circles = new LinkedList<>();
+	public List<GDXPolygon> polygons = new LinkedList<>();
+	public List<GDXJoint> joints = new LinkedList<>();
+	
+	public GDXGroupExportStruct(){}
 	public GDXGroupExportStruct(String name, List<GDXCircle> circles, 
 			List<GDXPolygon> polygons, List<GDXJoint> joints){
 		this.name = name;
