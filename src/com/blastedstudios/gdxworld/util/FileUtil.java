@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class FileUtil {
+	public static final FileHandle ROOT_DIRECTORY = Gdx.files.internal("").isDirectory() ? 
+			Gdx.files.internal("") : Gdx.files.internal(".");
 	/**
 	 * Recursively find file in directory
 	 */

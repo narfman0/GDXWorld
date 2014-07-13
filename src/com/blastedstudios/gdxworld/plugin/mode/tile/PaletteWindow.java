@@ -107,7 +107,7 @@ public class PaletteWindow extends AbstractWindow {
 	
 	private void loadPalette(final String tilesetFile, final int margin, final int spacing, final int tilesize) {
 		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + tilesetFile);
-		FileHandle file = FileUtil.find(Gdx.files.internal(""), tilesetFile);
+		FileHandle file = FileUtil.find(FileUtil.ROOT_DIRECTORY, tilesetFile);
 		if(null == file) {
 			Gdx.app.error("PaletteWindow.loadPalette", "File " + tilesetFile + " not found.");
 			return;

@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.FileUtil;
@@ -111,7 +110,7 @@ public class GDXParticle implements Cloneable,Serializable{
 	
 	public ParticleEffect createEffect(){
 		ParticleEffect effect = new ParticleEffect();
-		effect.load(FileUtil.find(Gdx.files.internal(""), effectFile), FileUtil.find(Gdx.files.internal(""), imagesDir));
+		effect.load(FileUtil.find(FileUtil.ROOT_DIRECTORY, effectFile), FileUtil.find(FileUtil.ROOT_DIRECTORY, imagesDir));
 		effect.setPosition(position.x, position.y);
 		if(duration != -1)
 			effect.setDuration(duration);

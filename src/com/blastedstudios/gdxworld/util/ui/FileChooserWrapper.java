@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ui.FileChooser.Listener;
 
 public class FileChooserWrapper {
@@ -26,7 +27,7 @@ public class FileChooserWrapper {
 			}
 		};
 		fc = new TreeFileChooser(skin, listener);
-		fc.add(Gdx.files.internal(""));
+		fc.add(FileUtil.ROOT_DIRECTORY);
 		fc.add(Gdx.files.external("/"));
 		fc.setWidth(300f);
 		fc.setHeight(500f);
