@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.util;
 
 import java.io.File;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class FileUtil {
@@ -9,6 +10,9 @@ public class FileUtil {
 	 * Recursively find file in directory
 	 */
 	public static FileHandle find(FileHandle path, String name){
+		FileHandle full = Gdx.files.internal(name); 
+		if(full.exists())
+			return full;
 		if(path.name().equals(name))
 			return path;
 		else if(path.isDirectory())
