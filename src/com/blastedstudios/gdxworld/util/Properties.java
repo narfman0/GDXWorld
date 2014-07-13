@@ -9,13 +9,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class Properties {
-	private static final String DEFAULT_PROPERTIES = "gdxworld.properties";
 	private static java.util.Properties properties;
 
 	static{
 		properties = new java.util.Properties();
 		if(Gdx.files != null){
-			FileHandle handle = FileUtil.find(Gdx.files.internal("."), DEFAULT_PROPERTIES); 
+			FileHandle handle = Gdx.files.internal("data/gdxworld.properties"); 
 			if(handle != null)
 				load(handle.read());
 			else 
