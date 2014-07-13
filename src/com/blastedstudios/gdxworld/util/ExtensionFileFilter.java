@@ -16,7 +16,7 @@ public class ExtensionFileFilter implements FileFilter{
 			return true;
 		if(FileUtil.getExtension(f) == null)
 			return false;
-		return FileUtil.getExtension(f).equals(extension);
+		return FileUtil.getExtension(f).equalsIgnoreCase(extension);
 	}
 
 	public String getDescription() {
