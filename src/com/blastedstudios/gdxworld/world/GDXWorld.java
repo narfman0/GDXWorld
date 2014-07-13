@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.world;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ISerializer;
@@ -47,7 +47,7 @@ public class GDXWorld implements Serializable{
 	 * Serialize this into filesystem
 	 * @param selectedFile location to save world
 	 */
-	public void save(File selectedFile) {
+	public void save(FileHandle selectedFile) {
 		try{
 			FileUtil.getSerializer(selectedFile).save(selectedFile, this);
 		}catch(Exception e){
@@ -61,7 +61,7 @@ public class GDXWorld implements Serializable{
 		}
 	}
 	
-	public static GDXWorld load(File selectedFile) {
+	public static GDXWorld load(FileHandle selectedFile) {
 		try{
 			return (GDXWorld) FileUtil.getSerializer(selectedFile).load(selectedFile);
 		}catch(Exception e){

@@ -58,7 +58,7 @@ class GroupWindow extends AbstractWindow {
 					IFileChooserHandler handler = new IFileChooserHandler() {
 						@Override public void handle(FileHandle handle) {
 							try{
-								GDXGroupExportStruct struct = (GDXGroupExportStruct) FileUtil.getSerializer(handle.file()).load(handle.file());
+								GDXGroupExportStruct struct = (GDXGroupExportStruct) FileUtil.getSerializer(handle).load(handle);
 								screen.getLevel().getCircles().addAll(struct.circles);
 								screen.getLevel().getPolygons().addAll(struct.polygons);
 								screen.getLevel().getJoints().addAll(struct.joints);

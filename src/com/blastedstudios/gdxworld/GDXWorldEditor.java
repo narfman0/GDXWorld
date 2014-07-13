@@ -3,10 +3,10 @@ package com.blastedstudios.gdxworld;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
@@ -15,14 +15,14 @@ import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class GDXWorldEditor extends GDXGame {
-	private static File loadFile;
+	private static FileHandle loadFile;
 	private static String[] args;
 	
 	@Override public void create () {
 		if(args != null)
 			parseArgs(args);
 		pushScreen(new MainScreen(this));
-		if(loadFile != null && loadFile.canRead())
+		if(loadFile != null)
 			pushScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
 		else if(TempWorldScreen.isTempFilePresent())
 			pushScreen(new TempWorldScreen(this));
@@ -59,7 +59,7 @@ public class GDXWorldEditor extends GDXGame {
 	private void parseArgs(String[] argv){
 		for(int i=0; i<argv.length; i+=2){
 			if(argv[i].equals("-l"))
-				loadFile = new File(argv[i+1]);
+				loadFile = new FileHandle(argv[i+1]);
 			//set properties via cli
 			if(argv[i].startsWith("-P"))
 				Properties.set(argv[i].substring(2), argv[i+1]);

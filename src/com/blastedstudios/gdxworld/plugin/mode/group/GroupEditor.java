@@ -73,7 +73,7 @@ class GroupEditor extends AbstractWindow {
 						@Override public void handle(FileHandle handle) {
 							GDXGroupExportStruct struct = group.exportGroup(screen.getLevel());
 							try {
-								FileUtil.getSerializer(handle.file()).save(handle.file(), struct);
+								FileUtil.getSerializer(handle).save(handle, struct);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

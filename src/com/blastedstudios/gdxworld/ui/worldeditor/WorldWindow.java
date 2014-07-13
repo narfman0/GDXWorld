@@ -1,7 +1,5 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
-import java.io.File;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,10 +15,10 @@ import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandle
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class WorldWindow extends AbstractWindow{
-	private File lastSavedFile;
+	private FileHandle lastSavedFile;
 	
 	public WorldWindow(final GDXGame game, final Skin skin, final GDXWorld gdxWorld, 
-			File savedFile) {
+			FileHandle savedFile) {
 		super("World Editor", skin);
 		this.lastSavedFile = savedFile;
 		final Button clearButton = new TextButton("Clear", skin);
@@ -42,7 +40,7 @@ public class WorldWindow extends AbstractWindow{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				IFileChooserHandler handler = new IFileChooserHandler() {
 					@Override public void handle(FileHandle handle) {
-						gdxWorld.save(lastSavedFile = handle.file());
+						gdxWorld.save(lastSavedFile = handle);
 						saveButton.setDisabled(false);
 					}
 				};
@@ -61,7 +59,7 @@ public class WorldWindow extends AbstractWindow{
 				Gdx.app.exit();
 			}
 		});
-		saveButton.setDisabled(lastSavedFile == null || !lastSavedFile.canRead());
+		saveButton.setDisabled(lastSavedFile == null);
 		add(clearButton);
 		row();
 		add(saveButton);
@@ -76,7 +74,7 @@ public class WorldWindow extends AbstractWindow{
 		setMovable(false);
 	}
 	
-	public File getSavedFile(){
+	public FileHandle getSavedFile(){
 		return lastSavedFile;
 	}
 }

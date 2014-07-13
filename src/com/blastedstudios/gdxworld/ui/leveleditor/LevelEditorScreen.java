@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.ui.leveleditor;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -8,6 +7,7 @@ import java.util.LinkedList;
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,7 +30,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private final OrthographicCamera camera = new OrthographicCamera(28, 20);
 	private World world;
 	private final GDXWorld gdxWorld;
-	private final File selectedFile;
+	private final FileHandle selectedFile;
 	private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 	private final GDXRenderer gdxRenderer = new GDXRenderer(true, false);
 	private LevelWindow levelWindow;
@@ -43,7 +43,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private final SpriteBatch spriteBatch = new SpriteBatch();
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
-			final File selectedFile, final GDXLevel gdxLevel){
+			final FileHandle selectedFile, final GDXLevel gdxLevel){
 		super(game, "data/ui/uiskin.json");
 		this.gdxLevel = gdxLevel;
 		this.gdxWorld = gdxWorld;

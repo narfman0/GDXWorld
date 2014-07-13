@@ -1,11 +1,11 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.blastedstudios.gdxworld.util.GDXGame;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -27,7 +27,7 @@ public class LevelInformationWindow extends AbstractWindow{
 	private final GDXLevel gdxLevel;
 	
 	public LevelInformationWindow(final GDXGame game, final WorldEditorScreen worldEditorScreen, 
-			final Skin skin, final GDXWorld gdxWorld, final File selectedFile, final GDXLevel gdxLevel){
+			final Skin skin, final GDXWorld gdxWorld, final FileHandle selectedFile, final GDXLevel gdxLevel){
 		super("Level Info", skin);
 		this.gdxWorld = gdxWorld;
 		this.gdxLevel = gdxLevel;

@@ -33,9 +33,9 @@ public class FileUtil {
         return ext;
     }
 	
-	public static ISerializer getSerializer(File selectedFile){
+	public static ISerializer getSerializer(FileHandle selectedFile){
 		for(ISerializer serializer : PluginUtil.getPlugins(ISerializer.class))
-			if(serializer.getFileFilter().accept(selectedFile))
+			if(serializer.getFileFilter().accept(selectedFile.file()))
 				return serializer;
 		return null;
 	}

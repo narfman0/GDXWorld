@@ -1,11 +1,10 @@
 package com.blastedstudios.gdxworld.ui;
 
-import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 /**
@@ -82,8 +82,8 @@ public class TempWorldScreen extends AbstractScreen{
 		gdxWorld.save(getTempSaveFile());
 	}
 	
-	private static File getTempSaveFile(){
-		return new File(System.getProperty("java.io.tmpdir")+"/gdxWorld.xml");
+	private static FileHandle getTempSaveFile(){
+		return new FileHandle(System.getProperty("java.io.tmpdir")+"/gdxWorld.xml");
 	}
 
 	public static void clean() {

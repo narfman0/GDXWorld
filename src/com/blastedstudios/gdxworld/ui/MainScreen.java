@@ -28,7 +28,7 @@ public class MainScreen extends AbstractScreen{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				IFileChooserHandler handler = new IFileChooserHandler() {
 					@Override public void handle(FileHandle handle) {
-						game.pushScreen(new WorldEditorScreen(game, GDXWorld.load(handle.file()), handle.file()));
+						game.pushScreen(new WorldEditorScreen(game, GDXWorld.load(handle), handle));
 					}
 				};
 				FileChooserWrapper.createFileChooser(getStage(), skin, handler);

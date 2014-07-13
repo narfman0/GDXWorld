@@ -15,8 +15,6 @@ import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.util.PluginManagerUtil;
 
-import com.badlogic.gdx.Gdx;
-
 public class PluginUtil {
 	private static PluginManagerUtil pluginManager;
 	
@@ -36,8 +34,10 @@ public class PluginUtil {
 	public static <T extends Plugin> Collection<T> getPlugins(Class<T> theInterface){
 		List<T> plugins = new LinkedList<>(pluginManager.getPlugins(theInterface));
 		Collections.sort(plugins, new Sorter<T>());
-		for(T plugin : plugins)
-			Gdx.app.debug("PluginUtil.getPlugins", "Retrieved: " + plugin.getClass().getCanonicalName());
+//		StringBuffer buffer = new StringBuffer();
+//		for(T plugin : plugins)
+//			buffer.append(plugin.getClass().getCanonicalName() + ".class, ");
+//		Gdx.app.log("PluginUtil.getPlugins", "Retrieved: " + buffer.toString());
 		return plugins;
 	}
 	

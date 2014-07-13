@@ -1,10 +1,9 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
-import java.io.File;
-
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -25,7 +24,7 @@ public class WorldEditorScreen extends AbstractScreen {
 	private PropertiesWindow propertiesWindow;
 	private final GDXWorld gdxWorld;
 	
-	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
+	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, FileHandle lastSavedFile){
 		super(game, "data/ui/uiskin.json");
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
