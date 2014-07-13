@@ -26,7 +26,7 @@ public class WorldEditorScreen extends AbstractScreen {
 	private final GDXWorld gdxWorld;
 	
 	public WorldEditorScreen(final GDXGame game, final GDXWorld gdxWorld, File lastSavedFile){
-		super(game, "uiskin.json");
+		super(game, "data/ui/uiskin.json");
 		this.gdxWorld = gdxWorld == null ? new GDXWorld() : gdxWorld;
 		stage.addActor(worldWindow = new WorldWindow(game, skin, gdxWorld, lastSavedFile));
 		stage.addActor(propertiesWindow = new PropertiesWindow(game, skin, this.gdxWorld.getWorldProperties()));

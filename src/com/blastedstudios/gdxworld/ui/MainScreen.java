@@ -15,7 +15,7 @@ import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class MainScreen extends AbstractScreen{
 	public MainScreen(final GDXGame game){
-		super(game, "uiskin.json");
+		super(game, "data/ui/uiskin.json");
 		final Button newButton = new TextButton("New", skin);
 		final Button loadButton = new TextButton("Load", skin);
 		final Button exitButton = new TextButton("Exit", skin);

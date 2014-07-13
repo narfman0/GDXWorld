@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,16 +14,22 @@ import net.xeoh.plugins.base.Plugin;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.util.PluginManagerUtil;
-import net.xeoh.plugins.base.util.uri.ClassURI;
 
 import com.badlogic.gdx.Gdx;
 
 public class PluginUtil {
-	private static final PluginManagerUtil pluginManager;
+	private static PluginManagerUtil pluginManager;
 	
-	static{
+	/**
+	 * Initialize pluginManager for the util, should be calld firstest
+	 * @param pluginOrigin URIs representing the plugins. Suggest using
+	 * ClassURI.CLASSPATH for desktop, android will have to list all the
+	 * plugins manually since they are lame. 
+	 */
+	public static void initialize(URI... pluginOrigin){
 		PluginManager pm = PluginManagerFactory.createPluginManager();
-		pm.addPluginsFrom(ClassURI.CLASSPATH);
+		for(URI uri : pluginOrigin)
+			pm.addPluginsFrom(uri);
 		pluginManager = new PluginManagerUtil(pm);
 	}
 	

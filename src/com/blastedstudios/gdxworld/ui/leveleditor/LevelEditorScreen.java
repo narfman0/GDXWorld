@@ -44,7 +44,7 @@ public class LevelEditorScreen extends AbstractScreen {
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
 			final File selectedFile, final GDXLevel gdxLevel){
-		super(game, "uiskin.json");
+		super(game, "data/ui/uiskin.json");
 		this.gdxLevel = gdxLevel;
 		this.gdxWorld = gdxWorld;
 		this.selectedFile = selectedFile;
