@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.util;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,12 +31,8 @@ public class PluginUtil {
 	}
 	
 	public static <T extends Plugin> Collection<T> getPlugins(Class<T> theInterface){
-		List<T> plugins = new LinkedList<>(pluginManager.getPlugins(theInterface));
+		LinkedList<T> plugins = new LinkedList<>(pluginManager.getPlugins(theInterface));
 		Collections.sort(plugins, new Sorter<T>());
-//		StringBuffer buffer = new StringBuffer();
-//		for(T plugin : plugins)
-//			buffer.append(plugin.getClass().getCanonicalName() + ".class, ");
-//		Gdx.app.log("PluginUtil.getPlugins", "Retrieved: " + buffer.toString());
 		return plugins;
 	}
 	
@@ -46,9 +41,9 @@ public class PluginUtil {
 	 * not satisfied, does not include plugin
 	 */
 	public static <T extends Plugin> List<T> getPluginsSorted(Class<T> theInterface){
-		List<T> activePlugins = new ArrayList<>();
+		LinkedList<T> activePlugins = new LinkedList<>();
 		boolean changed = false;
-		List<? extends Plugin> inactivePlugins = new ArrayList<>(pluginManager.getPlugins());
+		LinkedList<? extends Plugin> inactivePlugins = new LinkedList<>(pluginManager.getPlugins());
 		for(int i=0; i<inactivePlugins.size(); i++){
 			boolean dependenciesSatisfied = true;
 			Class<? extends Plugin> clazz = inactivePlugins.get(i).getClass();
