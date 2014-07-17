@@ -28,12 +28,17 @@ public class PhysicsHelper {
 	
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, float friction, 
 			float restitution, float density, short maskBits, short categoryBits, short groupIndex){
+		return createCircle(world, radius, position, 0f, type, friction, restitution, density, maskBits, categoryBits, groupIndex);
+	}
+	
+	public static Body createCircle(World world, float radius, Vector2 position, float angle, BodyType type, float friction, 
+			float restitution, float density, short maskBits, short categoryBits, short groupIndex){
 		BodyDef def = new BodyDef();
 		def.type = type;
 		Body body = world.createBody(def);
+		body.setTransform(position, angle);
 		CircleShape shape = new CircleShape();
 		shape.setRadius(radius);
-		shape.setPosition(position);
 		FixtureDef fd = new FixtureDef();
 		fd.shape = shape;
 		fd.density = density;
