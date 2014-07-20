@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.util.Properties;
+import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
@@ -48,6 +50,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private final List<GDXGroup> groups = new ArrayList<>();
 	private List<GDXParticle> particles = new ArrayList<>();
 	private List<GDXSound> sounds = new ArrayList<>();
+	private List<GDXAnimations> animations = new LinkedList<>();
 	private Map<String,String> properties;
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	
@@ -333,6 +336,8 @@ public class GDXLevel implements Cloneable,Serializable{
 			level.getSounds().add((GDXSound) sound.clone());
 		for(GDXParticle particle : particles)
 			level.getParticles().add((GDXParticle) particle.clone());
+		for(GDXAnimations animation : animations)
+			level.getAnimations().add((GDXAnimations) animation.clone());
 		level.getProperties().putAll(properties);
 		return level;
 	}
@@ -355,6 +360,17 @@ public class GDXLevel implements Cloneable,Serializable{
 		properties.clear();
 		particles.clear();
 		tiles.clear();
+		animations.clear();
+	}
+
+	public List<GDXAnimations> getAnimations() {
+		if(animations == null)
+			animations = new LinkedList<>();
+		return animations;
+	}
+
+	public void setAnimations(List<GDXAnimations> animations) {
+		this.animations = animations;
 	}
 
 	public class CreateLevelReturnStruct{
