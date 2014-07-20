@@ -5,8 +5,9 @@ import java.util.LinkedList;
 
 public class GDXAnimation implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
+	private static int count = 0;
 	private LinkedList<AnimationStruct> animations = new LinkedList<>();
-	private String name = "", groupName = "", defaultAnimation = "";
+	private String name = "Animation-"+count++, groupName = "", defaultAnimation = "";
 	private long totalTime;
 	private boolean repeat;
 	
@@ -70,5 +71,9 @@ public class GDXAnimation implements Cloneable,Serializable{
 		clone.setRepeat(repeat);
 		clone.setTotalTime(totalTime);
 		return clone;
+	}
+	
+	@Override public String toString(){
+		return name;
 	}
 }

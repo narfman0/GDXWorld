@@ -2,17 +2,19 @@ package com.blastedstudios.gdxworld.world.animation;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GDXAnimations implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
-	private LinkedList<GDXAnimation> animations = new LinkedList<GDXAnimation>();
-	private String name = "", defaultAnimation = "";
+	private static int count = 0;
+	private List<GDXAnimation> animations = new LinkedList<GDXAnimation>();
+	private String name = "Animations-"+count++, defaultAnimation = "";
 
-	public LinkedList<GDXAnimation> getAnimations() {
+	public List<GDXAnimation> getAnimations() {
 		return animations;
 	}
 
-	public void setAnimations(LinkedList<GDXAnimation> animations) {
+	public void setAnimations(List<GDXAnimation> animations) {
 		this.animations = animations;
 	}
 	
@@ -48,5 +50,9 @@ public class GDXAnimations implements Cloneable,Serializable{
 		clone.setAnimations(animationsClone);
 		clone.setDefaultAnimation(defaultAnimation);
 		return clone;
+	}
+	
+	@Override public String toString(){
+		return "[GDXAnimations name:" + name + "]";
 	}
 }
