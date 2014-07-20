@@ -13,7 +13,7 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	/**
 	 * Name of physics object on which we execute tweaks
 	 */
-	private String name = "Name";
+	private String name = "";
 	/**
 	 * Impulse to be executed on named physics object
 	 */
@@ -26,22 +26,27 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	 * Provide torque, likely to turn a wheel or similar
 	 */
 	private float torque, angle;
-	private boolean hasPosition, hasVelocity, hasAngle;
+	private boolean hasPosition, hasVelocity, hasAngle, 
+			relativePosition = true, relativeVelocity = true, relativeAngle = true;
 	
 	public PhysicsManifestation(){}
 	
 	public PhysicsManifestation(String name, Vector2 impulse, BodyType type, float torque, 
-			boolean hasPosition, Vector2 position, boolean hasVelocity, Vector2 velocity,
-			boolean hasAngle, float angle){
+			boolean hasPosition, boolean relativePosition, Vector2 position, 
+			boolean hasVelocity, boolean relativeVelocity, Vector2 velocity,
+			boolean hasAngle, boolean relativeAngle, float angle){
 		this.name = name;
 		this.impulse = impulse;
 		this.type = type;
 		this.torque = torque;
 		this.hasPosition = hasPosition;
+		this.relativePosition = relativePosition;
 		this.position = position;
 		this.hasVelocity = hasVelocity;
+		this.relativeVelocity = relativeVelocity;
 		this.velocity = velocity;
 		this.hasAngle = hasAngle;
+		this.relativeAngle = relativeAngle;
 		this.angle = angle;
 	}
 
@@ -53,9 +58,10 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 		}
 		body.applyLinearImpulse(impulse, body.getPosition(),true);
 		if(hasVelocity)
-			body.setLinearVelocity(velocity);
+			body.setLinearVelocity(relativeVelocity ? body.getLinearVelocity().cpy().add(velocity) : velocity);
 		if(hasPosition)
-			body.setTransform(position, hasAngle ? angle : body.getAngle());
+			body.setTransform(relativePosition ? body.getPosition().cpy().add(position) : position, 
+					hasAngle ? (relativeAngle ? body.getAngle() + angle : angle) : body.getAngle());
 		body.setType(type);
 		body.applyTorque(torque,true);
 		return CompletionEnum.COMPLETED;
@@ -95,7 +101,9 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 
 	@Override public AbstractQuestManifestation clone() {
 		return new PhysicsManifestation(name, impulse, type, torque, 
-				hasPosition, position, hasVelocity, velocity, hasAngle, angle);
+				hasPosition, relativePosition, position, 
+				hasVelocity, relativeVelocity, velocity, 
+				hasAngle, relativeAngle, angle);
 	}
 
 	@Override public String toString() {
@@ -149,5 +157,29 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 
 	public void setHasAngle(boolean hasAngle) {
 		this.hasAngle = hasAngle;
+	}
+
+	public boolean isRelativePosition() {
+		return relativePosition;
+	}
+
+	public void setRelativePosition(boolean relativePosition) {
+		this.relativePosition = relativePosition;
+	}
+
+	public boolean isRelativeVelocity() {
+		return relativeVelocity;
+	}
+
+	public void setRelativeVelocity(boolean relativeVelocity) {
+		this.relativeVelocity = relativeVelocity;
+	}
+
+	public boolean isRelativeAngle() {
+		return relativeAngle;
+	}
+
+	public void setRelativeAngle(boolean relativeAngle) {
+		this.relativeAngle = relativeAngle;
 	}
 }

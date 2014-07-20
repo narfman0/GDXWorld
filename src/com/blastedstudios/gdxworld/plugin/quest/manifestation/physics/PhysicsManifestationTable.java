@@ -14,7 +14,8 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class PhysicsManifestationTable extends ManifestationTable {
 	private final TextField torqueText, nameText, angleText;
 	private final VertexTable impulseVertexTable, positionVertexTable, velocityVertexTable;
-	private final CheckBox hasPositionCheckbox, hasVelocityCheckbox, hasAngleCheckbox;
+	private final CheckBox hasPositionCheckbox, hasVelocityCheckbox, hasAngleCheckbox,
+			relativePositionCheckbox, relativeVelocityCheckbox, relativeAngleCheckbox;
 	private final List<BodyType> bodyTypeList;
 	private final PhysicsManifestation manifestation;
 	
@@ -36,6 +37,12 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		hasVelocityCheckbox.setChecked(manifestation.isHasVelocity());
 		hasAngleCheckbox = new CheckBox("Has Angle", skin);
 		hasAngleCheckbox.setChecked(manifestation.isHasAngle());
+		relativePositionCheckbox = new CheckBox("Relative", skin);
+		relativePositionCheckbox.setChecked(manifestation.isRelativePosition());
+		relativeVelocityCheckbox = new CheckBox("Relative", skin);
+		relativeVelocityCheckbox.setChecked(manifestation.isRelativeVelocity());
+		relativeAngleCheckbox = new CheckBox("Relative", skin);
+		relativeAngleCheckbox.setChecked(manifestation.isRelativeAngle());
 		positionVertexTable = new VertexTable(manifestation.getPosition(), skin);
 		velocityVertexTable = new VertexTable(manifestation.getVelocity(), skin);
 		angleText = new TextField(manifestation.getAngle()+"", skin);
@@ -52,16 +59,19 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		positionTable.add(hasPositionCheckbox);
 		positionTable.add(new Label(" Position: ", skin));
 		positionTable.add(positionVertexTable);
+		positionTable.add(relativePositionCheckbox);
 		add(positionTable).colspan(2);
 		row();
 		velocityTable.add(hasVelocityCheckbox);
 		velocityTable.add(new Label(" Velocity: ", skin));
 		velocityTable.add(velocityVertexTable);
+		velocityTable.add(relativeVelocityCheckbox);
 		add(velocityTable).colspan(2);
 		row();
 		angleTable.add(hasAngleCheckbox);
 		angleTable.add(new Label(" Angle: ", skin));
 		angleTable.add(angleText);
+		angleTable.add(relativeAngleCheckbox);
 		add(angleTable).colspan(2);
 		row();
 		add(new Label("Body Type: ", skin));
@@ -76,6 +86,9 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		manifestation.setHasAngle(hasAngleCheckbox.isChecked());
 		manifestation.setHasPosition(hasPositionCheckbox.isChecked());
 		manifestation.setHasVelocity(hasVelocityCheckbox.isChecked());
+		manifestation.setRelativeAngle(relativeAngleCheckbox.isChecked());
+		manifestation.setRelativePosition(relativePositionCheckbox.isChecked());
+		manifestation.setRelativeVelocity(relativeVelocityCheckbox.isChecked());
 		manifestation.setPosition(positionVertexTable.getVertex());
 		manifestation.setVelocity(velocityVertexTable.getVertex());
 		manifestation.setAngle(Float.parseFloat(angleText.getText()));
