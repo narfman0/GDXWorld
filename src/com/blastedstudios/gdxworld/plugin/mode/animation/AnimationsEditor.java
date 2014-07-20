@@ -1,28 +1,25 @@
 package com.blastedstudios.gdxworld.plugin.mode.animation;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.blastedstudios.gdxworld.plugin.mode.animation.AnimationStructRow.IAnimationRowListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
-import com.blastedstudios.gdxworld.world.animation.AnimationStruct;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimation;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 
@@ -33,7 +30,7 @@ public class AnimationsEditor extends AbstractWindow {
 	private final Table animationTable;
 	private final LevelEditorScreen screen;
 	private final GDXAnimations animations;
-	private LinkedList<AnimationStructRow> currentAnimationStructs;
+	private AnimationEditor animationEditor;
 
 	public AnimationsEditor(final GDXAnimations animations, final Skin skin,
 			final LevelEditorScreen screen, final TextButton button) {
@@ -48,6 +45,11 @@ public class AnimationsEditor extends AbstractWindow {
 		animationSelectBox = new SelectBox<>(skin);
 		animationSelectBox.setItems(animationArray = new Array<GDXAnimation>(animations.getAnimations().toArray(
 				new GDXAnimation[animations.getAnimations().size()])));
+		animationSelectBox.addListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				updateAnimationTable(skin);
+			}
+		});
 		final Button animationDeleteButton = new TextButton("X", skin);
 		animationDeleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -90,53 +92,12 @@ public class AnimationsEditor extends AbstractWindow {
 		setMovable(false);
 	}
 	
-	private void applyCurrentAnimationTable(){
-		final GDXAnimation selected = animationSelectBox.getSelected();
-		if(selected != null){
-			LinkedList<AnimationStruct> newStructs = new LinkedList<>();
-			for(AnimationStructRow row : currentAnimationStructs)
-				newStructs.add(row.apply());
-			selected.setAnimations(newStructs);
-			selected.setDefaultAnimation(defaultAnimation);
-			selected.setGroupName(groupName);
-			selected.setName(name);
-			selected.setRepeat(repeat);
-			selected.setTotalTime(totalTime);
-		}
-	}
-	
-	private void updateAnimationTable(final Skin skin){
-		applyCurrentAnimationTable();
-		currentAnimationStructs = null;
+	public void updateAnimationTable(final Skin skin){
+		if(animationEditor != null)
+			animationEditor.applyCurrentAnimationTable();
 		animationTable.clear();
-		
-		final GDXAnimation selected = animationSelectBox.getSelected();
-		animationTable.add(new Label("Manifestation", skin), new Label("Time", skin));
-		TextButton addButton = new TextButton("Add", skin);
-		addButton.addListener(new ClickListener() {
-			@Override public void clicked(InputEvent event, float x, float y) {
-				selected.getAnimations().add(new AnimationStruct());
-				updateAnimationTable(skin);
-			}
-		});
-		if(selected != null){
-			currentAnimationStructs = new LinkedList<>();
-			animationTable.add(addButton);
-			animationTable.row();
-			for(final Iterator<AnimationStruct> i = selected.getAnimations().iterator(); i.hasNext();){
-				final AnimationStruct struct = i.next();
-				IAnimationRowListener listener = new IAnimationRowListener() {
-					@Override public void removed(AnimationStructRow row) {
-						i.remove();
-						currentAnimationStructs.remove(row);
-						AnimationsEditor.this.updateAnimationTable(skin);
-					}
-				};
-				currentAnimationStructs.add(new AnimationStructRow(skin, listener, struct));
-				animationTable.add(currentAnimationStructs.getLast());
-				animationTable.row();
-			}
-		}
+		if(animationSelectBox.getSelected() != null)
+			animationTable.add(animationEditor = new AnimationEditor(skin, animationSelectBox.getSelected(), this));
 		pack();
 		setX(Gdx.graphics.getWidth());
 	}
@@ -188,6 +149,9 @@ public class AnimationsEditor extends AbstractWindow {
 	}
 	
 	private void apply(GDXAnimations animations){
+		if(animationEditor != null)
+			animationEditor.applyCurrentAnimationTable();
+		
 		animations.setName(nameField.getText());
 		animations.setDefaultAnimation(defaultAnimationField.getText());
 		//libGDX's array can have nulls, skipping them

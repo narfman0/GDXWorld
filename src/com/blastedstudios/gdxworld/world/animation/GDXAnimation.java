@@ -7,7 +7,7 @@ public class GDXAnimation implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int count = 0;
 	private LinkedList<AnimationStruct> animations = new LinkedList<>();
-	private String name = "Animation-"+count++, groupName = "", defaultAnimation = "";
+	private String name = "Animation-"+count++;
 	private long totalTime;
 	private boolean repeat;
 	
@@ -19,22 +19,6 @@ public class GDXAnimation implements Cloneable,Serializable{
 		this.animations = animations;
 	}
 	
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public String getDefaultAnimation() {
-		return defaultAnimation;
-	}
-
-	public void setDefaultAnimation(String defaultAnimation) {
-		this.defaultAnimation = defaultAnimation;
-	}
-
 	public long getTotalTime() {
 		return totalTime;
 	}
@@ -66,8 +50,6 @@ public class GDXAnimation implements Cloneable,Serializable{
 		for(AnimationStruct animation : animations)
 			animationsClone.add((AnimationStruct) animation.clone());
 		clone.setAnimations(animationsClone);
-		clone.setDefaultAnimation(defaultAnimation);
-		clone.setGroupName(groupName);
 		clone.setRepeat(repeat);
 		clone.setTotalTime(totalTime);
 		return clone;
