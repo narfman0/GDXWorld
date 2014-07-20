@@ -32,7 +32,7 @@ class GroupEditor extends AbstractWindow {
 	private final GDXGroup group;
 	private final LevelEditorScreen screen;
 	
-	public GroupEditor(final GDXGroup group, final Skin skin, final LevelEditorScreen screen) {
+	public GroupEditor(final GDXGroup group, final Skin skin, final LevelEditorScreen screen, final TextButton groupButton) {
 		super("Group Editor", skin);
 		this.group = group;
 		this.screen = screen;
@@ -53,6 +53,7 @@ class GroupEditor extends AbstractWindow {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				apply(group);
+				groupButton.setText(group.getName());
 				remove();
 			}
 		});

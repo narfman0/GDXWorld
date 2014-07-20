@@ -89,12 +89,12 @@ class GroupWindow extends AbstractWindow {
 
 	private Table createGroupTable(final GDXGroup group) {
 		Table groupTable = new Table();
-		Button groupButton = new TextButton(group.getName(), skin);
+		final TextButton groupButton = new TextButton(group.getName(), skin);
 		groupButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(editor != null)
 					editor.remove();
-				screen.getStage().addActor(editor = new GroupEditor(group, skin, screen));
+				screen.getStage().addActor(editor = new GroupEditor(group, skin, screen, groupButton));
 			}
 		});
 		groupTable.add(groupButton);
