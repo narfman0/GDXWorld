@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,11 +21,13 @@ public class AnimationEditor extends Table{
 	private final CheckBox repeatCheckbox;
 	private final GDXAnimation animation;
 	private final AnimationsEditor animationsEditor;
+	private final Stage stage;
 	
-	public AnimationEditor(final Skin skin, final GDXAnimation animation, final AnimationsEditor animationsEditor){
+	public AnimationEditor(final Skin skin, Stage stage, final GDXAnimation animation, final AnimationsEditor animationsEditor){
 		super(skin);
 		this.animation = animation;
 		this.animationsEditor = animationsEditor;
+		this.stage = stage;
 		nameField = new TextField(animation.getName(), skin);
 		nameField.setMessageText("<name>");
 		totalTimeField = new TextField(animation.getTotalTime()+"", skin);
@@ -64,9 +67,10 @@ public class AnimationEditor extends Table{
 				animation.getAnimations().remove(row);
 				animationStructsRows.remove(row);
 				animationsEditor.updateAnimationTable(skin);
+				row.remove();
 			}
 		};
-		AnimationStructRow row = new AnimationStructRow(skin, listener, struct);
+		AnimationStructRow row = new AnimationStructRow(skin, stage, listener, struct);
 		animationStructsRows.add(row);
 		row.addSelfToTable(this);
 	}

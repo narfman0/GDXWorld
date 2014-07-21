@@ -89,7 +89,7 @@ public class AnimationsWindow extends AbstractWindow{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(editor != null)
 					editor.remove();
-				screen.getStage().addActor(editor = new AnimationsEditor(animation, skin, screen, button));
+				screen.getStage().addActor(editor = new AnimationsEditor(animation, skin, screen.getStage(), screen, button));
 			}
 		});
 		table.add(button);

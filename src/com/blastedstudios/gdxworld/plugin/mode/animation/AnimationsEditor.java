@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,12 +31,14 @@ public class AnimationsEditor extends AbstractWindow {
 	private final Table animationTable;
 	private final LevelEditorScreen screen;
 	private final GDXAnimations animations;
+	private final Stage stage;
 	private AnimationEditor animationEditor;
 
 	public AnimationsEditor(final GDXAnimations animations, final Skin skin,
-			final LevelEditorScreen screen, final TextButton button) {
+			Stage stage, final LevelEditorScreen screen, final TextButton button) {
 		super("Animations Editor", skin);
 		this.screen = screen;
+		this.stage = stage;
 		this.animations = animations;
 		animationTable = new Table(skin);
 		nameField = new TextField(animations.getName(), skin);
@@ -97,7 +100,7 @@ public class AnimationsEditor extends AbstractWindow {
 			animationEditor.applyCurrentAnimationTable();
 		animationTable.clear();
 		if(animationSelectBox.getSelected() != null)
-			animationTable.add(animationEditor = new AnimationEditor(skin, animationSelectBox.getSelected(), this));
+			animationTable.add(animationEditor = new AnimationEditor(skin, stage, animationSelectBox.getSelected(), this));
 		pack();
 		setX(Gdx.graphics.getWidth());
 	}
