@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,10 +19,12 @@ public class AnimationEditor extends Table{
 	private final TextField nameField, totalTimeField;
 	private final CheckBox repeatCheckbox;
 	private final GDXAnimation animation;
+	private final AnimationsEditor animationsEditor;
 	
 	public AnimationEditor(final Skin skin, final GDXAnimation animation, final AnimationsEditor animationsEditor){
 		super(skin);
 		this.animation = animation;
+		this.animationsEditor = animationsEditor;
 		nameField = new TextField(animation.getName(), skin);
 		nameField.setMessageText("<name>");
 		totalTimeField = new TextField(animation.getTotalTime()+"", skin);
@@ -38,31 +39,36 @@ public class AnimationEditor extends Table{
 		row();
 		add(repeatCheckbox);
 		row();
-		add(new Label("Manifestation", skin), new Label("Time", skin));
-		TextButton addButton = new TextButton("Add", skin);
-		addButton.addListener(new ClickListener() {
-			@Override public void clicked(InputEvent event, float x, float y) {
-				animation.getAnimations().add(new AnimationStruct());
-				animationsEditor.updateAnimationTable(skin);
-			}
-		});
+		add("Manifestation"); add("Time");
 		if(animation != null){
+			TextButton addButton = new TextButton("Add", skin);
+			addButton.addListener(new ClickListener() {
+				@Override public void clicked(InputEvent event, float x, float y) {
+					animation.getAnimations().add(new AnimationStruct());
+					addAnimationRow(skin, animation.getAnimations().getLast());
+					animationsEditor.updateAnimationTable(skin);
+				}
+			});
 			add(addButton);
 			row();
 			for(final Iterator<AnimationStruct> i = animation.getAnimations().iterator(); i.hasNext();){
-				final AnimationStruct struct = i.next();
-				IAnimationRowListener listener = new IAnimationRowListener() {
-					@Override public void removed(AnimationStructRow row) {
-						i.remove();
-						animationStructsRows.remove(row);
-						animationsEditor.updateAnimationTable(skin);
-					}
-				};
-				animationStructsRows.add(new AnimationStructRow(skin, listener, struct));
-				add(animationStructsRows.getLast());
+				addAnimationRow(skin, i.next());
 				row();
 			}
 		}
+	}
+	
+	private void addAnimationRow(final Skin skin, AnimationStruct struct){
+		IAnimationRowListener listener = new IAnimationRowListener() {
+			@Override public void removed(AnimationStructRow row) {
+				animation.getAnimations().remove(row);
+				animationStructsRows.remove(row);
+				animationsEditor.updateAnimationTable(skin);
+			}
+		};
+		AnimationStructRow row = new AnimationStructRow(skin, listener, struct);
+		animationStructsRows.add(row);
+		add(row);
 	}
 
 	public GDXAnimation applyCurrentAnimationTable(){

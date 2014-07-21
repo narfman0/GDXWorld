@@ -50,7 +50,7 @@ public class AnimationsEditor extends AbstractWindow {
 				updateAnimationTable(skin);
 			}
 		});
-		final Button animationDeleteButton = new TextButton("X", skin);
+		final Button animationDeleteButton = new TextButton("Delete", skin);
 		animationDeleteButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(animationSelectBox.getSelected() != null){
