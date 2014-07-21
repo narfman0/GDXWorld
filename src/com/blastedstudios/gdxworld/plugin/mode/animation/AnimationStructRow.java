@@ -9,32 +9,35 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.world.animation.AnimationStruct;
 
-public class AnimationStructRow extends Table {
+public class AnimationStructRow {
 	private final AnimationStruct struct;
 	private final TextField timeField;
+	private final TextButton editButton, removeButton;
 	
 	public AnimationStructRow(final Skin skin, final IAnimationRowListener listener, AnimationStruct struct){
-		super(skin);
 		this.struct = struct;
 		timeField = new TextField(struct.time+"", skin);
 		timeField.setMessageText("<time>");
-		add(struct.manifestation.getClass().getSimpleName());
-		add(timeField);
-		TextButton removeButton = new TextButton("X", skin);
+		removeButton = new TextButton("X", skin);
 		removeButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				listener.removed(AnimationStructRow.this);
 			}
 		});
-		add(removeButton);
-		TextButton editButton = new TextButton("Edit", skin);
+		editButton = new TextButton("Edit", skin);
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.log("AnimationsEditor.updateAnimationTable::edit handler", "Add handling here");
 				//TODO add edit window here
 			}
 		});
-		add(editButton);
+	}
+	
+	public void addSelfToTable(Table table){
+		table.add(struct.manifestation.getClass().getSimpleName());
+		table.add(timeField);
+		table.add(removeButton);
+		table.add(editButton);
 	}
 	
 	/**

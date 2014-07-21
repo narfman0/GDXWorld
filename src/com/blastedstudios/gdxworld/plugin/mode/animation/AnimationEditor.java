@@ -41,7 +41,7 @@ public class AnimationEditor extends Table{
 		row();
 		add("Manifestation"); add("Time");
 		if(animation != null){
-			TextButton addButton = new TextButton("Add", skin);
+			TextButton addButton = new TextButton("Add Row", skin);
 			addButton.addListener(new ClickListener() {
 				@Override public void clicked(InputEvent event, float x, float y) {
 					animation.getAnimations().add(new AnimationStruct());
@@ -49,7 +49,7 @@ public class AnimationEditor extends Table{
 					animationsEditor.updateAnimationTable(skin);
 				}
 			});
-			add(addButton);
+			add(addButton).colspan(2);
 			row();
 			for(final Iterator<AnimationStruct> i = animation.getAnimations().iterator(); i.hasNext();){
 				addAnimationRow(skin, i.next());
@@ -68,7 +68,7 @@ public class AnimationEditor extends Table{
 		};
 		AnimationStructRow row = new AnimationStructRow(skin, listener, struct);
 		animationStructsRows.add(row);
-		add(row);
+		row.addSelfToTable(this);
 	}
 
 	public GDXAnimation applyCurrentAnimationTable(){
