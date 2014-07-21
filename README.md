@@ -221,6 +221,21 @@ import button and navigate to the file to load in the same group. Note that the
 names are not changed, so you may not currently load multiples of the same body
 without odd repercussions since the editor assumes unique names.
 
+### Animation
+Animation mode works in concert with group and quest modes to bring easy
+modification of groups of items. The approach at a high level is similar to 
+flash, using keyframes to denote points of action, though lower level
+this is simply timed in ms. As the time reaches the next point of
+manifestation, it will trigger, and upon reaching the end of the animation,
+will loop (if repeatable) or stop and go to the default animation.
+
+PhysicsManifestation will be the common case here, but any manifestation could
+be used. One may prefer to use 'hard' position/angle setting or the 'soft'
+but more error-prone application of physics methods like velocity, impulse,
+torque, and the like. Other manifestations may work reasonably well, like joint
+remove or various motor/joint manifestations. To this end, one may construct
+a complicated beast to be exported using one of the built in serializers.
+
 ### Chain
 Chain mode can string together multiple shapes connected by revolute joints to
 form long lines of dynamic objects. One may build bridges, tank tracks, ropes,
