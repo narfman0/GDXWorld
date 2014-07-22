@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.blastedstudios.gdxworld.plugin.mode.animation.live.SelectboxGDXAnimationStruct;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
@@ -26,8 +27,8 @@ import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 
 public class AnimationsEditor extends AbstractWindow {
 	private final TextField nameField, defaultAnimationField;
-	private final SelectBox<GDXAnimation> animationSelectBox;
-	private final Array<GDXAnimation> animationArray;
+	private final SelectBox<SelectboxGDXAnimationStruct> animationSelectBox;
+	private final Array<SelectboxGDXAnimationStruct> animationArray;
 	private final Table animationTable;
 	private final LevelEditorScreen screen;
 	private final GDXAnimations animations;
@@ -46,8 +47,7 @@ public class AnimationsEditor extends AbstractWindow {
 		defaultAnimationField = new TextField(animations.getDefaultAnimation(), skin);
 		defaultAnimationField.setMessageText("<default animation>");
 		animationSelectBox = new SelectBox<>(skin);
-		animationSelectBox.setItems(animationArray = new Array<GDXAnimation>(animations.getAnimations().toArray(
-				new GDXAnimation[animations.getAnimations().size()])));
+		animationSelectBox.setItems(animationArray = SelectboxGDXAnimationStruct.create(animations.getAnimations()));
 		animationSelectBox.addListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				updateAnimationTable(skin);
@@ -66,7 +66,7 @@ public class AnimationsEditor extends AbstractWindow {
 		final Button animationAddButton = new TextButton("Add", skin);
 		animationAddButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				animationArray.add(new GDXAnimation());
+				animationArray.add(new SelectboxGDXAnimationStruct(new GDXAnimation()));
 				animationSelectBox.setItems(animationArray);
 				//if first added, make sure to update table
 				if(animationArray.size == 1){
@@ -100,7 +100,8 @@ public class AnimationsEditor extends AbstractWindow {
 			animationEditor.applyCurrentAnimationTable();
 		animationTable.clear();
 		if(animationSelectBox.getSelected() != null)
-			animationTable.add(animationEditor = new AnimationEditor(skin, stage, animationSelectBox.getSelected(), this));
+			animationTable.add(animationEditor = new AnimationEditor(skin, 
+					stage, animationSelectBox.getSelected().animation, this));
 		pack();
 		setX(Gdx.graphics.getWidth());
 	}
@@ -159,9 +160,9 @@ public class AnimationsEditor extends AbstractWindow {
 		animations.setDefaultAnimation(defaultAnimationField.getText());
 		//libGDX's array can have nulls, skipping them
 		LinkedList<GDXAnimation> animationList = new LinkedList<>();
-		for(GDXAnimation animation : animationSelectBox.getItems())
-			if(animation != null)
-				animationList.add(animation);
+		for(SelectboxGDXAnimationStruct animationStruct : animationSelectBox.getItems())
+			if(animationStruct != null)
+				animationList.add(animationStruct.animation);
 		animations.setAnimations(animationList);
 	}
 }

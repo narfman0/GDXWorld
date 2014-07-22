@@ -13,6 +13,7 @@ import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 public class LiveMode extends AbstractMode {
 	private Body lastTouchPolygon;
 	private Vector2 lastTouchCoordinates, lastTouchPolygonLocalCoordinates;
+	private LiveWindow window;
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
@@ -47,15 +48,19 @@ public class LiveMode extends AbstractMode {
 	}
 
 	@Override public boolean contains(float x, float y) {
-		return false;
+		return window.contains(x, y);
 	}
 
 	@Override public void clean() {
 		screen.setLive(false);
+		if(window != null)
+			window.remove();
+		window = null;
 	}
 
 	@Override public void start() {
 		super.start();
+		screen.getStage().addActor(window = new LiveWindow(screen.getSkin()));
 		screen.setLive(true);
 	}
 

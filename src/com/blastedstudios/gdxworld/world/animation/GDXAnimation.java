@@ -56,6 +56,6 @@ public class GDXAnimation implements Cloneable,Serializable{
 	}
 	
 	@Override public String toString(){
-		return name;
+		return "[GDXAnimation name: " + name + " totalTime: " + totalTime + "]";
 	}
 }

@@ -18,7 +18,7 @@ import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 
-public class AnimationsWindow extends AbstractWindow{
+class AnimationsWindow extends AbstractWindow{
 	private final Skin skin;
 	private final Table table;
 	private final LevelEditorScreen screen;

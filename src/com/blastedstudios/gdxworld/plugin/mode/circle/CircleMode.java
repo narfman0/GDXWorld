@@ -112,4 +112,11 @@ public class CircleMode extends AbstractMode {
 	@Override public int getLoadPriority() {
 		return 10;
 	}
+	
+	@Override public Body getPhysicsBody(String name){
+		for(Entry<GDXCircle,Body> entry : bodies.entrySet())
+			if(entry.getKey().getName().equals(name))
+				return entry.getValue();
+		return null;
+	}
 }
