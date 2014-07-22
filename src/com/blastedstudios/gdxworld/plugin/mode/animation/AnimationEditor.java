@@ -37,7 +37,7 @@ public class AnimationEditor extends Table{
 		add("Name: ");
 		add(nameField);
 		row();
-		add("Time: ");
+		add("Time (s): ");
 		add(totalTimeField);
 		row();
 		add(repeatCheckbox);

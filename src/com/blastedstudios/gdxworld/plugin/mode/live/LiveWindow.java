@@ -21,7 +21,7 @@ class LiveWindow extends AbstractWindow {
 		table = new Table(skin);
 		Collection<ILiveOptionProvider> providers = PluginUtil.getPlugins(ILiveOptionProvider.class);
 		for(ILiveOptionProvider provider : providers)
-			tableMap.put(provider, provider.createTable(skin, this));
+			tableMap.put(provider, provider.getTable(skin, this));
 		
 		final SelectBox<LiveOptionSelectboxStruct> liveOptionsSelectbox = new SelectBox<>(skin);
 		liveOptionsSelectbox.setItems(LiveOptionSelectboxStruct.create(new ArrayList<>(providers)));

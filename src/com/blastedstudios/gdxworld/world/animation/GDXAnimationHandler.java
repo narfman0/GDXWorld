@@ -39,7 +39,7 @@ public class GDXAnimationHandler {
 			currentTime += dt;
 			if(currentAnimation != null){
 				//since this is sorted, first will always be next to go
-				while(currentAnimations.getFirst().time <= currentTime){
+				while(!currentAnimations.isEmpty() && currentAnimations.getFirst().time <= currentTime){
 					AnimationStruct current = currentAnimations.poll();
 					current.manifestation.execute();
 				}

@@ -55,8 +55,8 @@ public abstract class AbstractMode implements IMode{
 		return false;
 	}
 	
-	public void start(){};
-	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){};
+	public void start(){}
+	public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){}
 	public void clean() {}
 	public Body getPhysicsBody(String name){return null;}
 	public Joint getPhysicsJoint(String name){return null;}

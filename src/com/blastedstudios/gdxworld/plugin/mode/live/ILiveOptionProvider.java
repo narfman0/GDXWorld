@@ -9,5 +9,5 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 public interface ILiveOptionProvider extends Plugin{
-	Table createTable(Skin skin, AbstractWindow window);
+	Table getTable(Skin skin, AbstractWindow window);
 }

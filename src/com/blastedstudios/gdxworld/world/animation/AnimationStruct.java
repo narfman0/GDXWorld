@@ -22,4 +22,8 @@ public class AnimationStruct implements Cloneable,Serializable{
 		clone.time = time;
 		return clone;
 	}
+	
+	@Override public String toString(){
+		return "[AnimationStruct time: " + time + " manifestation: " + manifestation.toString() + "]";
+	}
 }
