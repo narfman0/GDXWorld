@@ -31,7 +31,6 @@ public class GDXAnimationHandler {
 		currentTime = offset;
 		for(AnimationStruct struct : currentAnimations)
 			struct.manifestation.setExecutor(executor);
-		active = true;
 	}
 
 	public void render(float dt){

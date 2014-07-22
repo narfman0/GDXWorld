@@ -30,13 +30,12 @@ class LiveWindow extends AbstractWindow {
 				update(skin, tableMap.get(liveOptionsSelectbox.getSelected().object));
 			}
 		});
-		if(!providers.isEmpty())
-			liveOptionsSelectbox.setSelectedIndex(0);
 		add(liveOptionsSelectbox);
 		row();
 		add(table);
 		setMovable(false);
-		update(skin, new Table());
+		if(!providers.isEmpty())
+			update(skin, tableMap.get(liveOptionsSelectbox.getSelected().object));
 	}
 	
 	private void update(Skin skin, Table optionTable){
