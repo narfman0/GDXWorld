@@ -65,7 +65,7 @@ public class AnimationStructRow {
 	 * Apply current ui and grab struct
 	 */
 	public AnimationStruct apply(){
-		struct.time = Long.parseLong(timeField.getText());
+		struct.time = Float.parseFloat(timeField.getText());
 		return struct;
 	}
 	

@@ -8,10 +8,10 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class AnimationStruct implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	public AbstractQuestManifestation manifestation = new PhysicsManifestation();
-	public long time;
+	public float time;
 	
 	public AnimationStruct(){}
-	public AnimationStruct(AbstractQuestManifestation manifestation, long time){
+	public AnimationStruct(AbstractQuestManifestation manifestation, float time){
 		this.manifestation = manifestation;
 		this.time = time;
 	}
