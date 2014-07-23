@@ -67,12 +67,25 @@ public class AnimationEditor extends Table{
 				animation.getAnimations().remove(row);
 				animationStructsRows.remove(row);
 				animationsEditor.updateAnimationTable(skin);
-				AnimationStructRow.remove();
+				row.remove();
+			}
+			@Override public void createEditWindow() {
+				removeManifestationEditorWindows();
 			}
 		};
 		AnimationStructRow row = new AnimationStructRow(skin, stage, listener, struct);
 		animationStructsRows.add(row);
 		row.addSelfToTable(this);
+	}
+
+	@Override public boolean remove(){
+		return super.remove() && removeManifestationEditorWindows();
+	}
+	
+	public boolean removeManifestationEditorWindows(){
+		for(AnimationStructRow row : animationStructsRows)
+			row.remove();
+		return true;
 	}
 
 	public GDXAnimation applyCurrentAnimationTable(){

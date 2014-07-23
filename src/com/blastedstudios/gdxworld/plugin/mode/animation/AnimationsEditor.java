@@ -151,6 +151,10 @@ public class AnimationsEditor extends AbstractWindow {
 		controlsTable.add(exportButton);
 		return controlsTable;
 	}
+
+	@Override public boolean remove(){
+		return super.remove() && (animationEditor == null || animationEditor.remove());
+	}
 	
 	private void apply(GDXAnimations animations){
 		if(animationEditor != null)

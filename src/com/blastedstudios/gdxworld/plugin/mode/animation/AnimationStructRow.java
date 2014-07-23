@@ -17,7 +17,7 @@ public class AnimationStructRow {
 	private final TextButton editButton, removeButton;
 	private final Skin skin;
 	private final Stage stage;
-	private static AnimationManifestationWindow window;
+	private AnimationManifestationWindow window;
 	
 	public AnimationStructRow(final Skin skin, Stage stage, final IAnimationRowListener listener, AnimationStruct struct){
 		this.skin = skin;
@@ -34,6 +34,7 @@ public class AnimationStructRow {
 		editButton = new TextButton("Edit", skin);
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				listener.createEditWindow();
 				createEditWindow();
 			}
 		});
@@ -73,10 +74,11 @@ public class AnimationStructRow {
 	}
 
 	interface IAnimationRowListener{
+		void createEditWindow();
 		void removed(AnimationStructRow row);
 	}
 	
-	static boolean remove(){
+	public boolean remove(){
 		return window == null || window.remove();
 	}
 }

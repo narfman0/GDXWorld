@@ -97,7 +97,6 @@ class AnimationsWindow extends AbstractWindow{
 	}
 
 	@Override public boolean remove(){
-		AnimationStructRow.remove();
 		return super.remove() && (editor == null || editor.remove());
 	}
 
