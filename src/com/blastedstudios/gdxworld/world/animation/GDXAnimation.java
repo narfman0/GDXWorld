@@ -8,7 +8,7 @@ public class GDXAnimation implements Cloneable,Serializable{
 	private static int count = 0;
 	private LinkedList<AnimationStruct> animations = new LinkedList<>();
 	private String name = "Animation-"+count++;
-	private long totalTime;
+	private float totalTime;
 	private boolean repeat;
 	
 	public LinkedList<AnimationStruct> getAnimations() {
@@ -19,11 +19,11 @@ public class GDXAnimation implements Cloneable,Serializable{
 		this.animations = animations;
 	}
 	
-	public long getTotalTime() {
+	public float getTotalTime() {
 		return totalTime;
 	}
 
-	public void setTotalTime(long totalTime) {
+	public void setTotalTime(float totalTime) {
 		this.totalTime = totalTime;
 	}
 

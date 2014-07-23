@@ -83,7 +83,7 @@ public class AnimationEditor extends Table{
 			animation.setAnimations(newStructs);
 			animation.setName(nameField.getText());
 			animation.setRepeat(repeatCheckbox.isChecked());
-			animation.setTotalTime(Long.parseLong(totalTimeField.getText()));
+			animation.setTotalTime(Float.parseFloat(totalTimeField.getText()));
 		}
 		return animation;
 	}

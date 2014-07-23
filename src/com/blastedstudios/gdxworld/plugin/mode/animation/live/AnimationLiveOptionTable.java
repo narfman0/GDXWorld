@@ -42,8 +42,10 @@ public class AnimationLiveOptionTable extends Table{
 				animationSelectbox.getSelected().handler.setActive(activeCheckbox.isChecked());
 			}
 		});
-		add(activeCheckbox);
-		row();
+		if(!handlers.isEmpty()){//if there arent any animations, dont add active checkbox
+			add(activeCheckbox);
+			row();
+		}
 		add(animationsTable);
 		if(!animations.isEmpty())
 			handleGDXAnimationHandlerSelected(skin, animationSelectbox.getSelected().handler, window);
