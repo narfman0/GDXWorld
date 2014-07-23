@@ -67,7 +67,7 @@ public class AnimationEditor extends Table{
 				animation.getAnimations().remove(row);
 				animationStructsRows.remove(row);
 				animationsEditor.updateAnimationTable(skin);
-				row.remove();
+				AnimationStructRow.remove();
 			}
 		};
 		AnimationStructRow row = new AnimationStructRow(skin, stage, listener, struct);
