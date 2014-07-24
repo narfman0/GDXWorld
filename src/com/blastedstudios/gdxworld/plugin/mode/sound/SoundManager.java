@@ -13,9 +13,9 @@ public class SoundManager {
 	
 	public static Sound getSound(String name){
 		if(!MAP.containsKey(name)){
-			FileHandle file = FileUtil.find(FileUtil.ROOT_DIRECTORY, name);
+			FileHandle file = FileUtil.find(name);
 			if(file == null)
-				file = FileUtil.find(FileUtil.ROOT_DIRECTORY, name + ".mp3");
+				file = FileUtil.find(name + ".mp3");
 			if(file != null){
 				try{
 					MAP.put(name, Gdx.audio.newSound(file));

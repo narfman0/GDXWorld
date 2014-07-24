@@ -8,6 +8,11 @@ import com.badlogic.gdx.files.FileHandle;
 public class FileUtil {
 	public static final FileHandle ROOT_DIRECTORY = Gdx.files.internal("").isDirectory() ? 
 			Gdx.files.internal("") : Gdx.files.internal(".");
+	
+	public static FileHandle find(String name){
+		return find(ROOT_DIRECTORY, name);
+	}
+	
 	/**
 	 * Recursively find file in directory
 	 */
