@@ -1,15 +1,23 @@
 package com.blastedstudios.gdxworld.plugin.mode.animation;
 
+import java.util.LinkedList;
+
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.plugin.mode.animation.AnimationManifestationWindow.IRemovedListener;
+import com.blastedstudios.gdxworld.plugin.mode.quest.IQuestComponent.IQuestComponentManifestation;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.animation.AnimationStruct;
+import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
 public class AnimationStructRow {
 	private final AnimationStruct struct;
@@ -55,7 +63,26 @@ public class AnimationStructRow {
 	}
 
 	public void addSelfToTable(Table table){
-		table.add(struct.manifestation.getClass().getSimpleName());
+		LinkedList<AbstractQuestManifestation> manifestations = new LinkedList<AbstractQuestManifestation>();
+		int selected = 0, i = 0;
+		for(IQuestComponentManifestation manifestation : PluginUtil.getPlugins(IQuestComponentManifestation.class)){
+			AbstractQuestManifestation toAdd = (AbstractQuestManifestation) manifestation.getDefault().clone();
+			if(manifestation.getDefault().getClass() == struct.manifestation.getClass()){
+				toAdd = struct.manifestation;
+				selected = i;
+			}
+			manifestations.add(toAdd);
+			i++;
+		}
+		final SelectBox<AnimationManifestationStruct> manifestationSelectBox = new SelectBox<>(skin);
+		manifestationSelectBox.setItems(AnimationManifestationStruct.create(manifestations));
+		manifestationSelectBox.setSelectedIndex(selected);
+		manifestationSelectBox.addListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				struct.manifestation = manifestationSelectBox.getSelected().manifestation;
+			}
+		});
+		table.add(manifestationSelectBox);
 		table.add(timeField);
 		table.add(removeButton);
 		table.add(editButton);
