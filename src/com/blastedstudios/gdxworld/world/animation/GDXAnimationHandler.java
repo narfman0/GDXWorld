@@ -67,4 +67,8 @@ public class GDXAnimationHandler {
 	public GDXAnimation getCurrentAnimation() {
 		return currentAnimation;
 	}
+
+	public float getCurrentTime() {
+		return currentTime;
+	}
 }
