@@ -79,7 +79,14 @@ public class PhysicsManifestationTable extends ManifestationTable {
 	}
 
 	@Override public AbstractQuestManifestation apply() {
-		manifestation.setTorque(Float.parseFloat(torqueText.getText()));
+		float torque = 0f, angle = 0f;
+		try{
+			torque = Float.parseFloat(torqueText.getText());
+			angle = Float.parseFloat(angleText.getText());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		manifestation.setTorque(torque);
 		manifestation.setName(nameText.getText());
 		manifestation.setImpulse(impulseVertexTable.getVertex());
 		manifestation.setType(bodyTypeList.getSelected());
@@ -91,7 +98,7 @@ public class PhysicsManifestationTable extends ManifestationTable {
 		manifestation.setRelativeVelocity(relativeVelocityCheckbox.isChecked());
 		manifestation.setPosition(positionVertexTable.getVertex());
 		manifestation.setVelocity(velocityVertexTable.getVertex());
-		manifestation.setAngle(Float.parseFloat(angleText.getText()));
+		manifestation.setAngle(angle);
 		return manifestation;
 	}
 }
