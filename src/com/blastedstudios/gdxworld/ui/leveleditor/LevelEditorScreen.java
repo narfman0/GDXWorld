@@ -70,7 +70,7 @@ public class LevelEditorScreen extends AbstractScreen {
 		super.render(delta);
 		camera.update();
 		if(live)
-			world.step(delta, 4, 4);
+			world.step(delta * Properties.getFloat("level.world.step.scalar", 1f), 4, 4);
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		gdxRenderer.render(spriteBatch, gdxLevel, camera, null);
