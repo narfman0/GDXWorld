@@ -15,11 +15,9 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -87,22 +85,13 @@ public class GDXRenderer {
 			float depth = Math.max(background.getDepth(), .001f);
 			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());
 			Vector2 xy = toParallax(depth, background.getCoordinates(), camera).sub(offset);
-			//Need the following boolean in case of failed pushScissors. This may
-			//happen if we zoom far out to the point where the scissord area is 0
-			boolean scissorCheck = background.isScissor();
-			if(scissorCheck){
-				Rectangle scissors = new Rectangle();
-				Rectangle clipBounds = new Rectangle(background.getScissorPosition().x, background.getScissorPosition().y,
-						background.getScissorDimensions().x, background.getScissorDimensions().y);
-				ScissorStack.calculateScissors(camera, camera.combined, clipBounds, scissors);
-				scissorCheck = ScissorStack.pushScissors(scissors);
-			}
-			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
-					texture.getHeight()*background.getScale());
-			if(scissorCheck){
-				batch.flush();
-				ScissorStack.popScissors();
-			}
+			Sprite sprite = new Sprite(texture);
+			sprite.setPosition(xy.x, xy.y);
+			sprite.setSize(texture.getWidth()*background.getScale(), texture.getHeight()*background.getScale());
+			if(!background.isScissor() || 
+					(xy.x < background.getScissorUpperRight().x && xy.y < background.getScissorUpperRight().y &&
+					xy.x > background.getScissorLowerLeft().x && xy.y > background.getScissorLowerLeft().y))
+				sprite.draw(batch);
 		}
 	}
 	
@@ -110,11 +99,19 @@ public class GDXRenderer {
 	 * Convert from world coordinates to parallax screen coordinates
 	 */
 	public static Vector2 toParallax(float depth, Vector2 world, Camera camera){
-		return world.cpy().add(new Vector2(camera.position.x, camera.position.y).scl(1f-(1f/depth)));
+		return toParallax(depth, world, camera.position.x, camera.position.y);
+	}
+	
+	public static Vector2 toParallax(float depth, Vector2 world, float camx, float camy){
+		return world.cpy().add(new Vector2(camx, camy).scl(1f-(1f/depth)));
 	}
 	
 	public static Vector2 fromParallax(float depth, Vector2 parallax, Camera camera){
-		return new Vector2(-camera.position.x, -camera.position.y).scl(1f-(1f/depth)).add(parallax);
+		return fromParallax(depth, parallax, camera.position.x, camera.position.y);
+	}
+	
+	public static Vector2 fromParallax(float depth, Vector2 parallax, float camx, float camy){
+		return new Vector2(-camx, -camy).scl(1f-(1f/depth)).add(parallax);
 	}
 
 	public boolean isDrawBackground() {
