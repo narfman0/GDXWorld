@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -94,7 +95,9 @@ public class GDXRenderer {
 				Rectangle scissors = new Rectangle();
 				Rectangle clipBounds = new Rectangle(background.getScissorPosition().x, background.getScissorPosition().y,
 						background.getScissorDimensions().x, background.getScissorDimensions().y);
-				ScissorStack.calculateScissors(camera, camera.combined, clipBounds, scissors);
+				Matrix4 batchTransform = new Matrix4();
+				batchTransform.translate(camera.position.x/background.getDepth(), camera.position.y/background.getDepth(), 0);
+				ScissorStack.calculateScissors(camera, batchTransform, clipBounds, scissors);
 				scissorCheck = ScissorStack.pushScissors(scissors);
 			}
 			batch.draw(texture, xy.x, xy.y, texture.getWidth()*background.getScale(), 
