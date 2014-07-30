@@ -93,8 +93,10 @@ public class GDXRenderer {
 			boolean scissorCheck = background.isScissor();
 			if(scissorCheck){
 				Rectangle scissors = new Rectangle();
-				Rectangle clipBounds = new Rectangle(background.getScissorPosition().x, background.getScissorPosition().y,
-						background.getScissorDimensions().x, background.getScissorDimensions().y);
+				Vector2 dimensions = new Vector2(background.getScissorUpperRight().x - background.getScissorLowerLeft().x,
+						background.getScissorUpperRight().y - background.getScissorLowerLeft().y);
+				Rectangle clipBounds = new Rectangle(background.getScissorLowerLeft().x, background.getScissorLowerLeft().y,
+						dimensions.x, dimensions.y);
 				Matrix4 batchTransform = new Matrix4();
 				batchTransform.translate(camera.position.x/background.getDepth(), camera.position.y/background.getDepth(), 0);
 				ScissorStack.calculateScissors(camera, batchTransform, clipBounds, scissors);
@@ -113,11 +115,19 @@ public class GDXRenderer {
 	 * Convert from world coordinates to parallax screen coordinates
 	 */
 	public static Vector2 toParallax(float depth, Vector2 world, Camera camera){
-		return world.cpy().add(new Vector2(camera.position.x, camera.position.y).scl(1f-(1f/depth)));
+		return toParallax(depth, world, camera.position.x, camera.position.y);
+	}
+	
+	public static Vector2 toParallax(float depth, Vector2 world, float camx, float camy){
+		return world.cpy().add(new Vector2(camx, camy).scl(1f-(1f/depth)));
 	}
 	
 	public static Vector2 fromParallax(float depth, Vector2 parallax, Camera camera){
-		return new Vector2(-camera.position.x, -camera.position.y).scl(1f-(1f/depth)).add(parallax);
+		return fromParallax(depth, parallax, camera.position.x, camera.position.y);
+	}
+	
+	public static Vector2 fromParallax(float depth, Vector2 parallax, float camx, float camy){
+		return new Vector2(-camx, -camy).scl(1f-(1f/depth)).add(parallax);
 	}
 
 	public boolean isDrawBackground() {
