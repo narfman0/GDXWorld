@@ -38,6 +38,13 @@ public class GDXWorld implements Serializable{
 	public boolean contains(GDXLevel level) {
 		return levels.contains(level);
 	}
+	
+	public GDXLevel getLevel(String name){
+		for(GDXLevel level : levels)
+			if(level.getName().equals(name))
+				return level;
+		return null;
+	}
 
 	public List<GDXLevel> getLevels(){
 		return levels;

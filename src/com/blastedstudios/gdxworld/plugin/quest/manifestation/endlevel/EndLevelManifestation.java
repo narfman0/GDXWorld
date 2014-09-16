@@ -6,18 +6,19 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 
 public class EndLevelManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
-	public static EndLevelManifestation DEFAULT = new EndLevelManifestation(true);
+	public static EndLevelManifestation DEFAULT = new EndLevelManifestation(true, "");
 	private boolean success;
+	private String nextLevel = "";
 	
 	public EndLevelManifestation(){}
 	
-	public EndLevelManifestation(boolean success){
+	public EndLevelManifestation(boolean success, String nextLevel){
 		this.success = success;
 	}
 	
 	@Override public CompletionEnum execute() {
 		for(IEndLevelHandler handler : PluginUtil.getPlugins(IEndLevelHandler.class))
-			if(handler.endLevel(success) == CompletionEnum.COMPLETED)
+			if(handler.endLevel(success, nextLevel) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;
 		return CompletionEnum.EXECUTING;
 	}
@@ -31,10 +32,18 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 	}
 
 	@Override public AbstractQuestManifestation clone() {
-		return new EndLevelManifestation(success);
+		return new EndLevelManifestation(success, nextLevel);
 	}
 
 	@Override public String toString() {
 		return "[EndLevelManifestation: success:" + success+"]";
+	}
+
+	public String getNextLevel() {
+		return nextLevel == null ? nextLevel = "" : nextLevel;
+	}
+
+	public void setNextLevel(String nextLevel) {
+		this.nextLevel = nextLevel;
 	}
 }

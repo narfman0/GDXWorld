@@ -7,5 +7,5 @@ import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 @PluginImplementation
 public interface IEndLevelHandler extends Plugin{
-	CompletionEnum endLevel(boolean success);
+	CompletionEnum endLevel(boolean success, String nextLevel);
 }
