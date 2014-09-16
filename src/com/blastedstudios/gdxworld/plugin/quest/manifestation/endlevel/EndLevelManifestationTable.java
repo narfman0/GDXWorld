@@ -15,8 +15,10 @@ public class EndLevelManifestationTable extends ManifestationTable {
 		successBox = new CheckBox("Success", skin);
 		successBox.setChecked(manifestation.isSuccess());
 		nextLevelTextField = new TextField(manifestation.getNextLevel(), skin);
+		nextLevelTextField.setMessageText("<next level>");
 		add(successBox);
 		row();
+		add("Next Level ");
 		add(nextLevelTextField);
 	}
 

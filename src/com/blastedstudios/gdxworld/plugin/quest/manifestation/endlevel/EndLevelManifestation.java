@@ -14,6 +14,7 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 	
 	public EndLevelManifestation(boolean success, String nextLevel){
 		this.success = success;
+		this.nextLevel = nextLevel;
 	}
 	
 	@Override public CompletionEnum execute() {
