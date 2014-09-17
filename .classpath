@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/gdx-box2d.jar" sourcepath="lib/gdx-box2d-sources.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-box2d-natives.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="lib/gdx-openal.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-tools.jar" sourcepath="lib/gdx-tools-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jspf.core-1.0.2.jar"/>
