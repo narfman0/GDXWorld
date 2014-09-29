@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -44,14 +45,14 @@ public class GDXRenderer {
 		this.drawShapes = drawShapes;
 	}
 	
-	public void render(Batch batch, GDXLevel level, OrthographicCamera camera, 
+	public void render(AssetManagerWrapper assetManager, Batch batch, GDXLevel level, OrthographicCamera camera, 
 			Iterable<Entry<GDXShape,Body>> bodies){
 		if(drawBackground)
 			for(GDXBackground background : level.getBackgrounds())
-				drawBackground(camera, background, batch);
+				drawBackground(assetManager, camera, background, batch);
 		if(drawShapes)
 			for(Entry<GDXShape,Body> entry : bodies)
-				drawShape(camera, entry.getKey(), entry.getValue(), batch);
+				drawShape(assetManager, camera, entry.getKey(), entry.getValue(), batch);
 	}
 	
 	public void drawTile(OrthographicCamera camera, GDXTile tile, Batch batch) {
@@ -63,13 +64,17 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
-		drawShape(camera, shape, body, batch, 1f);
+	public void drawShape(AssetManagerWrapper assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
+		drawShape(assetManager, camera, shape, body, batch, 1f);
 	}
 	
-	public void drawShape(OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
-		Texture texture = getTexture(shape.getResource());
-		if(!shape.isRepeatable() && texture != null && !shape.getResource().equals("") && body != null){
+	public void drawShape(AssetManagerWrapper assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
+		if(shape.getResource().isEmpty()){
+			Gdx.app.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
+			return;
+		}
+		Texture texture = assetManager.getTexture(shape.getResource());
+		if(!shape.isRepeatable() && texture != null && body != null){
 			Sprite sprite = new Sprite(texture);
 			sprite.setScale(SHAPE_SCALE);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
@@ -80,10 +85,16 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawBackground(Camera camera, GDXBackground background, Batch batch){
-		Texture texture = background.getDepth() == 1f || !USE_DEPTH_BLUR? 
-				getTexture(background.getTexture()) :
-				getBlurTexture(background.getTexture(), background.getDepth());
+	public void drawBackground(AssetManagerWrapper assetManager, Camera camera, GDXBackground background, Batch batch){
+		if(background.getTexture().isEmpty()){
+			Gdx.app.debug("GDXRenderer.drawBackground", "Background texture name empty, skipping");
+			return;
+		}
+		Texture texture = null;
+		if(background.getDepth() == 1f || !USE_DEPTH_BLUR) 
+			texture = assetManager.getTexture(background.getTexture());
+		else
+			texture = getBlurTexture(background.getTexture(), background.getDepth());
 		if(texture != null){
 			float depth = Math.max(background.getDepth(), .001f);
 			Vector2 offset = new Vector2(texture.getWidth(),texture.getHeight()).scl(.5f * background.getScale());

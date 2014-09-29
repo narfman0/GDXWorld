@@ -6,6 +6,7 @@ import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,6 +22,7 @@ public class ScreenLevelPanner {
 	private final GDXRenderer gdxRenderer;
 	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
+	private AssetManagerWrapper assetManager;
 	private OrthographicCamera camera;
 	private TiledMeshRenderer tiledMeshRenderer;
 	private RayHandler rayHandler;
@@ -41,11 +43,17 @@ public class ScreenLevelPanner {
 	}
 
 	public void transitionLevel(){
+		if(assetManager != null)
+			assetManager.dispose();
+		this.assetManager = new AssetManagerWrapper();
 		GDXLevel nextLevel;
 		do{
 			nextLevel = gdxWorld.getLevels().get(random.nextInt(gdxWorld.getLevels().size()));
 		}while(nextLevel == gdxLevel && gdxWorld.getLevels().size() != 1);
 		initializeLevel(nextLevel);
+		for(String asset : nextLevel.createAssetList())
+			assetManager.loadAsset(asset, Texture.class);
+		assetManager.finishLoading();
 	}
 
 	public void initializeLevel(GDXLevel level){
@@ -68,7 +76,7 @@ public class ScreenLevelPanner {
 		rayHandler.setCombinedMatrix(camera.combined);
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
-		gdxRenderer.render(spriteBatch, gdxLevel, camera, struct.bodies.entrySet());
+		gdxRenderer.render(assetManager, spriteBatch, gdxLevel, camera, struct.bodies.entrySet());
 		spriteBatch.end();
 		tiledMeshRenderer.render(camera);
 		world.step(1f/30f, 10, 10);

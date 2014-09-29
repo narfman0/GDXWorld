@@ -45,7 +45,7 @@ public class TiledMeshRenderer {
 	public TiledMeshRenderer(GDXRenderer gdxRenderer, Collection<GDXPolygon> polygons){
 		shader = new ShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
 		for(GDXPolygon polygon : polygons)
-			if(polygon.isRepeatable() && polygon.getResource() != null && !polygon.getResource().equals("")){
+			if(polygon.isRepeatable() && polygon.getResource() != null && !polygon.getResource().isEmpty()){
 				EarClippingTriangulator triangulator = new EarClippingTriangulator();
 				List<Vector2> verticesAbsolute = triangulator.computeTriangles(polygon.getVerticesAbsolute());
 				Mesh mesh = new Mesh(true, verticesAbsolute.size(), 0, VertexAttribute.Position(), VertexAttribute.TexCoords(0));

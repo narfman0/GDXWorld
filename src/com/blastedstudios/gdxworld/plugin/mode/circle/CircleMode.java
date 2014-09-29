@@ -105,7 +105,7 @@ public class CircleMode extends AbstractMode {
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		for(Entry<GDXCircle,Body> entry : bodies.entrySet())
-			gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch, screen.isLive() ? 1f : .5f);
+			gdxRenderer.drawShape(screen.getAssetManager(), camera, entry.getKey(), entry.getValue(), spriteBatch, screen.isLive() ? 1f : .5f);
 		spriteBatch.end();
 	}
 

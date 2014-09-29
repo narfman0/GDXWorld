@@ -400,10 +400,9 @@ public class GDXLevel implements Cloneable,Serializable{
 			if(object.getManifestation() instanceof DialogManifestation)
 				assets.add(((DialogManifestation)object.getManifestation()).getOrigin());
 		}
-		for(Iterator<String> iter = assets.iterator(); iter.hasNext();){
+		for(Iterator<String> iter = assets.iterator(); iter.hasNext();)
 			if(iter.next().equals(""))
 				iter.remove();
-		}
 		return new ArrayList<String>(assets);
 	}
 

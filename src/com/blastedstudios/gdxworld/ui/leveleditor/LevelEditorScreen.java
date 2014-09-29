@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.MouseCameraScroller;
+import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.util.LoadPriorityComparator;
 import com.blastedstudios.gdxworld.util.PluginUtil;
@@ -41,6 +42,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
 	private final ShapeRenderer renderer = new ShapeRenderer();
 	private final SpriteBatch spriteBatch = new SpriteBatch();
+	private final AssetManagerWrapper assetManager = new AssetManagerWrapper();
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
 			final FileHandle selectedFile, final GDXLevel gdxLevel){
@@ -73,7 +75,7 @@ public class LevelEditorScreen extends AbstractScreen {
 			world.step(delta * Properties.getFloat("level.world.step.scalar", 1f), 4, 4);
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
-		gdxRenderer.render(spriteBatch, gdxLevel, camera, null);
+		gdxRenderer.render(assetManager, spriteBatch, gdxLevel, camera, null);
 		spriteBatch.end();
 		for(IMode child : modes)
 			child.render(delta, camera, gdxRenderer, renderer);
@@ -169,5 +171,13 @@ public class LevelEditorScreen extends AbstractScreen {
 	
 	public static float getNodeRadius(){
 		return Properties.getFloat("screen.level.node.radius", .3f);
+	}
+	
+	@Override public void dispose() {
+		assetManager.dispose();
+	}
+
+	public AssetManagerWrapper getAssetManager() {
+		return assetManager;
 	}
 }

@@ -165,13 +165,13 @@ public class PolygonMode extends AbstractMode {
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();
 			for(Entry<GDXPolygon,Body> entry : bodies.entrySet())
-				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch, .5f);
+				gdxRenderer.drawShape(screen.getAssetManager(), camera, entry.getKey(), entry.getValue(), spriteBatch, .5f);
 			spriteBatch.end();
 		}else{
 			spriteBatch.setProjectionMatrix(camera.combined);
 			spriteBatch.begin();
 			for(Entry<GDXPolygon,Body> entry : bodies.entrySet())
-				gdxRenderer.drawShape(camera, entry.getKey(), entry.getValue(), spriteBatch);
+				gdxRenderer.drawShape(screen.getAssetManager(), camera, entry.getKey(), entry.getValue(), spriteBatch);
 			spriteBatch.end();
 		}
 	};
