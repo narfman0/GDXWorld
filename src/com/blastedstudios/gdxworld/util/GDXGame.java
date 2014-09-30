@@ -8,6 +8,10 @@ import com.blastedstudios.gdxworld.ui.AbstractScreen;
 
 public abstract class GDXGame extends Game {
 	private Stack<AbstractScreen> screenStack = new Stack<>();
+	
+	public AbstractScreen peekScreen(){
+		return screenStack.peek();
+	}
 
 	public void pushScreen(AbstractScreen screen){
 		screenStack.push(screen);
