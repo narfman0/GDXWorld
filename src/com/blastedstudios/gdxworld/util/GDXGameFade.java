@@ -14,20 +14,28 @@ import com.blastedstudios.gdxworld.ui.AbstractScreen;
 
 public abstract class GDXGameFade {
 	private static final float FADE_DURATION = Properties.getFloat("screen.fade.duration", 1f);
-	
-	public static void fadeInPushScreen(GDXGame game, AbstractScreen screen){
-		game.pushScreen(screen);
+
+	public static AbstractScreen fadeInScreen(GDXGame game, AbstractScreen screen){
 		Table table = buildTable(new Color(0,0,0,1));
-		//looks weird, but to make screen fade in, make black table fade out
 		table.addAction(Actions.fadeOut(FADE_DURATION));
 		screen.getStage().addActor(table);
+		return screen;
 	}
 	
-	public static void fadeOutPopScreen(final GDXGame game){
-		final AbstractScreen screen = game.peekScreen();
+	public static AbstractScreen fadeInPushScreen(GDXGame game, AbstractScreen screen){
+		game.pushScreen(fadeInScreen(game, screen));
+		return screen;
+	}
+	
+	public static AbstractScreen fadeOutScreen(final GDXGame game, AbstractScreen screen){
 		Table table = buildTable(new Color(0,0,0,0));
 		table.addAction(Actions.fadeIn(FADE_DURATION));
 		screen.getStage().addActor(table);
+		return screen;
+	}
+	
+	public static AbstractScreen fadeOutPopScreen(final GDXGame game){
+		final AbstractScreen screen = fadeOutScreen(game, game.peekScreen());
 		final long timeStartFade = System.currentTimeMillis();
 		screen.getRenderListeners().add(new IScreenListener() {
 			@Override public void render(float dt) {
@@ -37,6 +45,7 @@ public abstract class GDXGameFade {
 				}
 			}
 		});
+		return screen;
 	}
 	
 	/**
