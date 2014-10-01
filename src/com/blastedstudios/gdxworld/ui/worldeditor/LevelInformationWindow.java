@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
@@ -48,7 +49,8 @@ public class LevelInformationWindow extends AbstractWindow{
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				addLevel();
-				game.pushScreen(new LevelEditorScreen(game, gdxWorld, selectedFile, gdxLevel));
+				AssetManagerWrapper wrapper = gdxLevel.createAssetManager(true);
+				game.pushScreen(new LevelEditorScreen(game, gdxWorld, selectedFile, gdxLevel, wrapper));
 			}
 		});
 		deleteButton.addListener(new ClickListener() {

@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
+import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
@@ -404,6 +405,15 @@ public class GDXLevel implements Cloneable,Serializable{
 			if(iter.next().equals(""))
 				iter.remove();
 		return new ArrayList<String>(assets);
+	}
+
+	public AssetManagerWrapper createAssetManager(boolean block){
+		AssetManagerWrapper wrapper = new AssetManagerWrapper();
+		for(String name : createAssetList())
+			wrapper.loadTexture(name);
+		if(block)
+			wrapper.finishLoading();
+		return wrapper;
 	}
 
 	public class CreateLevelReturnStruct{

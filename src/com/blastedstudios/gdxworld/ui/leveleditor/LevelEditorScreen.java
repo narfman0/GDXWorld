@@ -42,14 +42,15 @@ public class LevelEditorScreen extends AbstractScreen {
 	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
 	private final ShapeRenderer renderer = new ShapeRenderer();
 	private final SpriteBatch spriteBatch = new SpriteBatch();
-	private final AssetManagerWrapper assetManager = new AssetManagerWrapper();
+	private final AssetManagerWrapper assetManager;
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
-			final FileHandle selectedFile, final GDXLevel gdxLevel){
+			final FileHandle selectedFile, final GDXLevel gdxLevel, AssetManagerWrapper assetManager){
 		super(game, "data/ui/uiskin.json");
 		this.gdxLevel = gdxLevel;
 		this.gdxWorld = gdxWorld;
 		this.selectedFile = selectedFile;
+		this.assetManager = assetManager;
 		inputMultiplexer.addProcessor(scroller);
 		for(IMode child : modes)
 			child.init(this);

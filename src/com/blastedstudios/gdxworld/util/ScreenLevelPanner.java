@@ -6,7 +6,6 @@ import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -24,7 +23,7 @@ public class ScreenLevelPanner implements Disposable{
 	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final ITransitionListener listener;
-	private AssetManagerWrapper assetManager = new AssetManagerWrapper();
+	private AssetManagerWrapper assetManager;
 	private OrthographicCamera camera;
 	private TiledMeshRenderer tiledMeshRenderer;
 	private RayHandler rayHandler;
@@ -61,8 +60,7 @@ public class ScreenLevelPanner implements Disposable{
 		rayHandler = struct.lights.rayHandler;
 		tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, level.getPolygons());
 		cameraMoveAmountX = random.nextFloat()*.1f - .05f;
-		for(String asset : level.createAssetList())
-			assetManager.loadAsset(asset, Texture.class);
+		assetManager = gdxLevel.createAssetManager(false);
 	}
 	
 	public boolean update(){
