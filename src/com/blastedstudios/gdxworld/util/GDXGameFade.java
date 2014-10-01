@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.util;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -34,7 +35,7 @@ public abstract class GDXGameFade {
 	}
 	
 	public static AbstractScreen fadeOutScreen(final GDXGame game, AbstractScreen screen){
-		Table table = buildTable(new Color(0,0,0,0));
+		Table table = buildTable(new Color(0,0,0,.5f));
 		table.addAction(Actions.fadeIn(FADE_DURATION));
 		screen.getStage().addActor(table);
 		if(screenFadeTableMap.containsKey(screen))
@@ -45,16 +46,18 @@ public abstract class GDXGameFade {
 	
 	public static AbstractScreen fadeOutPopScreen(final GDXGame game, final IPopListener listener){
 		final AbstractScreen screen = fadeOutScreen(game, game.peekScreen());
-		final long timeStartFade = System.currentTimeMillis();
+		final AtomicInteger timeToPop = new AtomicInteger(Float.floatToIntBits(FADE_DURATION));
 		screen.addRenderListener(new IScreenListener() {
 			@Override public boolean render(float dt) {
-				if(System.currentTimeMillis() - timeStartFade > FADE_DURATION*1000f){
+				float timeRemaining = Float.intBitsToFloat(timeToPop.get()) - dt;
+				if(timeRemaining <= 0){
 					if(game.peekScreen() == screen)//ensure there aren't double pops for whatever reason
 						game.popScreen();
 					if(listener != null)
 						listener.screenPopped();
 					return true;
-				}
+				}else
+					timeToPop.set(Float.floatToIntBits(timeRemaining));
 				return false;
 			}
 		});
@@ -73,6 +76,7 @@ public abstract class GDXGameFade {
 		table.setHeight(Gdx.graphics.getHeight());
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
 		table.setBackground(drawable);
+		table.setColor(color);//this is here seemingly because of libgdx bug - table color null otherwise
 		return table;
 	}
 	
