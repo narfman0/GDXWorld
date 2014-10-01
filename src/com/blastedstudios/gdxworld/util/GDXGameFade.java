@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.util;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,11 +16,15 @@ import com.blastedstudios.gdxworld.ui.AbstractScreen;
 
 public abstract class GDXGameFade {
 	private static final float FADE_DURATION = Properties.getFloat("screen.fade.duration", 1f);
+	private static final HashMap<AbstractScreen, Table> screenFadeTableMap = new HashMap<>(); 
 
 	public static AbstractScreen fadeInScreen(GDXGame game, AbstractScreen screen){
 		Table table = buildTable(new Color(0,0,0,1));
 		table.addAction(Actions.fadeOut(FADE_DURATION));
 		screen.getStage().addActor(table);
+		if(screenFadeTableMap.containsKey(screen))
+			screenFadeTableMap.get(screen).remove();
+		screenFadeTableMap.put(screen, table);
 		return screen;
 	}
 	
@@ -31,18 +37,25 @@ public abstract class GDXGameFade {
 		Table table = buildTable(new Color(0,0,0,0));
 		table.addAction(Actions.fadeIn(FADE_DURATION));
 		screen.getStage().addActor(table);
+		if(screenFadeTableMap.containsKey(screen))
+			screenFadeTableMap.get(screen).remove();
+		screenFadeTableMap.put(screen, table);
 		return screen;
 	}
 	
-	public static AbstractScreen fadeOutPopScreen(final GDXGame game){
+	public static AbstractScreen fadeOutPopScreen(final GDXGame game, final IPopListener listener){
 		final AbstractScreen screen = fadeOutScreen(game, game.peekScreen());
 		final long timeStartFade = System.currentTimeMillis();
-		screen.getRenderListeners().add(new IScreenListener() {
-			@Override public void render(float dt) {
+		screen.addRenderListener(new IScreenListener() {
+			@Override public boolean render(float dt) {
 				if(System.currentTimeMillis() - timeStartFade > FADE_DURATION*1000f){
-					game.popScreen();
-					screen.getRenderListeners().remove(this);
+					if(game.peekScreen() == screen)//ensure there aren't double pops for whatever reason
+						game.popScreen();
+					if(listener != null)
+						listener.screenPopped();
+					return true;
 				}
+				return false;
 			}
 		});
 		return screen;
@@ -64,6 +77,13 @@ public abstract class GDXGameFade {
 	}
 	
 	public interface IScreenListener{
-		void render(float dt);
+		/**
+		 * @return true if time to remove listener
+		 */
+		boolean render(float dt);
+	}
+	
+	public interface IPopListener{
+		void screenPopped();
 	}
 }

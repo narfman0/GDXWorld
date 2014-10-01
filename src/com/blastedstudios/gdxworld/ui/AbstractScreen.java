@@ -1,5 +1,6 @@
 package com.blastedstudios.gdxworld.ui;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.blastedstudios.gdxworld.util.GDXGame;
@@ -19,12 +20,11 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	protected Skin skin;
 	protected final GDXGame game;
 	protected final InputMultiplexer inputMultiplexer;
-	private final LinkedList<IScreenListener> renderListeners;
+	private final LinkedList<IScreenListener> renderListeners = new LinkedList<>();
 	
 	public AbstractScreen(final GDXGame game, final Skin skin){
 		this.game = game;
 		this.skin = skin;
-		renderListeners = new LinkedList<>();
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(inputMultiplexer = new InputMultiplexer());
 		inputMultiplexer.addProcessor(this);
@@ -38,8 +38,9 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 	@Override public void render(float delta) {
 		Gdx.gl.glClear(GL_CLEAR);
 		stage.act(Math.min(Gdx.graphics.getRawDeltaTime(), 1 / 30f));
-		for(IScreenListener listener : renderListeners)
-			listener.render(delta);
+		for(Iterator<IScreenListener> i = renderListeners.iterator(); i.hasNext();)
+			if(i.next().render(delta))
+				i.remove();
 	}
 	
 	public Stage getStage(){
@@ -98,7 +99,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 		return false;
 	}
 
-	public LinkedList<IScreenListener> getRenderListeners() {
-		return renderListeners;
+	public void addRenderListener(IScreenListener listener) {
+		renderListeners.add(listener);
 	}
 }
