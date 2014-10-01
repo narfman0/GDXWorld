@@ -35,7 +35,7 @@ public abstract class GDXGameFade {
 	}
 	
 	public static AbstractScreen fadeOutScreen(final GDXGame game, AbstractScreen screen){
-		Table table = buildTable(new Color(0,0,0,.5f));
+		Table table = buildTable(new Color(0,0,0,0));
 		table.addAction(Actions.fadeIn(FADE_DURATION));
 		screen.getStage().addActor(table);
 		if(screenFadeTableMap.containsKey(screen))

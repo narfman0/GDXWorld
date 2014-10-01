@@ -37,7 +37,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor{
 
 	@Override public void render(float delta) {
 		Gdx.gl.glClear(GL_CLEAR);
-		stage.act(Math.min(Gdx.graphics.getRawDeltaTime(), 1 / 30f));
+		stage.act(delta);
 		for(Iterator<IScreenListener> i = renderListeners.iterator(); i.hasNext();)
 			if(i.next().render(delta))
 				i.remove();
