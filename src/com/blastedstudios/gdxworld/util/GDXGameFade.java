@@ -50,6 +50,7 @@ public abstract class GDXGameFade {
 		screen.addRenderListener(new IScreenListener() {
 			@Override public boolean render(float dt) {
 				float timeRemaining = Float.intBitsToFloat(timeToPop.get()) - dt;
+				Gdx.app.log("GdxGameFade.fadeOut.<anonymous>.render", "timeRemaining=" + timeRemaining + " dt="+dt);
 				if(timeRemaining <= 0){
 					if(game.peekScreen() == screen)//ensure there aren't double pops for whatever reason
 						game.popScreen();
@@ -69,7 +70,7 @@ public abstract class GDXGameFade {
 	 */
 	public static Table buildTable(Color color){
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(color);
+		pixmap.setColor(Color.BLACK);
 		pixmap.fill();
 		Table table = new Table();
 		table.setWidth(Gdx.graphics.getWidth());
