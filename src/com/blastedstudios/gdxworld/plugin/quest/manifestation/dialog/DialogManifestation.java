@@ -6,7 +6,7 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 
 public class DialogManifestation extends AbstractQuestManifestation{
 	private static final long serialVersionUID = 1L;
-	public static DialogManifestation DEFAULT = new DialogManifestation("Dialog","Origin","Type");
+	public static DialogManifestation DEFAULT = new DialogManifestation("","","");
 	/**
 	 * Dialog contents, for example, "You brought five volume units of 
 	 * food, high five"
