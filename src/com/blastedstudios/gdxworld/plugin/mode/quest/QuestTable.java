@@ -16,8 +16,20 @@ public class QuestTable extends Table{
 	public QuestTable(final Skin skin, final GDXQuest quest, final QuestWindow questWindow){
 		this.quest = quest;
 		final QuestTable questTable = this;
+		final Button addChildButton = new TextButton("Add Child", skin);
 		final Button editButton = new TextButton("Edit", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
+		addChildButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				GDXQuest child = new GDXQuest();
+				//want to strip the ending number and replace with our own
+				String baseName = quest.getName().replaceAll("\\d*$", "");
+				int index = Integer.parseInt(quest.getName().substring(baseName.length())) + 1;
+				child.setName(baseName + index);
+				child.setPrerequisites(quest.getName());
+				questWindow.addQuest(child);
+			}
+		});
 		editButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				questWindow.editQuest(quest, questTable);
@@ -30,6 +42,7 @@ public class QuestTable extends Table{
 		});
 		add(new Label("Name: ", skin));
 		add(nameLabel = new Label(quest.getName(), skin));
+		add(addChildButton);
 		add(editButton);
 		add(deleteButton);
 	}

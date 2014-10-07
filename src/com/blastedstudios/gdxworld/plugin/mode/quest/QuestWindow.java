@@ -48,9 +48,7 @@ class QuestWindow extends AbstractWindow {
 		});
 		addButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				GDXQuest quest = new GDXQuest();
-				quests.add(quest);
-				questTree.add(new Node(createQuestTable(quest)));
+				addQuest(new GDXQuest());
 			}
 		});
 		add(scrollPane).colspan(3);
@@ -58,8 +56,8 @@ class QuestWindow extends AbstractWindow {
 		add(addButton);
 		add(clearButton);
 		setMovable(false);
-		setHeight(400);
-		setWidth(400);
+		setHeight(700);
+		setWidth(500);
 	}
 	
 	private void populateQuestTable(){
@@ -99,6 +97,11 @@ class QuestWindow extends AbstractWindow {
 	
 	private QuestTable createQuestTable(GDXQuest quest){
 		return new QuestTable(skin, quest, this);
+	}
+	
+	public void addQuest(GDXQuest quest){
+		quests.add(quest);
+		questTree.add(new Node(createQuestTable(quest)));
 	}
 	
 	public void removeQuest(GDXQuest quest) {
