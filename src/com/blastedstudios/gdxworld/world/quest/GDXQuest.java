@@ -3,7 +3,7 @@ package com.blastedstudios.gdxworld.world.quest;
 import java.io.Serializable;
 
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
-import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
+import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
@@ -29,7 +29,7 @@ public class GDXQuest implements Serializable, Cloneable{
 	 * manifestation should execute. A trigger might be a distance from an
 	 * object, if the player hits a button, a being dies, etc.
 	 */ 
-	private AbstractQuestTrigger trigger = new AABBTrigger(0, 0, 1, 1);
+	private AbstractQuestTrigger trigger = new ActivateTrigger();
 	/**
 	 * A manifestation defines what happens as a result of a trigger. A 
 	 * manifestation may be that an enemy is spawned, a door is unlocked,
