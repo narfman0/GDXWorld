@@ -23,9 +23,13 @@ public class QuestTable extends Table{
 			@Override public void clicked(InputEvent event, float x, float y) {
 				GDXQuest child = new GDXQuest();
 				//want to strip the ending number and replace with our own
-				String baseName = quest.getName().replaceAll("\\d*$", "");
-				int index = Integer.parseInt(quest.getName().substring(baseName.length())) + 1;
-				child.setName(baseName + index);
+				try{
+					String baseName = quest.getName().replaceAll("\\d*$", "");
+					int index = Integer.parseInt(quest.getName().substring(baseName.length())) + 1;
+					child.setName(baseName + index);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 				child.setPrerequisites(quest.getName());
 				questWindow.addQuest(child);
 			}
