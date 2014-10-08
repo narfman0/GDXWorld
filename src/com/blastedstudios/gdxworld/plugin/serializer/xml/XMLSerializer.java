@@ -42,7 +42,7 @@ public class XMLSerializer implements ISerializer {
 			Gdx.app.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
 			return;
 		}
-		xStream.toXML(object, Gdx.files.local(selectedFile.path()).write(false));
+		xStream.toXML(object, Gdx.files.absolute(selectedFile.file().getAbsolutePath()).write(false));
 		Gdx.app.log(this.getClass().getSimpleName() + ".save", "Successfully saved " + selectedFile);
 	}
 
