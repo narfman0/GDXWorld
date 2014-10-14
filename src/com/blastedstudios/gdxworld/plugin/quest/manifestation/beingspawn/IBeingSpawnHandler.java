@@ -8,5 +8,5 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 public interface IBeingSpawnHandler extends Plugin{
-	CompletionEnum beingSpawn(String being, Vector2 coordinates, String path);
+	CompletionEnum beingSpawn(String being, Vector2 coordinates, String path, String npcData);
 }

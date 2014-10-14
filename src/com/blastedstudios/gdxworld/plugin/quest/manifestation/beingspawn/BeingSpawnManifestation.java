@@ -7,26 +7,27 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 
 public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	private static final long serialVersionUID = 1L;
-	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "player", "");
+	public static final BeingSpawnManifestation DEFAULT = new BeingSpawnManifestation(new Vector2(), "player", "", "");
 	private Vector2 coordinates = new Vector2();
-	private String being = "", path = "";
+	private String being = "", npcData = "", path = "";
 	
 	public BeingSpawnManifestation(){}
 	
-	public BeingSpawnManifestation(Vector2 coordinates, String being, String path){
+	public BeingSpawnManifestation(Vector2 coordinates, String being, String path, String npcData){
 		this.coordinates = coordinates;
 		this.being = being;
+		this.npcData = npcData;
 	}
 
 	@Override public CompletionEnum execute() {
 		for(IBeingSpawnHandler handler : PluginUtil.getPlugins(IBeingSpawnHandler.class))
-			if(handler.beingSpawn(being, coordinates, path) == CompletionEnum.COMPLETED)
+			if(handler.beingSpawn(being, coordinates, path, getNpcData()) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;
 		return CompletionEnum.COMPLETED;
 	}
 
 	@Override public AbstractQuestManifestation clone() {
-		return new BeingSpawnManifestation(coordinates.cpy(), being, path);
+		return new BeingSpawnManifestation(coordinates.cpy(), being, path, npcData);
 	}
 
 	@Override public String toString() {
@@ -55,6 +56,16 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getNpcData() {
+		if(npcData == null)//backwards compatibility tweak
+			return npcData = being;
+		return npcData;
+	}
+
+	public void setNpcData(String npcData) {
+		this.npcData = npcData;
 	}
 
 }

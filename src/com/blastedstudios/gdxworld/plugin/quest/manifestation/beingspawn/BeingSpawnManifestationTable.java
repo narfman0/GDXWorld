@@ -11,7 +11,7 @@ import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManife
 public class BeingSpawnManifestationTable extends ManifestationTable{
 	private final VertexTable coordinatesTable;
 	private final BeingSpawnManifestation manifestation;
-	private final TextField beingField, pathField;
+	private final TextField beingField, pathField, npcDataField;
 	
 	public BeingSpawnManifestationTable(Skin skin, BeingSpawnManifestation manifestation){
 		super(skin);
@@ -20,12 +20,17 @@ public class BeingSpawnManifestationTable extends ManifestationTable{
 		beingField.setMessageText("<being name>");
 		pathField = new TextField(manifestation.getPath(), skin);
 		pathField.setMessageText("<path>");
+		npcDataField = new TextField(manifestation.getNpcData(), skin);
+		npcDataField.setMessageText("<npc data>");
 		coordinatesTable = new VertexTable(manifestation.getCoordinates(), skin, null);
 		add(new Label("Being: ", skin));
 		add(beingField);
 		row();
 		add(new Label("Path: ", skin));
 		add(pathField);
+		row();
+		add(new Label("NPC Data: ", skin));
+		add(npcDataField);
 		row();
 		add(new Label("Coordinates: ", skin));
 		add(coordinatesTable);
@@ -34,6 +39,7 @@ public class BeingSpawnManifestationTable extends ManifestationTable{
 	@Override public AbstractQuestManifestation apply() {
 		manifestation.setCoordinates(coordinatesTable.getVertex());
 		manifestation.setBeing(beingField.getText());
+		manifestation.setNpcData(npcDataField.getText());
 		manifestation.setPath(pathField.getText());
 		return manifestation;
 	}
