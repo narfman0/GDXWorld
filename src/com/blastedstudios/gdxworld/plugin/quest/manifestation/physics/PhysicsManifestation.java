@@ -112,6 +112,8 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	}
 
 	public Vector2 getPosition() {
+		if(position == null)
+			return position = new Vector2();
 		return position;
 	}
 
@@ -120,6 +122,8 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	}
 
 	public Vector2 getVelocity() {
+		if(velocity == null)
+			return velocity = new Vector2();
 		return velocity;
 	}
 
