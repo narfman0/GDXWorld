@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
@@ -73,7 +74,13 @@ public class GDXRenderer {
 			Gdx.app.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
 			return;
 		}
-		Texture texture = assetManager.getTexture(shape.getResource());
+		Texture texture = null;
+		try{
+			texture = assetManager.getTexture(shape.getResource());
+		}catch(GdxRuntimeException e){
+			Gdx.app.error("GDXRenderer.drawShape", e.getMessage() + ", loading " + shape.getResource() + " manually");
+			texture = getTexture(shape.getResource());
+		}
 		if(!shape.isRepeatable() && texture != null && body != null){
 			Sprite sprite = new Sprite(texture);
 			sprite.setScale(SHAPE_SCALE);
