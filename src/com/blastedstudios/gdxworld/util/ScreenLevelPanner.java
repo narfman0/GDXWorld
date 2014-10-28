@@ -18,7 +18,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel.CreateLevelReturnStruct;
 import com.blastedstudios.gdxworld.world.GDXWorld;
 
 public class ScreenLevelPanner implements Disposable{
-	private static final int TIME_TO_TRANSITION = Properties.getInt("screen.panner.transition.time", 10000);
+	private static final float TIME_TO_TRANSITION = Properties.getFloat("screen.panner.transition.time", 10f);
 	private final GDXRenderer gdxRenderer;
 	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
@@ -31,8 +31,7 @@ public class ScreenLevelPanner implements Disposable{
 	private CreateLevelReturnStruct struct;
 	private World world;
 	private Random random;
-	private long timeTransition;
-	private float cameraMoveAmountX;
+	private float cameraMoveAmountX, timeTransition;
 	private boolean signalled = false;
 
 	public ScreenLevelPanner(GDXWorld gdxWorld, GDXRenderer gdxRenderer, ITransitionListener listener){
@@ -66,11 +65,11 @@ public class ScreenLevelPanner implements Disposable{
 	public boolean update(){
 		boolean complete = assetManager.update();
 		if(complete)
-			timeTransition = System.currentTimeMillis();
+			timeTransition = TIME_TO_TRANSITION;
 		return complete;
 	}
 
-	public void render(){
+	public void render(float dt){
 		camera.position.add(cameraMoveAmountX, 0, 0);
 		camera.update();
 		rayHandler.setCombinedMatrix(camera.combined);
@@ -82,7 +81,8 @@ public class ScreenLevelPanner implements Disposable{
 		world.step(1f/30f, 10, 10);
 		if(Properties.getBool("lighting.draw", false))
 			rayHandler.updateAndRender();
-		if(!signalled && System.currentTimeMillis() - timeTransition > TIME_TO_TRANSITION){
+		timeTransition -= dt;
+		if(!signalled && timeTransition <= 0f){
 			listener.transition();
 			signalled = true;
 		}
