@@ -20,7 +20,7 @@ public abstract class GDXGameFade {
 	private static final HashMap<AbstractScreen, Table> screenFadeTableMap = new HashMap<>(); 
 
 	public static AbstractScreen fadeInScreen(GDXGame game, AbstractScreen screen){
-		Table table = buildTable(new Color(0,0,0,1));
+		Table table = buildTable(Color.BLACK.cpy());
 		table.addAction(Actions.fadeOut(FADE_DURATION));
 		screen.getStage().addActor(table);
 		if(screenFadeTableMap.containsKey(screen))
@@ -35,7 +35,7 @@ public abstract class GDXGameFade {
 	}
 	
 	public static AbstractScreen fadeOutScreen(final GDXGame game, AbstractScreen screen){
-		Table table = buildTable(new Color(0,0,0,0));
+		Table table = buildTable(Color.CLEAR.cpy());
 		table.addAction(Actions.fadeIn(FADE_DURATION));
 		screen.getStage().addActor(table);
 		if(screenFadeTableMap.containsKey(screen))
@@ -64,19 +64,20 @@ public abstract class GDXGameFade {
 		return screen;
 	}
 	
-	/**
-	 * @return a table of the given color
-	 */
 	public static Table buildTable(Color color){
+		return buildTable(color, Color.BLACK);
+	}
+	
+	public static Table buildTable(Color tableColor, Color pixmapColor){
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(Color.BLACK);
+		pixmap.setColor(pixmapColor);
 		pixmap.fill();
 		Table table = new Table();
 		table.setWidth(Gdx.graphics.getWidth());
 		table.setHeight(Gdx.graphics.getHeight());
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
 		table.setBackground(drawable);
-		table.setColor(color);//this is here seemingly because of libgdx bug - table color null otherwise
+		table.setColor(tableColor);
 		return table;
 	}
 	
