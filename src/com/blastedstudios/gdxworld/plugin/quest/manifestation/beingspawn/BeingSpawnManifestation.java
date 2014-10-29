@@ -17,6 +17,7 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 		this.coordinates = coordinates;
 		this.being = being;
 		this.npcData = npcData;
+		this.path = path;
 	}
 
 	@Override public CompletionEnum execute() {
