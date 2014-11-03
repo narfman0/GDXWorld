@@ -15,12 +15,13 @@ import java.util.Map.Entry;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
-import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
@@ -383,11 +384,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	 * yield its own assets, along with type. For now want quick n dirty way
 	 * to get them. 
 	 * 
-	 * TODO They should also return the full path to resources,
-	 * then we wouldn't need a dirty recursive finder. This is, however,
-	 * easier for now. Will get to it.
-	 * 
-	 * Check AssetManagerWrapper class description for more info.
+	 * TODO probably should return type as well, e.g. AssetPath / FileType pair
 	 */
 	public List<String> createAssetList(){
 		HashSet<String> assets = new HashSet<String>();
@@ -398,8 +395,9 @@ public class GDXLevel implements Cloneable,Serializable{
 		for(GDXQuest object : getQuests()){
 			//TODO ask quest itself what resources it needs
 			//dialog sound only so far, but handling sound differently
-			if(object.getManifestation() instanceof DialogManifestation)
-				assets.add(((DialogManifestation)object.getManifestation()).getOrigin());
+			if(Properties.getBool("dialog.useportrait", false) && 
+					object.getManifestation() instanceof DialogManifestation)
+				assets.add(((DialogManifestation)object.getManifestation()).getOrigin().replace(" ", ""));
 		}
 		for(Iterator<String> iter = assets.iterator(); iter.hasNext();)
 			if(iter.next().equals(""))
@@ -407,10 +405,10 @@ public class GDXLevel implements Cloneable,Serializable{
 		return new ArrayList<String>(assets);
 	}
 
-	public AssetManagerWrapper createAssetManager(boolean block){
-		AssetManagerWrapper wrapper = new AssetManagerWrapper();
+	public AssetManager createAssetManager(boolean block){
+		AssetManager wrapper = new AssetManager();
 		for(String name : createAssetList())
-			wrapper.loadTexture(name);
+			wrapper.load(name, Texture.class);
 		if(block)
 			wrapper.finishLoading();
 		return wrapper;

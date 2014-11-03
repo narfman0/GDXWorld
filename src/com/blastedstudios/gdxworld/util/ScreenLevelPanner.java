@@ -5,6 +5,7 @@ import java.util.Random;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -23,7 +24,7 @@ public class ScreenLevelPanner implements Disposable{
 	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final ITransitionListener listener;
-	private AssetManagerWrapper assetManager;
+	private AssetManager assetManager;
 	private OrthographicCamera camera;
 	private TiledMeshRenderer tiledMeshRenderer;
 	private RayHandler rayHandler;

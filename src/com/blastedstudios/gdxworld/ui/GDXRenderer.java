@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,7 +23,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Properties;
@@ -46,7 +46,7 @@ public class GDXRenderer {
 		this.drawShapes = drawShapes;
 	}
 	
-	public void render(AssetManagerWrapper assetManager, Batch batch, GDXLevel level, OrthographicCamera camera, 
+	public void render(AssetManager assetManager, Batch batch, GDXLevel level, OrthographicCamera camera, 
 			Iterable<Entry<GDXShape,Body>> bodies){
 		if(drawBackground)
 			for(GDXBackground background : level.getBackgrounds())
@@ -65,18 +65,18 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawShape(AssetManagerWrapper assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
+	public void drawShape(AssetManager assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
 		drawShape(assetManager, camera, shape, body, batch, 1f);
 	}
 	
-	public void drawShape(AssetManagerWrapper assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
+	public void drawShape(AssetManager assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
 		if(shape.getResource().isEmpty()){
 			Gdx.app.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
 			return;
 		}
 		Texture texture = null;
 		try{
-			texture = assetManager.getTexture(shape.getResource());
+			texture = assetManager.get(shape.getResource());
 		}catch(GdxRuntimeException e){
 			Gdx.app.error("GDXRenderer.drawShape", e.getMessage() + ", loading " + shape.getResource() + " manually");
 			texture = getTexture(shape.getResource());
@@ -92,14 +92,14 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawBackground(AssetManagerWrapper assetManager, Camera camera, GDXBackground background, Batch batch){
+	public void drawBackground(AssetManager assetManager, Camera camera, GDXBackground background, Batch batch){
 		if(background.getTexture().isEmpty()){
 			Gdx.app.debug("GDXRenderer.drawBackground", "Background texture name empty, skipping");
 			return;
 		}
 		Texture texture = null;
 		if(background.getDepth() == 1f || !USE_DEPTH_BLUR) 
-			texture = assetManager.getTexture(background.getTexture());
+			texture = assetManager.get(background.getTexture());
 		else
 			texture = getBlurTexture(background.getTexture(), background.getDepth());
 		if(texture != null){

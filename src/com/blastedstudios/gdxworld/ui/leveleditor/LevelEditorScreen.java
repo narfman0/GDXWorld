@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.MouseCameraScroller;
-import com.blastedstudios.gdxworld.util.AssetManagerWrapper;
 import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.util.LoadPriorityComparator;
 import com.blastedstudios.gdxworld.util.PluginUtil;
@@ -42,10 +42,10 @@ public class LevelEditorScreen extends AbstractScreen {
 	private MouseCameraScroller scroller = new MouseCameraScroller(camera, 2);
 	private final ShapeRenderer renderer = new ShapeRenderer();
 	private final SpriteBatch spriteBatch = new SpriteBatch();
-	private final AssetManagerWrapper assetManager;
+	private final AssetManager assetManager;
         
 	public LevelEditorScreen(final GDXGame game, final GDXWorld gdxWorld, 
-			final FileHandle selectedFile, final GDXLevel gdxLevel, AssetManagerWrapper assetManager){
+			final FileHandle selectedFile, final GDXLevel gdxLevel, AssetManager assetManager){
 		super(game, "data/ui/uiskin.json");
 		this.gdxLevel = gdxLevel;
 		this.gdxWorld = gdxWorld;
@@ -178,7 +178,7 @@ public class LevelEditorScreen extends AbstractScreen {
 		assetManager.dispose();
 	}
 
-	public AssetManagerWrapper getAssetManager() {
+	public AssetManager getAssetManager() {
 		return assetManager;
 	}
 }
