@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.mode.background;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 
 class BackgroundWindow extends AbstractWindow {
@@ -140,7 +140,7 @@ class BackgroundWindow extends AbstractWindow {
 				Texture tex = mode.getScreen().getGDXRenderer().getTexture(background.getTexture());
 				Vector2 world = pos.cpy().add(new Vector2(tex.getWidth()/2f, tex.getHeight()/2f).
 						scl(getScale() * (selected == scissorLowerLeft ? -1f : 1f)));
-				Gdx.app.log("BackgroundWindow.clicked", "Finish calculating correct parallax for world: " + world.toString());
+				Log.log("BackgroundWindow.clicked", "Finish calculating correct parallax for world: " + world.toString());
 				pos = GDXRenderer.fromParallax(getDepth(), pos, mode.getScreen().getCamera());
 			}
 			selected.setVertex(pos.x, pos.y);

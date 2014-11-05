@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXTile;
@@ -78,7 +79,7 @@ public class TileMode extends AbstractMode {
 	}
 	
 	private void paint(){
-		Gdx.app.log("TileMode.paint", "x=" + coordinates.x + " y=" + coordinates.y);
+		Log.log("TileMode.paint", "x=" + coordinates.x + " y=" + coordinates.y);
 		Vector2 tileCoordinates = new Vector2(getOffset(coordinates.x), getOffset(coordinates.y));
 		if(Gdx.input.isButtonPressed(Buttons.RIGHT))//right mouse click remove tile
 			screen.getLevel().getTiles().remove(tileCoordinates);

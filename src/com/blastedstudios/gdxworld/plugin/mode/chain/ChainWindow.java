@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.chain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.plugin.mode.circle.CircleTable;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.RevoluteJoint;
@@ -155,7 +155,7 @@ public class ChainWindow extends AbstractWindow {
 				level.getPolygons().add(rectangle);
 				shapes.add(rectangle);
 			}else
-				Gdx.app.log("ChainWindow.createChain", "Neither rectangle nor circle box selected!");
+				Log.log("ChainWindow.createChain", "Neither rectangle nor circle box selected!");
 		}
 		for(int i=0; i<shapes.size(); i++)
 			shapes.get(i).setName(nameField.getText() + "-" + i);

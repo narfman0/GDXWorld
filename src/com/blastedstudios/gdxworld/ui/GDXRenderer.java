@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
@@ -25,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -71,14 +71,14 @@ public class GDXRenderer {
 	
 	public void drawShape(AssetManager assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
 		if(shape.getResource().isEmpty()){
-			Gdx.app.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
+			Log.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
 			return;
 		}
 		Texture texture = null;
 		try{
 			texture = assetManager.get(shape.getResource());
 		}catch(GdxRuntimeException e){
-			Gdx.app.error("GDXRenderer.drawShape", e.getMessage() + ", loading " + shape.getResource() + " manually");
+			Log.error("GDXRenderer.drawShape", e.getMessage() + ", loading " + shape.getResource() + " manually");
 			texture = getTexture(shape.getResource());
 		}
 		if(!shape.isRepeatable() && texture != null && body != null){
@@ -94,7 +94,7 @@ public class GDXRenderer {
 	
 	public void drawBackground(AssetManager assetManager, Camera camera, GDXBackground background, Batch batch){
 		if(background.getTexture().isEmpty()){
-			Gdx.app.debug("GDXRenderer.drawBackground", "Background texture name empty, skipping");
+			Log.debug("GDXRenderer.drawBackground", "Background texture name empty, skipping");
 			return;
 		}
 		Texture texture = null;
@@ -185,15 +185,15 @@ public class GDXRenderer {
 					Texture texture = new Texture(file, PREFERRED_FORMAT, USE_MIP_MAPS);
 					texture.setWrap(TEXTURE_WRAP, TEXTURE_WRAP);
 					textureMap.put(name, texture);
-					Gdx.app.log("GDXRenderer.render", "Added texture " + name);
+					Log.log("GDXRenderer.render", "Added texture " + name);
 				}catch(Exception e){
-					Gdx.app.error("GDXRenderer.render", "Texture found but error loading " + 
+					Log.error("GDXRenderer.render", "Texture found but error loading " + 
 							name + ", using empty. Exception: " + e.getMessage());
 					e.printStackTrace();
 					textureMap.put(name, EMPTY);
 				}
 			}else{
-				Gdx.app.error("GDXRenderer.render", "Texture " + name + " not found, using empty");
+				Log.error("GDXRenderer.render", "Texture " + name + " not found, using empty");
 				textureMap.put(name, EMPTY);
 			}
 		}

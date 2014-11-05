@@ -16,12 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.blastedstudios.gdxworld.ui.AbstractWindow;
-import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.plugin.mode.light.typetable.AbstractLightTable;
 import com.blastedstudios.gdxworld.plugin.mode.light.typetable.ConeLightTable;
 import com.blastedstudios.gdxworld.plugin.mode.light.typetable.DirectionalLightTable;
 import com.blastedstudios.gdxworld.plugin.mode.light.typetable.PointLightTable;
+import com.blastedstudios.gdxworld.ui.AbstractWindow;
+import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.light.ConeLight;
 import com.blastedstudios.gdxworld.world.light.DirectionalLight;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
@@ -54,7 +55,7 @@ public class LightWindow extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				screen.getLevel().setLightAmbient(GDXLight.convert(colorTable.parseColor()));
 				screen.getLevel().getLights().clear();
-				Gdx.app.debug("LightWindow.applyButton.ClickListener", "Cleared lights");
+				Log.debug("LightWindow.applyButton.ClickListener", "Cleared lights");
 				for(GDXLight light : getLights())
 					lightMode.addLight(light);
 			}

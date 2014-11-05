@@ -3,8 +3,6 @@ package com.blastedstudios.gdxworld.ui;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.blastedstudios.gdxworld.util.GDXGame;
-import com.blastedstudios.gdxworld.util.GDXGameFade.IScreenListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -13,6 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.blastedstudios.gdxworld.util.GDXGame;
+import com.blastedstudios.gdxworld.util.GDXGameFade.IScreenListener;
 
 public abstract class AbstractScreen implements Screen, InputProcessor{
 	private static final int GL_CLEAR = GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT;

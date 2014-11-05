@@ -2,9 +2,9 @@ package com.blastedstudios.gdxworld.plugin.mode.group;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.util.IMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
 
@@ -24,13 +24,13 @@ public class GroupMode extends AbstractMode implements IMode {
 	}
 
 	public void add(GDXGroup group) {
-		Gdx.app.log("GroupMode.add", group.toString());
+		Log.log("GroupMode.add", group.toString());
 		if(!screen.getLevel().getGroups().contains(group))
 			screen.getLevel().getGroups().add(group);
 	}
 
 	public void remove(GDXGroup group) {
-		Gdx.app.log("GroupMode.remove", group.toString());
+		Log.log("GroupMode.remove", group.toString());
 		if(screen.getLevel().getGroups().contains(group))
 			screen.getLevel().getGroups().remove(group);
 	}

@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.blastedstudios.gdxworld.util.ExtensionFileFilter;
 import com.blastedstudios.gdxworld.util.ISerializer;
+import com.blastedstudios.gdxworld.util.Log;
 import com.thoughtworks.xstream.XStream;
 
 @PluginImplementation
@@ -29,21 +30,21 @@ public class XMLSerializer implements ISerializer {
 	
 	@Override public Object load(FileHandle selectedFile) throws Exception {
 		if(selectedFile == null){
-			Gdx.app.error(this.getClass().getSimpleName() + ".load", "Cannot read null file");
+			Log.error(this.getClass().getSimpleName() + ".load", "Cannot read null file");
 			throw new NullPointerException("selectedFile null");
 		}
 		Object object = xStream.fromXML(selectedFile.read());
-		Gdx.app.log(this.getClass().getSimpleName() + ".load", "Successfully loaded " + selectedFile);
+		Log.log(this.getClass().getSimpleName() + ".load", "Successfully loaded " + selectedFile);
 		return object;
 	}
 
 	@Override public void save(FileHandle selectedFile, Object object) throws Exception {
 		if(selectedFile == null){
-			Gdx.app.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
+			Log.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
 			return;
 		}
 		xStream.toXML(object, Gdx.files.absolute(selectedFile.file().getAbsolutePath()).write(false));
-		Gdx.app.log(this.getClass().getSimpleName() + ".save", "Successfully saved " + selectedFile);
+		Log.log(this.getClass().getSimpleName() + ".save", "Successfully saved " + selectedFile);
 	}
 
 	@Override public FileFilter getFileFilter() {

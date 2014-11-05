@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.mode.joint;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.PluginUtil;
-import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
-import com.blastedstudios.gdxworld.world.joint.*;
+import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 
 class JointWindow extends AbstractWindow {
 	private BaseJointWindow baseWindow;
@@ -52,7 +51,7 @@ class JointWindow extends AbstractWindow {
 		if(baseWindow != null)
 			levelEditorScreen.getStage().addActor(baseWindow);
 		else
-			Gdx.app.log("JointWindow.createBaseWindow", "Failed to create base window for joint type: " + type);
+			Log.log("JointWindow.createBaseWindow", "Failed to create base window for joint type: " + type);
 	}
 
 	public void clicked(Vector2 pos) {

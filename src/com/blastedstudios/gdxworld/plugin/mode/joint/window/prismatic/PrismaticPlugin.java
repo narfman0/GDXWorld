@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.blastedstudios.gdxworld.plugin.mode.joint.BaseJointWindow;
 import com.blastedstudios.gdxworld.plugin.mode.joint.IJointWindow;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
-import com.blastedstudios.gdxworld.plugin.mode.joint.window.prismatic.PrismaticWindow;
 import com.blastedstudios.gdxworld.world.joint.PrismaticJoint;
 
 @PluginImplementation

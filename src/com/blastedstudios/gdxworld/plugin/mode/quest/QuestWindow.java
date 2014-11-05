@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
-import com.blastedstudios.gdxworld.plugin.mode.quest.QuestMode;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
 class QuestWindow extends AbstractWindow {

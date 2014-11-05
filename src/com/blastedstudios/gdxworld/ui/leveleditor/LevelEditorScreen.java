@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
@@ -20,8 +19,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.MouseCameraScroller;
+import com.blastedstudios.gdxworld.util.GDXGame;
 import com.blastedstudios.gdxworld.util.IMode;
 import com.blastedstudios.gdxworld.util.LoadPriorityComparator;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -104,7 +105,7 @@ public class LevelEditorScreen extends AbstractScreen {
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
-		Gdx.app.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
+		Log.debug("LevelEditorScreen.touchDown", "x="+x+ " y="+y);
 		Vector3 coordinates = new Vector3(x,y,0);
 		camera.unproject(coordinates);
 		if(!levelWindow.contains(x,y) && !mode.contains(x,y) && y1 != 2)
@@ -126,7 +127,7 @@ public class LevelEditorScreen extends AbstractScreen {
 
 	@Override public boolean scrolled(int amount) {
 		camera.zoom = Math.max(.01f, camera.zoom + amount*camera.zoom/4f);
-		Gdx.app.log("LevelEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
+		Log.log("LevelEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
 	}
 

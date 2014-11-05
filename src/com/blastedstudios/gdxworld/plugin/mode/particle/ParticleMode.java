@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXParticle;
 
@@ -21,7 +22,7 @@ public class ParticleMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PathMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("PathMode.touchDown", "x="+x+ " y="+y);
 		GDXParticle particle = screen.getLevel().getClosestParticle(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || particle == null || 
 				particle.getPosition().dst(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -47,20 +48,20 @@ public class ParticleMode extends AbstractMode {
 	
 	private void shift(){
 		if(lastTouched != null){
-			Gdx.app.debug("ParticleMode.shift", lastTouched.toString() + " to " + coordinates);
+			Log.debug("ParticleMode.shift", lastTouched.toString() + " to " + coordinates);
 			if(particleWindow != null)
 				particleWindow.setPosition(coordinates.x, coordinates.y);
 		}
 	}
 
 	public void addParticle(GDXParticle particle) {
-		Gdx.app.log("ParticleMode.addParticle", particle.toString());
+		Log.log("ParticleMode.addParticle", particle.toString());
 		if(!screen.getLevel().getParticles().contains(particle))
 			screen.getLevel().getParticles().add(particle);
 	}
 
 	public void removeParticle(GDXParticle particle) {
-		Gdx.app.log("ParticleMode.removeParticle", particle.toString());
+		Log.log("ParticleMode.removeParticle", particle.toString());
 		screen.getLevel().getParticles().remove(particle);
 	}
 

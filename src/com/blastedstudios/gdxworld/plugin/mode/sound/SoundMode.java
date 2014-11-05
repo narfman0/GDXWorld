@@ -2,8 +2,8 @@ package com.blastedstudios.gdxworld.plugin.mode.sound;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXSound;
 
@@ -28,7 +28,7 @@ public class SoundMode extends AbstractMode {
 	}
 
 	public void addSound(GDXSound sound) {
-		Gdx.app.log("SoundMode.addSound", sound.toString());
+		Log.log("SoundMode.addSound", sound.toString());
 		if(!screen.getLevel().getSounds().contains(sound))
 			screen.getLevel().getSounds().add(sound);
 	}

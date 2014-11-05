@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.world.joint;
 
 import java.io.Serializable;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.blastedstudios.gdxworld.util.Log;
 
 /**
  * Joints connect shapes in unique ways. 
@@ -70,7 +70,7 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 	protected Joint attach(World world, JointDef def){
 		Body[] bodies = getBodyAB(world);
 		if(bodies[0] == null || bodies[1] == null){
-			Gdx.app.error("GDXJoint.attach", "Body null! bodyA:" + this.bodyA + " bodyB:" + this.bodyB);
+			Log.error("GDXJoint.attach", "Body null! bodyA:" + this.bodyA + " bodyB:" + this.bodyB);
 			return null;
 		}
 		def.bodyA = bodies[0];
@@ -78,7 +78,7 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 		def.type = jointType;
 		def.collideConnected = collideConnected;
 		Joint joint = world.createJoint(def);
-		Gdx.app.error("GDXJoint.attach", "Successfully created joint " + toString());
+		Log.error("GDXJoint.attach", "Successfully created joint " + toString());
 		joint.setUserData(name);
 		return joint;
 	}

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
@@ -38,7 +38,7 @@ public class GDXQuestManager implements Serializable{
 
 	public void setCurrentLevel(GDXLevel currentLevel) {
 		this.currentLevel = currentLevel;
-		Gdx.app.log("GDXQuestManager.setCurrentLevel", "set level: " + currentLevel);
+		Log.log("GDXQuestManager.setCurrentLevel", "set level: " + currentLevel);
 		if(!levelQuestStatusMap.containsKey(currentLevel.getName()) || 
 				!Properties.getBool("quest.status.restore", false)){
 			List<QuestStatus> statuses = new LinkedList<>();
@@ -58,7 +58,7 @@ public class GDXQuestManager implements Serializable{
 	public void tick(){
 		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
 		if(statuses == null){
-			Gdx.app.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
+			Log.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
 			return;
 		}
 		boolean statusChanged = false;	//can't sort while looping through map
@@ -67,7 +67,7 @@ public class GDXQuestManager implements Serializable{
 			if(status.getCompleted() == CompletionEnum.NOT_STARTED || quest.isRepeatable()){
 				if(isActive(quest) && quest.getTrigger().activate()){
 					status.setCompleted(quest.getManifestation().execute());
-					Gdx.app.log("GDXQuestManager.tick", "Quest manifested: " + quest);
+					Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
 					if(quest.isRepeatable())
 						quest.getTrigger().reinitialize();
 					statusChanged = true;

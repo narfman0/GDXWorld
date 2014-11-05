@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.plugin.mode.animation;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
@@ -67,7 +67,7 @@ class AnimationsWindow extends AbstractWindow{
 					};
 					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
-					Gdx.app.error("AnimationsWindow.importButton Listener", 
+					Log.error("AnimationsWindow.importButton Listener", 
 							"Import animations failed: " + e.getClass() + ": " + e.getMessage());
 				}
 			}

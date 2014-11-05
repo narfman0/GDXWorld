@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.polygon;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +19,7 @@ import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
@@ -141,13 +141,13 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 	public void add(Vector2 vertex) {
 		vertices.add(vertex);
 		addToVertexTables(vertex);
-		Gdx.app.log("PolygonWindow.add", " vector: " + vertex + " size: " + vertices.size());
+		Log.log("PolygonWindow.add", " vector: " + vertex + " size: " + vertices.size());
 	}
 
 	public void remove(Vector2 vertex) {
 		vertices.remove(vertex);
 		repopulate();
-		Gdx.app.log("PolygonWindow.remove", " vector: " + vertex + " size: " + vertices.size());
+		Log.log("PolygonWindow.remove", " vector: " + vertex + " size: " + vertices.size());
 	}
 	
 	public List<Vector2> getVertices(){

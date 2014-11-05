@@ -18,7 +18,7 @@ public class Properties {
 			if(handle != null)
 				load(handle.read());
 			else 
-				Gdx.app.error("Properties.<init>", "Failed to load properties, file not found!");
+				Log.error("Properties.<init>", "Failed to load properties, file not found!");
 		}else{
 			System.err.println("Failed to load properties, Gdx.files null!");
 		}

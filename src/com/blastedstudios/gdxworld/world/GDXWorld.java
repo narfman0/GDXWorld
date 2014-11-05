@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.ISerializer;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 
@@ -58,11 +58,11 @@ public class GDXWorld implements Serializable{
 		try{
 			FileUtil.getSerializer(selectedFile).save(selectedFile, this);
 		}catch(Exception e){
-			Gdx.app.error("GDXWorld.save", "Detected serializer failed: " + e.getMessage());
+			Log.error("GDXWorld.save", "Detected serializer failed: " + e.getMessage());
 			try{
 				PluginUtil.getPlugins(ISerializer.class).iterator().next().save(selectedFile, this);
 			}catch(Exception e1){
-				Gdx.app.error("GDXWorld.save", "Default serializer failed: " + e.getMessage());
+				Log.error("GDXWorld.save", "Default serializer failed: " + e.getMessage());
 				e1.printStackTrace();
 			}
 		}
@@ -72,7 +72,7 @@ public class GDXWorld implements Serializable{
 		try{
 			return (GDXWorld) FileUtil.getSerializer(selectedFile).load(selectedFile);
 		}catch(Exception e){
-			Gdx.app.error("GDXWorld.load", "Serializer error: " + e.getMessage());
+			Log.error("GDXWorld.load", "Serializer error: " + e.getMessage());
 			for(ISerializer serializer : getSerializers())
 				try{
 					return (GDXWorld) serializer.load(selectedFile);

@@ -1,6 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.trigger.objectdistance;
 
-import com.badlogic.gdx.Gdx;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 
 /**
@@ -49,7 +49,7 @@ public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 
 	@Override public boolean activate() {
 		if(getProvider().getPhysicsObject(target) == null){
-			Gdx.app.log("ObjectDistanceTrigger.activate", "Target null: " + target);
+			Log.log("ObjectDistanceTrigger.activate", "Target null: " + target);
 			return false;
 		}
 		return getProvider().getPlayerPosition().dst(

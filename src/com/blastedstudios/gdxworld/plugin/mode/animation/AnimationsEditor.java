@@ -20,6 +20,7 @@ import com.blastedstudios.gdxworld.plugin.mode.animation.live.SelectboxGDXAnimat
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimation;
@@ -140,7 +141,7 @@ public class AnimationsEditor extends AbstractWindow {
 					};
 					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
-					Gdx.app.error("AnimationsEditor.exportButton Listener", 
+					Log.error("AnimationsEditor.exportButton Listener", 
 							"Export group failed: " + e.getMessage());
 				}
 			}

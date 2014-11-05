@@ -18,6 +18,7 @@ import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
@@ -82,7 +83,7 @@ class GroupEditor extends AbstractWindow {
 					};
 					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
-					Gdx.app.error("GroupEditor.exportButton Listener", 
+					Log.error("GroupEditor.exportButton Listener", 
 							"Export group failed: " + e.getMessage());
 				}
 			}

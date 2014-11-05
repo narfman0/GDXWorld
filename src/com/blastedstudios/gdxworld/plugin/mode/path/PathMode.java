@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
@@ -23,7 +24,7 @@ public class PathMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PathMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("PathMode.touchDown", "x="+x+ " y="+y);
 		GDXPath path = screen.getLevel().getClosestPath(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || path == null || 
 				path.getClosestNode(coordinates.x, coordinates.y).
@@ -37,13 +38,13 @@ public class PathMode extends AbstractMode {
 	}
 
 	public void addPath(GDXPath path) {
-		Gdx.app.log("PathMode.addPath", path.toString());
+		Log.log("PathMode.addPath", path.toString());
 		if(!screen.getLevel().getPaths().contains(path))
 			screen.getLevel().getPaths().add(path);
 	}
 
 	public void removePath(GDXPath path) {
-		Gdx.app.log("PathMode.removePath", path.toString());
+		Log.log("PathMode.removePath", path.toString());
 		screen.getLevel().getPaths().remove(path);
 	}
 

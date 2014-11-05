@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.mode.animation;
 
+import net.xeoh.plugins.base.annotations.PluginImplementation;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,8 +12,6 @@ import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.util.IMode;
-
-import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 public class AnimationMode extends AbstractMode implements IMode, ILiveOptionProvider {

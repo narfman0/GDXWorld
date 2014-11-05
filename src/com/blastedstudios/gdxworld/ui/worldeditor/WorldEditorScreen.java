@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.ui.worldeditor;
 
-import com.blastedstudios.gdxworld.util.GDXGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,6 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.ui.AbstractScreen;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
+import com.blastedstudios.gdxworld.util.GDXGame;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXWorld;
@@ -64,7 +65,7 @@ public class WorldEditorScreen extends AbstractScreen {
 
 	@Override public boolean scrolled(int amount) {
 		camera.zoom = Math.max(.01f, camera.zoom + amount*camera.zoom/4f);
-		Gdx.app.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
+		Log.log("WorldEditorScreen.scrolled", "Scroll amount: " + amount + " camera.zoom: " + camera.zoom);
 		return false;
 	}
 
@@ -94,9 +95,9 @@ public class WorldEditorScreen extends AbstractScreen {
 				GDXLevel level = gdxWorld.getClosestLevel(coordinates.x,coordinates.y);
 				if(level == null || level.getCoordinates().dst(coordinates.x, coordinates.y) > getLevelRadius()){
 					level = new GDXLevel();
-					Gdx.app.log("WorldEditorScreen.render", "Spawned new level");
+					Log.log("WorldEditorScreen.render", "Spawned new level");
 				}else
-					Gdx.app.log("WorldEditorScreen.render", "Level selected " + level);
+					Log.log("WorldEditorScreen.render", "Level selected " + level);
 				levelInfo = new LevelInformationWindow(game, this, skin, gdxWorld, 
 						worldWindow.getSavedFile(), level);
 				stage.addActor(levelInfo);

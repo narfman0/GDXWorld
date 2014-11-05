@@ -1,7 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.jointremove;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -21,7 +21,7 @@ public class JointRemoveManifestation extends AbstractQuestManifestation{
 		if(joint != null)
 			executor.getWorld().destroyJoint(joint);
 		else
-			Gdx.app.error("JointRemoveManifestation.execute", "Box2d joint null with jointName: " + jointName);
+			Log.error("JointRemoveManifestation.execute", "Box2d joint null with jointName: " + jointName);
 		return CompletionEnum.COMPLETED;
 	}
 

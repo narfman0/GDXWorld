@@ -2,10 +2,10 @@ package com.blastedstudios.gdxworld.physics;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -14,10 +14,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.blastedstudios.gdxworld.math.decomposers.Clipper;
 import com.blastedstudios.gdxworld.math.decomposers.Clipper.Polygonizer;
+import com.blastedstudios.gdxworld.util.Log;
 
 public class PhysicsHelper {
 	public static Body createCircle(World world, float radius, Vector2 position, BodyType type, 
@@ -101,7 +101,7 @@ public class PhysicsHelper {
 		Vector2[][] verts = Clipper.polygonize(Polygonizer.BAYAZIT, 
 				nodes.toArray(new Vector2[nodes.size()]));
 		if(verts == null){
-			Gdx.app.log("GDXPolygon.createFixture", "Can't create fixture(s),"+
+			Log.log("GDXPolygon.createFixture", "Can't create fixture(s),"+
 					" verts null. Did a vertex cross the line segment between"+
 					" two other vertices (e.g. hourglass)?");
 			return null;

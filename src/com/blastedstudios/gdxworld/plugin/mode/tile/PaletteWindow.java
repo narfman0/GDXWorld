@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 
 public class PaletteWindow extends AbstractWindow {
@@ -95,21 +95,21 @@ public class PaletteWindow extends AbstractWindow {
 			Properties.set("tilemode.margin", marginField.getText());
 			Properties.set("tilemode.tilesize", tilesizeField.getText());
 		} catch(NumberFormatException nfe) {
-			Gdx.app.log("PaletteWindow.validateInput", "Invalid input");
+			Log.log("PaletteWindow.validateInput", "Invalid input");
 			margin = 0;
 			spacing = 0;
 			tilesize = 0;
 			return false;
 		}
-		Gdx.app.log("PaletteWindow.validateInput", "Valid input");
+		Log.log("PaletteWindow.validateInput", "Valid input");
 		return true;
 	}
 	
 	private void loadPalette(final String tilesetFile, final int margin, final int spacing, final int tilesize) {
-		Gdx.app.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + tilesetFile);
+		Log.log("TileMode.PaletteWindow.loadPalette", "Loading palette file " + tilesetFile);
 		FileHandle file = FileUtil.find(tilesetFile);
 		if(null == file) {
-			Gdx.app.error("PaletteWindow.loadPalette", "File " + tilesetFile + " not found.");
+			Log.error("PaletteWindow.loadPalette", "File " + tilesetFile + " not found.");
 			return;
 		}
 		clean();

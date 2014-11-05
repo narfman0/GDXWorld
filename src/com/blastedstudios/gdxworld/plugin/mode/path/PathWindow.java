@@ -3,7 +3,6 @@ package com.blastedstudios.gdxworld.plugin.mode.path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXPath;
 
 class PathWindow extends AbstractWindow implements VertexRemoveListener {
@@ -84,14 +84,14 @@ class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		nodes.add(vertex);
 		vertexTables.add(new VertexTable(vertex, skin, this));
 		vertexTables.row();
-		Gdx.app.log("PathWindow.add", " vector: " + vertex);
+		Log.log("PathWindow.add", " vector: " + vertex);
 	}
 
 	public void remove(Vector2 vertex) {
 		nodes.remove(vertex);
 		vertexTables.clear();
 		populateVertexTable();
-		Gdx.app.log("PathWindow.remove", " vector: " + vertex);
+		Log.log("PathWindow.remove", " vector: " + vertex);
 	}
 
 	private void populateVertexTable(){

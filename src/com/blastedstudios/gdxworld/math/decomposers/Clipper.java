@@ -1,13 +1,13 @@
 package com.blastedstudios.gdxworld.math.decomposers;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.math.decomposers.ewjordan.EwjordanDecomposer;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  *

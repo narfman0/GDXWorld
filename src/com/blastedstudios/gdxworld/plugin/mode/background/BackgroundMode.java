@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXBackground;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 
@@ -22,7 +23,7 @@ public class BackgroundMode extends AbstractMode {
 	private BackgroundChooserWindow backgroundChooserWindow;
 	
 	public void addBackground(GDXBackground background) {
-		Gdx.app.log("BackgroundMode.addBackground", background.toString());
+		Log.log("BackgroundMode.addBackground", background.toString());
 		if(!screen.getLevel().getBackgrounds().contains(background)){
 			screen.getLevel().getBackgrounds().add(background);
 			Collections.sort(screen.getLevel().getBackgrounds());
@@ -30,13 +31,13 @@ public class BackgroundMode extends AbstractMode {
 	}
 
 	public void removeBackground(GDXBackground background) {
-		Gdx.app.log("BackgroundMode.removeBackground", background.toString());
+		Log.log("BackgroundMode.removeBackground", background.toString());
 		screen.getLevel().getBackgrounds().remove(background);
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("BackgroundMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("BackgroundMode.touchDown", "x="+x+ " y="+y);
 		if(backgroundWindow == null && backgroundChooserWindow == null){
 			List<GDXBackground> backgrounds = getOverlappingBackgrounds(coordinates.x, coordinates.y);
 			if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || backgrounds.isEmpty())
@@ -76,7 +77,7 @@ public class BackgroundMode extends AbstractMode {
 	private void shift(){
 		if(backgroundWindow != null){
 			GDXBackground background = backgroundWindow.getGDXBackground();
-			Gdx.app.debug("BackgroundMode.touchUp", background.toString() + " to " + coordinates);
+			Log.debug("BackgroundMode.touchUp", background.toString() + " to " + coordinates);
 			Vector2 world = GDXRenderer.fromParallax(backgroundWindow.getDepth(), coordinates, camera);
 			if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)){
 				background.getCoordinates().set(world);

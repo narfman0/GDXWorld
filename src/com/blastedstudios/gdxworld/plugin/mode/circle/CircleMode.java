@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
@@ -31,7 +32,7 @@ public class CircleMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("CircleMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("CircleMode.touchDown", "x="+x+ " y="+y);
 		GDXCircle circle = screen.getLevel().getClosestCircle(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || circle == null || 
 				circle.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -58,14 +59,14 @@ public class CircleMode extends AbstractMode {
 	
 	private void shift(){
 		if(lastTouched != null){
-			Gdx.app.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
+			Log.debug("CircleMode.shift", lastTouched.toString() + " to " + coordinates);
 			if(circleWindow != null)
 				circleWindow.setCenter(coordinates);
 		}
 	}
 
 	public void addCircle(GDXCircle circle) {
-		Gdx.app.log("CircleMode.addCircle", circle.toString());
+		Log.log("CircleMode.addCircle", circle.toString());
 		if(bodies.containsKey(circle))
 			screen.getWorld().destroyBody(bodies.remove(circle));
 		Body body = circle.createFixture(screen.getWorld(), !screen.isLive());

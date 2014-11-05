@@ -2,12 +2,12 @@ package com.blastedstudios.gdxworld.plugin.mode.live;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blastedstudios.gdxworld.physics.CollideCallback;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 
 @PluginImplementation
 public class LiveMode extends AbstractMode {
@@ -17,14 +17,14 @@ public class LiveMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("LiveMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("LiveMode.touchDown", "x="+x+ " y="+y);
 		CollideCallback callback = new CollideCallback();
 		screen.getWorld().QueryAABB(callback, coordinates.x-.01f, coordinates.y-.01f, coordinates.x+.01f, coordinates.y+.01f);
 		lastTouchPolygon = callback.getBody();
 		if(lastTouchPolygon != null){
 			lastTouchCoordinates = new Vector2(coordinates.x, coordinates.y);
 			lastTouchPolygonLocalCoordinates = lastTouchPolygon.getLocalPoint(lastTouchCoordinates);
-			Gdx.app.log("LiveMode.touchDown", "touched world coords: " + lastTouchCoordinates +
+			Log.log("LiveMode.touchDown", "touched world coords: " + lastTouchCoordinates +
 					" touched poly local coords: " + lastTouchPolygonLocalCoordinates);
 		}
 		return false;
@@ -36,7 +36,7 @@ public class LiveMode extends AbstractMode {
 		if(lastTouchPolygon != null){
 			Vector2 impulse = new Vector2(coordinates.x, coordinates.y).
 					sub(lastTouchCoordinates).scl(lastTouchPolygon.getMass());
-			Gdx.app.log("LiveMode.touchUp", "applying impulse: " + 
+			Log.log("LiveMode.touchUp", "applying impulse: " + 
 					impulse + " on body: " + lastTouchPolygon.getPosition());
 			lastTouchPolygon.applyLinearImpulse(impulse, 
 					lastTouchPolygonLocalCoordinates.add(lastTouchPolygon.getPosition()),true);

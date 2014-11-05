@@ -2,8 +2,8 @@ package com.blastedstudios.gdxworld.plugin.mode.quest;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.badlogic.gdx.Gdx;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
@@ -22,7 +22,7 @@ public class QuestMode extends AbstractMode {
 	}
 
 	public void addQuest(GDXQuest quest) {
-		Gdx.app.log("QuestMouseMode.addQuest", quest.toString());
+		Log.log("QuestMouseMode.addQuest", quest.toString());
 		if(!screen.getLevel().getQuests().contains(quest))
 			screen.getLevel().getQuests().add(quest);
 	}

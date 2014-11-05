@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXNPC;
 
@@ -21,7 +22,7 @@ public class NPCMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("NPCMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("NPCMode.touchDown", "x="+x+ " y="+y);
 		GDXNPC npc = screen.getLevel().getClosestNPC(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || npc == null || 
 				npc.getCoordinates().dst(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -48,20 +49,20 @@ public class NPCMode extends AbstractMode {
 	
 	private void shift(){
 		if(lastTouched != null){
-			Gdx.app.debug("NPCMode.touchDown", lastTouched.toString() + " to " + coordinates);
+			Log.debug("NPCMode.touchDown", lastTouched.toString() + " to " + coordinates);
 			if(npcWindow != null)
 				npcWindow.setCoordinates(coordinates);
 		}
 	}
 
 	public void addNPC(GDXNPC npc){
-		Gdx.app.log("NPCMode.addNPC", npc.toString());
+		Log.log("NPCMode.addNPC", npc.toString());
 		if(!screen.getLevel().getNpcs().contains(npc))
 			screen.getLevel().getNpcs().add(npc);
 	}
 
 	public void removeNPC(GDXNPC npc) {
-		Gdx.app.log("NPCMode.removeNPC", npc.toString());
+		Log.log("NPCMode.removeNPC", npc.toString());
 		screen.getLevel().getNpcs().remove(npc);
 	}
 

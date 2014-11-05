@@ -1,7 +1,7 @@
 package com.blastedstudios.gdxworld.plugin.quest.trigger.aabb;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 
 /**
@@ -42,7 +42,7 @@ public class AABBTrigger extends AbstractQuestTrigger {
 	
 	@Override public boolean activate() {
 		if(getProvider().getPlayerPosition() == null){
-			Gdx.app.log("AABBTrigger.activate", "Player position null");
+			Log.log("AABBTrigger.activate", "Player position null");
 			return false;
 		}
 		return getProvider().getPlayerPosition().x < upperRight.x && getProvider().getPlayerPosition().y < upperRight.y &&

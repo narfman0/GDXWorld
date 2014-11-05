@@ -1,9 +1,9 @@
 package com.blastedstudios.gdxworld.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.blastedstudios.gdxworld.util.Log;
 
 /**
  * Simple input handler that moves an orthographic camera in the X,Y axis when
@@ -58,7 +58,7 @@ public class MouseCameraScroller extends InputAdapter {
         @Override
 	public boolean touchDragged(int x, int y, int ptr) {
 		if(buttonHeld) {
-		    Gdx.app.debug("MouseCameraScroller.touchDragged", "X: " + x + "  Y: " + y);
+		    Log.debug("MouseCameraScroller.touchDragged", "X: " + x + "  Y: " + y);
 		    
 		    Vector3 world0 = new Vector3(screen0);
 		    camera.unproject(world0);

@@ -1,6 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.platform;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.plugin.mode.quest.ManifestationTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
 public class PlatformManifestationTable extends ManifestationTable{
@@ -112,9 +112,9 @@ public class PlatformManifestationTable extends ManifestationTable{
 	
 	public void touched(Vector2 coordinates){
 		if(clickTarget == nameField)
-			Gdx.app.log("PlatformManifestationTable.touched", "Not implemented, need to pass GDXLevel in");
+			Log.log("PlatformManifestationTable.touched", "Not implemented, need to pass GDXLevel in");
 		else if(clickTarget == jointField)
-			Gdx.app.log("PlatformManifestationTable.touched", "Not implemented, need to pass GDXLevel in");
+			Log.log("PlatformManifestationTable.touched", "Not implemented, need to pass GDXLevel in");
 		else if(clickTarget == pointATable)
 			pointATable.setVertex(coordinates.x, coordinates.y);
 		else if(clickTarget == pointBTable)

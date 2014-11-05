@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.ui.FileChooser.Listener;
 
 public class FileChooserWrapper {
@@ -15,7 +16,7 @@ public class FileChooserWrapper {
 		Listener listener = new Listener() {
 			@Override public void choose(Array<FileHandle> files) {
 				fc.remove();
-				Gdx.app.error("FileChooserWrapper::Listener.choose", "Can't handle more than one selected file, returning first!");
+				Log.error("FileChooserWrapper::Listener.choose", "Can't handle more than one selected file, returning first!");
 				fileChooserHandler.handle(files.get(0));
 			}
 			@Override public void choose(FileHandle file) {

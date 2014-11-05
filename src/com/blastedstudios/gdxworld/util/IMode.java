@@ -1,5 +1,7 @@
 package com.blastedstudios.gdxworld.util;
 
+import net.xeoh.plugins.base.Plugin;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -7,8 +9,6 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.world.GDXLevel;
-
-import net.xeoh.plugins.base.Plugin;
 
 public interface IMode extends Plugin {
 	 boolean touchDown(int x, int y, int x1, int y1);

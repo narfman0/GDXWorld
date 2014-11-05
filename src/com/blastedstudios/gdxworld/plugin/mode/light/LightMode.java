@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
 
@@ -18,7 +19,7 @@ public class LightMode extends AbstractMode {
 	private RayHandler rayHandler;
 	
 	public void addLight(GDXLight light){
-		Gdx.app.debug("LightMode.addLight", "Adding light");
+		Log.debug("LightMode.addLight", "Adding light");
 		if(!screen.getLevel().getLights().contains(light))
 			screen.getLevel().getLights().add(light);
 	}

@@ -19,6 +19,7 @@ import com.blastedstudios.gdxworld.math.PolygonUtils;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.ui.leveleditor.AbstractMode;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.TiledMeshRenderer;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -38,7 +39,7 @@ public class PolygonMode extends AbstractMode {
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
-		Gdx.app.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
+		Log.debug("PolygonMouseMode.touchDown", "x="+x+ " y="+y);
 		GDXPolygon polygon = screen.getLevel().getClosestPolygon(coordinates.x, coordinates.y);
 		if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || polygon == null || 
 				polygon.getDistance(coordinates.x, coordinates.y) > LevelEditorScreen.getNodeRadius())
@@ -96,7 +97,7 @@ public class PolygonMode extends AbstractMode {
 	}
 
 	public boolean addPolygon(GDXPolygon polygon){
-		Gdx.app.log("PolygonMode.addPolygon", polygon.toString());
+		Log.log("PolygonMode.addPolygon", polygon.toString());
 		if(bodies.containsKey(polygon))
 			screen.getWorld().destroyBody(bodies.remove(polygon));
 		Body body = polygon.createFixture(screen.getWorld(), !screen.isLive());
@@ -110,7 +111,7 @@ public class PolygonMode extends AbstractMode {
 	}
 
 	public void removePolygon(GDXPolygon polygon) {
-		Gdx.app.log("PolygonMode.removePolygon", polygon.toString());
+		Log.log("PolygonMode.removePolygon", polygon.toString());
 		screen.getWorld().destroyBody(bodies.remove(polygon));
 		screen.getLevel().getPolygons().remove(polygon);
 		tiledMeshRenderer = null;

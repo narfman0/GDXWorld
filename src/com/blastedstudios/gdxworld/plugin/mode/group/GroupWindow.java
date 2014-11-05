@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.plugin.mode.group;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.FileUtil;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper;
 import com.blastedstudios.gdxworld.util.ui.FileChooserWrapper.IFileChooserHandler;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
@@ -72,7 +72,7 @@ class GroupWindow extends AbstractWindow {
 					};
 					FileChooserWrapper.createFileChooser(getStage(), skin, handler);
 				} catch (Exception e) {
-					Gdx.app.error("GroupWindow.importButton Listener", 
+					Log.error("GroupWindow.importButton Listener", 
 							"Import group failed: " + e.getClass() + ": " + e.getMessage());
 				}
 			}
