@@ -78,7 +78,7 @@ public abstract class GDXJoint implements Cloneable,Serializable {
 		def.type = jointType;
 		def.collideConnected = collideConnected;
 		Joint joint = world.createJoint(def);
-		Log.error("GDXJoint.attach", "Successfully created joint " + toString());
+		Log.log("GDXJoint.attach", "Successfully created joint " + toString());
 		joint.setUserData(name);
 		return joint;
 	}
