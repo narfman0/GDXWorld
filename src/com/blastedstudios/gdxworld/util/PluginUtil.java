@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 public class PluginUtil {
 	private static PluginManagerUtil pluginManager;
+	// used to cache results. This was crawling to a halt in 32 bit, with 
+	// top 6 CPU dominators as plugins related code
+	private static HashMap<Object, Object> interfacePluginListMap = new HashMap<>();
 	
 	/**
 	 * Initialize pluginManager for the util, should be calld firstest
@@ -30,9 +34,14 @@ public class PluginUtil {
 		pluginManager = new PluginManagerUtil(pm);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T extends Plugin> Collection<T> getPlugins(Class<T> theInterface){
-		LinkedList<T> plugins = new LinkedList<>(pluginManager.getPlugins(theInterface));
-		Collections.sort(plugins, new Sorter<T>());
+		Collection<T> plugins = (Collection<T>) interfacePluginListMap.get(theInterface);
+		if(plugins == null){
+			LinkedList<T> pluginsList = new LinkedList<>(pluginManager.getPlugins(theInterface));
+			Collections.sort(pluginsList, new Sorter<T>());
+			interfacePluginListMap.put(theInterface, plugins = pluginsList);
+		}
 		return plugins;
 	}
 	
