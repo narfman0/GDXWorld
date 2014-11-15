@@ -28,7 +28,7 @@ public class QuestTable extends Table{
 					int index = Integer.parseInt(quest.getName().substring(baseName.length())) + 1;
 					child.setName(baseName + index);
 				}catch(Exception e){
-					e.printStackTrace();
+					child.setName(quest.getName() + "-0");
 				}
 				child.setPrerequisites(quest.getName());
 				questWindow.addQuest(child);
