@@ -52,6 +52,10 @@ public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 			Log.log("ObjectDistanceTrigger.activate", "Target null: " + target);
 			return false;
 		}
+		if(getProvider().getPlayerPosition() == null){
+			Log.log("ObjectDistanceTrigger.activate", "Player position null");
+			return false;
+		}
 		return getProvider().getPlayerPosition().dst(
 				getProvider().getPhysicsObject(target).getPosition()) <= distance &&
 				(!actionRequired || getProvider().isAction());
