@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.ui;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -23,6 +24,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.blastedstudios.gdxworld.ui.drawable.BackgroundDrawable;
+import com.blastedstudios.gdxworld.ui.drawable.Drawable;
+import com.blastedstudios.gdxworld.ui.drawable.ShapeDrawable;
 import com.blastedstudios.gdxworld.util.BlurUtil;
 import com.blastedstudios.gdxworld.util.FileUtil;
 import com.blastedstudios.gdxworld.util.Log;
@@ -57,6 +61,16 @@ public class GDXRenderer {
 				drawShape(assetManager, camera, entry.getKey(), entry.getValue(), batch);
 	}
 	
+	public LinkedList<Drawable> generateDrawables(AssetManager assetManager, Batch batch,
+			GDXLevel level, Camera camera, Iterable<Entry<GDXShape,Body>> bodies){
+		LinkedList<Drawable> drawables = new LinkedList<>();
+		for(GDXBackground background : level.getBackgrounds())
+			drawables.add(new BackgroundDrawable(background));
+		for(Entry<GDXShape,Body> entry : bodies)
+			drawables.add(new ShapeDrawable(entry.getKey(), entry.getValue()));
+		return drawables;
+	}
+	
 	public void drawTile(OrthographicCamera camera, GDXTile tile, Batch batch) {
 		Texture texture = getTexture(tile.getResource());
 		if(texture != null) {
@@ -66,11 +80,11 @@ public class GDXRenderer {
 		}
 	}
 	
-	public void drawShape(AssetManager assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch){
+	public void drawShape(AssetManager assetManager, Camera camera, GDXShape shape, Body body, Batch batch){
 		drawShape(assetManager, camera, shape, body, batch, 1f);
 	}
 	
-	public void drawShape(AssetManager assetManager, OrthographicCamera camera, GDXShape shape, Body body, Batch batch, float alpha){
+	public void drawShape(AssetManager assetManager, Camera camera, GDXShape shape, Body body, Batch batch, float alpha){
 		if(shape.getResource().isEmpty()){
 			Log.debug("GDXRenderer.drawShape", "Resource empty string, not drawing");
 			return;
@@ -98,6 +112,7 @@ public class GDXRenderer {
 			Log.debug("GDXRenderer.drawBackground", "Background texture name empty, skipping");
 			return;
 		}
+		
 		Texture texture = null;
 		if(background.getDepth() == 1f || !USE_DEPTH_BLUR)
 			try{
