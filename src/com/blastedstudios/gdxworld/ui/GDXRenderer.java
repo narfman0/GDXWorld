@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
@@ -98,8 +99,13 @@ public class GDXRenderer {
 			return;
 		}
 		Texture texture = null;
-		if(background.getDepth() == 1f || !USE_DEPTH_BLUR) 
-			texture = assetManager.get(background.getTexture());
+		if(background.getDepth() == 1f || !USE_DEPTH_BLUR)
+			try{
+				texture = assetManager.get(background.getTexture());
+			}catch(GdxRuntimeException e){
+				Gdx.app.error("GDXRenderer.drawBackground", "Texture not available: " + background.getTexture());
+				texture = getTexture(background.getTexture());
+			}
 		else
 			texture = getBlurTexture(background.getTexture(), background.getDepth());
 		if(texture != null){
