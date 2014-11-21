@@ -14,9 +14,7 @@ public class TiledMeshRendererDrawable extends Drawable {
 	}
 
 	@Override public void render(float dt, AssetManager assetManager, Batch batch, Camera camera, GDXRenderer renderer) {
+		batch.flush(); //TODO don't blow away BackgroundDrawables, make more elegant
 		tiledMeshRenderer.render(camera);
-		// mesh renderer uses different shader and changes state, this easily changes it back
-		batch.end();
-		batch.begin();
 	}
 }
