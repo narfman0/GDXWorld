@@ -6,7 +6,6 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -18,6 +17,7 @@ import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable.VertexRemoveListener;
 import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.world.GDXPath;
+import com.blastedstudios.gdxworld.world.GDXPath.CompletionEnum;
 
 class PathWindow extends AbstractWindow implements VertexRemoveListener {
 	private final Table vertexTables;
@@ -38,6 +38,10 @@ class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
+		final com.badlogic.gdx.scenes.scene2d.ui.List<CompletionEnum> completionList = 
+				new com.badlogic.gdx.scenes.scene2d.ui.List<GDXPath.CompletionEnum>(skin);
+		completionList.setItems(CompletionEnum.values());
+		completionList.setSelected(path.getCompletionCriteria());
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				vertexTables.clear();
@@ -47,6 +51,7 @@ class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				path.setName(nameField.getText());
+				path.setCompletionCriteria(completionList.getSelected());
 				path.setNodes(nodes);
 				mode.addPath(path);
 				mode.clean();
@@ -68,9 +73,13 @@ class PathWindow extends AbstractWindow implements VertexRemoveListener {
 		populateVertexTable();
 		add(scrollPane).colspan(3);
 		row();
-		add(new Label("Name: ", skin));
+		add(clearButton).colspan(3);
+		row();
+		add("Name: ");
 		add(nameField);
-		add(clearButton);
+		row();
+		add("Upon Completion: ");
+		add(completionList);
 		row();
 		add(acceptButton);
 		add(cancelButton);
