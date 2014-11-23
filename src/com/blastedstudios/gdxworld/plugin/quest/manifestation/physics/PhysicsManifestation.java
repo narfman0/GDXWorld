@@ -1,9 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blastedstudios.gdxworld.util.Log;
+import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 
@@ -51,19 +50,8 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 	}
 
 	@Override public CompletionEnum execute() {
-		Body body = executor.getPhysicsObject(name); 
-		if(body == null){
-			Log.error("PhysicsManifestation.execute", "Can't find physics object " + name);
-			return CompletionEnum.COMPLETED;
-		}
-		body.applyLinearImpulse(impulse, body.getPosition(),true);
-		if(hasVelocity)
-			body.setLinearVelocity(relativeVelocity ? body.getLinearVelocity().cpy().add(velocity) : velocity);
-		if(hasPosition)
-			body.setTransform(relativePosition ? body.getPosition().cpy().add(position) : position, 
-					hasAngle ? (relativeAngle ? body.getAngle() + angle : angle) : body.getAngle());
-		body.setType(type);
-		body.applyTorque(torque,true);
+		for(IPhysicsManifestationHandler handler : PluginUtil.getPlugins(IPhysicsManifestationHandler.class))
+			handler.execute(this);
 		return CompletionEnum.COMPLETED;
 	}
 
