@@ -90,9 +90,9 @@ public class LevelEditorScreen extends AbstractScreen {
 			camera.position.x+=camera.zoom;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			camera.position.x-=camera.zoom;
-		if(Gdx.input.isKeyPressed(Keys.E))
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyPressed(Keys.E))
 			scrolled(1);
-		if(Gdx.input.isKeyPressed(Keys.Q))
+		if(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyPressed(Keys.Q))
 			scrolled(-1);
 		if(Gdx.input.isKeyPressed(Keys.S) && Gdx.input.isKeyPressed(Keys.CONTROL_LEFT))
 			gdxWorld.save(selectedFile);
