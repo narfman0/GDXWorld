@@ -1,8 +1,5 @@
 package com.blastedstudios.gdxworld.plugin.mode.npc;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -17,11 +14,11 @@ import com.blastedstudios.gdxworld.world.GDXNPC;
 
 class NPCWindow extends AbstractWindow {
 	private final VertexTable coordinates;
-	private final HashMap<String, TextField> properties;
+	private final NPCPropertyTable propertyTable;
 	
 	public NPCWindow(final Skin skin, final NPCMode mode, final GDXNPC npc) {
 		super("NPC Editor", skin);
-		properties = new HashMap<>();
+		propertyTable = new NPCPropertyTable(skin, npc);
 		final TextField nameField = new TextField("", skin);
 		nameField.setMessageText("<npc name>");
 		nameField.setText(npc.getName());
@@ -34,8 +31,7 @@ class NPCWindow extends AbstractWindow {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				npc.setName(nameField.getText());
 				npc.setCoordinates(coordinates.getVertex());
-				for(String key : npc.getProperties().keySet())
-					npc.getProperties().put(key, properties.get(key).getText());
+				propertyTable.apply();
 				mode.addNPC(npc);
 				mode.clean();
 			}
@@ -54,15 +50,8 @@ class NPCWindow extends AbstractWindow {
 		add(new Label("Name: ", skin));
 		add(nameField);
 		row();
-		for(Entry<String,String> entry : npc.getProperties().entrySet()){
-			add(new Label(entry.getKey() + ": ", skin));
-			final TextField propertyField = new TextField("", skin);
-			propertyField.setMessageText("<" + entry.getKey() + ">");
-			propertyField.setText(entry.getValue());
-			properties.put(entry.getKey(), propertyField);
-			add(propertyField);
-			row();
-		}
+		add(propertyTable).colspan(2);
+		row();
 		add(new Label("Coordinates: ", skin));
 		add(coordinates).colspan(2);
 		row();
