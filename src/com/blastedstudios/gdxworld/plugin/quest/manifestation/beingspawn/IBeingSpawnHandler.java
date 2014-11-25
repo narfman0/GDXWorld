@@ -3,10 +3,10 @@ package com.blastedstudios.gdxworld.plugin.quest.manifestation.beingspawn;
 import net.xeoh.plugins.base.Plugin;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.badlogic.gdx.math.Vector2;
+import com.blastedstudios.gdxworld.world.GDXNPC;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 
 @PluginImplementation
 public interface IBeingSpawnHandler extends Plugin{
-	CompletionEnum beingSpawn(String being, Vector2 coordinates, String path, String npcData);
+	CompletionEnum beingSpawn(GDXNPC npc);
 }
