@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.animation.GDXAnimations;
 import com.blastedstudios.gdxworld.world.group.GDXGroup;
@@ -283,19 +284,27 @@ public class GDXLevel implements Cloneable,Serializable{
 		Map<String,Joint> jointMap = new HashMap<String, Joint>();
 		for(GDXJoint joint : joints)
 			if(!(joint instanceof GearJoint)){
-				Joint physicsJoint = joint.attach(world);
-				jointMap.put(joint.getName(), physicsJoint);
-				returnJoints.put(joint, physicsJoint);
+				try{
+					Joint physicsJoint = joint.attach(world);
+					jointMap.put(joint.getName(), physicsJoint);
+					returnJoints.put(joint, physicsJoint);
+				}catch(Exception e){
+					Log.error("GDXLevel.createJoints", "Error creating reg joint: " + joint.toString());
+				}
 			}
 		//Need to initialize other joints first since GearJoint depends on them
 		//being done
 		for(GDXJoint joint : joints)
 			if(joint instanceof GearJoint){
-				GearJoint gearJoint = (GearJoint) joint;
-				gearJoint.initialize(jointMap.get(gearJoint.getJoint1()), 
-						jointMap.get(gearJoint.getJoint2()));
-				Joint physicsJoint = joint.attach(world);
-				returnJoints.put(joint, physicsJoint);
+				try{
+					GearJoint gearJoint = (GearJoint) joint;
+					gearJoint.initialize(jointMap.get(gearJoint.getJoint1()), 
+							jointMap.get(gearJoint.getJoint2()));
+					Joint physicsJoint = joint.attach(world);
+					returnJoints.put(joint, physicsJoint);
+				}catch(Exception e){
+					Log.error("GDXLevel.createJoints", "Error creating gear joint: " + joint.toString());
+				}
 			}
 		return returnJoints;
 	}
