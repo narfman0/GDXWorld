@@ -24,7 +24,7 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 	}
 
 	@Override public AbstractQuestManifestation clone() {
-		return new BeingSpawnManifestation(npc);
+		return new BeingSpawnManifestation((GDXNPC) npc.clone());
 	}
 
 	@Override public String toString() {

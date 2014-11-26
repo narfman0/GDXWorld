@@ -23,7 +23,7 @@ public class GDXNPC implements  Cloneable,Serializable{
 	private static int count = 0;
 	private String name = "NPC-"+count++;
 	private Vector2 coordinates = new Vector2();
-	private Map<String,String> properties;
+	private Map<String, String> properties;
 	
 	public GDXNPC(){
 		createProperties();
@@ -67,8 +67,8 @@ public class GDXNPC implements  Cloneable,Serializable{
 		GDXNPC npc = new GDXNPC();
 		npc.setCoordinates(coordinates.cpy());
 		npc.setName(name);
-		for(Entry<String,String> entry : properties.entrySet())
-			npc.properties.put(entry.getKey(), entry.getValue());
+		for(Entry<String, String> entry : getProperties().entrySet())
+			npc.getProperties().put(entry.getKey(), entry.getValue());
 		return npc;
 	}
 	
