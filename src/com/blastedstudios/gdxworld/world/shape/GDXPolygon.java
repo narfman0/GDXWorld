@@ -94,6 +94,7 @@ public class GDXPolygon extends GDXShape implements Serializable{
 		GDXPolygon clone = new GDXPolygon();
 		for(Vector2 vertex : vertices)
 			clone.getVertices().add(vertex.cpy());
+		clone.setRepeatable(repeatable);
 		return super.clone(clone);
 	}
 
