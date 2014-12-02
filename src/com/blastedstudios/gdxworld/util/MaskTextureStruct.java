@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 public class MaskTextureStruct {
 	private final static String FRAGMENT_SHADER = 
@@ -32,10 +33,12 @@ public class MaskTextureStruct {
 	static final ShaderProgram SHADER = new ShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
 	public final Mesh mesh;
 	public final Texture texture;
+	public final GDXPolygon polygon;
 
-	public MaskTextureStruct(Mesh mesh, Texture texture){
+	public MaskTextureStruct(Mesh mesh, Texture texture, GDXPolygon polygon){
 		this.mesh = mesh;
 		this.texture = texture;
+		this.polygon = polygon;
 	}
 	
 	public void render(Camera camera){
