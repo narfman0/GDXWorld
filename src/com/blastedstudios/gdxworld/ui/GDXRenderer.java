@@ -100,7 +100,7 @@ public class GDXRenderer {
 			Sprite sprite = new Sprite(texture);
 			sprite.setScale(SHAPE_SCALE);
 			sprite.setRotation((float)Math.toDegrees(body.getAngle()));
-			sprite.setPosition(body.getWorldCenter().x - texture.getWidth()/2f, body.getWorldCenter().y - texture.getHeight()/2f);
+			sprite.setPosition(body.getPosition().x - texture.getWidth()/2f, body.getPosition().y - texture.getHeight()/2f);
 			if(alpha != 1f)
 				sprite.setAlpha(alpha);
 			sprite.draw(batch);
