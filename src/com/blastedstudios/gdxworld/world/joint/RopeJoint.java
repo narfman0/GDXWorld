@@ -8,11 +8,7 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 public class RopeJoint extends GDXJoint {
 	private static final long serialVersionUID = 1L;
 	private float maxLength;
-	private transient Vector2 center;
-	
-	public RopeJoint(Vector2 center){
-		this.center = center;
-	}
+	private Vector2 center = new Vector2();
 	
 	@Override public Joint attach(World world) {
 		RopeJointDef def = new RopeJointDef();
@@ -20,21 +16,10 @@ public class RopeJoint extends GDXJoint {
 		return attach(world, def);
 	}
 
-	public float getMaxLength() {
-		return maxLength;
-	}
-
-	public void setMaxLength(float maxLength) {
-		this.maxLength = maxLength;
-	}
-
-	@Override public Vector2 getCenter() {
-		return center.cpy();
-	}
-
 	@Override public Object clone() {
-		RopeJoint clone = new RopeJoint(center.cpy());
+		RopeJoint clone = new RopeJoint();
 		clone.setMaxLength(maxLength);
+		clone.setCenter(center.cpy());
 		return super.clone(clone);
 	}
 
@@ -44,5 +29,21 @@ public class RopeJoint extends GDXJoint {
 
 	@Override public void scl(float scalar) {
 		center.scl(scalar);
+	}
+
+	@Override public Vector2 getCenter() {
+		return center.cpy();
+	}
+
+	public void setCenter(Vector2 center) {
+		this.center = center;
+	}
+
+	public float getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(float maxLength) {
+		this.maxLength = maxLength;
 	}
 }
