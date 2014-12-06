@@ -37,7 +37,7 @@ public class RectangleTable extends Table {
 		shapeTable.apply(polygon);
 	}
 	
-	private float parseWidth(){
+	public float parseWidth(){
 		try{
 			return Float.parseFloat(widthField.getText());
 		}catch(Exception e){
@@ -45,7 +45,7 @@ public class RectangleTable extends Table {
 		}
 	}
 	
-	private float parseHeight(){
+	public float parseHeight(){
 		try{
 			return Float.parseFloat(heightField.getText());
 		}catch(Exception e){

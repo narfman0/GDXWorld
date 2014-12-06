@@ -32,7 +32,7 @@ import com.blastedstudios.gdxworld.world.shape.GDXShape;
 public class ChainWindow extends AbstractWindow {
 	private static int chainCount = 0;
 	private final VertexTable startTable, endTable;
-	private final TextField distanceField, nameField, resourceField;
+	private final TextField distanceField, nameField;
 	private final CircleTable circleTable;
 	private final RectangleTable rectangleTable;
 	private final Table shapeTable;
@@ -46,8 +46,6 @@ public class ChainWindow extends AbstractWindow {
 		nameField.setMessageText("<chain name>");
 		distanceField = new TextField(Properties.get("level.chain.distance", "1"), skin);
 		distanceField.setMessageText("<distance to next shape in chain");
-		resourceField = new TextField("chain.png", skin);
-		resourceField.setMessageText("<resource>");
 		final Button createButton = new TextButton("Create", skin);
 		createButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -108,11 +106,19 @@ public class ChainWindow extends AbstractWindow {
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeType.Line);
 		renderer.setColor(Color.ORANGE);
-		float radius = circleTable.getRadius();
-		Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
-		for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
-			Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
-			renderer.circle(coordinates.x, coordinates.y, radius);
+		if(circleBox.isChecked()){
+			float radius = circleTable.getRadius();
+			Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
+			for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
+				Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
+				renderer.circle(coordinates.x, coordinates.y, radius);
+			}
+		}else{
+			Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
+			for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
+				Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
+				renderer.box(coordinates.x, coordinates.y, 0, rectangleTable.getWidth(), rectangleTable.getHeight(), 0);
+			}
 		}
 		renderer.end();
 	}
@@ -142,7 +148,6 @@ public class ChainWindow extends AbstractWindow {
 				circle.setBodyType(BodyType.DynamicBody);
 				circle.setCenter(coordinates);
 				circle.setRadius(circleTable.getRadius());
-				circle.setResource(resourceField.getText());
 				circleTable.apply(circle);
 				level.getCircles().add(circle);
 				shapes.add(circle);
@@ -150,7 +155,6 @@ public class ChainWindow extends AbstractWindow {
 				GDXPolygon rectangle = new GDXPolygon();
 				rectangle.setBodyType(BodyType.DynamicBody);
 				rectangle.setCenter(coordinates);
-				rectangle.setResource(resourceField.getText());
 				rectangleTable.apply(rectangle);
 				level.getPolygons().add(rectangle);
 				shapes.add(rectangle);
