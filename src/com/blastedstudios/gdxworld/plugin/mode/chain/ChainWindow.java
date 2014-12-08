@@ -117,7 +117,7 @@ public class ChainWindow extends AbstractWindow {
 			Vector2 dir = endTable.getVertex().cpy().sub(startTable.getVertex()).nor();
 			for(float i=0; i<startTable.getVertex().dst(endTable.getVertex()); i+=parseFrequency()){
 				Vector2 coordinates = startTable.getVertex().cpy().add(dir.cpy().scl(i));
-				renderer.box(coordinates.x, coordinates.y, 0, rectangleTable.getWidth(), rectangleTable.getHeight(), 0);
+				renderer.box(coordinates.x, coordinates.y, 0, rectangleTable.parseWidth(), rectangleTable.parseHeight(), 0);
 			}
 		}
 		renderer.end();

@@ -30,10 +30,11 @@ public class RectangleTable extends Table {
 	}
 	
 	public void apply(GDXPolygon polygon){
-		polygon.getVertices().add(new Vector2(-parseWidth(), parseHeight()));
-		polygon.getVertices().add(new Vector2(parseWidth(), parseHeight()));
-		polygon.getVertices().add(new Vector2(parseWidth(), -parseHeight()));
-		polygon.getVertices().add(new Vector2(-parseWidth(), -parseHeight()));
+		float x = parseWidth()/2f, y = parseHeight()/2f;
+		polygon.getVertices().add(new Vector2(-x, y));
+		polygon.getVertices().add(new Vector2(x, y));
+		polygon.getVertices().add(new Vector2(x, -y));
+		polygon.getVertices().add(new Vector2(-x, -y));
 		shapeTable.apply(polygon);
 	}
 	
