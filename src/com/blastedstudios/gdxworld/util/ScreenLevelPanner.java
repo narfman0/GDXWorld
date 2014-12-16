@@ -14,14 +14,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXLevel.CreateLevelReturnStruct;
-import com.blastedstudios.gdxworld.world.GDXWorld;
 import com.blastedstudios.gdxworld.world.metadata.CameraShot;
 
 public class ScreenLevelPanner implements Disposable{
 	private static final float TIME_TO_TRANSITION = Properties.getFloat("screen.panner.transition.time", 10f),
 			VELOCITY_SCALAR = Properties.getFloat("screen.panner.velocity.scalar", 1f);
 	private final GDXRenderer gdxRenderer;
-	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final ITransitionListener listener;
 	private AssetManager assetManager;
@@ -36,34 +34,21 @@ public class ScreenLevelPanner implements Disposable{
 	private boolean signalled = false;
 	private CameraShot shot;
 
-	public ScreenLevelPanner(GDXWorld gdxWorld, GDXRenderer gdxRenderer, ITransitionListener listener){
-		this.gdxWorld = gdxWorld;
+	public ScreenLevelPanner(GDXLevel gdxLevel, GDXRenderer gdxRenderer, ITransitionListener listener){
+		this.gdxLevel = gdxLevel;
 		this.gdxRenderer = gdxRenderer;
 		this.listener = listener;
 		random = new Random();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.zoom = Properties.getFloat("gameplay.camera.zoom", .02f);
-		transitionLevel();
-	}
-
-	public void transitionLevel(){
-		GDXLevel nextLevel;
-		do{
-			nextLevel = gdxWorld.getLevels().get(random.nextInt(gdxWorld.getLevels().size()));
-		}while(nextLevel == gdxLevel && gdxWorld.getLevels().size() != 1);
-		initializeLevel(nextLevel);
-	}
-
-	public void initializeLevel(GDXLevel level){
-		this.gdxLevel = level;
 		world = new World(new Vector2(0, -10), true);
-		struct = level.createLevel(world);
+		struct = gdxLevel.createLevel(world);
 		rayHandler = struct.lights.rayHandler;
-		tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, level.getPolygons());
+		tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, gdxLevel.getPolygons());
 		assetManager = gdxLevel.createAssetManager(false);
 		try{
-			int shotIndex = random.nextInt(level.getMetadata().getCameraShots().size());
-			shot = level.getMetadata().getCameraShots().get(shotIndex);
+			int shotIndex = random.nextInt(gdxLevel.getMetadata().getCameraShots().size());
+			shot = gdxLevel.getMetadata().getCameraShots().get(shotIndex);
 			camera.position.set(shot.getPosition(), 0f);
 		}catch(Exception e){
 			//probably doesn't have shots
