@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.blastedstudios.gdxworld.util.ExtensionFileFilter;
 import com.blastedstudios.gdxworld.util.Log;
+import com.blastedstudios.gdxworld.util.Properties;
 import com.thoughtworks.xstream.XStream;
 
 public abstract class AbstractXStreamSerializer {
@@ -19,7 +20,8 @@ public abstract class AbstractXStreamSerializer {
 		xStream.alias("Vector2", com.badlogic.gdx.math.Vector2.class);
 		xStream.aliasPackage("world", "com.blastedstudios.gdxworld.world");
 		xStream.aliasPackage("plugin", "com.blastedstudios.gdxworld.plugin");
-		xStream.registerConverter(new LevelConverter(xStream));
+		if(Properties.getBool("levelconverter.marshal.use", false))
+			xStream.registerConverter(new LevelConverter(xStream));
 	}
 	
 	public Object load(FileHandle selectedFile) throws Exception {
