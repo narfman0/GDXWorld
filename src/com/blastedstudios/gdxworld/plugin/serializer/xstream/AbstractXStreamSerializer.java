@@ -19,7 +19,7 @@ public abstract class AbstractXStreamSerializer {
 		xStream.alias("Vector2", com.badlogic.gdx.math.Vector2.class);
 		xStream.aliasPackage("world", "com.blastedstudios.gdxworld.world");
 		xStream.aliasPackage("plugin", "com.blastedstudios.gdxworld.plugin");
-		xStream.registerConverter(new LevelConverter(xStream.getMapper(), xStream.getReflectionProvider()));
+		xStream.registerConverter(new LevelConverter(xStream));
 	}
 	
 	public Object load(FileHandle selectedFile) throws Exception {
