@@ -29,6 +29,7 @@ import com.blastedstudios.gdxworld.world.group.GDXGroup;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.joint.GearJoint;
 import com.blastedstudios.gdxworld.world.light.GDXLight;
+import com.blastedstudios.gdxworld.world.metadata.GDXMetadata;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
@@ -57,6 +58,7 @@ public class GDXLevel implements Cloneable,Serializable{
 	private List<GDXParticle> particles = new ArrayList<>();
 	private List<GDXSound> sounds = new ArrayList<>();
 	private List<GDXAnimations> animations = new LinkedList<>();
+	private GDXMetadata metadata = new GDXMetadata();
 	private Map<String,String> properties;
 	private int lightAmbient = GDXLight.convert(GDXLight.DEFAULT_COLOR);
 	
@@ -353,6 +355,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		for(GDXAnimations animation : animations)
 			level.getAnimations().add((GDXAnimations) animation.clone());
 		level.getProperties().putAll(properties);
+		level.setMetadata((GDXMetadata) getMetadata().clone());
 		return level;
 	}
 
@@ -375,6 +378,7 @@ public class GDXLevel implements Cloneable,Serializable{
 		particles.clear();
 		tiles.clear();
 		animations.clear();
+		metadata = new GDXMetadata();
 	}
 
 	public List<GDXAnimations> getAnimations() {
@@ -421,6 +425,16 @@ public class GDXLevel implements Cloneable,Serializable{
 		if(block)
 			wrapper.finishLoading();
 		return wrapper;
+	}
+
+	public GDXMetadata getMetadata() {
+		if(metadata == null)
+			metadata = new GDXMetadata();
+		return metadata;
+	}
+
+	public void setMetadata(GDXMetadata metadata) {
+		this.metadata = metadata;
 	}
 
 	public class CreateLevelReturnStruct{
