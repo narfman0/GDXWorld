@@ -15,9 +15,11 @@ import com.blastedstudios.gdxworld.ui.GDXRenderer;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.GDXLevel.CreateLevelReturnStruct;
 import com.blastedstudios.gdxworld.world.GDXWorld;
+import com.blastedstudios.gdxworld.world.metadata.CameraShot;
 
 public class ScreenLevelPanner implements Disposable{
-	private static final float TIME_TO_TRANSITION = Properties.getFloat("screen.panner.transition.time", 10f);
+	private static final float TIME_TO_TRANSITION = Properties.getFloat("screen.panner.transition.time", 10f),
+			VELOCITY_SCALAR = Properties.getFloat("screen.panner.velocity.scalar", 1f);
 	private final GDXRenderer gdxRenderer;
 	private final GDXWorld gdxWorld;
 	private final SpriteBatch spriteBatch = new SpriteBatch();
@@ -30,8 +32,9 @@ public class ScreenLevelPanner implements Disposable{
 	private CreateLevelReturnStruct struct;
 	private World world;
 	private Random random;
-	private float cameraMoveAmountX, timeTransition;
+	private float timeTransition;
 	private boolean signalled = false;
+	private CameraShot shot;
 
 	public ScreenLevelPanner(GDXWorld gdxWorld, GDXRenderer gdxRenderer, ITransitionListener listener){
 		this.gdxWorld = gdxWorld;
@@ -57,8 +60,15 @@ public class ScreenLevelPanner implements Disposable{
 		struct = level.createLevel(world);
 		rayHandler = struct.lights.rayHandler;
 		tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, level.getPolygons());
-		cameraMoveAmountX = random.nextFloat()*.1f - .05f;
 		assetManager = gdxLevel.createAssetManager(false);
+		try{
+			int shotIndex = random.nextInt(level.getMetadata().getCameraShots().size());
+			shot = level.getMetadata().getCameraShots().get(shotIndex);
+			camera.position.set(shot.getPosition(), 0f);
+		}catch(Exception e){
+			//probably doesn't have shots
+			shot = new CameraShot();
+		}
 	}
 	
 	public boolean update(){
@@ -69,7 +79,8 @@ public class ScreenLevelPanner implements Disposable{
 	}
 
 	public void render(float dt){
-		camera.position.add(cameraMoveAmountX, 0, 0);
+		if(shot != null)
+			camera.position.add(shot.getVelocity().x*VELOCITY_SCALAR*dt, shot.getVelocity().y*VELOCITY_SCALAR*dt, 0);
 		camera.update();
 		rayHandler.setCombinedMatrix(camera.combined);
 		spriteBatch.setProjectionMatrix(camera.combined);
@@ -77,7 +88,7 @@ public class ScreenLevelPanner implements Disposable{
 		gdxRenderer.render(assetManager, spriteBatch, gdxLevel, camera, struct.bodies.entrySet());
 		spriteBatch.end();
 		tiledMeshRenderer.render(camera);
-		world.step(1f/30f, 10, 10);
+		world.step(dt, 10, 10);
 		if(Properties.getBool("lighting.draw", false))
 			rayHandler.updateAndRender();
 		timeTransition -= dt;
