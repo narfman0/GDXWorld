@@ -115,17 +115,17 @@ public class GDXQuestManagerTest {
 
 	@Test public void testActive() {
 		manager.setCurrentLevel(level1);
-		manager.tick();
+		manager.tick(1f);
 		assertFalse(manager.isActive(quest2));
 		assertTrue(manager.isActive(quest1));
 		playerPosition.set(2,2);
-		manager.tick();
+		manager.tick(1f);
 		assertFalse(manager.isCompleted(quest1));
 		manager.setStatus(quest1.getName(), CompletionEnum.COMPLETED);
 		assertTrue(manager.isCompleted(quest1));
 		assertTrue(manager.isActive(quest2));
 		playerPosition.set(5,5);
-		manager.tick();
+		manager.tick(1f);
 		assertFalse(manager.isCompleted(quest2));
 		manager.setStatus(quest2.getName(), CompletionEnum.COMPLETED);
 		assertTrue(manager.isCompleted(quest2));
@@ -137,7 +137,7 @@ public class GDXQuestManagerTest {
 		quest.setManifestation(new AbstractQuestManifestation() {
 			private static final long serialVersionUID = 1L;
 			@Override public String toString() {return "";}
-			@Override public CompletionEnum execute() {
+			@Override public CompletionEnum execute(float dt) {
 				count++;
 				return CompletionEnum.COMPLETED;
 			}
@@ -152,12 +152,12 @@ public class GDXQuestManagerTest {
 		assertTrue(manager.isActive(quest));
 		assertFalse(manager.isCompleted(quest));
 		assertEquals(0, count, 1e-6);
-		manager.tick();
+		manager.tick(1f);
 		assertTrue(manager.isCompleted(quest));
 		assertTrue(manager.isActive(quest));
 		assertEquals(1, count, 1e-6);
 		playerPosition.set(2,2);
-		manager.tick();
+		manager.tick(1f);
 		assertTrue(manager.isCompleted(quest));
 		assertTrue(manager.isActive(quest));
 		assertEquals(2, count, 1e-6);

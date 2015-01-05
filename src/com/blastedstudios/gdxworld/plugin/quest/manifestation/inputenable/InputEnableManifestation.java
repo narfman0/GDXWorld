@@ -14,7 +14,7 @@ public class InputEnableManifestation extends AbstractQuestManifestation {
 		this.inputEnable = inputEnable;
 	}
 	
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IInputEnableHandler handler : PluginUtil.getPlugins(IInputEnableHandler.class))
 			if(handler.inputEnable(inputEnable) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

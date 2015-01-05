@@ -16,7 +16,7 @@ public class BeingSpawnManifestation extends AbstractQuestManifestation {
 		this.npc = npc;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IBeingSpawnHandler handler : PluginUtil.getPlugins(IBeingSpawnHandler.class))
 			if(handler.beingSpawn(npc) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

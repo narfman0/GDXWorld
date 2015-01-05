@@ -23,7 +23,7 @@ public class SoundManifestation extends AbstractQuestManifestation{
 		this.pitch = pitch;
 	}
 	
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(ISoundHandler handler : PluginUtil.getPlugins(ISoundHandler.class))
 			if(handler.sound(manifestationType, name, filename, volume, pan, pitch) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

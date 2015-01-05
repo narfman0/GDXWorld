@@ -17,7 +17,7 @@ public abstract class AbstractQuestManifestation implements ICloneable,Serializa
 	/**
 	 * Executes the manifestation after the trigger has been flipped
 	 */
-	public abstract CompletionEnum execute();
+	public abstract CompletionEnum execute(float dt);
 	
 	public CompletionEnum tick(){
 		return CompletionEnum.EXECUTING;

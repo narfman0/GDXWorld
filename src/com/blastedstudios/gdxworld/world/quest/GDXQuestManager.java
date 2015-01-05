@@ -55,7 +55,7 @@ public class GDXQuestManager implements Serializable{
 		}
 	}
 	
-	public void tick(){
+	public void tick(float dt){
 		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
 		if(statuses == null){
 			Log.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
@@ -66,7 +66,7 @@ public class GDXQuestManager implements Serializable{
 			GDXQuest quest = currentLevelQuestMap.get(status.questName);
 			if(status.getCompleted() == CompletionEnum.NOT_STARTED || quest.isRepeatable()){
 				if(isActive(quest) && quest.getTrigger().activate()){
-					status.setCompleted(quest.getManifestation().execute());
+					status.setCompleted(quest.getManifestation().execute(dt));
 					Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
 					if(quest.isRepeatable())
 						quest.getTrigger().reinitialize();

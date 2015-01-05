@@ -40,7 +40,7 @@ public class GDXAnimationHandler {
 				//since this is sorted, first will always be next to go
 				while(!currentAnimations.isEmpty() && currentAnimations.getFirst().time <= currentTime){
 					AnimationStruct current = currentAnimations.poll();
-					current.manifestation.execute();
+					current.manifestation.execute(dt);
 				}
 				if(currentTime >= currentAnimation.getTotalTime()){
 					if(currentAnimation.isRepeat())

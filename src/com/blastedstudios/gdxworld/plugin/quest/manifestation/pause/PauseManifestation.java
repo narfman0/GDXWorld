@@ -14,7 +14,7 @@ public class PauseManifestation extends AbstractQuestManifestation {
 		this.pause = pause;
 	}
 	
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IPauseHandler handler : PluginUtil.getPlugins(IPauseHandler.class))
 			if(handler.pause(pause) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

@@ -16,7 +16,7 @@ public class JointRemoveManifestation extends AbstractQuestManifestation{
 		this.jointName = jointName;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		Joint joint = executor.getPhysicsJoint(jointName);
 		if(joint != null)
 			executor.getWorld().destroyJoint(joint);

@@ -17,7 +17,7 @@ public class EndLevelManifestation extends AbstractQuestManifestation {
 		this.nextLevel = nextLevel;
 	}
 	
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IEndLevelHandler handler : PluginUtil.getPlugins(IEndLevelHandler.class))
 			if(handler.endLevel(success, nextLevel) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

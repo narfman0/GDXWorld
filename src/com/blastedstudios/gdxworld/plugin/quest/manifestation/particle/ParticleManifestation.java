@@ -29,7 +29,7 @@ public class ParticleManifestation extends AbstractQuestManifestation {
 		this.attachedBody = attachedBody;
 	}
 	
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IParticleHandler handler : PluginUtil.getPlugins(IParticleHandler.class))
 			if(handler.particle(name, effectFile, imagesDir, duration, position, modificationType, 
 					emitterName, attachedBody) == CompletionEnum.COMPLETED)

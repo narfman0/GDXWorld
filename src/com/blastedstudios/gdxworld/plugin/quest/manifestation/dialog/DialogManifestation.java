@@ -54,7 +54,7 @@ public class DialogManifestation extends AbstractQuestManifestation{
 		this.type = type;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IDialogHandler handler : PluginUtil.getPlugins(IDialogHandler.class))
 			if(handler.addDialog(dialog, origin, type) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;

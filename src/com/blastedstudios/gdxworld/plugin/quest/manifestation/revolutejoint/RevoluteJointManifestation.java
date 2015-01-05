@@ -21,7 +21,7 @@ public class RevoluteJointManifestation extends AbstractQuestManifestation {
 		this.motorSpeed = motorSpeed;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		RevoluteJoint joint = ((RevoluteJoint)executor.getPhysicsJoint(name));
 		joint.enableMotor(enableMotor);
 		joint.setMaxMotorTorque(maxMotorTorque);

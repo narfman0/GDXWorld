@@ -21,7 +21,7 @@ public class PrismaticJointManifestation extends AbstractQuestManifestation {
 		this.motorSpeed = motorSpeed;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		PrismaticJoint joint = ((PrismaticJoint)executor.getPhysicsJoint(name));
 		joint.enableMotor(enableMotor);
 		joint.setMaxMotorForce(maxMotorForce);

@@ -49,7 +49,7 @@ public class PhysicsManifestation extends AbstractQuestManifestation{
 		this.angle = angle;
 	}
 
-	@Override public CompletionEnum execute() {
+	@Override public CompletionEnum execute(float dt) {
 		for(IPhysicsManifestationHandler handler : PluginUtil.getPlugins(IPhysicsManifestationHandler.class))
 			handler.execute(this);
 		return CompletionEnum.COMPLETED;
