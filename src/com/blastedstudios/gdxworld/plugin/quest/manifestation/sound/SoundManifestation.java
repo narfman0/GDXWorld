@@ -25,7 +25,14 @@ public class SoundManifestation extends AbstractQuestManifestation{
 	
 	@Override public CompletionEnum execute(float dt) {
 		for(ISoundHandler handler : PluginUtil.getPlugins(ISoundHandler.class))
-			if(handler.sound(manifestationType, name, filename, volume, pan, pitch) == CompletionEnum.COMPLETED)
+			if(handler.sound(dt, manifestationType, name, filename, volume, pan, pitch) == CompletionEnum.COMPLETED)
+				return CompletionEnum.COMPLETED;
+		return CompletionEnum.EXECUTING;
+	}
+	
+	@Override public CompletionEnum tick(float dt) {
+		for(ISoundHandler handler : PluginUtil.getPlugins(ISoundHandler.class))
+			if(handler.tick(dt) == CompletionEnum.COMPLETED)
 				return CompletionEnum.COMPLETED;
 		return CompletionEnum.EXECUTING;
 	}

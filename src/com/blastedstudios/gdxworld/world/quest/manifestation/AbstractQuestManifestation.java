@@ -19,7 +19,7 @@ public abstract class AbstractQuestManifestation implements ICloneable,Serializa
 	 */
 	public abstract CompletionEnum execute(float dt);
 	
-	public CompletionEnum tick(){
+	public CompletionEnum tick(float dt){
 		return CompletionEnum.EXECUTING;
 	}
 

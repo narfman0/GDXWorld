@@ -53,7 +53,7 @@ public class PlatformManifestation extends AbstractQuestManifestation{
 		return CompletionEnum.EXECUTING;
 	}
 	
-	@Override public CompletionEnum tick(){
+	@Override public CompletionEnum tick(float dt){
 		PrismaticJoint joint = (PrismaticJoint)executor.getPhysicsJoint(this.joint);
 		if(joint.isMotorEnabled() && towardA && executor.getPhysicsObject(name).getWorldCenter().dst(pointA) < TURN_DISTANCE){
 			towardA = false;
