@@ -1,13 +1,11 @@
-GDXWorld
-========
+# GDXWorld
 
 GDXWorld is a 2D world editor for libGDX. The intention is to provide not only
 a framework to provide physics information to populate box2d worlds, but also
 give parameters for the interaction of the shapes therein through the use of
 joints, define NPC information with pathing, overworld map, and quests.
 
-Overview
---------
+## Overview
 
 GDXWorld is not simply a level editor, but a world and environment creator. It
 starts off in a overworld type editor, defining the number of levels, their
@@ -23,8 +21,7 @@ otherwise the user may have to click around to invoke a window.
 [![GDXWorld car demo](http://img.youtube.com/vi/ghzrj9eY6AU/0.jpg)]
 (http://www.youtube.com/watch?v=ghzrj9eY6AU)
 
-World Editor
-------------
+## World Editor
 
 The world editor is what is first seen after deciding to build a new world. A
 conspicuously black screen meets the user, and after clicking in the void,
@@ -51,8 +48,7 @@ grow past the meager extents of a 1080p screen. To pan the camera, use the
 left/right/up/down arrow keys. To zoom out, roll back on the mouse wheel. To
 zoom in, roll in on the mouse wheel. 
 
-Level Editor
-------------
+## Level Editor
 
 After selecting a level node to edit, thus entering the level editor screen,
 the user will not a window in the top left labeled "Level Editor" with a number
@@ -252,8 +248,7 @@ the particles at startup, secondly, adding a mechanism in the Quest mode to
 remove/add other particles dynamically. These particles will be available to
 each level and are to be handled by the client.
 
-Serializers
------------
+# Serializers
 
 GDXWorld supports a variety of serializer plugins. By default, there are three
 available. These may be used when serializing items to a file, for instance
@@ -280,13 +275,12 @@ viewed outside of the world editor.
 
 Operates the same was as XML, see above
 
-Project setup/Cold Start
-------------------------
+# Project setup/Cold Start
 
 Designed to be managed from eclipse, preferably in Fedora 16+ with the egit
 plugin, but should work under any environment. To run, navigate to
 GDXWorldEditor, right click, Run As, Java Application. 
 
-Uses libGDX 1.4.1 from 10/10/2014  
-Uses box2dlights 1.3 from 09/17/2014  
+Uses libGDX 1.5.3 from 1/16/2015  
+Uses box2dlights 1.4 from 12/14/2014  
 Refer to LICENSE for (admittedly lacking) licensing information  
