@@ -19,7 +19,8 @@ public class NPCPropertyTable extends Table {
 			add(entry.getKey() + ": ");
 			final TextField propertyField = new TextField("", skin);
 			propertyField.setMessageText("<" + entry.getKey() + ">");
-			propertyField.setText(entry.getValue());
+			if(entry.getValue() != null)
+				propertyField.setText(entry.getValue());
 			properties.put(entry.getKey(), propertyField);
 			add(propertyField);
 			row();
