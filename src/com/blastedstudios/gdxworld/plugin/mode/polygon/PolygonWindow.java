@@ -134,7 +134,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		controlTable.add(cancelButton);
 		add(controlTable).colspan(3);
 		setMovable(false);
-		setHeight(400);
+		setHeight(700);
 		setWidth(400);
 	}
 
