@@ -12,8 +12,8 @@ public class BodyRemoveManifestation extends AbstractQuestManifestation{
 	
 	public BodyRemoveManifestation(){}
 	
-	public BodyRemoveManifestation(String jointName){
-		this.name = jointName;
+	public BodyRemoveManifestation(String name){
+		this.name = name;
 	}
 
 	@Override public CompletionEnum execute(float dt) {

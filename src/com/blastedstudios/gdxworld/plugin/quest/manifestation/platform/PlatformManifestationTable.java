@@ -110,6 +110,7 @@ public class PlatformManifestationTable extends ManifestationTable{
 		return manifestation;
 	}
 	
+	@Override
 	public void touched(Vector2 coordinates){
 		if(clickTarget == nameField)
 			Log.log("PlatformManifestationTable.touched", "Not implemented, need to pass GDXLevel in");
