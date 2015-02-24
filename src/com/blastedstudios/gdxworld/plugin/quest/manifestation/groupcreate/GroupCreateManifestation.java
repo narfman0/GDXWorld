@@ -27,7 +27,6 @@ public class GroupCreateManifestation extends AbstractQuestManifestation{
 		GDXGroupExportStruct struct;
 		try {
 			struct = (GDXGroupExportStruct) FileUtil.getSerializer(handle).load(handle);
-			struct.translate(position);
 			struct.instantiate(getExecutor().getWorld(), position);
 		} catch (Exception e) {
 			Log.error("GroupCreateManifestation.execute", "Failed to load group with path: " +
