@@ -1,7 +1,6 @@
 package com.blastedstudios.gdxworld.plugin.quest.manifestation.groupcreate;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.plugin.mode.quest.ManifestationTable;
@@ -17,9 +16,10 @@ public class GroupCreateManifestationTable extends ManifestationTable{
 		pathText = new TextField(manifestation.getPath(), skin);
 		pathText.setMessageText("<path>");
 		positionTable = new VertexTable(manifestation.getPosition(), skin);
-		add(new Label("Path", skin));
+		add("Path: ");
 		add(pathText);
 		row();
+		add("Position: ");
 		add(positionTable);
 	}
 
