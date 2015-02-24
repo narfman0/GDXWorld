@@ -1,12 +1,13 @@
 package com.blastedstudios.gdxworld.plugin.mode.joint.window.wheel;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.blastedstudios.gdxworld.plugin.mode.joint.BaseJointTable;
 import com.blastedstudios.gdxworld.ui.leveleditor.VertexTable;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.WheelJoint;
 
 public class WheelJointTable extends BaseJointTable {
@@ -28,25 +29,25 @@ public class WheelJointTable extends BaseJointTable {
 		frequencyHzField.setMessageText("<frequency hz>");
 		enableMotorBox = new CheckBox("", skin);
 		enableMotorBox.setChecked(joint.isEnableMotor());
-		add(new Label("Anchor: ", skin));
+		add("Anchor: ");
 		add(anchorTable);
 		row();
-		add(new Label("Axis: ", skin));
+		add("Axis: ");
 		add(axisTable);
 		row();
-		add(new Label("Max Motor Torque: ", skin));
+		add("Max Motor Torque: ");
 		add(maxMotorTorqueField);
 		row();
-		add(new Label("Motor Speed: ", skin));
+		add("Motor Speed: ");
 		add(motorSpeedField);
 		row();
-		add(new Label("Enable Motor: ", skin));
+		add("Enable Motor: ");
 		add(enableMotorBox);
 		row();
-		add(new Label("Frequency (hz): ", skin));
+		add("Frequency (hz): ");
 		add(frequencyHzField);
 		row();
-		add(new Label("Damping Ratio: ", skin));
+		add("Damping Ratio: ");
 		add(dampingRatioField);
 	}
 	
@@ -60,8 +61,14 @@ public class WheelJointTable extends BaseJointTable {
 		joint.setMaxMotorTorque(Float.parseFloat(maxMotorTorqueField.getText()));
 		joint.setMotorSpeed(Float.parseFloat(motorSpeedField.getText()));
 	}
+	
+	@Override public boolean clicked(Vector2 pos, GDXLevel level) {
+		if(!super.clicked(pos, level))
+			anchorTable.setVertex(pos.x, pos.y);
+		return true;
+	}
 
-	public VertexTable getAnchorTable() {
-		return anchorTable;
+	@Override public Vector2 getCenter() {
+		return anchorTable.getVertex();
 	}
 }

@@ -56,7 +56,7 @@ class JointWindow extends AbstractWindow {
 
 	public void clicked(Vector2 pos) {
 		if(baseWindow != null)
-			baseWindow.clicked(pos);
+			baseWindow.clicked(pos, levelEditorScreen.getLevel());
 	}
 
 	@Override public boolean remove(){

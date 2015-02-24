@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.blastedstudios.gdxworld.plugin.mode.joint.BaseJointWindow;
 import com.blastedstudios.gdxworld.plugin.mode.joint.JointMode;
+import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.WheelJoint;
 
 public class WheelWindow extends BaseJointWindow{
@@ -15,24 +16,21 @@ public class WheelWindow extends BaseJointWindow{
 		super("Wheel Editor", skin, JointType.WheelJoint, mode, joint);
 		this.joint = joint;
 		table = new WheelJointTable(skin, joint);
-		add(table);
+		add(table).colspan(2);
 		row();
 		add(createControlTable()).colspan(2);
 		pack();
 	}
 	
 	@Override public void apply(){
-		super.apply();
 		table.apply(joint);
 	}
 
-	@Override public boolean clicked(Vector2 pos) {
-		if(!super.clicked(pos))
-			table.getAnchorTable().setVertex(pos.x, pos.y);
-		return true;
+	@Override public boolean clicked(Vector2 pos, GDXLevel level) {
+		return table.clicked(pos, level);
 	}
 
 	@Override public Vector2 getCenter() {
-		return table.getAnchorTable().getVertex();
+		return table.getCenter();
 	}
 }

@@ -15,13 +15,14 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.joint.GDXJoint;
 import com.blastedstudios.gdxworld.world.shape.GDXShape;
 
-public class BaseJointTable extends Table{
+public abstract class BaseJointTable extends Table{
 	private final TextField nameField, bodyAField, bodyBField;
 	private final CheckBox collideConnectedBox;
 	private JointType jointType;
 	private TextField selectField = null;
 
 	public BaseJointTable(Skin skin, GDXJoint joint, JointType jointType){
+		super(skin);
 		this.jointType = jointType;
 		nameField = new TextField(joint.getName(), skin);
 		nameField.setMessageText("<name>");
@@ -60,7 +61,7 @@ public class BaseJointTable extends Table{
 		row();
 		add(new Label("Collide Connected: ", skin));
 		add(collideConnectedBox);
-		row();
+		row();//between base and inherited table
 	}
 	
 	public void apply(GDXJoint joint){
@@ -81,4 +82,6 @@ public class BaseJointTable extends Table{
 		}
 		return false;
 	}
+	
+	public abstract Vector2 getCenter();
 }
