@@ -76,6 +76,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
+		final Button cloneButton = new TextButton("Clone", skin);
 		final ScrollPane scrollPane = new ScrollPane(vertexTables);
 		clearButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -111,6 +112,12 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 				mode.clean();
 			}
 		});
+		cloneButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				mode.addPolygon((GDXPolygon) polygon.clone());
+				mode.clean();
+			}
+		});
 		populateVertexTable();
 		add(scrollPane).colspan(3);
 		row();
@@ -132,6 +139,7 @@ class PolygonWindow extends AbstractWindow implements VertexRemoveListener {
 		controlTable.add(clearButton);
 		controlTable.add(deleteButton);
 		controlTable.add(cancelButton);
+		controlTable.add(cloneButton);
 		add(controlTable).colspan(3);
 		setMovable(false);
 		setHeight(700);

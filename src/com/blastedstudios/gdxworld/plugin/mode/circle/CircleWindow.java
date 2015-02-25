@@ -63,6 +63,7 @@ public class CircleWindow extends AbstractWindow {
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
 		final Button deleteButton = new TextButton("Delete", skin);
+		final Button cloneButton = new TextButton("Clone", skin);
 		centerTable = new VertexTable(circle.getCenter().cpy(), skin);
 		acceptButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
@@ -91,6 +92,12 @@ public class CircleWindow extends AbstractWindow {
 				mode.clean();
 			}
 		});
+		cloneButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				mode.addCircle((GDXCircle) circle.clone());
+				mode.clean();
+			}
+		});
 		Table bodyTypeTable = new Table();
 		bodyTypeTable.add(new Label("BodyType: ", skin));
 		bodyTypeTable.add(staticBox);
@@ -110,6 +117,7 @@ public class CircleWindow extends AbstractWindow {
 		controlTable.add(acceptButton);
 		controlTable.add(deleteButton);
 		controlTable.add(cancelButton);
+		controlTable.add(cloneButton);
 		add(controlTable).colspan(2);
 		setMovable(false);
 		pack();
