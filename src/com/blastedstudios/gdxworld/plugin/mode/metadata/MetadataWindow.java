@@ -58,7 +58,7 @@ class MetadataWindow extends AbstractWindow {
 	}
 
 	private Table createCameraShotTable(final CameraShot shot) {
-		Table groupTable = new Table();
+		final Table groupTable = new Table();
 		final TextButton groupButton = new TextButton(shot.getName(), skin);
 		groupButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
