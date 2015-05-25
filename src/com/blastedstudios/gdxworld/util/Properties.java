@@ -5,28 +5,16 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-
 public class Properties {
-	private static java.util.Properties properties;
+	private static java.util.Properties PROPERTIES;
 
 	static{
-		properties = new java.util.Properties();
-		if(Gdx.files != null){
-			FileHandle handle = Gdx.files.internal("data/gdxworld.properties"); 
-			if(handle != null)
-				load(handle.read());
-			else 
-				Log.error("Properties.<init>", "Failed to load properties, file not found!");
-		}else{
-			System.err.println("Failed to load properties, Gdx.files null!");
-		}
+		PROPERTIES = new java.util.Properties();
 	}
 	
 	public static void load(InputStream stream){
 		try {
-			properties.load(stream);
+			PROPERTIES.load(stream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,24 +22,24 @@ public class Properties {
 	
 	public static void store(OutputStream stream, String comments){
 		try {
-			properties.store(stream, comments);
+			PROPERTIES.store(stream, comments);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static boolean contains(String key){
-		return properties.containsKey(key);
+		return PROPERTIES.containsKey(key);
 	}
 	
 	public static String get(String key){
-		return properties.getProperty(key);
+		return PROPERTIES.getProperty(key);
 	}
 	
 	public static String get(String key, String defaultVal){
-		if(!properties.containsKey(key))
+		if(!PROPERTIES.containsKey(key))
 			set(key, defaultVal);
-		return properties.getProperty(key);
+		return PROPERTIES.getProperty(key);
 	}
 	
 	public static boolean getBool(String key){
@@ -95,7 +83,7 @@ public class Properties {
 	}
 	
 	public static Object set(String key, String value){
-		return properties.setProperty(key, value);
+		return PROPERTIES.setProperty(key, value);
 	}
 	
 	public static Map<String,String> parseProperties(String key, String defaultValue){

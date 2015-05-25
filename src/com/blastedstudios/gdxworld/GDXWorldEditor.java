@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 
 import net.xeoh.plugins.base.util.uri.ClassURI;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
@@ -13,6 +14,7 @@ import com.blastedstudios.gdxworld.ui.MainScreen;
 import com.blastedstudios.gdxworld.ui.TempWorldScreen;
 import com.blastedstudios.gdxworld.ui.worldeditor.WorldEditorScreen;
 import com.blastedstudios.gdxworld.util.GDXGame;
+import com.blastedstudios.gdxworld.util.Log;
 import com.blastedstudios.gdxworld.util.PluginUtil;
 import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXWorld;
@@ -25,6 +27,11 @@ public class GDXWorldEditor extends GDXGame {
 		if(args != null)
 			parseArgs(args);
 		PluginUtil.initialize(ClassURI.CLASSPATH);
+		FileHandle handle = Gdx.files.internal("data/gdxworld.properties"); 
+		if(handle != null)
+			Properties.load(handle.read());
+		else 
+			Log.error("Properties.<init>", "Failed to load properties, file not found!");
 		pushScreen(new MainScreen(this));
 		if(loadFile != null)
 			pushScreen(new WorldEditorScreen(this, GDXWorld.load(loadFile), loadFile));
