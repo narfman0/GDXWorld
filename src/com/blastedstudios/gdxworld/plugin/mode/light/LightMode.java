@@ -73,7 +73,7 @@ public class LightMode extends AbstractMode {
 	
 	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(rayHandler != null){
-			rayHandler.setCombinedMatrix(camera.combined);
+			rayHandler.setCombinedMatrix(camera);
 			rayHandler.updateAndRender();
 		}
 	}

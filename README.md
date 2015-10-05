@@ -281,6 +281,6 @@ Designed to be managed from eclipse, preferably in Fedora 16+ with the egit
 plugin, but should work under any environment. To run, navigate to
 GDXWorldEditor, right click, Run As, Java Application. 
 
-Uses libGDX 1.5.3 from 1/16/2015  
-Uses box2dlights 1.4 from 12/14/2014  
+Uses libGDX nightly from 10/5/2015  
+Uses box2dlights 1.5-SNAPSHOT from 8/9/2015  
 Refer to LICENSE for (admittedly lacking) licensing information  

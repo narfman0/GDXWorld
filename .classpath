@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/box2dlights-1.4-SNAPSHOT.jar" sourcepath="lib/box2dlights-1.4-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="lib/box2dlights.jar" sourcepath="lib/box2dlights-sources.jar"/>
 	<classpathentry kind="lib" path="lib/gdx.jar" sourcepath="lib/gdx-sources.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl-natives.jar"/>

@@ -69,7 +69,7 @@ public class ScreenLevelPanner implements Disposable{
 		if(shot != null)
 			camera.position.add(shot.getVelocity().x*VELOCITY_SCALAR*dt, shot.getVelocity().y*VELOCITY_SCALAR*dt, 0);
 		camera.update();
-		rayHandler.setCombinedMatrix(camera.combined);
+		rayHandler.setCombinedMatrix(camera);
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		gdxRenderer.render(assetManager, spriteBatch, gdxLevel, camera, struct.bodies.entrySet());
