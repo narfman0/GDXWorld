@@ -144,7 +144,6 @@ public class GDXLevel implements Cloneable,Serializable{
 	}
 
 	public List<GDXLight> getLights() {
-		Collections.sort(lights);
 		return lights;
 	}
 
