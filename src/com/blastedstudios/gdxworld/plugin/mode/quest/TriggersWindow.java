@@ -25,7 +25,7 @@ public class TriggersWindow extends AbstractWindow{
 	private final SelectBox<String> triggerBoxes;
 	private final Table contents;
 	
-	public TriggersWindow(Skin skin, GDXQuest quest) {
+	public TriggersWindow(final Skin skin, final GDXQuest quest, final ITriggersWindowListener listener) {
 		super("Triggers", skin);
 		contents = new Table(skin);
 		triggerPlugins = new ArrayList<IQuestComponent>(PluginUtil.getPlugins(IQuestComponentTrigger.class));
@@ -39,6 +39,18 @@ public class TriggersWindow extends AbstractWindow{
 						addTable(skin, (AbstractQuestTrigger) component.getDefault().clone());
 			}
 		});
+		final Button acceptButton = new TextButton("Accept", skin);
+		acceptButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				listener.close(true);
+			}
+		});
+		final Button cancelButton = new TextButton("Cancel", skin);
+		cancelButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				listener.close(false);
+			}
+		});
 		add("Trigger: ");
 		add(triggerBoxes);
 		add(addButton);
@@ -46,6 +58,9 @@ public class TriggersWindow extends AbstractWindow{
 		for(AbstractQuestTrigger trigger : quest.getTriggers())
 			addTable(skin, trigger); 
 		add(new ScrollPane(contents)).colspan(3);
+		row();
+		add(acceptButton);
+		add(cancelButton);
 		setX(Gdx.graphics.getWidth());
 		setY(Gdx.graphics.getHeight());
 		setHeight(700);
@@ -89,5 +104,9 @@ public class TriggersWindow extends AbstractWindow{
 	public void touched(Vector2 coordinates) {
 		for(TriggerTable table : tables)
 			table.touched(coordinates);
+	}
+	
+	interface ITriggersWindowListener{
+		void close(boolean accept);
 	}
 }

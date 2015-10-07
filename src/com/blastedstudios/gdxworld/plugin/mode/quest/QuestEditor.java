@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.blastedstudios.gdxworld.plugin.mode.quest.IQuestComponent.IQuestComponentManifestation;
+import com.blastedstudios.gdxworld.plugin.mode.quest.TriggersWindow.ITriggersWindowListener;
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.PluginUtil;
@@ -47,11 +48,19 @@ class QuestEditor extends AbstractWindow {
 			}
 		});
 		final Button triggersButton = new TextButton("Triggers", skin);
+		ITriggersWindowListener triggersListener = new ITriggersWindowListener() {
+			@Override public void close(boolean accept) {
+				if(accept)
+					quest.setTriggers(triggersWindow.apply());
+				triggersWindow.remove();
+				triggersWindow = null;
+			}
+		};
 		triggersButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				if(triggersWindow != null)
 					triggersWindow.remove();
-				triggersWindow = new TriggersWindow(skin, quest);
+				triggersWindow = new TriggersWindow(skin, quest, triggersListener);
 				screen.getStage().addActor(triggersWindow);
 			}
 		});
