@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +32,7 @@ import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
+import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 
 public class GDXQuestManagerTest {
@@ -48,13 +51,17 @@ public class GDXQuestManagerTest {
 		quest1 = new GDXQuest();
 		quest1.setName("quest1");
 		quest1.setManifestation(new DialogManifestation("Quest 1 dialog", "Origin 1", "Type1"));
-		quest1.setTrigger(new AABBTrigger(1, 1, 3, 3));
+		LinkedList<AbstractQuestTrigger> triggers1 = new LinkedList<>();
+		triggers1.add(new AABBTrigger(1, 1, 3, 3));
+		quest1.setTriggers(triggers1);
 		level1.getQuests().add(quest1);
 		quest2 = new GDXQuest();
 		quest2.setName("quest2");
 		quest2.setManifestation(new DialogManifestation("Quest 2 dialog", "Origin 2", "Type2"));
 		quest2.setPrerequisites("quest1");
-		quest2.setTrigger(new AABBTrigger(4, 4, 6, 6));
+		LinkedList<AbstractQuestTrigger> triggers2 = new LinkedList<>();
+		triggers2.add(new AABBTrigger(4, 4, 6, 6));
+		quest2.setTriggers(triggers2);
 		level1.getQuests().add(quest2);
 		
 		IQuestManifestationExecutor executor = new IQuestManifestationExecutor() {
@@ -143,7 +150,9 @@ public class GDXQuestManagerTest {
 			}
 			@Override public AbstractQuestManifestation clone() {return this;}
 		});
-		quest.setTrigger(new ActivateTrigger());
+		LinkedList<AbstractQuestTrigger> triggers = new LinkedList<>();
+		triggers.add(new ActivateTrigger());
+		quest.setTriggers(triggers);
 		quest.setRepeatable(true);
 		quest.setName("Repeatable quest name");
 		GDXLevel level = new GDXLevel();

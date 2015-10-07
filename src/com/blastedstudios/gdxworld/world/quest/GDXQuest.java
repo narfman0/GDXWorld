@@ -1,6 +1,7 @@
 package com.blastedstudios.gdxworld.world.quest;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
@@ -29,7 +30,7 @@ public class GDXQuest implements Serializable, Cloneable{
 	 * manifestation should execute. A trigger might be a distance from an
 	 * object, if the player hits a button, a being dies, etc.
 	 */ 
-	private AbstractQuestTrigger trigger = new ActivateTrigger();
+	private LinkedList<AbstractQuestTrigger> triggers = null;
 	/**
 	 * A manifestation defines what happens as a result of a trigger. A 
 	 * manifestation may be that an enemy is spawned, a door is unlocked,
@@ -39,7 +40,8 @@ public class GDXQuest implements Serializable, Cloneable{
 	
 	public GDXQuest initialize(IQuestTriggerInformationProvider provider,
 			IQuestManifestationExecutor executor){
-		trigger.setProvider(provider);
+		for(AbstractQuestTrigger trigger : triggers)
+			trigger.setProvider(provider);
 		manifestation.setExecutor(executor);
 		return this;
 	}
@@ -68,12 +70,16 @@ public class GDXQuest implements Serializable, Cloneable{
 		this.repeatable = repeatable;
 	}
 
-	public AbstractQuestTrigger getTrigger() {
-		return trigger;
+	public LinkedList<AbstractQuestTrigger> getTriggers() {
+		if(triggers == null){
+			triggers = new LinkedList<>();
+			triggers.add(new ActivateTrigger());
+		}
+		return triggers;
 	}
 
-	public void setTrigger(AbstractQuestTrigger trigger) {
-		this.trigger = trigger;
+	public void setTriggers(LinkedList<AbstractQuestTrigger> triggers) {
+		this.triggers = triggers;
 	}
 
 	public AbstractQuestManifestation getManifestation() {
@@ -85,17 +91,20 @@ public class GDXQuest implements Serializable, Cloneable{
 	}
 
 	@Override public Object clone(){
+		LinkedList<AbstractQuestTrigger> triggers = new LinkedList<>();
+		for(AbstractQuestTrigger trigger : this.triggers)
+			triggers.add(trigger.clone());
 		GDXQuest quest = new GDXQuest();
 		quest.setName(name);
 		quest.setManifestation(manifestation.clone());
 		quest.setPrerequisites(prerequisites);
-		quest.setTrigger(trigger.clone());
+		quest.setTriggers(triggers);
 		quest.setRepeatable(repeatable);
 		return quest;
 	}
 	
 	@Override public String toString(){
 		return "[GDXQuest name:" + name + " prereq:" + prerequisites + 
-				" manifestation:" + manifestation + " trigger:" + trigger + "]";
+				" manifestation:" + manifestation + "]";
 	}
 }

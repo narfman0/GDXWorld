@@ -12,6 +12,7 @@ import com.blastedstudios.gdxworld.util.Properties;
 import com.blastedstudios.gdxworld.world.GDXLevel;
 import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
+import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
 
 /**
@@ -65,19 +66,26 @@ public class GDXQuestManager implements Serializable{
 		for(QuestStatus status : statuses){
 			GDXQuest quest = currentLevelQuestMap.get(status.questName);
 			if(status.getCompleted() == CompletionEnum.NOT_STARTED || quest.isRepeatable()){
-				if(isActive(quest) && quest.getTrigger().activate()){
-					status.setCompleted(quest.getManifestation().execute(dt));
-					Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
-					if(quest.isRepeatable())
-						quest.getTrigger().reinitialize();
-					statusChanged = true;
+				if(isActive(quest)){
+					boolean activate = true;
+					for(AbstractQuestTrigger trigger : quest.getTriggers())
+						activate &= trigger.activate();
+					if(activate){
+						status.setCompleted(quest.getManifestation().execute(dt));
+						Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
+						if(quest.isRepeatable())
+							for(AbstractQuestTrigger trigger : quest.getTriggers())
+								trigger.reinitialize();
+						statusChanged = true;
+					}
 				}
 			}else if(status.getCompleted() == CompletionEnum.EXECUTING){
 				CompletionEnum completeStatus = quest.getManifestation().tick(dt);
 				if(completeStatus != CompletionEnum.EXECUTING){
 					status.setCompleted(completeStatus);
 					if(quest.isRepeatable())
-						quest.getTrigger().reinitialize();
+						for(AbstractQuestTrigger trigger : quest.getTriggers())
+							trigger.reinitialize();
 					statusChanged = true;
 				}
 			}else

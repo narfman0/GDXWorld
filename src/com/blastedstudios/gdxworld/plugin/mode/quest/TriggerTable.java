@@ -12,6 +12,8 @@ public abstract class TriggerTable extends Table{
 	public TriggerTable(final Skin skin, AbstractQuestTrigger trigger){
 		super(skin);
 		nameField = new TextField(trigger.getName(), skin);
+		add("Type: " + trigger.getClass().getSimpleName()).colspan(2);
+		row();
 		add("Name: ");
 		add(nameField);
 		row();

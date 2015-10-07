@@ -111,7 +111,7 @@ class QuestWindow extends AbstractWindow {
 	public void editQuest(GDXQuest quest, QuestTable table) {
 		if(editor != null)
 			editor.remove();
-		screen.getStage().addActor(editor = new QuestEditor(quest, skin, table));
+		screen.getStage().addActor(editor = new QuestEditor(screen, quest, skin, table));
 	}
 	
 	@Override public boolean remove(){
