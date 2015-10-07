@@ -42,17 +42,6 @@ class QuestEditor extends AbstractWindow {
 		repeatableBox.setChecked(quest.isRepeatable());
 		final Button acceptButton = new TextButton("Accept", skin);
 		final Button cancelButton = new TextButton("Cancel", skin);
-		acceptButton.addListener(new ClickListener() {
-			@Override public void clicked(InputEvent event, float x, float y) {
-				quest.setName(nameField.getText());
-				quest.setPrerequisites(prerequisiteField.getText());
-				quest.setTrigger(triggerTable.apply());
-				quest.setManifestation(manifestationTable.apply());
-				quest.setRepeatable(repeatableBox.isChecked());
-				questTable.setName(quest.getName());
-				remove();
-			}
-		});
 		cancelButton.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				remove();
@@ -87,6 +76,17 @@ class QuestEditor extends AbstractWindow {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				createTriggerTable(skin, extractFromSelection(triggerBoxes.getSelection().first(), triggerPlugins).getDefault().clone());
 				pack();
+			}
+		});
+		acceptButton.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				quest.setName(nameField.getText());
+				quest.setPrerequisites(prerequisiteField.getText());
+				quest.setTrigger(triggerTable.apply());
+				quest.setManifestation(manifestationTable.apply());
+				quest.setRepeatable(repeatableBox.isChecked());
+				questTable.setName(quest.getName());
+				remove();
 			}
 		});
 		Table contents = new Table();

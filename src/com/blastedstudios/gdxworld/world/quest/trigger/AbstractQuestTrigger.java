@@ -6,7 +6,9 @@ import com.blastedstudios.gdxworld.world.quest.ICloneable;
 
 public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	private static final long serialVersionUID = 1L;
+	private static long count = 0;
 	private transient IQuestTriggerInformationProvider provider;
+	private String name = "" + count++;
 
 	/**
 	 * Checks to see if the quest is ready to be activated
@@ -25,4 +27,14 @@ public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	
 	@Override abstract public AbstractQuestTrigger clone();
 	@Override abstract public String toString();
+	
+	public String getName() {
+		if(name == null)
+			name = "" + count++;
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 }
