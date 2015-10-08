@@ -35,25 +35,38 @@ public class JavaSerializable implements ISerializer{
 		}
 	}
 
-	static void write(FileHandle file, Object obj){
+	void write(FileHandle file, Object object){
 		try{
 			OutputStream fos = file.write(false);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(obj);
-			oos.close();
+			save(fos, object);
 			fos.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 
-	static Object read(FileHandle file, boolean compress) throws Exception{
+	Object read(FileHandle file, boolean compress) throws Exception{
 		InputStream fin = file.read();
-		ObjectInputStream oin = new ObjectInputStream(fin);
-		Object object = oin.readObject();
-		oin.close();
+		Object object = load(fin);
 		fin.close();
 		return object;
+	}
+
+	@Override public Object load(InputStream stream) throws Exception {
+		ObjectInputStream oin = new ObjectInputStream(stream);
+		Object object = oin.readObject();
+		oin.close();
+		return object;
+	}
+
+	@Override public void save(OutputStream stream, Object object) throws Exception {
+		try{
+			ObjectOutputStream oos = new ObjectOutputStream(stream);
+			oos.writeObject(object);
+			oos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override public FileFilter getFileFilter() {

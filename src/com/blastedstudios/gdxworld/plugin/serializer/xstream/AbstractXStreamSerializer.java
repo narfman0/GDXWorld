@@ -1,6 +1,8 @@
 package com.blastedstudios.gdxworld.plugin.serializer.xstream;
 
 import java.io.FileFilter;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -24,14 +26,22 @@ public abstract class AbstractXStreamSerializer {
 			xStream.registerConverter(new LevelConverter(xStream));
 	}
 	
+	public Object load(InputStream stream) throws Exception {
+		return xStream.fromXML(stream);
+	}
+	
 	public Object load(FileHandle selectedFile) throws Exception {
 		if(selectedFile == null){
 			Log.error(this.getClass().getSimpleName() + ".load", "Cannot read null file");
 			throw new NullPointerException("selectedFile null");
 		}
-		Object object = xStream.fromXML(selectedFile.read());
+		Object object = load(selectedFile.read());
 		Log.log(this.getClass().getSimpleName() + ".load", "Successfully loaded " + selectedFile);
 		return object;
+	}
+	
+	public void save(OutputStream stream, Object object) throws Exception {
+		xStream.toXML(object, stream);
 	}
 
 	public void save(FileHandle selectedFile, Object object) throws Exception {
@@ -39,7 +49,7 @@ public abstract class AbstractXStreamSerializer {
 			Log.error(this.getClass().getSimpleName() + ".save", "Cannot write to null file");
 			return;
 		}
-		xStream.toXML(object, Gdx.files.absolute(selectedFile.file().getAbsolutePath()).write(false));
+		save(Gdx.files.absolute(selectedFile.file().getAbsolutePath()).write(false), object);
 		Log.log(this.getClass().getSimpleName() + ".save", "Successfully saved " + selectedFile);
 	}
 
