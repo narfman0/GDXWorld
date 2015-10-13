@@ -22,7 +22,6 @@ import com.blastedstudios.gdxworld.plugin.mode.quest.TriggersWindow.ITriggersWin
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.PluginUtil;
-import com.blastedstudios.gdxworld.util.StringUtil;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
 class QuestEditor extends AbstractWindow {
@@ -33,15 +32,12 @@ class QuestEditor extends AbstractWindow {
 	
 	public QuestEditor(LevelEditorScreen screen, final GDXQuest quest, final Skin skin, final QuestTable questTable) {
 		super("Quest Editor", skin);
-		final TextField nameField = new TextField("", skin);
+		final TextField nameField = new TextField(quest.getName(), skin);
 		nameField.setMessageText("<quest name>");
-		nameField.setText(quest.getName());
-		final TextField prerequisiteField = new TextField("", skin);
+		final TextField prerequisiteField = new TextField(quest.getPrerequisites(), skin);
 		prerequisiteField.setMessageText("<prerequisites>");
-		prerequisiteField.setText(quest.getPrerequisites());
-		final TextField repeatResetTriggersField = new TextField(StringUtil.joinWithComma(quest.getRepeatableTriggerReset()), skin);
+		final TextField repeatResetTriggersField = new TextField(quest.getRepeatableTriggerReset(), skin);
 		repeatResetTriggersField.setMessageText("<repeat reset time triggers>");
-		repeatResetTriggersField.setText(quest.getPrerequisites());
 		final CheckBox repeatableBox = new CheckBox("Repeatable", skin);
 		repeatableBox.setChecked(quest.isRepeatable());
 		final Button acceptButton = new TextButton("Accept", skin);
@@ -90,7 +86,7 @@ class QuestEditor extends AbstractWindow {
 				quest.setPrerequisites(prerequisiteField.getText());
 				quest.setManifestation(manifestationTable.apply());
 				quest.setRepeatable(repeatableBox.isChecked());
-				quest.setRepeatableTriggerReset(StringUtil.splitOnComma(repeatResetTriggersField.getText()));
+				quest.setRepeatableTriggerReset(repeatResetTriggersField.getText());
 				if(triggersWindow != null)
 					quest.setTriggers(triggersWindow.apply());
 				questTable.setName(quest.getName());
@@ -100,18 +96,19 @@ class QuestEditor extends AbstractWindow {
 		Table contents = new Table(skin);
 		contents.add("Name: ");
 		contents.add(nameField);
-		contents.add(repeatableBox);
 		contents.row();
 		contents.add("Prerequisites: ");
 		contents.add(prerequisiteField);
+		contents.row();
+		contents.add(repeatableBox);
 		contents.add(repeatResetTriggersField);
 		contents.row();
-		contents.add(triggersButton).colspan(3);
+		contents.add(triggersButton).colspan(2);
 		contents.row();
 		contents.add("Manifestation Type: ");
 		contents.add(manifestationBoxes);
 		contents.row();
-		contents.add(parentManifestationTable).colspan(3);
+		contents.add(parentManifestationTable).colspan(2);
 		contents.row();
 		Table controlTable = new Table();
 		controlTable.add(acceptButton);

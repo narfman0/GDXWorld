@@ -2,7 +2,6 @@ package com.blastedstudios.gdxworld.world.quest;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
@@ -33,7 +32,7 @@ public class GDXQuest implements Serializable, Cloneable{
 	 * list to make that logic have to execute again before triggering the
 	 * quest.
 	 */
-	private List<String> repeatableTriggerReset = new LinkedList<>();
+	private String repeatableTriggerReset;
 	/**
 	 * A trigger is what may activate a quest. After triggering, the quest
 	 * manifestation should execute. A trigger might be a distance from an
@@ -99,13 +98,13 @@ public class GDXQuest implements Serializable, Cloneable{
 		this.manifestation = manifestation;
 	}
 
-	public List<String> getRepeatableTriggerReset() {
+	public String getRepeatableTriggerReset() {
 		if(repeatableTriggerReset == null)
-			repeatableTriggerReset = new LinkedList<>();
+			repeatableTriggerReset = ".*";
 		return repeatableTriggerReset;
 	}
 
-	public void setRepeatableTriggerReset(List<String> repeatableTriggerReset) {
+	public void setRepeatableTriggerReset(String repeatableTriggerReset) {
 		this.repeatableTriggerReset = repeatableTriggerReset;
 	}
 
@@ -119,7 +118,7 @@ public class GDXQuest implements Serializable, Cloneable{
 		quest.setPrerequisites(prerequisites);
 		quest.setTriggers(triggers);
 		quest.setRepeatable(repeatable);
-		quest.setRepeatableTriggerReset(new LinkedList<>(getRepeatableTriggerReset()));
+		quest.setRepeatableTriggerReset(getRepeatableTriggerReset());
 		return quest;
 	}
 	

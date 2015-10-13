@@ -94,9 +94,8 @@ public class GDXQuestManager implements Serializable{
 	private static void completeQuest(GDXQuest quest, QuestStatus status){
 		if(quest.isRepeatable())
 			for(AbstractQuestTrigger trigger : quest.getTriggers())
-				for(String triggerReset : quest.getRepeatableTriggerReset())
-					if(trigger.getName().equals(triggerReset))
-						trigger.reinitialize();
+				if(trigger.getName().matches(quest.getRepeatableTriggerReset()))
+					trigger.reinitialize();
 	}
 	
 	/**
