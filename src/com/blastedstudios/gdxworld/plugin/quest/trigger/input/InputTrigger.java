@@ -23,7 +23,7 @@ public class InputTrigger extends AbstractQuestTrigger {
 	}
 
 	@Override public AbstractQuestTrigger clone() {
-		return new InputTrigger(input);
+		return super.clone(new InputTrigger(input));
 	}
 
 	@Override public String toString() {

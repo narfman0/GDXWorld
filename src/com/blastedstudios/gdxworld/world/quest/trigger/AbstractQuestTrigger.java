@@ -27,6 +27,11 @@ public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	
 	@Override abstract public AbstractQuestTrigger clone();
 	@Override abstract public String toString();
+
+	protected AbstractQuestTrigger clone(AbstractQuestTrigger target){
+		target.setName(getName());
+		return target;
+	}
 	
 	public String getName() {
 		if(name == null)

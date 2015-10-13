@@ -56,7 +56,7 @@ public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new ObjectDistanceTrigger(target, origin, distance, actionRequired);
+		return super.clone(new ObjectDistanceTrigger(target, origin, distance, actionRequired));
 	}
 
 	@Override public String toString() {

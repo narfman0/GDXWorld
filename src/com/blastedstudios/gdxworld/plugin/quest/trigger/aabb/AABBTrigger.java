@@ -50,7 +50,7 @@ public class AABBTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new AABBTrigger(lowerLeft.cpy(), upperRight.cpy());
+		return super.clone(new AABBTrigger(lowerLeft.cpy(), upperRight.cpy()));
 	}
 	
 	@Override public String toString() {

@@ -22,6 +22,7 @@ import com.blastedstudios.gdxworld.plugin.mode.quest.TriggersWindow.ITriggersWin
 import com.blastedstudios.gdxworld.ui.AbstractWindow;
 import com.blastedstudios.gdxworld.ui.leveleditor.LevelEditorScreen;
 import com.blastedstudios.gdxworld.util.PluginUtil;
+import com.blastedstudios.gdxworld.util.StringUtil;
 import com.blastedstudios.gdxworld.world.quest.GDXQuest;
 
 class QuestEditor extends AbstractWindow {
@@ -38,6 +39,9 @@ class QuestEditor extends AbstractWindow {
 		final TextField prerequisiteField = new TextField("", skin);
 		prerequisiteField.setMessageText("<prerequisites>");
 		prerequisiteField.setText(quest.getPrerequisites());
+		final TextField repeatResetTriggersField = new TextField(StringUtil.joinWithComma(quest.getRepeatableTriggerReset()), skin);
+		repeatResetTriggersField.setMessageText("<repeat reset time triggers>");
+		repeatResetTriggersField.setText(quest.getPrerequisites());
 		final CheckBox repeatableBox = new CheckBox("Repeatable", skin);
 		repeatableBox.setChecked(quest.isRepeatable());
 		final Button acceptButton = new TextButton("Accept", skin);
@@ -86,6 +90,7 @@ class QuestEditor extends AbstractWindow {
 				quest.setPrerequisites(prerequisiteField.getText());
 				quest.setManifestation(manifestationTable.apply());
 				quest.setRepeatable(repeatableBox.isChecked());
+				quest.setRepeatableTriggerReset(StringUtil.splitOnComma(repeatResetTriggersField.getText()));
 				if(triggersWindow != null)
 					quest.setTriggers(triggersWindow.apply());
 				questTable.setName(quest.getName());
@@ -99,6 +104,7 @@ class QuestEditor extends AbstractWindow {
 		contents.row();
 		contents.add("Prerequisites: ");
 		contents.add(prerequisiteField);
+		contents.add(repeatResetTriggersField);
 		contents.row();
 		contents.add(triggersButton).colspan(3);
 		contents.row();

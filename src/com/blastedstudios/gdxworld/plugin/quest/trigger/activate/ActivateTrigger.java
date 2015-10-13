@@ -15,7 +15,7 @@ public class ActivateTrigger extends AbstractQuestTrigger {
 	}
 
 	@Override public AbstractQuestTrigger clone() {
-		return new ActivateTrigger();
+		return super.clone(new ActivateTrigger());
 	}
 
 	@Override public String toString() {

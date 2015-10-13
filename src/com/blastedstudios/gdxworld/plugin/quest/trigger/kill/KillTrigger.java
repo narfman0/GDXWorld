@@ -30,7 +30,7 @@ public class KillTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new KillTrigger(name);
+		return super.clone(new KillTrigger(name));
 	}
 
 	@Override public String toString() {

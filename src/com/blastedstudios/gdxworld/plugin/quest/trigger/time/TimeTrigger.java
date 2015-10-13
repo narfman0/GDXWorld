@@ -22,7 +22,7 @@ public class TimeTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new TimeTrigger(time);
+		return super.clone(new TimeTrigger(time));
 	}
 
 	@Override public String toString() {

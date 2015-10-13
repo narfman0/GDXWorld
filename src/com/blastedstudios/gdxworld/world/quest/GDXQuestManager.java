@@ -72,20 +72,16 @@ public class GDXQuestManager implements Serializable{
 						activate &= trigger.activate();
 					if(activate){
 						status.setCompleted(quest.getManifestation().execute(dt));
-						Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
-						if(quest.isRepeatable())
-							for(AbstractQuestTrigger trigger : quest.getTriggers())
-								trigger.reinitialize();
+						completeQuest(quest, status);
 						statusChanged = true;
+						Log.log("GDXQuestManager.tick", "Quest manifested: " + quest);
 					}
 				}
 			}else if(status.getCompleted() == CompletionEnum.EXECUTING){
 				CompletionEnum completeStatus = quest.getManifestation().tick(dt);
 				if(completeStatus != CompletionEnum.EXECUTING){
 					status.setCompleted(completeStatus);
-					if(quest.isRepeatable())
-						for(AbstractQuestTrigger trigger : quest.getTriggers())
-							trigger.reinitialize();
+					completeQuest(quest, status);
 					statusChanged = true;
 				}
 			}else
@@ -93,6 +89,14 @@ public class GDXQuestManager implements Serializable{
 		}
 		if(statusChanged)
 			Collections.sort(statuses, new QuestStatus.CompletionComparator());
+	}
+	
+	private static void completeQuest(GDXQuest quest, QuestStatus status){
+		if(quest.isRepeatable())
+			for(AbstractQuestTrigger trigger : quest.getTriggers())
+				for(String triggerReset : quest.getRepeatableTriggerReset())
+					if(trigger.getName().equals(triggerReset))
+						trigger.reinitialize();
 	}
 	
 	/**

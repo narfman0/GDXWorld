@@ -49,7 +49,7 @@ public class PersonTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
-		return new PersonTrigger(origin, target, distance);
+		return super.clone(new PersonTrigger(origin, target, distance));
 	}
 
 	@Override public String toString() {
