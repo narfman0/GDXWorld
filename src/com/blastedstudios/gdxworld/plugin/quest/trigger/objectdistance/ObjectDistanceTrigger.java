@@ -24,7 +24,7 @@ public class ObjectDistanceTrigger extends AbstractQuestTrigger {
 		this.actionRequired = actionRequired;
 	}
 
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		boolean activated = false;
 		for(IObjectDistanceTriggerHandler handler : PluginUtil.getPlugins(IObjectDistanceTriggerHandler.class))
 			activated |= handler.activate(this);

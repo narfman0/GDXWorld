@@ -25,7 +25,7 @@ public class KillTrigger extends AbstractQuestTrigger {
 		this.name = name;
 	}
 
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		return getProvider().isDead(name);
 	}
 	

@@ -40,7 +40,7 @@ public class AABBTrigger extends AbstractQuestTrigger {
 		this.upperRight = upperRight;
 	}
 	
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		if(getProvider().getPlayerPosition() == null){
 			Log.log("AABBTrigger.activate", "Player position null");
 			return false;

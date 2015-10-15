@@ -14,7 +14,7 @@ public abstract class AbstractQuestTrigger implements ICloneable,Serializable{
 	 * Checks to see if the quest is ready to be activated
 	 * @return true if the trigger has been flipped
 	 */
-	public abstract boolean activate();
+	public abstract boolean activate(float dt);
 	public void reinitialize(){}
 
 	public IQuestTriggerInformationProvider getProvider() {

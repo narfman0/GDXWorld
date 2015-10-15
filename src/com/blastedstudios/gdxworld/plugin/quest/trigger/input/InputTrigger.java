@@ -18,7 +18,7 @@ public class InputTrigger extends AbstractQuestTrigger {
 		this.input = input;
 	}
 	
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		return Gdx.input.isKeyPressed(input);
 	}
 

@@ -6,19 +6,18 @@ public class TimeTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final TimeTrigger DEFAULT = new TimeTrigger(0); 
 	private long time;
-	private transient long initiated = -1L;
+	private transient float duration = -1f;
 	
 	public TimeTrigger(){}
 	public TimeTrigger(long time){
 		this.time = time;
 	}
 
-	@Override public boolean activate() {
-		if(initiated == -1L)
+	@Override public boolean activate(float dt) {
+		if(duration == -1f)
 			reinitialize();
-		if(System.currentTimeMillis() - initiated > time)
-			return true;
-		return false;
+		duration -= dt;
+		return duration <= 0f;
 	}
 	
 	@Override public AbstractQuestTrigger clone(){
@@ -38,6 +37,6 @@ public class TimeTrigger extends AbstractQuestTrigger {
 	}
 	
 	@Override public void reinitialize() {
-		initiated = System.currentTimeMillis();
+		duration = ((float)time)/1000f;
 	}
 }

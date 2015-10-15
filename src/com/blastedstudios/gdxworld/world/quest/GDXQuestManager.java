@@ -69,7 +69,7 @@ public class GDXQuestManager implements Serializable{
 				if(isActive(quest)){
 					boolean activate = true;
 					for(AbstractQuestTrigger trigger : quest.getTriggers())
-						activate &= trigger.activate();
+						activate &= trigger.activate(dt);
 					if(activate){
 						status.setCompleted(quest.getManifestation().execute(dt));
 						completeQuest(quest, status);

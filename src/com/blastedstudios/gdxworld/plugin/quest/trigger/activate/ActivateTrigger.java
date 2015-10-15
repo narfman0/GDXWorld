@@ -10,7 +10,7 @@ public class ActivateTrigger extends AbstractQuestTrigger {
 	private static final long serialVersionUID = 1L;
 	public static final ActivateTrigger DEFAULT = new ActivateTrigger();
 	
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		return true;
 	}
 

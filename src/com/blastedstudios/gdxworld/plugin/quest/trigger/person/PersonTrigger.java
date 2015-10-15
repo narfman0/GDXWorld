@@ -44,7 +44,7 @@ public class PersonTrigger extends AbstractQuestTrigger {
 		this.distance = distance;
 	}
 
-	@Override public boolean activate() {
+	@Override public boolean activate(float dt) {
 		return getProvider().isNear(origin, target, distance);
 	}
 	
