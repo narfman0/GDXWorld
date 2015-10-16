@@ -56,7 +56,7 @@ public class GDXWorldEditor extends GDXGame {
 	    return cfg;
 	}
 	
-	private static Dimension getDimension(boolean fullscreen){
+	public static Dimension getDimension(boolean fullscreen){
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		int width = Properties.getInt("graphics.width", gd.getDisplayMode().getWidth());
 		int height = Properties.getInt("graphics.height", gd.getDisplayMode().getHeight());
