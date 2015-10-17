@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
-import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
@@ -79,10 +78,8 @@ public class GDXQuest implements Serializable, Cloneable{
 	}
 
 	public LinkedList<AbstractQuestTrigger> getTriggers() {
-		if(triggers == null){
+		if(triggers == null)
 			triggers = new LinkedList<>();
-			triggers.add(new ActivateTrigger());
-		}
 		return triggers;
 	}
 
