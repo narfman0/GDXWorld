@@ -107,7 +107,7 @@ public class GDXQuest implements Serializable, Cloneable{
 
 	@Override public Object clone(){
 		LinkedList<AbstractQuestTrigger> triggers = new LinkedList<>();
-		for(AbstractQuestTrigger trigger : this.triggers)
+		for(AbstractQuestTrigger trigger : getTriggers())
 			triggers.add(trigger.clone());
 		GDXQuest quest = new GDXQuest();
 		quest.setName(name);

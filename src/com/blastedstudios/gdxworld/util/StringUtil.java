@@ -10,7 +10,7 @@ public class StringUtil {
 	}
 	
 	public static List<String> splitOnComma(String string){
-		return split(string, ",\\s+");
+		return split(string, ",\\s*");
 	}
 	
 	public static String join(List<String> strings, String insert){
