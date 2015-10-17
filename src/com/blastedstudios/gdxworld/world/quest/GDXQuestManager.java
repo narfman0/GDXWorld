@@ -57,6 +57,10 @@ public class GDXQuestManager implements Serializable{
 	}
 	
 	public void tick(float dt){
+		if(levelQuestStatusMap == null || currentLevel == null){
+			Log.debug("GDXQuestManager.tick", "levelQuestStatusMap or currentLevel null, aborting");
+			return;
+		}
 		List<QuestStatus> statuses = levelQuestStatusMap.get(currentLevel.getName());
 		if(statuses == null){
 			Log.error("GDXQuestManager.tick", "levelQuestStatusMap does not contain level: " + currentLevel);
