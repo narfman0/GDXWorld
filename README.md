@@ -277,10 +277,13 @@ Operates the same was as XML, see above
 
 # Project setup/Cold Start
 
-Designed to be managed from eclipse, preferably in Fedora 16+ with the egit
-plugin, but should work under any environment. To run, navigate to
-GDXWorldEditor, right click, Run As, Java Application. 
+Designed to be managed from eclipse, preferably in Fedora 22+ with the egit
+plugin, but should work under any gradle environment.
 
-Uses libGDX nightly from 10/5/2015  
-Uses box2dlights 1.5-SNAPSHOT from 8/9/2015  
+1. From "Gradle Tasks" right click root "GDXWorld" and click "Run Default
+Gradle Tasks"
+2. This will run the eclipse file generator, tests, create a build directory, 
+and the enclosed lib against which you may link. Congrats!
+3. To run, navigate to GDXWorldEditor, right click, Run As, Java Application. 
+
 Refer to LICENSE for (admittedly lacking) licensing information  
