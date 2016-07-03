@@ -1,7 +1,9 @@
 apply plugin: "java"
 apply plugin: "eclipse"
 apply plugin: 'application'
+apply plugin: 'maven'
 
+group 'com.blastedstudios'
 mainClassName = "com.blastedstudios.gdxworld.GDXWorldEditor"
 version = '1.0'
 
