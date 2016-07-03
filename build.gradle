@@ -2,12 +2,13 @@ apply plugin: "java"
 apply plugin: "eclipse"
 apply plugin: 'application'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group 'com.blastedstudios'
 mainClassName = "com.blastedstudios.gdxworld.GDXWorldEditor"
 version = '1.0'
 
-defaultTasks 'eclipse', 'build'
+defaultTasks 'eclipse', 'build', 'install'
 
 ext {
     appName = "gdx-world"
@@ -18,6 +19,10 @@ jar {
     manifest {
         attributes 'Main-Class': '$mainClassName'
     }
+}
+
+artifacts {
+  archives file: file("build/libs/GDXWorld-${version}.jar"), name: 'GDXWorld', type: 'jar'
 }
 
 repositories {
