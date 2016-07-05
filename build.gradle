@@ -4,9 +4,11 @@ apply plugin: 'application'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-group 'com.blastedstudios'
+group = 'com.blastedstudios'
 mainClassName = "com.blastedstudios.gdxworld.GDXWorldEditor"
 version = '1.0'
+description = "2D world editor for libGDX. Has an overhead map/level layout designer, which may drill into a level and intelligently place physics bodies, enemies and pathing, and other objects."
+url = "https://github.com/narfman0/GDXWorld"
 
 defaultTasks 'eclipse', 'build', 'install'
 
@@ -22,7 +24,7 @@ jar {
 }
 
 artifacts {
-  archives file: file("build/libs/GDXWorld-${version}.jar"), name: 'GDXWorld', type: 'jar'
+    archives file: file("build/libs/GDXWorld-${version}.jar"), name: 'GDXWorld', type: 'jar'
 }
 
 repositories {
