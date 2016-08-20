@@ -260,17 +260,20 @@ public class GDXLevel implements Cloneable,Serializable{
 		}
 		return closest;
 	}
-	
+
 	/**
 	 * Populates the given world with physics data from this GDXLevel
 	 */
 	public CreateLevelReturnStruct createLevel(World world){
+		return createLevel(world, true);
+	}
+
+	public CreateLevelReturnStruct createLevel(World world, boolean createLights){
 		HashMap<GDXShape,Body> bodies = createBodies(world);
 		HashMap<GDXJoint,Joint> joints = createJoints(world);
-		CreateLevelLightReturn lights = createLights(world);
-		return new CreateLevelReturnStruct(bodies, joints, lights);
+		return new CreateLevelReturnStruct(bodies, joints, createLights ? createLights(world) : null);
 	}
-	
+
 	public HashMap<GDXShape,Body> createBodies(World world){
 		HashMap<GDXShape,Body> returnBodies = new HashMap<>();
 		for(GDXShape shape : getShapes()){

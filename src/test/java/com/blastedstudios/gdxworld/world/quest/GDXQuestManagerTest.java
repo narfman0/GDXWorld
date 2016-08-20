@@ -1,9 +1,5 @@
 package com.blastedstudios.gdxworld.world.quest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.LinkedList;
 
 import org.junit.Before;
@@ -27,10 +23,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
-import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
-import com.blastedstudios.gdxworld.world.quest.QuestStatus.CompletionEnum;
-import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import com.blastedstudios.gdxworld.world.quest.manifestation.IQuestManifestationExecutor;
 import com.blastedstudios.gdxworld.world.quest.trigger.AbstractQuestTrigger;
 import com.blastedstudios.gdxworld.world.quest.trigger.IQuestTriggerInformationProvider;
