@@ -21,14 +21,9 @@ import com.blastedstudios.gdxworld.world.shape.GDXCircle;
 
 @PluginImplementation
 public class CircleMode extends AbstractMode {
-	private final SpriteBatch spriteBatch;
 	private final Map<GDXCircle, Body> bodies = new HashMap<>();
 	private CircleWindow circleWindow;
 	private GDXCircle lastTouched;
-	
-	public CircleMode(){
-		spriteBatch = new SpriteBatch();
-	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
 		super.touchDown(x,y,x1,y1);
@@ -100,7 +95,7 @@ public class CircleMode extends AbstractMode {
 			addCircle(shape);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	@Override public void render(float delta, SpriteBatch spriteBatch, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(circleWindow != null)
 			circleWindow.render(delta, camera);
 		spriteBatch.setProjectionMatrix(camera.combined);

@@ -25,16 +25,16 @@ import com.blastedstudios.gdxworld.world.GDXTile;
 public class TileMode extends AbstractMode {
 	private static final int DEFAULT_TILESIZE = 21;
 	private static int tilesize = DEFAULT_TILESIZE;
-	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private PaletteWindow paletteWindow;
 	private TileWindow tileWindow;
 	private PaletteTile activeTile;
 	private boolean renderGrid = Properties.getBool("tilemode.renderGrid", false);
 	private boolean renderOrigin = Properties.getBool("tilemode.renderOrigin", false);
-	private ShapeRenderer sr = new ShapeRenderer();
+	private ShapeRenderer sr;
 	
 	public void start() {
 		screen.getStage().addActor(paletteWindow = new PaletteWindow(screen.getSkin(), this));
+		sr = new ShapeRenderer();
 	}
 	
 	public void setActiveTile(final PaletteTile tile) {
@@ -90,7 +90,7 @@ public class TileMode extends AbstractMode {
 	}
 	
 	@Override
-	public void render(final float delta, final OrthographicCamera camera, final GDXRenderer gdxRenderer, final ShapeRenderer renderer) {
+	public void render(final float delta, SpriteBatch spriteBatch, final OrthographicCamera camera, final GDXRenderer gdxRenderer, final ShapeRenderer renderer) {
 		spriteBatch.setProjectionMatrix(camera.combined);
 		
 		// render origin lines

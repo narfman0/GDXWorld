@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.util;
 import net.xeoh.plugins.base.Plugin;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -20,7 +21,7 @@ public interface IMode extends Plugin {
 	 int getLoadPriority();
 	 void init(LevelEditorScreen screen);
 	 void start();
-	 void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer);
+	 void render(float delta, SpriteBatch spriteBatch, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer);
 	 Body getPhysicsBody(String name);
 	 Joint getPhysicsJoint(String name);
 }

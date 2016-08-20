@@ -3,6 +3,7 @@ package com.blastedstudios.gdxworld.plugin.mode.animation;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -45,7 +46,7 @@ public class AnimationMode extends AbstractMode implements IMode, ILiveOptionPro
 		return table;
 	}
 
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	@Override public void render(float delta, SpriteBatch spriteBatch, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(table != null)
 			table.render(delta);
 	}

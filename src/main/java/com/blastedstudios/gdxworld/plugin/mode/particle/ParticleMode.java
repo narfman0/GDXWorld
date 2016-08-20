@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blastedstudios.gdxworld.ui.GDXRenderer;
@@ -81,7 +82,7 @@ public class ParticleMode extends AbstractMode {
 			addParticle(npc);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	@Override public void render(float delta, SpriteBatch spriteBatch, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.setColor(Color.RED);
 		renderer.begin(ShapeType.Line);

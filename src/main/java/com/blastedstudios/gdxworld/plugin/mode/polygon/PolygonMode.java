@@ -26,7 +26,6 @@ import com.blastedstudios.gdxworld.world.shape.GDXPolygon;
 
 @PluginImplementation
 public class PolygonMode extends AbstractMode {
-	private final SpriteBatch spriteBatch;
 	private final Map<GDXPolygon, Body> bodies = new HashMap<>();
 	private TiledMeshRenderer tiledMeshRenderer;
 	private PolygonWindow polygonWindow;
@@ -34,7 +33,6 @@ public class PolygonMode extends AbstractMode {
 	private GDXPolygon lastTouchedPolygon;
 	
 	public PolygonMode(){
-		spriteBatch = new SpriteBatch();
 	}
 	
 	@Override public boolean touchDown(int x, int y, int x1, int y1) {
@@ -135,7 +133,7 @@ public class PolygonMode extends AbstractMode {
 			addPolygon(shape);
 	}
 	
-	@Override public void render(float delta, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
+	@Override public void render(float delta, SpriteBatch spriteBatch, OrthographicCamera camera, GDXRenderer gdxRenderer, ShapeRenderer renderer){
 		if(tiledMeshRenderer == null)
 			tiledMeshRenderer = new TiledMeshRenderer(gdxRenderer, screen.getLevel().getPolygons());
 		tiledMeshRenderer.render(camera);
