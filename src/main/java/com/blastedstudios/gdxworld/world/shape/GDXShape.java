@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public abstract class GDXShape implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	protected String name;
+	protected String tag;
 	private String resource = "";
 	protected float density = 1f, friction = .5f, restitution = .3f;
 	protected BodyType bodyType = BodyType.StaticBody;
@@ -81,6 +82,14 @@ public abstract class GDXShape implements Cloneable,Serializable{
 		this.resource = resource;
 	}
 
+	public String getTag() {
+		return tag == null ? "" : tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
 	public Filter getFilter() {
 		if(filter == null)
 			filter = new Filter();
@@ -116,6 +125,7 @@ public abstract class GDXShape implements Cloneable,Serializable{
 		clone.setName(name);
 		clone.setRestitution(restitution);
 		clone.setResource(resource);
+		clone.setTag(tag);
 		Filter filter = new Filter();
 		filter.categoryBits = clone.filter.categoryBits;
 		filter.groupIndex = clone.filter.groupIndex;
