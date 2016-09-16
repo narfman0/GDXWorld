@@ -25,14 +25,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
 
-/** base class for file choosers
- *  @see ListFileChooser
- *  @see TreeFileChooser
- *  @author dermetfan */
+/**
+ * Base class for file choosers
+ * @author dermetfan
+ */
 public abstract class FileChooser extends Table {
 
-	/** called by a {@link ListFileChooser}
-	 *  @author dermetfan */
+	/** called by a file chooser
+	 *
+	 */
 	public static interface Listener {
 
 		/** called when a single file was chosen */

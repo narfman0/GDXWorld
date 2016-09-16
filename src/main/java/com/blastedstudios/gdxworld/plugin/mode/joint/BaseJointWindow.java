@@ -70,7 +70,6 @@ public abstract class BaseJointWindow extends AbstractWindow {
 	abstract public void apply();
 	
 	/**
-	 * @param gdxLevel 
 	 * @return true if event was consumed
 	 */
 	abstract public boolean clicked(Vector2 loc, GDXLevel level);

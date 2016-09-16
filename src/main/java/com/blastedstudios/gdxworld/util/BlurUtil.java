@@ -64,7 +64,7 @@ public class BlurUtil {
 	 *            the height of the source picture
 	 * @param radius
 	 *            the radius of the blur effect
-	 * @author Romain Guy <romain.guy@mac.com>
+	 * @author <a href="mailto:romain.guy@mac.com">Romain Guy</a>
 	 */
 	public static void blurPass(int[] srcPixels, int[] dstPixels, int width,
 			int height, int radius) {
