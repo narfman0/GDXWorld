@@ -10,82 +10,121 @@ description = "2D world editor for libGDX. Has an overhead map/level layout desi
 defaultTasks 'eclipse', 'build', 'install', 'createPom'
 
 ext {
-    appName = "gdx-world"
-    gdxVersion = '1.9.3'
-    url = "https://github.com/narfman0/GDXWorld"
+	appName = "gdx-world"
+	gdxVersion = '1.9.3'
+	url = "https://github.com/narfman0/GDXWorld"
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': '$mainClassName'
-    }
+	manifest {
+		attributes 'Main-Class': '$mainClassName'
+	}
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+	classifier = 'sources'
+	from sourceSets.main.allSource
 }
 
 task javadocsJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+	classifier = 'javadoc'
+	from javadoc.destinationDir
 }
 
 artifacts {
-    archives jar, sourcesJar, javadocsJar
+	archives jar, sourcesJar, javadocsJar
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    maven { url "http://maven.formreturn.com/repository/" }
+	mavenLocal()
+	mavenCentral()
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+	maven { url "http://maven.formreturn.com/repository/" }
 }
 
 dependencies {
-    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    compile group: 'net.xeoh.jspf', name: 'jspf-core', version: '1.0.2'
-    compile group: 'com.badlogicgames.box2dlights', name: 'box2dlights', version: '1.4'
-    compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.2'
-    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.7'
-    compile group: 'xpp3', name: 'xpp3', version: '1.1.4c'
-    compile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.1'
-    testCompile 'junit:junit:4.12'
+	compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+	compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+	compile group: 'net.xeoh.jspf', name: 'jspf-core', version: '1.0.2'
+	compile group: 'com.badlogicgames.box2dlights', name: 'box2dlights', version: '1.4'
+	compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.2'
+	compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.7'
+	compile group: 'xpp3', name: 'xpp3', version: '1.1.4c'
+	compile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.1'
+	testCompile 'junit:junit:4.12'
 }
 
 signing {
-    sign configurations.archives
+	sign configurations.archives
 }
 
 task createPom {
-    pom {
-        project {
-		    name "${appName}";
-		    description "${description}";
-		    url "${url}";
-            licenses {
-                license {
-                    name 'The MIT License (MIT)'
-                    url 'https://opensource.org/licenses/MIT'
-                }
-            }
-            developers {
-            	developer {
-            		name 'Jon Robison'
-            		email 'narfman0@gmail.com'
-            	}
-            }
-            scm {
-            	connection "scm:git:${url}.git"
-            	developerConnection "scm:git:${url}.git"
-            	url "${url}"
-            }
-        }
-    }.writeTo("$buildDir/poms/pom.xml")
+	pom {
+		project {
+			name "${appName}";
+			description "${description}";
+			url "${url}";
+			licenses {
+				license {
+					name 'The MIT License (MIT)'
+					url 'https://opensource.org/licenses/MIT'
+				}
+			}
+			developers {
+				developer {
+					name 'Jon Robison'
+					email 'narfman0@gmail.com'
+				}
+			}
+			scm {
+				connection "scm:git:${url}.git"
+				developerConnection "scm:git:${url}.git"
+				url "${url}"
+			}
+		}
+	}.writeTo("$buildDir/poms/pom.xml")
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+	
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+	
+			pom.project {
+				name "${appName}";
+				description "${description}";
+				url "${url}";
+				licenses {
+					license {
+						name 'The MIT License (MIT)'
+						url 'https://opensource.org/licenses/MIT'
+					}
+				}
+				developers {
+					developer {
+						name 'Jon Robison'
+						email 'narfman0@gmail.com'
+					}
+				}
+				scm {
+					connection "scm:git:${url}.git"
+					developerConnection "scm:git:${url}.git"
+					url "${url}"
+				}
+			}
+		}
+	}
 }
