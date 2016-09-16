@@ -12,6 +12,7 @@ defaultTasks 'eclipse', 'build', 'install', 'createPom'
 ext {
     appName = "gdx-world"
     gdxVersion = '1.9.3'
+    url = "https://github.com/narfman0/GDXWorld"
 }
 
 jar {
@@ -65,7 +66,24 @@ task createPom {
         project {
 		    name "${appName}";
 		    description "${description}";
-		    url "https://github.com/narfman0/GDXWorld";
+		    url "${url}";
+            licenses {
+                license {
+                    name 'The MIT License (MIT)'
+                    url 'https://opensource.org/licenses/MIT'
+                }
+            }
+            developers {
+            	developer {
+            		name 'Jon Robison'
+            		email 'narfman0@gmail.com'
+            	}
+            }
+            scm {
+            	connection "scm:git:${url}.git"
+            	developerConnection "scm:git:${url}.git"
+            	url "${url}"
+            }
         }
-    }.writeTo("$buildDir/poms/pom-default.xml")
+    }.writeTo("$buildDir/poms/pom.xml")
 }
