@@ -2,6 +2,7 @@ package com.blastedstudios.gdxworld.world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +27,12 @@ public class GDXPath implements Cloneable,Serializable{
 	private String name = "Path-"+count++;
 	private List<Vector2> nodes = new ArrayList<Vector2>();
 	private CompletionEnum completionCriteria = CompletionEnum.REPEAT;
+	
+	public GDXPath(){}
+	
+	public GDXPath(Vector2... nodes){
+		this.nodes.addAll(Arrays.asList(nodes));
+	}
 
 	public String getName() {
 		return name;

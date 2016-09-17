@@ -6,7 +6,7 @@ apply plugin: 'signing'
 
 group = 'com.blastedstudios'
 mainClassName = "com.blastedstudios.gdxworld.GDXWorldEditor"
-version = '1.0.0'
+version = '1.0.1'
 description = "2D world editor for libGDX. Has an overhead map/level layout designer, which may drill into a level and intelligently place physics bodies, enemies and pathing, and other objects."
 defaultTasks 'eclipse', 'build', 'install', 'createPom'
 
