@@ -1,26 +1,19 @@
 package com.blastedstudios.gdxworld.world.quest;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Audio;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.LifecycleListener;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Clipboard;
 import com.blastedstudios.gdxworld.plugin.quest.manifestation.dialog.DialogManifestation;
 import com.blastedstudios.gdxworld.plugin.quest.trigger.aabb.AABBTrigger;
 import com.blastedstudios.gdxworld.world.GDXLevel;
@@ -36,7 +29,7 @@ public class GDXQuestManagerTest {
 	private Vector2 playerPosition;
 	
 	@Before public void setUp() throws Exception {
-		Gdx.app = nullApplicaton;
+		Gdx.app = mock(Application.class);
 		world = new World(new Vector2(), true);
 		playerPosition = new Vector2();
 		level1 = new GDXLevel();
@@ -166,31 +159,4 @@ public class GDXQuestManagerTest {
 //		assertTrue(manager.isActive(quest));
 //		assertEquals(2, count, 1e-6);
 	}
-
-	private static Application nullApplicaton = new Application() {
-		@Override public void setLogLevel(int logLevel) {}
-		@Override public void removeLifecycleListener(LifecycleListener listener) {}
-		@Override public void postRunnable(Runnable runnable) {}
-		@Override public void log(String tag, String message) {}
-		@Override public int getVersion() {return 0;}
-		@Override public ApplicationType getType() {return null;}
-		@Override public Preferences getPreferences(String name) {return null;}
-		@Override public Net getNet() {return null;}
-		@Override public long getNativeHeap() {return 0;}
-		@Override public long getJavaHeap() {return 0;}
-		@Override public Input getInput() {return null;}
-		@Override public Graphics getGraphics() {return null;}
-		@Override public Files getFiles() {return null;}
-		@Override public Clipboard getClipboard() {return null;}
-		@Override public Audio getAudio() {return null;}
-		@Override public ApplicationListener getApplicationListener() {return null;}
-		@Override public void exit() {}
-		@Override public void error(String tag, String message, Throwable exception) {}
-		@Override public void error(String tag, String message) {}
-		@Override public void debug(String tag, String message, Throwable exception) {}
-		@Override public void debug(String tag, String message) {}
-		@Override public void addLifecycleListener(LifecycleListener listener) {}
-		@Override public void log(String tag, String message, Throwable exception) {}
-		@Override public int getLogLevel() {return 0;}
-	};
 }
