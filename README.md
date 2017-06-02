@@ -5,6 +5,16 @@ a framework to provide physics information to populate box2d worlds, but also
 give parameters for the interaction of the shapes therein through the use of
 joints, define NPC information with pathing, overworld map, and quests.
 
+## Installation
+
+To gradle build.gradle add the GDXWorld dependency:
+`compile 'com.blastedstudios:GDXWorld:1.0.2'`
+
+## Updates
+
+Increment build.gradle version to desired target, incorporate via git as
+workspace library, or upload new artifacts with `./gradlew uploadArchives`.
+
 ## Overview
 
 GDXWorld is not simply a level editor, but a world and environment creator. It
