@@ -12,7 +12,7 @@ defaultTasks 'eclipse', 'build', 'install', 'createPom'
 
 ext {
 	appName = "gdx-world"
-	gdxVersion = '1.9.6'
+	gdxVersion = '1.9.9'
 	url = "https://github.com/narfman0/GDXWorld"
 }
 
@@ -51,7 +51,7 @@ dependencies {
 	compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 	compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-	compile "jspf.core:jspf.core:1.0.2"
+	compile files('lib/jspf.core-1.0.2.jar')
 	compile group: 'com.badlogicgames.box2dlights', name: 'box2dlights', version: '1.4'
 	compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.2'
 	compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.7'
