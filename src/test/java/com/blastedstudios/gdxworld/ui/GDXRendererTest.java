@@ -28,14 +28,4 @@ public class GDXRendererTest {
         assertEquals(world.x, from.x, .01);
         assertEquals(world.y, from.y, .01);
     }
-
-    private class CameraStub extends Camera {
-        @Override
-        public void update() {
-        }
-
-        @Override
-        public void update(boolean arg0) {
-        }
-    }
 }

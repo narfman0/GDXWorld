@@ -14,12 +14,17 @@ import net.xeoh.plugins.base.Plugin;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.util.PluginManagerUtil;
+import net.xeoh.plugins.base.util.uri.ClassURI;
 
 public class PluginUtil {
 	private static PluginManagerUtil pluginManager;
 	// used to cache results. This was crawling to a halt in 32 bit, with 
 	// top 6 CPU dominators as plugins related code
 	private static HashMap<Object, Object> interfacePluginListMap = new HashMap<>();
+
+	static {
+		PluginUtil.initialize(ClassURI.CLASSPATH);
+	}
 	
 	/**
 	 * Initialize pluginManager for the util, should be calld firstest

@@ -1,9 +1,12 @@
 package com.blastedstudios.gdxworld.world.quest;
 
+import static junit.framework.TestCase.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.LinkedList;
 
+import com.blastedstudios.gdxworld.plugin.quest.trigger.activate.ActivateTrigger;
+import com.blastedstudios.gdxworld.world.quest.manifestation.AbstractQuestManifestation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -123,58 +126,56 @@ public class GDXQuestManagerTest {
 
     @Test
     public void testActive() {
-//		TODO gradle upgrade errors
-//		manager.setCurrentLevel(level1);
-//		manager.tick(1f);
-//		assertFalse(manager.isActive(quest2));
-//		assertTrue(manager.isActive(quest1));
-//		playerPosition.set(2,2);
-//		manager.tick(1f);
-//		assertFalse(manager.isCompleted(quest1));
-//		manager.setStatus(quest1.getName(), CompletionEnum.COMPLETED);
-//		assertTrue(manager.isCompleted(quest1));
-//		assertTrue(manager.isActive(quest2));
-//		playerPosition.set(5,5);
-//		manager.tick(1f);
-//		assertFalse(manager.isCompleted(quest2));
-//		manager.setStatus(quest2.getName(), CompletionEnum.COMPLETED);
-//		assertTrue(manager.isCompleted(quest2));
+		manager.setCurrentLevel(level1);
+		manager.tick(1f);
+		assertFalse(manager.isActive(quest2));
+		assertTrue(manager.isActive(quest1));
+		playerPosition.set(2,2);
+		manager.tick(1f);
+		assertFalse(manager.isCompleted(quest1));
+		manager.setStatus(quest1.getName(), QuestStatus.CompletionEnum.COMPLETED);
+		assertTrue(manager.isCompleted(quest1));
+		assertTrue(manager.isActive(quest2));
+		playerPosition.set(5,5);
+		manager.tick(1f);
+		assertFalse(manager.isCompleted(quest2));
+		manager.setStatus(quest2.getName(), QuestStatus.CompletionEnum.COMPLETED);
+		assertTrue(manager.isCompleted(quest2));
     }
 
     private float count = 0f;
 
     @Test
     public void testRepeat() {
-//		TODO gradle upgrade errors
-//		GDXQuest quest = new GDXQuest();
-//		quest.setManifestation(new AbstractQuestManifestation() {
-//			private static final long serialVersionUID = 1L;
-//			@Override public String toString() {return "";}
-//			@Override public CompletionEnum execute(float dt) {
-//				count++;
-//				return CompletionEnum.COMPLETED;
-//			}
-//			@Override public AbstractQuestManifestation clone() {return this;}
-//		});
-//		LinkedList<AbstractQuestTrigger> triggers = new LinkedList<>();
-//		triggers.add(new ActivateTrigger());
-//		quest.setTriggers(triggers);
-//		quest.setRepeatable(true);
-//		quest.setName("Repeatable quest name");
-//		GDXLevel level = new GDXLevel();
-//		level.getQuests().add(quest);
-//		manager.setCurrentLevel(level);
-//		assertTrue(manager.isActive(quest));
-//		assertFalse(manager.isCompleted(quest));
-//		assertEquals(0, count, 1e-6);
-//		manager.tick(1f);
-//		assertTrue(manager.isCompleted(quest));
-//		assertTrue(manager.isActive(quest));
-//		assertEquals(1, count, 1e-6);
-//		playerPosition.set(2,2);
-//		manager.tick(1f);
-//		assertTrue(manager.isCompleted(quest));
-//		assertTrue(manager.isActive(quest));
-//		assertEquals(2, count, 1e-6);
+		GDXQuest quest = new GDXQuest();
+		quest.setManifestation(new AbstractQuestManifestation() {
+			private static final long serialVersionUID = 1L;
+			@Override public String toString() {return "";}
+			@Override public QuestStatus.CompletionEnum execute(float dt) {
+				count++;
+				return QuestStatus.CompletionEnum.COMPLETED;
+			}
+			@Override public AbstractQuestManifestation clone() {return this;}
+		});
+		LinkedList<AbstractQuestTrigger> triggers = new LinkedList<>();
+		triggers.add(new ActivateTrigger());
+		quest.setTriggers(triggers);
+		quest.setRepeatable(true);
+		quest.setName("Repeatable quest name");
+		GDXLevel level = new GDXLevel();
+		level.getQuests().add(quest);
+		manager.setCurrentLevel(level);
+		assertTrue(manager.isActive(quest));
+		assertFalse(manager.isCompleted(quest));
+		assertEquals(0, count, 1e-6);
+		manager.tick(1f);
+		assertTrue(manager.isCompleted(quest));
+		assertTrue(manager.isActive(quest));
+		assertEquals(1, count, 1e-6);
+		playerPosition.set(2,2);
+		manager.tick(1f);
+		assertTrue(manager.isCompleted(quest));
+		assertTrue(manager.isActive(quest));
+		assertEquals(2, count, 1e-6);
     }
 }

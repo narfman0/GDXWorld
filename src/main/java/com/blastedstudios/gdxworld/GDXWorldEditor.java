@@ -26,8 +26,7 @@ public class GDXWorldEditor extends GDXGame {
 	@Override public void create () {
 		if(args != null)
 			parseArgs(args);
-		PluginUtil.initialize(ClassURI.CLASSPATH);
-		FileHandle handle = Gdx.files.internal("data/gdxworld.properties"); 
+		FileHandle handle = Gdx.files.internal("data/gdxworld.properties");
 		if(handle != null)
 			Properties.load(handle.read());
 		else 
