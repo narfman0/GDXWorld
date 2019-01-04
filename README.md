@@ -1,3 +1,5 @@
+[![Jitpack](https://jitpack.io/v/narfman0/GDXWorld.svg)](https://jitpack.io/)
+
 # GDXWorld
 
 GDXWorld is a 2D world editor for libGDX. The intention is to provide not only
@@ -7,13 +9,19 @@ joints, define NPC information with pathing, overworld map, and quests.
 
 ## Installation
 
-To gradle build.gradle add the GDXWorld dependency:
-`compile 'com.blastedstudios:GDXWorld:1.0.2'`
+We have moved to jitpack, so ensure it is added:
+```
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
 
-## Updates
-
-Increment build.gradle version to desired target, incorporate via git as
-workspace library, or upload new artifacts with `./gradlew uploadArchives`.
+Then bring in the dependency with:
+```
+dependencies {
+    compile 'com.github.narfman0:GDXWorld:1.0.4'
+}
+```
 
 ## Overview
 
