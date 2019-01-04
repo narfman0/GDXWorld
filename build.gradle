@@ -1,14 +1,13 @@
 apply plugin: "java"
-apply plugin: "eclipse"
 apply plugin: 'application'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'com.blastedstudios'
 mainClassName = "com.blastedstudios.gdxworld.GDXWorldEditor"
-version = '1.0.2'
+version = '1.0.4'
 description = "2D world editor for libGDX. Has an overhead map/level layout designer, which may drill into a level and intelligently place physics bodies, enemies and pathing, and other objects."
-defaultTasks 'eclipse', 'build', 'install', 'createPom'
+defaultTasks 'build', 'install'
 
 ext {
 	appName = "gdx-world"
@@ -59,74 +58,4 @@ dependencies {
 	compile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.1'
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.mockito:mockito-all:1.9.5'
-}
-
-signing {
-	sign configurations.archives
-}
-
-task createPom {
-	pom {
-		project {
-			name "${appName}";
-			description "${description}";
-			url "${url}";
-			licenses {
-				license {
-					name 'The MIT License (MIT)'
-					url 'https://opensource.org/licenses/MIT'
-				}
-			}
-			developers {
-				developer {
-					name 'Jon Robison'
-					email 'narfman0@gmail.com'
-				}
-			}
-			scm {
-				connection "scm:git:${url}.git"
-				developerConnection "scm:git:${url}.git"
-				url "${url}"
-			}
-		}
-	}.writeTo("$buildDir/poms/pom.xml")
-}
-
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-	
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
-			}
-	
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
-			}
-	
-			pom.project {
-				name "${appName}";
-				description "${description}";
-				url "${url}";
-				licenses {
-					license {
-						name 'The MIT License (MIT)'
-						url 'https://opensource.org/licenses/MIT'
-					}
-				}
-				developers {
-					developer {
-						name 'Jon Robison'
-						email 'narfman0@gmail.com'
-					}
-				}
-				scm {
-					connection "scm:git:${url}.git"
-					developerConnection "scm:git:${url}.git"
-					url "${url}"
-				}
-			}
-		}
-	}
 }
